@@ -4,15 +4,13 @@ import java.util.List;
 
 public class Bag {
 
-    // Attributes
+
 
     private List<Tile> tiles;
 
 
-    // Methods
-
     public Bag(){
-        
+
     }
     public List<Tile> getTiles() {
         return tiles;
