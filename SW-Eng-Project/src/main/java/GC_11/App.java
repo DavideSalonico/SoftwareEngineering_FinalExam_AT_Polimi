@@ -4,6 +4,9 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!");
+        PersonalGoalCard card = new PersonalGoalCard();
+        for (Triplet t : card.getGoalList()){
+            System.out.println("R " + t.getRow() + " C " + t.getCol() + " COLOR " + t.getColor());
+        }
     }
 }

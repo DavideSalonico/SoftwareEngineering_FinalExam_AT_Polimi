@@ -5,7 +5,7 @@ import java.util.List;
 public class Player {
 
 
-    // Attributes
+
     private String nickname;
     private int points;
     private List<Tile> tiles;
@@ -13,10 +13,12 @@ public class Player {
     private List<Integer> ListCommonGoals;
     private Shelf shelf;
 
-    //Methodss
-    public Player(){
 
-
+    public Player(String s){
+        this.nickname = s;
+        this.points=0;
+        this.shelf = new Shelf();
+        this.personalGoal = new PersonalGoalCard();
     }
 
     public String getNickname(){
@@ -49,5 +51,9 @@ public class Player {
 
     private void calculateCommonPoints(){
 
+    }
+
+    public Shelf getShelf() {
+        return shelf;
     }
 }
