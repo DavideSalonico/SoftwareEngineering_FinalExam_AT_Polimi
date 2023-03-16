@@ -1,6 +1,7 @@
 package GC_11.model;
 
 import java.util.List;
+import GC_11.exceptions.notEnoughFreeSpacesException;
 
 public class Shelf {
 
@@ -28,7 +29,7 @@ public class Shelf {
         return free;
     }
 
-    public void addTiles(List<Tile> tileList, int column){
+    public void addTiles(List<Tile> tileList, int column) throws notEnoughFreeSpacesException {
         if(column <0 || column >4){
             // Return exception columnIndexOutOfBounds
         }
@@ -36,7 +37,7 @@ public class Shelf {
         {
             if(freeSpaces(column) < tileList.size()){
 
-                // Return Exception not enough free spaces
+                throw new notEnoughFreeSpacesException(column, tileList.size());
             }
             else {
                 int firstFreeSpace = 5- freeSpaces(column);
