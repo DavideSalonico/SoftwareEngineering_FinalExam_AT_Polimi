@@ -8,7 +8,6 @@ public class Shelf {
     // Attributes
     private Tile[][] myShelf;
 
-
     // Methods
     public Shelf(){
         myShelf= new Tile[5][6];
@@ -16,19 +15,37 @@ public class Shelf {
 
     private void addTile(Tile t, int column){
 
+
     }
 
-    public void addTiles(List<Tile> list, int column){
+    private int freeSpaces(int column){
+        int free = 0;
+        for(int i=0; i<5; i++){
+            if(myShelf[i][column].getColor() == TileColor.EMPTY){
+                free++;
+            }
+        }
+        return free;
+    }
+
+    public void addTiles(List<Tile> tileList, int column){
         if(column <0 || column >4){
-            // exception
+            // Return exception columnIndexOutOfBounds
         }
         else
         {
-            // Controllare se la colonna ha abbastanza spazi, altrimenti generare eccezione
+            if(freeSpaces(column) < tileList.size()){
 
-            // Aggiungere le tessere nell'ordine scelto dall'utente
+                // Return Exception not enough free spaces
+            }
+            else {
+                int firstFreeSpace = 5- freeSpaces(column);
+                for (Tile t : tileList){
+                    myShelf[firstFreeSpace][column] = t;
+                    firstFreeSpace++;
+                }
+            }
         }
-
     }
 
     public Tile getTile(int x, int y){
