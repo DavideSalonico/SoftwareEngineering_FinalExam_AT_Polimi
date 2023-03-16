@@ -7,6 +7,9 @@ public class Tile {
     public Tile(){
         this.color = TileColor.randomColor();
     }
+    public Tile(TileColor color){
+        this.color=color;
+    }
 
     public TileColor getColor() {
         return color;
