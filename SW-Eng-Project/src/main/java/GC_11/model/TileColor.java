@@ -1,8 +1,5 @@
-package GC_11;
+package GC_11.model;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 public enum TileColor {

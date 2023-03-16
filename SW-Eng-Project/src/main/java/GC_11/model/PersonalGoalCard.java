@@ -1,6 +1,5 @@
-package GC_11;
+package GC_11.model;
 
-import java.awt.image.TileObserver;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

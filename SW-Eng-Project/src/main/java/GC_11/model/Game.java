@@ -1,7 +1,6 @@
-package GC_11;
+package GC_11.model;
 
 import java.util.List;
-import java.util.Set;
 
 public class Game {
 

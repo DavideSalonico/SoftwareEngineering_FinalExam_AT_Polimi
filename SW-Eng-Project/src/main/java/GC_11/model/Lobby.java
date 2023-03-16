@@ -1,4 +1,4 @@
-package GC_11;
+package GC_11.model;
 
 import java.util.ArrayList;
 import java.util.List;
