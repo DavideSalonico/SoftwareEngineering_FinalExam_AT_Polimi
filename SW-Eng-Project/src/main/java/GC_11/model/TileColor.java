@@ -1,8 +1,5 @@
-package GC_11;
+package GC_11.model;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 public enum TileColor {
@@ -11,7 +8,9 @@ public enum TileColor {
     PURPLE,
     ORANGE,
     CYAN,
-    GREEN;
+    GREEN,
+    EMPTY,
+    PROHIBITED;
 
     private static final Random RANDOM = new Random();
 

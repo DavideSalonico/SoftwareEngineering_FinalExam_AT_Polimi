@@ -1,7 +1,6 @@
-package GC_11;
+package GC_11.model;
 
 import java.util.List;
-import java.util.Set;
 
 public class Game {
 
@@ -11,10 +10,15 @@ public class Game {
     private boolean endGame;
     private Player endPlayer;
     private Board board;
+    private Lobby lobby;
 
 
 
-    public Game(Set<Player> p){
+    public Game(List<Player> players, Lobby lobby){
+        this.players=players;
+        this.board = new Board(players.size());
+        this.lobby=lobby;
+        this.endGame=false;
 
     }
 
@@ -55,5 +59,9 @@ public class Game {
 
     public void givePoints(Player p){
 
+    }
+
+    public Lobby getLobby(){
+        return lobby;
     }
 }
