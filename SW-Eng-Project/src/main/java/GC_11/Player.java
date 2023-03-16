@@ -43,6 +43,9 @@ public class Player {
     }
 
     public void insertTiles(List<Tile> tilesOrder, int column){
+        if (column <0 || column >4){
+            // Exception
+        }
         shelf.addTiles(tilesOrder,column);
 
     }
