@@ -7,6 +7,7 @@ public class Board {
 
 
     public Board(int nPlayer){
+        this.bag = new Bag();
         chessBoard = new Tile[9][9];
         for (int i =0; i<9;i++){
             for (int j=0; j<9;j++){
@@ -20,9 +21,6 @@ public class Board {
         else if(nPlayer==3){
             init3PlayersBoard();
         }
-
-
-
     }
 
     private void initProhibitedCells(){
