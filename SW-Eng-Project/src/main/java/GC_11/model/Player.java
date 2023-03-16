@@ -57,8 +57,31 @@ public class Player {
 
     }
 
-    private void caluclatePersonalPoints(){
+    private int caluclatePersonalPoints(){
+        int totalRight = 0;
+        // For every goal in the personal goal card check if matches with the personal shelf
+        for (Triplet t : personalGoal.getGoalList()){
+            if (shelf.getTile(t.getCol(),t.getRow()).getColor() == t.getColor()){
+                totalRight++;
+            }
+        }
+        switch (totalRight){
+            case 1:
+                return 1;
+            case 2:
+                return 2;
+            case 3:
+                return 4;
+            case 4:
+                return 6;
+            case 5:
+                return 9;
+            case 6:
+                return 12;
+            default:
+                return 0;
 
+        }
     }
 
     private void calculateCommonPoints(){
