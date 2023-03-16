@@ -15,7 +15,11 @@ public class Game {
 
 
 
-    public Game(Set<Player> p){
+    public Game(List<Player> players, Lobby lobby){
+        this.players=players;
+        this.board = new Board(players.size());
+        this.lobby=lobby;
+        this.endGame=false;
 
     }
 
