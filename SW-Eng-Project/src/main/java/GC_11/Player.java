@@ -39,9 +39,11 @@ public class Player {
 
     public void draw(){
 
+
     }
 
-    public void insertTile(){
+    public void insertTiles(List<Tile> tilesOrder, int column){
+        shelf.addTiles(tilesOrder,column);
 
     }
 
