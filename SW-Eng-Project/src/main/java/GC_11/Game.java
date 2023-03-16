@@ -11,6 +11,7 @@ public class Game {
     private boolean endGame;
     private Player endPlayer;
     private Board board;
+    private Lobby lobby;
 
 
 
@@ -55,5 +56,9 @@ public class Game {
 
     public void givePoints(Player p){
 
+    }
+
+    public Lobby getLobby(){
+        return lobby;
     }
 }
