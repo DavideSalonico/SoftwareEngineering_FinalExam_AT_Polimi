@@ -19,6 +19,15 @@ public class Shelf {
     }
 
     public void addTiles(List<Tile> list, int column){
+        if(column <0 || column >4){
+            // exception
+        }
+        else
+        {
+            // Controllare se la colonna ha abbastanza spazi, altrimenti generare eccezione
+
+            // Aggiungere le tessere nell'ordine scelto dall'utente
+        }
 
     }
 
