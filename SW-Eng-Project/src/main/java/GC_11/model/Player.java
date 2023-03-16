@@ -43,10 +43,17 @@ public class Player {
     }
 
     public void insertTiles(List<Tile> tilesOrder, int column){
-        if (column <0 || column >4){
+        if (column <0 || column > 5){
             // Exception
         }
-        shelf.addTiles(tilesOrder,column);
+        try {
+            shelf.addTiles(tilesOrder,column);
+        }
+        catch(Exception e){
+            // Handle the exception that signals if the player is trying to insert the tiles in a column which has not enough free spaces
+            // or the exception if column number is less than 0 or greater than 5
+            e.getMessage();
+        }
 
     }
 
