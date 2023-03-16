@@ -11,7 +11,9 @@ public enum TileColor {
     PURPLE,
     ORANGE,
     CYAN,
-    GREEN;
+    GREEN,
+    EMPTY,
+    PROHIBITED;
 
     private static final Random RANDOM = new Random();
 
