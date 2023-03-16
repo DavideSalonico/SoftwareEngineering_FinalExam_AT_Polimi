@@ -1,0 +1,54 @@
+
+{
+  'id':1,
+  'specs' : [{
+    'row': 0,
+    'column': 2,
+    'color': 'CYAN'
+  }]
+}
+,
+{
+  'id':1,
+  'specs' : [{
+    'row': 2,
+    'column': 1,
+    'color': 'YELLOW'
+  }]
+}
+,
+{
+  'id':1,
+  'specs' : [{
+    'row': 3,
+    'column': 3,
+    'color': 'WHITE'
+  }]
+}
+,
+{
+  'id':1,
+  'specs' : [{
+    'row': 4,
+    'column': 4,
+    'color': 'GREEN'
+  }]
+}
+,
+{
+  'id':1,
+  'specs' : [{
+    'row': 5,
+    'column': 0,
+    'color': 'RED'
+  }]
+}
+,
+{
+  'id':1,
+  'specs' : [{
+    'row': 5,
+    'column': 2,
+    'color': 'BLUE'
+  }]
+}
