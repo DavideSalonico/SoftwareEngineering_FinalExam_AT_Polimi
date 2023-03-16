@@ -5,11 +5,8 @@ public class Tile {
     // Attributes
     private TileColor color;
 
-
-    // Methods
     public Tile(){
-
-
+        this.color = TileColor.randomColor();
     }
 
     public TileColor getColor() {

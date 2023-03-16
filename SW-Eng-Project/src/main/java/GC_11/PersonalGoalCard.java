@@ -1,6 +1,9 @@
 package GC_11;
 
+import java.awt.image.TileObserver;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class PersonalGoalCard {
 
@@ -11,7 +14,13 @@ public class PersonalGoalCard {
     // Methods
 
     public PersonalGoalCard(){
-        // To implement
+
+        final int randomNumber = new Random().nextInt(13);
+        goalList = new ArrayList<Triplet>();
+
+        // Read from a file one of the 12 personalGoalCards
+
+
     }
 
     public List<Triplet> getGoalList() {
