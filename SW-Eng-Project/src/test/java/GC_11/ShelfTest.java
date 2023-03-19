@@ -12,6 +12,9 @@ import java.util.List;
 
 import static junit.framework.Assert.*;
 
+//TODO: To be implemented by Davide
+
+
 public class ShelfTest {
 
     @Test
