@@ -19,7 +19,7 @@ public class ShelfTest {
         Shelf shelf = new Shelf();
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
-                assertEquals(shelf.getTile(i, j), TileColor.EMPTY);
+                assertEquals(shelf.getTile(i, j).getColor(), TileColor.EMPTY);
             }
         }
     }
