@@ -5,17 +5,18 @@ import GC_11.exceptions.*;
 
 public class Shelf {
 
-
-    // Attributes
     private Tile[][] myShelf;
 
-    // Methods
     public Shelf(){
         myShelf= new Tile[6][5];
+        for (int r=0; r<6;r++){
+            for (int c=0; c<5; c++){
+                myShelf[r][c] = new Tile(TileColor.EMPTY);
+            }
+        }
     }
 
     private void addTile(Tile t, int column){
-
 
     }
 
