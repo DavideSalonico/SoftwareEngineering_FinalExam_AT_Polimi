@@ -28,6 +28,16 @@ public class BagTest {
         assertEquals(132, bag.getTiles().size());
     }
 
+
+    @Test
+    public void checkRemove(){
+        Bag bag = new Bag();
+        Tile t = new Tile();
+        int tilesNumberBefore = countTiles(bag.getTiles(),t.getColor());
+        bag.removeTile(t);
+        assertEquals(tilesNumberBefore-1,countTiles(bag.getTiles(),t.getColor()));
+    }
+
     private int countTiles(List<Tile> list,TileColor color)
     {
         int count = 0;
