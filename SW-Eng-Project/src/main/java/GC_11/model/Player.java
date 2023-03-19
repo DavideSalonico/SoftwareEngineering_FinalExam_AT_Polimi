@@ -1,5 +1,7 @@
 package GC_11.model;
 
+import GC_11.exceptions.columnIndexOutOfBoundsException;
+
 import java.util.List;
 
 public class Player {
@@ -57,7 +59,7 @@ public class Player {
 
     }
 
-    private int caluclatePersonalPoints(){
+    private int caluclatePersonalPoints() throws columnIndexOutOfBoundsException {
         int totalRight = 0;
         // For every goal in the personal goal card check if matches with the personal shelf
         for (Triplet t : personalGoal.getGoalList()){

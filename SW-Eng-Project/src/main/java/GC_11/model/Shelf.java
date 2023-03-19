@@ -1,7 +1,8 @@
 package GC_11.model;
 
 import java.util.List;
-import GC_11.exceptions.*;
+import GC_11.exceptions.columnIndexOutOfBoundsException;
+import GC_11.exceptions.notEnoughFreeSpacesException;
 
 public class Shelf {
 
@@ -50,12 +51,11 @@ public class Shelf {
         }
     }
 
-    public Tile getTile(int x, int y) throws columnIndexOutOfBoundException{
+    public Tile getTile(int x, int y) throws columnIndexOutOfBoundsException{
         if (x<0 || x>6 || y<0 || y>5){
-            throw new columnIndexOutOfBoundException();
+            throw new columnIndexOutOfBoundsException(-1);
         }
         else{
-
             return myShelf[x][y];
         }
     }
