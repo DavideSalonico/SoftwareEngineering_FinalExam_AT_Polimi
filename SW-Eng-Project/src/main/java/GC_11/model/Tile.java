@@ -14,4 +14,9 @@ public class Tile {
     public TileColor getColor() {
         return color;
     }
+
+
+    public boolean equals(Tile t) {
+        return (t.getColor() == this.color);
+    }
 }
