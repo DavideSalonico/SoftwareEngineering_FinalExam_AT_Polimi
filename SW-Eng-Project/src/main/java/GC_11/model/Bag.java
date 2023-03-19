@@ -28,8 +28,18 @@ public class Bag {
 
     }
 
-    public void removeTile(Tile t){
+    public void removeTile(Tile tile){
+        tiles.remove(tile);
+    }
 
-
+    private int countTiles(TileColor tc){
+        int count = 0;
+        for (Tile t : tiles){
+            if (t.getColor() == tc)
+            {
+                count++;
+            }
+        }
+        return count;
     }
 }
