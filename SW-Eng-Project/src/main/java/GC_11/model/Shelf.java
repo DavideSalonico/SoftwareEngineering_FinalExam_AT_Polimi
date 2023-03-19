@@ -50,7 +50,13 @@ public class Shelf {
         }
     }
 
-    public Tile getTile(int x, int y){
-        return myShelf[x][y];
+    public Tile getTile(int x, int y) throws columnIndexOutOfBoundException{
+        if (x<0 || x>6 || y<0 || y>5){
+            throw new columnIndexOutOfBoundException();
+        }
+        else{
+
+            return myShelf[x][y];
+        }
     }
 }
