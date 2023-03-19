@@ -12,6 +12,8 @@ public class Game {
     private Board board;
     private Lobby lobby;
 
+    //TODO: CHANGE FACTORY METHOD IN STRATEGY (for CommonGoalCards)
+
 
 
     public Game(List<Player> players, Lobby lobby){
