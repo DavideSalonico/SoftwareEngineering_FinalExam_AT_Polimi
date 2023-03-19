@@ -29,7 +29,14 @@ public class Bag {
     }
 
     public void removeTile(Tile tile){
-        tiles.remove(tile);
+        boolean removed = false;
+        for (int i = 0; i<tiles.size() && !removed; i++)
+        {
+            if(tiles.get(i).getColor()==tile.getColor()){
+                tiles.remove(i);
+                removed= true;
+            }
+        }
     }
 
     private int countTiles(TileColor tc){
