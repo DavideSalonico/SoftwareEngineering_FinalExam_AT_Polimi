@@ -6,12 +6,15 @@ import java.util.List;
 public class Lobby {
 
     private static int lobbyNumber;
+    private int lobbyId;
     private int maxPlayers;
     private List<Player> players;
 
     public Lobby(int maxPlayers){
         this.maxPlayers=maxPlayers;
         players = new ArrayList<Player>();
+        this.lobbyId = lobbyNumber;
+        this.lobbyNumber++;
     }
 
     public synchronized void addPlayer(Player player){
