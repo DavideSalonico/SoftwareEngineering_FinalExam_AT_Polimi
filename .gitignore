@@ -2,7 +2,7 @@
 *.class
 
 #.idea Folder
-.idea/
+SW-Eng-Project/.idea/
 
 #target Folder
 target/
