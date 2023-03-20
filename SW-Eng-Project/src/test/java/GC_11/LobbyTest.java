@@ -43,4 +43,15 @@ public class LobbyTest {
         assertEquals(1,lobby.getPlayers().size());
     }
 
+    @Test
+    public void checkIsFull(){
+        Lobby lobby = new Lobby(2);
+        Player p1 = new Player("Name1");
+        Player p2 = new Player("Name2");
+        lobby.addPlayer(p1);
+        assertEquals(lobby.getMaxPlayers()==lobby.getPlayers().size(), lobby.isFull());
+        lobby.addPlayer(p2);
+        assertEquals(lobby.getMaxPlayers()==lobby.getPlayers().size(), lobby.isFull());
+    }
+
 }
