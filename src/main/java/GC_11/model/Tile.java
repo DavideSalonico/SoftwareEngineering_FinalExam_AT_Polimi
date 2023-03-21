@@ -1,9 +1,14 @@
 package GC_11.model;
 
+import java.util.Random;
+
 public class Tile {
 
     // Attributes
     private TileColor color;
+    private int id;
+
+    //private static Random RANDOM = new Random(3);
     public Tile(){
         this.color = TileColor.randomColor();
     }
@@ -13,6 +18,10 @@ public class Tile {
 
     public TileColor getColor() {
         return color;
+    }
+
+    public int getId(){
+        return this.id;
     }
 
 
