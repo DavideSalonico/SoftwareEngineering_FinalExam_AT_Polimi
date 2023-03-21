@@ -22,6 +22,23 @@ public class TileTest {
     public void checkNotEquals()
     {
         assertEquals(false, t1.equals(t3));
+    }
 
+
+
+    @Test
+    public void checkGetColors(){
+        for(TileColor t : TileColor.getColors()){
+            assertEquals(true ,t!=TileColor.PROHIBITED && t!= TileColor.EMPTY);
+        }
+    }
+
+
+    @Test
+    public void checkCreateOnlyColor(){
+        for(int i=0; i<100;i++){
+            Tile t = new Tile();
+            assertEquals(true,t.getColor()!=TileColor.EMPTY && t.getColor()!=TileColor.PROHIBITED);
+        }
     }
 }
