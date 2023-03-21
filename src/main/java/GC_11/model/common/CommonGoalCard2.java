@@ -5,6 +5,9 @@ import GC_11.model.Player;
 
 import java.util.List;
 
+//TODO verfificare perchè dice che la condizione è sempre falsa
+
+
 public class CommonGoalCard2 extends CommonGoalCard{
 
     private List<Player> winningPlayers;
