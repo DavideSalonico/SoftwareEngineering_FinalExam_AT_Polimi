@@ -1,54 +1,45 @@
-
-{
-  'id':1,
-  'specs' : [{
-    'row': 0,
-    'column': 2,
-    'color': 'CYAN'
-  }]
-}
-,
-{
-  'id':1,
-  'specs' : [{
-    'row': 2,
-    'column': 1,
-    'color': 'YELLOW'
-  }]
-}
-,
-{
-  'id':1,
-  'specs' : [{
-    'row': 3,
-    'column': 3,
-    'color': 'WHITE'
-  }]
-}
-,
-{
-  'id':1,
-  'specs' : [{
-    'row': 4,
-    'column': 4,
-    'color': 'GREEN'
-  }]
-}
-,
-{
-  'id':1,
-  'specs' : [{
-    'row': 5,
-    'column': 0,
-    'color': 'RED'
-  }]
-}
-,
-{
-  'id':1,
-  'specs' : [{
-    'row': 5,
-    'column': 2,
-    'color': 'BLUE'
-  }]
-}
+[
+  {
+    "id":1,
+    "Tile_0" : {
+      "row": 0,
+      "column": 2,
+      "color": "CYAN" },
+    "Tile_1" : {
+      "row": 2,
+      "column": 1,
+      "color": "YELLOW"},
+    "Tile_2" : {
+      "row": 3,
+      "column": 3,
+      "color": "WHITE"
+    },
+    "Tile_3" : {
+      "row": 4,
+      "column": 4,
+      "color": "GREEN"},
+    "Tile_4" : {
+      "row": 5,
+      "column": 0,
+      "color": "RED"},
+    "Tile_5" : {
+      "row": 5,
+      "column": 2,
+      "color": "BLUE"
+    }},
+  {
+    "id":2
+  },
+  {
+    "id":3
+  },
+  {
+    "id":4
+  },
+  {
+    "id":5
+  },
+  {
+    "id":6
+  }
+]
