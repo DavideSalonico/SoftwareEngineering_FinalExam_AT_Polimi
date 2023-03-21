@@ -6,6 +6,10 @@ SW-Eng-Project/target/
 
 .idea/
 
+# *.iml files
+softeng_cg11.iml
+
+
 
 # User-specific stuff
 .idea/workspace.xml
