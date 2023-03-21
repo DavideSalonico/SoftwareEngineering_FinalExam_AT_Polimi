@@ -2,6 +2,10 @@
 
 SW-Eng-Project/target/
 
+#.idea Folder
+
+.idea/
+
 
 # User-specific stuff
 .idea/workspace.xml
