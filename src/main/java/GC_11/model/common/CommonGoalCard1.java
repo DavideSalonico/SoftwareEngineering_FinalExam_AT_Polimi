@@ -6,12 +6,12 @@ public class CommonGoalCard1 extends CommonGoalCard{
 
 
     @Override
-    public int calculatePoints(Player p) {
+    public int calculatePoints(Player player) {
         return 0;
     }
 
     @Override
-    public boolean check() {
-        return false;
+    public void check(Player player) {
+
     }
 }
