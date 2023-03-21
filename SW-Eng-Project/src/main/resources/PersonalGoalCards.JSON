@@ -1,345 +1,380 @@
 [
   {
     "id":1,
-    "Tile_0" : {
+    "tiles" : [{
       "row": 0,
       "column": 2,
       "color": "CYAN" },
-    "Tile_1" : {
+    {
       "row": 2,
       "column": 1,
       "color": "YELLOW"},
-    "Tile_2" : {
+    {
       "row": 3,
       "column": 3,
       "color": "WHITE"
     },
-    "Tile_3" : {
+    {
       "row": 4,
       "column": 4,
       "color": "GREEN"},
-    "Tile_4" : {
+    {
       "row": 5,
       "column": 0,
       "color": "RED"},
-    "Tile_5" : {
+    {
       "row": 5,
       "column": 2,
       "color": "BLUE"
-    }},
+    }
+    ]
+  },
   {
     "id":2,
-    "Tile_0" : {
+    "tiles" : [
+    {
       "row": 0,
       "column": 4,
       "color": "BLUE" },
-    "Tile_1" : {
+    {
       "row": 1,
       "column": 3,
       "color": "CYAN"},
-    "Tile_2" : {
+    {
       "row": 2,
       "column": 4,
       "color": "WHITE"
     },
-    "Tile_3" : {
+    {
       "row": 3,
       "column": 0,
       "color": "GREEN"},
-    "Tile_4" : {
+    {
       "row": 3,
       "column": 2,
       "color": "YELLOW"},
-    "Tile_5" : {
+    {
       "row": 4,
       "column": 1,
       "color": "RED"
-    }},
+    }
+      ]
+  },
 
   {
     "id":3,
-    "Tile_0" : {
+    "tiles" : [
+    {
       "row": 0,
       "column": 0,
       "color": "WHITE" },
-    "Tile_1" : {
+    {
       "row": 2,
       "column": 1,
       "color": "GREEN"},
-    "Tile_2" : {
+    {
       "row": 2,
       "column": 4,
       "color": "CYAN"
     },
-    "Tile_3" : {
+    {
       "row": 3,
       "column": 2,
       "color": "PINK"},
-    "Tile_4" : {
+    {
       "row": 4,
       "column": 0,
       "color": "BLUE"},
-    "Tile_5" : {
+    {
       "row": 4,
       "column": 3,
       "color": "YELLOW"
-    }},
+    }
+      ]
+  },
 
   {
     "id":4,
-    "Tile_0" : {
+    "tiles" : [
+    {
       "row": 1,
       "column": 1,
       "color": "WHITE" },
-    "Tile_1" : {
+    {
       "row": 1,
       "column": 2,
       "color": "GREEN"},
-    "Tile_2" : {
+    {
       "row": 2,
       "column": 3,
       "color": "PINK"
     },
-    "Tile_3" : {
+    {
       "row": 3,
       "column": 0,
       "color": "CYAN"},
-    "Tile_4" : {
+    {
       "row": 3,
       "column": 2,
       "color": "BLUE"},
-    "Tile_5" : {
+    {
       "row": 5,
       "column": 4,
       "color": "YELLOW"
-    }},
+    }
+      ]
+  },
   {
     "id":5,
-    "Tile_0" : {
+    "tiles" : [
+    {
       "row": 0,
       "column": 0,
       "color": "YELLOW" },
-    "Tile_1" : {
+    {
       "row": 0,
       "column": 3,
       "color": "GREEN"},
-    "Tile_2" : {
+    {
       "row": 1,
       "column": 4,
       "color": "RED"
     },
-    "Tile_3" : {
+    {
       "row": 2,
       "column": 2,
       "color": "BLUE"},
-    "Tile_4" : {
+    {
       "row": 2,
       "column": 2,
       "color": "WHITE"},
-    "Tile_5" : {
+    {
       "row": 4,
       "column": 1,
       "color": "CYAN"
-    }},
+    }
+      ]
+  },
 
   {
     "id":6,
-    "Tile_0" : {
+    "tiles" : [
+      {
       "row": 0,
       "column": 0,
       "color": "PINK" },
-    "Tile_1" : {
+    {
       "row": 1,
       "column": 1,
       "color": "YELLOW"},
-    "Tile_2" : {
+    {
       "row": 1,
       "column": 3,
       "color": "BLUE"
     },
-    "Tile_3" : {
+    {
       "row": 3,
       "column": 3,
       "color": "WHITE"},
-    "Tile_4" : {
+    {
       "row": 5,
       "column": 2,
       "color": "CYAN"},
-    "Tile_5" : {
+    {
       "row": 5,
       "column": 4,
       "color": "GREEN"
-    }},
+    }
+      ]
+  },
 
   {
     "id":7,
-    "Tile_0" : {
+    "tiles" : [
+    {
       "row": 0,
       "column": 2,
       "color": "WHITE" },
-    "Tile_1" : {
+    {
       "row": 1,
       "column": 4,
       "color": "YELLOW"},
-    "Tile_2" : {
+    {
       "row": 2,
       "column": 0,
       "color": "CYAN"
     },
-    "Tile_3" : {
+    {
       "row": 3,
       "column": 1,
       "color": "RED"},
-    "Tile_4" : {
+    {
       "row": 4,
       "column": 3,
       "color": "BLUE"},
-    "Tile_5" : {
+    {
       "row": 5,
       "column": 0,
       "color": "GREEN"
-    }},
+    }
+      ]
+  },
 
   {
     "id":8,
-    "Tile_0" : {
+    "tiles" : [
+      {
       "row": 0,
       "column": 3,
       "color": "YELLOW" },
-    "Tile_1" : {
+    {
       "row": 1,
       "column": 3,
       "color": "WHITE"},
-    "Tile_2" : {
+    {
       "row": 2,
       "column": 0,
       "color": "RED"
     },
-    "Tile_3" : {
+    {
       "row": 3,
       "column": 2,
       "color": "CYAN"},
-    "Tile_4" : {
+    {
       "row": 4,
       "column": 1,
       "color": "GREEN"},
-    "Tile_5" : {
+    {
       "row": 5,
       "column": 4,
       "color": "BLUE"
-    }},
+    }
+      ]
+  },
   {
     "id":9,
-    "Tile_0" : {
+    "tiles" : [
+    {
       "row": 0,
       "column": 0,
       "color": "BLUE" },
-    "Tile_1" : {
+    {
       "row": 1,
       "column": 1,
       "color": "CYAN"},
-    "Tile_2" : {
+    {
       "row": 1,
       "column": 4,
       "color": "RED"
     },
-    "Tile_3" : {
+    {
       "row": 2,
       "column": 4,
       "color": "WHITE"},
-    "Tile_4" : {
+    {
       "row": 3,
       "column": 2,
       "color": "GREEN"},
-    "Tile_5" : {
+    {
       "row": 5,
       "column": 2,
       "color": "YELLOW"
-    }},
+    }
+      ]
+  },
 
   {
     "id":10,
-    "Tile_0" : {
+    "tiles" : [
+    {
       "row": 0,
       "column":3,
       "color": "RED" },
-    "Tile_1" : {
+    {
       "row": 1,
       "column": 1,
       "color": "BLUE"},
-    "Tile_2" : {
+    {
       "row": 2,
       "column": 3,
       "color": "GREEN"
     },
-    "Tile_3" : {
+    {
       "row": 3,
       "column": 0,
       "color": "WHITE"},
-    "Tile_4" : {
+    {
       "row": 4,
       "column": 1,
       "color": "YELLOW"},
-    "Tile_5" : {
+    {
       "row": 5,
       "column": 4,
       "color": "CYAN"
-    }},
+    }
+      ]
+  },
   {
     "id":11,
-    "Tile_0" : {
+    "tiles" : [
+    {
       "row": 0,
       "column": 3,
       "color": "CYAN" },
-    "Tile_1" : {
+    {
       "row": 1,
       "column": 4,
       "color": "GREEN"},
-    "Tile_2" : {
+    {
       "row": 2,
       "column": 2,
       "color": "BLUE"
     },
-    "Tile_3" : {
+    {
       "row": 3,
       "column": 0,
       "color": "YELLOW"},
-    "Tile_4" : {
+    {
       "row": 4,
       "column": 1,
       "color": "WHITE"},
-    "Tile_5" : {
+    {
       "row": 5,
       "column": 2,
       "color": "RED"
-    }},
+    }
+      ]
+  },
 
   {
     "id":12,
-    "Tile_0" : {
+    "tiles" : [
+    {
       "row": 0,
       "column": 0,
       "color": "GREEN" },
-    "Tile_1" : {
+    {
       "row": 1,
       "column": 4,
       "color": "YELLOW"},
-    "Tile_2" : {
+    {
       "row": 2,
       "column": 3,
       "color": "CYAN"
     },
-    "Tile_3" : {
+    {
       "row": 3,
       "column": 2,
       "color": "BLUE"},
-    "Tile_4" : {
+    {
       "row": 4,
       "column": 1,
       "color": "RED"},
-    "Tile_5" : {
+    {
       "row": 5,
       "column": 2,
       "color": "WHITE"
-    }}
+    }
+      ]
+  }
 ]
