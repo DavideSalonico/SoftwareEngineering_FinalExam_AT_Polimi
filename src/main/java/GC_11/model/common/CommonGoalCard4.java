@@ -10,15 +10,13 @@ import java.util.Set;
 
 public class CommonGoalCard4 extends CommonGoalCard{
     private List<Player> winningPlayers;
-
-    @Override
-    public int calculatePoints(Player player) {
-        return 0;
-
-    }
+    private  final String text = "Four lines each formed by 5 tiles of maximum three different types. " +
+            "One line can show the same or a different combination of another line.";
 
 
-//this code verifies if there are at least 4 line with 5 tiles and maximum 3 different tile types. it uses a set to count the number of different
+
+//this code verifies if there are at least 4 line with 5 tiles and maximum 3 different tile types.
+// it uses a set to count the number of different
 //types and a counter to verify if the line has 5 tiles
     @Override
     public void check(Player player) throws columnIndexOutOfBoundsException {
@@ -38,8 +36,7 @@ public class CommonGoalCard4 extends CommonGoalCard{
             }
         }
         if (correctLines >= 4){
-            calculatePoints(player);
-            winningPlayers.add(player);
+            givePoints(player);
         }
 
     }

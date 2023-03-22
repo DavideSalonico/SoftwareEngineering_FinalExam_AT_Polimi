@@ -7,15 +7,10 @@ import GC_11.model.TileColor;
 import java.util.List;
 
 
-
 public class CommonGoalCard2 extends CommonGoalCard{
 
     private List<Player> winningPlayers;
-
-    @Override
-    public int calculatePoints(Player player) {
-        return 0;
-    }
+    private String text = "Five tiles of the same type forming a diagonal.";
 
 
 // this code verifies if there are 5 tiles of the same type forming a diagonal. The check is made with 2 counters that
@@ -38,8 +33,7 @@ public class CommonGoalCard2 extends CommonGoalCard{
                 }
             }
             if (counter1==4 || counter2==4){
-                calculatePoints(player);
-                winningPlayers.add(player);
+                givePoints(player);
             }
         }
     }

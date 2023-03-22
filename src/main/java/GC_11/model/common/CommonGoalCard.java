@@ -10,7 +10,11 @@ public abstract class CommonGoalCard {
     private List<Player> winningPlayers;
     private String text;
 
-    public abstract int calculatePoints(Player player);
+    public void givePoints(Player player){
+        winningPlayers.add(player);
+        int point = 10 - 2*winningPlayers.size();
+        player.addPoints(point);
+    }
     public abstract void check(Player player) throws columnIndexOutOfBoundsException;
 
     public List<Player> getWinningPlayers() {
