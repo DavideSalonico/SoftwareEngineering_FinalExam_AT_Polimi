@@ -5,19 +5,18 @@ import GC_11.model.Player;
 import GC_11.model.TileColor;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class CommonGoalCard4 extends CommonGoalCard{
-    private List<Player> winningPlayers;
+
     private  final String text = "Four lines each formed by 5 tiles of maximum three different types. " +
             "One line can show the same or a different combination of another line.";
 
 
 
-//this code verifies if there are at least 4 line with 5 tiles and maximum 3 different tile types.
-// it uses a set to count the number of different
-//types and a counter to verify if the line has 5 tiles
+    //this code verifies if there are at least 4 line with 5 tiles and maximum 3 different tile types.
+    // it uses a set to count the number of different
+    //types and a counter to verify if the line has 5 tiles
     @Override
     public void check(Player player) throws columnIndexOutOfBoundsException {
 

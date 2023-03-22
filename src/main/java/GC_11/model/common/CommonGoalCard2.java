@@ -4,13 +4,12 @@ import GC_11.exceptions.columnIndexOutOfBoundsException;
 import GC_11.model.Player;
 import GC_11.model.TileColor;
 
-import java.util.List;
 
 
 public class CommonGoalCard2 extends CommonGoalCard{
 
-    private List<Player> winningPlayers;
-    private String text = "Five tiles of the same type forming a diagonal.";
+
+    private final String text = "Five tiles of the same type forming a diagonal.";
 
 
 // this code verifies if there are 5 tiles of the same type forming a diagonal. The check is made with 2 counters that
