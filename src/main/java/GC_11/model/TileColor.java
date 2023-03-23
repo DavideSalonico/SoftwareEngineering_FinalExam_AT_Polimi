@@ -34,8 +34,14 @@ public enum TileColor {
         return colors;
     }
 
+    /**
+     *
+     * @return a random TileColor
+     */
     public static TileColor randomColor(){
         return colors().get(RANDOM.nextInt(colors().size()));
     }
+
+
 
 }

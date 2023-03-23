@@ -2,14 +2,10 @@ package GC_11.model;
 
 public class Triplet {
 
-
-    // Attributes
     private int row;
     private int col;
     private TileColor color;
 
-
-    // Methods
     public Triplet (int r, int c, TileColor color)
     {
         this.row = r;

@@ -10,12 +10,8 @@ import java.util.Random;
  */
 public class PersonalGoalCard {
 
-
-    // Attributes
     private int id;
     private List<Triplet> goalList;
-
-    // Methods
 
     /**
      * There is only one way to construct a Personal Card, it needs triplets of Tiles
