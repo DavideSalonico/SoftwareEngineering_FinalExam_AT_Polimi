@@ -18,7 +18,7 @@ import java.util.List;
 public class JsonReader {
     private List<Triplet> read;
     private List<Player> players;
-    private JSONParser parser;
+    private static JSONParser parser;
 
     public JsonReader(List<Player> players) {
         this.players = players;
@@ -50,11 +50,17 @@ public class JsonReader {
         }
     }
 
-    public PersonalGoalCard readPersonalGoalCard(int id)
+    /**
+     * This static method takes as parameter the id and return the personal goal card with that corresponding id
+     * @param id is the integer that represent a random number between 0 and 11
+     * @return the personal goal card with that specific id saved in a JSON file
+     */
+
+    public static PersonalGoalCard readPersonalGoalCard(int id)
     {
         try (Reader inputFile = new FileReader("JSON FILE PATH"))
         {
-            JSONArray cards = (JSONArray) this.parser.parse(inputFile);
+            JSONArray cards = (JSONArray) parser.parse(inputFile);
             if (id > 0 && id <= 11)
             {
                 JSONObject card = (JSONObject) cards.get(id);
