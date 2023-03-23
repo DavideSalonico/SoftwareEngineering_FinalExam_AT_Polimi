@@ -50,6 +50,12 @@ public class JsonReader {
         }
     }
 
+    /**
+     * This static method takes as parameter the id and return the personal goal card with that corresponding id
+     * @param id is the integer that represent a random number between 0 and 11
+     * @return the personal goal card with that specific id saved in a JSON file
+     */
+
     public static PersonalGoalCard readPersonalGoalCard(int id)
     {
         try (Reader inputFile = new FileReader("JSON FILE PATH"))
