@@ -51,12 +51,20 @@ public class Shelf {
         }
     }
 
-    public Tile getTile(int x, int y) throws columnIndexOutOfBoundsException{
-        if (x<0 || x>6 || y<0 || y>5){
+    /**
+     *
+     * @param line indicates the line to check
+     * @param column indicates the column ti check
+     * @return the tile in the position required
+     * @throws columnIndexOutOfBoundsException when the position required
+     * is outside the matrix of yhe shelf
+     */
+    public Tile getTile(int line, int column) throws columnIndexOutOfBoundsException{
+        if (line<0 || line>=6 || column<0 || column>=5){
             throw new columnIndexOutOfBoundsException(-1);
         }
         else{
-            return myShelf[x][y];
+            return myShelf[line][column];
         }
     }
 }

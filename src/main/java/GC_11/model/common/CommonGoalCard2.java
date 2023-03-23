@@ -18,15 +18,15 @@ public class CommonGoalCard2 extends CommonGoalCard{
 // counter2 checks the diagonals that go from top-right to bottom-left
     @Override
     public void check(Player player) throws columnIndexOutOfBoundsException {
-        for(int a=5; a>=4; a= a-1){
+        for(int a=5; a>=4; a--){
             int counter1=0;
             int counter2=0;
-            for (int l=4; l>=0; l--){
+            for (int l=a-1; l>=a-4; l--){
                 for (int c=1; c<=4; c++){
-                    if (player.getShelf().getTile(c,l).getColor() == player.getShelf().getTile(0,a).getColor() && !player.getShelf().getTile(0,a).getColor().equals( TileColor.EMPTY )){
+                    if (player.getShelf().getTile(l,c).getColor() == player.getShelf().getTile(a,0).getColor() && !player.getShelf().getTile(a,0).getColor().equals( TileColor.EMPTY )){
                         counter1++;
                     }
-                    if (player.getShelf().getTile(4-c,l).getColor() == player.getShelf().getTile(4,a).getColor() && !player.getShelf().getTile(4,a).getColor().equals(TileColor.EMPTY)){
+                    if (player.getShelf().getTile(l,4-c).getColor() == player.getShelf().getTile(a,4).getColor() && !player.getShelf().getTile(a,4).getColor().equals(TileColor.EMPTY)){
                         counter2++;
                     }
                 }

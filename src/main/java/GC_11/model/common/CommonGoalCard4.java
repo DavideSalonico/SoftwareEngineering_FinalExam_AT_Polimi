@@ -25,9 +25,9 @@ public class CommonGoalCard4 extends CommonGoalCard{
             int counter = 0;
             Set<TileColor> colors = new HashSet<TileColor>();
             for (int c=0; c<5; c++){
-                if(player.getShelf().getTile(c,l).getColor() != TileColor.EMPTY){
+                if(player.getShelf().getTile(l,c).getColor() != TileColor.EMPTY){
                     counter++;
-                    colors.add(player.getShelf().getTile(c,l).getColor());
+                    colors.add(player.getShelf().getTile(l,c).getColor());
                 }
             }
             if (counter==5 && colors.size()<4){

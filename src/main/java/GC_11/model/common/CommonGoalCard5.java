@@ -11,11 +11,11 @@ public class CommonGoalCard5 extends CommonGoalCard{
     @Override
     public void check(Player player) throws columnIndexOutOfBoundsException {
         TileColor color;
-        color = player.getShelf().getTile(0,0).getColor();
+        color = player.getShelf().getTile(5,0).getColor();
         if(color != TileColor.EMPTY &&
-                player.getShelf().getTile(4,0).getColor() == color &&
-                player.getShelf().getTile(0,5).getColor() == color &&
-                player.getShelf().getTile(4,5).getColor() == color) {
+                player.getShelf().getTile(0,0).getColor() == color &&
+                player.getShelf().getTile(0,4).getColor() == color &&
+                player.getShelf().getTile(5,4).getColor() == color) {
             givePoints(player);
         }
     }
