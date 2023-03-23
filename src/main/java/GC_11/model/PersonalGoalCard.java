@@ -22,13 +22,13 @@ public class PersonalGoalCard {
      */
     public PersonalGoalCard(List <Triplet> read){
 
-        final int randomNumber = new Random().nextInt(13);
+        //final int randomNumber = new Random().nextInt(13);
         goalList = new ArrayList<Triplet>();
+        this.goalList=read;
 
         // Read from a file one of the 12 personalGoalCards
-
-
     }
+
 
     public List<Triplet> getGoalList() {
         return goalList;
