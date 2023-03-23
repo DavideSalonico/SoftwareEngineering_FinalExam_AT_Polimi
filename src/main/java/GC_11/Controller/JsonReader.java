@@ -20,7 +20,27 @@ public class JsonReader {
         JSONParser parser = new JSONParser();
     }
 
+
+
     public void setGoals() throws FileNotFoundException {
+        // It's better to create a try catch block to handle the reading of the file
+        /*
+        *
+        * try (Reader reader = new FileReader()){
+        *
+        *   // Do things if file is opened
+        *
+        *
+        * }
+        *catch (Exception e){
+        *
+        *  // handle exceptions
+        * }
+        *
+        *
+        *
+        * */
+
         Object obj = parser.parse(new FileReader("path of JSON FILE"));
         JSONObject jsonObject =  (JSONObject) obj;
 
