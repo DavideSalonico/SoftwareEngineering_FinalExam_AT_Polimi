@@ -57,19 +57,25 @@ public class ShelfTest {
 
         try {
             shelf.addTiles(tiles, 0);
-            fail( "addTiles didn't throw Exception when I expected it to");
+            fail("addTiles didn't throw Exception when it was supposed to");
         } catch (notEnoughFreeSpacesException expectedException) {
         } catch (columnIndexOutOfBoundsException e){
             fail("addTiles threw up thw wrong exception");
-        };
+        }
     }
 
     @DisplayName("columnIndexOutOfBoundException test")
     @Test
     public void throwsColumnOutOfIndexException(){
         List<Tile> tiles = new ArrayList<Tile>();
+        tiles.add(new Tile());
 
+        try{
+            shelf.addTiles(tiles, -1);
+            fail("addTiles didn't throw Exception when it was supposed to");
+        } catch (notEnoughFreeSpacesException e) {
+            fail("addTiles threw up thw wrong exception");
+        } catch (columnIndexOutOfBoundsException e) {
+        }
     }
-
-
 }
