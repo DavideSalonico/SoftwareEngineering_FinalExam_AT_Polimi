@@ -7,16 +7,11 @@ import GC_11.model.TileColor;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CommonGoalCard4 extends CommonGoalCard{
+public class CommonGoalCard8 extends CommonGoalCard{
 
-    private  final String text = "Four lines each formed by 5 tiles of maximum three different types. " +
-            "One line can show the same or a different combination of another line.";
+    private final String text = "Two lines each formed by 5 different types of tiles." +
+            " One line can show the same or a different combination of the other line.";
 
-
-
-    //this code verifies if there are at least 4 line with 5 tiles and maximum 3 different tile types.
-    // it uses a set to count the number of different
-    //types and a counter to verify if the line has 5 tiles
     /**
      * This method check if the common goal of the card has been achieved and in this case adds points to the player
      * @param player is the player to which you want to control the shelf
@@ -27,19 +22,17 @@ public class CommonGoalCard4 extends CommonGoalCard{
 
         int correctLines=0;
         for (int l=0; l<6; l++){
-            int counter = 0;
             Set<TileColor> colors = new HashSet<TileColor>();
             for (int c=0; c<5; c++){
-                if(player.getShelf().getTile(l,c).getColor() != TileColor.EMPTY){
-                    counter++;
+                if(!player.getShelf().getTile(l,c).getColor().equals(TileColor.EMPTY)){
                     colors.add(player.getShelf().getTile(l,c).getColor());
                 }
             }
-            if (counter==5 && colors.size()<4){
+            if (colors.size()==5){
                 correctLines++;
             }
         }
-        if (correctLines >= 4){
+        if (correctLines >= 2){
             givePoints(player);
         }
 

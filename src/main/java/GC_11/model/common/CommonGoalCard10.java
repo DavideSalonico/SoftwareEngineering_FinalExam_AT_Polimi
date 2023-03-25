@@ -8,7 +8,7 @@ public class CommonGoalCard10 extends CommonGoalCard{
     private final String text = "Five tiles of the same type forming an X.";
 
     /**
-     * This method check if the common goal of the card is has been achieved and in this case adds points to the player
+     * This method check if the common goal of the card has been achieved and in this case adds points to the player
      * @param player is the player to which you want to control the shelf
      * @throws columnIndexOutOfBoundsException when trying to control a position outside the matrix
      */

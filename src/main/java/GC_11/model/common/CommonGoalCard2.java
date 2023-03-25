@@ -16,6 +16,11 @@ public class CommonGoalCard2 extends CommonGoalCard{
 // counts how many tiles on a diagonal have the same color of the tile on the top left of the diagonal, for counter1,
 // and the one on top right, for counter2. counter1 checks the diagonals that go from top-left to bottom-right,
 // counter2 checks the diagonals that go from top-right to bottom-left
+    /**
+     * This method check if the common goal of the card has been achieved and in this case adds points to the player
+     * @param player is the player to which you want to control the shelf
+     * @throws columnIndexOutOfBoundsException when trying to control a position outside the matrix
+     */
     @Override
     public void check(Player player) throws columnIndexOutOfBoundsException {
         for(int a=5; a>=4; a--){
