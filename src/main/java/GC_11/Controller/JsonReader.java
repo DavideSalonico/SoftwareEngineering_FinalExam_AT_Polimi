@@ -1,9 +1,6 @@
 package GC_11.Controller;
 
-import GC_11.model.PersonalGoalCard;
-import GC_11.model.Player;
-import GC_11.model.TileColor;
-import GC_11.model.Triplet;
+import GC_11.model.*;
 import GC_11.model.common.CommonGoalCard;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -18,7 +15,7 @@ import java.util.List;
 public class JsonReader {
     private List<Triplet> read;
     private List<Player> players;
-    private static JSONParser parser;
+    private static JSONParser parser = new JSONParser();
 
     public JsonReader(List<Player> players) {
         this.players = players;
@@ -75,14 +72,90 @@ public class JsonReader {
                     listOfCoordinates.add(new Triplet(row,column,tc));
                 }
                 PersonalGoalCard pgc = new PersonalGoalCard(listOfCoordinates);
+                return pgc;
             }
-            return null;
+            else
+                return null;
         }
         catch(Exception e)
         {
                 e.printStackTrace();
                 return null;
         }
+    }
+
+    public static List<Coordinate> readCoordinate(int numberOfPlayers) throws Exception {
+
+        // Return an exception if a wrong number of players is passed as parameter
+        if(numberOfPlayers < 0 || numberOfPlayers >4)
+        {
+            throw new Exception("Wrong number of players");
+
+        }
+        else
+        {
+            // Try to read the file, otherwise throw an exception
+            try (Reader inputFile = new FileReader("JSON FILE PATH"))
+            {
+
+                // Read the entire object with all the coordinates
+                JSONObject allCoordinates = (JSONObject) parser.parse(inputFile);
+
+                // First read the coordinates for four players that are equals for each number of players
+                JSONArray fourPlayersCoordinates = (JSONArray) allCoordinates.get("prohibited4Players");
+
+                // List of all prohibited Coordinates
+                List <Coordinate> coordinatesList = extractCoordinates(fourPlayersCoordinates);
+
+
+                // If the number of players is 3, add the additional coordinates into the list
+                if(numberOfPlayers ==3){
+
+                    JSONArray threePlayersCoordintes = (JSONArray) allCoordinates.get("prohibited3Players");
+
+                    coordinatesList.addAll(extractCoordinates(threePlayersCoordintes));
+
+                }
+                // If the number of players is 2, add the additional coordinates into the list
+                if(numberOfPlayers == 2){
+                    JSONArray twoPlayersCoordintes = (JSONArray) allCoordinates.get("prohibited2Players");
+
+                    coordinatesList.addAll(extractCoordinates(twoPlayersCoordintes));
+                }
+                return coordinatesList;
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+                return null;
+            }
+        }
+    }
+
+    /**
+     * This function return a List<Coordinate> from a JSONArray which contain JSONObject with the prohibited coordinates for that specific number of players
+     * @param jsonCoordinates is the JSONArray for a specific number of players
+     * @return a List<Coordinate>
+     */
+    private static List <Coordinate> extractCoordinates(JSONArray jsonCoordinates){
+
+        // List of all prohibited Coordinates
+        List <Coordinate> coordinatesList = new ArrayList<Coordinate>();
+
+        // For every JSON object coordinates in JSON array fourPlayerCoordinates, read the couple of coordinates x and y and add it into the list.
+        for(int i=0; i< jsonCoordinates.size();i++){
+
+            JSONObject coordinates = (JSONObject) jsonCoordinates.get(i);
+
+            Long row = (Long) coordinates.get("r");
+            Long column = (Long) coordinates.get("c");
+
+            int r = (int ) row.intValue();
+            int c = (int ) column.intValue();
+
+            coordinatesList.add( new Coordinate(r,c));
+        }
+        return coordinatesList;
     }
 }
 

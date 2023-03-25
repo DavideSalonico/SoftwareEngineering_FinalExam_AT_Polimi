@@ -1,5 +1,7 @@
 package GC_11.model;
 
+import java.util.List;
+
 public class Board {
 
     private Tile[][] chessBoard;
@@ -92,6 +94,11 @@ public class Board {
         chessBoard[8][4] = new Tile(TileColor.PROHIBITED);
     }
 
+    public void initBoard(List<Coordinate> coordinateList){
+        for (Coordinate c : coordinateList){
+            this.chessBoard[c.getRow()][c.getColumn()] = new Tile(TileColor.PROHIBITED);
+        }
+    }
 
     public Tile getTile(int x, int y){
         return chessBoard[x][y];
