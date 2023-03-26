@@ -1,5 +1,7 @@
 package GC_11.model;
 
+import GC_11.Controller.JsonReader;
+
 import java.util.List;
 
 public class Game {
@@ -18,7 +20,7 @@ public class Game {
 
     public Game(List<Player> players, Lobby lobby){
         this.players=players;
-        this.board = new Board(players.size());
+        this.board = new Board(JsonReader.readCoordinate(players.size()));
         this.lobby=lobby;
         this.endGame=false;
 

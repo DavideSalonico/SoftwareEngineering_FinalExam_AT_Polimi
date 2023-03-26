@@ -49,26 +49,34 @@ public class JsonReader {
 
     /**
      * This static method takes as parameter the id and return the personal goal card with that corresponding id
-     * @param id is the integer that represent a random number between 0 and 11
+     * @param index is the integer that represent a random number between 0 and 11
      * @return the personal goal card with that specific id saved in a JSON file
      */
 
-    public static PersonalGoalCard readPersonalGoalCard(int id)
+    public static PersonalGoalCard readPersonalGoalCard(int index)
     {
         try (Reader inputFile = new FileReader("JSON FILE PATH"))
         {
             JSONArray cards = (JSONArray) parser.parse(inputFile);
-            if (id > 0 && id <= 11)
+            if (index > 0 && index <= 11)
             {
-                JSONObject card = (JSONObject) cards.get(id);
+                JSONObject card = (JSONObject) cards.get(index);
+
                 JSONArray coordinates = (JSONArray) card.get("tiles");
 
                 List <Triplet> listOfCoordinates = new ArrayList<Triplet>();
                 for(int i=0; i< coordinates.size(); i++)
                 {
-                    int row = listOfCoordinates.get(i).getRow();
-                    int column = listOfCoordinates.get(i).getCol();
-                    TileColor tc = listOfCoordinates.get(i).getColor();
+                    JSONObject goal = (JSONObject) coordinates.get(i);
+
+                    Long r = (Long) goal.get("row");
+                    Long c = (Long) goal.get("column");
+                    String color = (String) goal.get("color");
+
+                    int row = r.intValue();
+                    int column = c.intValue();
+                    TileColor tc = TileColor.StringToColor(color);
+
                     listOfCoordinates.add(new Triplet(row,column,tc));
                 }
                 PersonalGoalCard pgc = new PersonalGoalCard(listOfCoordinates);
@@ -84,16 +92,8 @@ public class JsonReader {
         }
     }
 
-    public static List<Coordinate> readCoordinate(int numberOfPlayers) throws Exception {
+    public static List<Coordinate> readCoordinate(int numberOfPlayers){
 
-        // Return an exception if a wrong number of players is passed as parameter
-        if(numberOfPlayers < 0 || numberOfPlayers >4)
-        {
-            throw new Exception("Wrong number of players");
-
-        }
-        else
-        {
             // Try to read the file, otherwise throw an exception
             try (Reader inputFile = new FileReader("JSON FILE PATH"))
             {
@@ -129,8 +129,8 @@ public class JsonReader {
                 e.printStackTrace();
                 return null;
             }
-        }
     }
+
 
     /**
      * This function return a List<Coordinate> from a JSONArray which contain JSONObject with the prohibited coordinates for that specific number of players
