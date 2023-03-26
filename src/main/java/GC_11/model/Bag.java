@@ -7,7 +7,9 @@ public class Bag {
 
     private List<Tile> tiles; // 132 tiles, 22 x 6
 
-
+    /**
+     * Initialization of the Bag (new Game)
+     */
     public Bag(){
         this.tiles = new ArrayList<Tile>();
         for (int i=0; i< 22;i++){
@@ -19,6 +21,11 @@ public class Bag {
             tiles.add(new Tile(TileColor.ORANGE));
         }
     }
+
+    /**
+     * Get method
+     * @return the whole Array-list of tiles in the bag
+     */
     public List<Tile> getTiles() {
         return tiles;
     }
@@ -37,25 +44,27 @@ public class Bag {
     public void insertAllTile(List<Tile>t){
         tiles.addAll(t);
     }
+
+    // DA SISTEMARE : Si può fare semplicemente con il metodo remove(tile)
     public void removeTile(Tile tile){
         boolean removed = false;
         for (int i = 0; i<tiles.size() && !removed; i++)
-        {
-            if(tiles.get(i).getColor()==tile.getColor()){
+            if (tiles.get(i).getColor() == tile.getColor()) {
                 tiles.remove(i);
-                removed= true;
+                removed = true;
             }
-        }
     }
 
+    /**
+     * Counter Method
+     * @param tc
+     * @return Number of tiles in 'tc' coloration
+     */
     private int countTiles(TileColor tc){
         int count = 0;
-        for (Tile t : tiles){
+        for (Tile t : tiles)
             if (t.getColor() == tc)
-            {
                 count++;
-            }
-        }
         return count;
     }
 
