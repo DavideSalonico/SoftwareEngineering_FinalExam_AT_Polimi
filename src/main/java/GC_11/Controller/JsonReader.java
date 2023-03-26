@@ -29,13 +29,13 @@ public class JsonReader {
     /**
      * This method set the PersonalGoalCard for every player reading the format of the personalGoalCard from
      * a JSON file
-     *
+     * DA CANCELLARE
      * @throws FileNotFoundException
-     */
+
 
     public void setGoals() throws FileNotFoundException {
 
-        try (Reader inputFile = new FileReader("JSON FILE PATH")) {
+        try (Reader inputFile = new FileReader("src/main/resources/PersonalGoalCards.JSON")) {
             JSONObject jsonObject = (JSONObject) parser.parse(inputFile);
 
             for (Player p : players) {
@@ -46,6 +46,8 @@ public class JsonReader {
             //Handle Exception
         }
     }
+     */
+
 
     /**
      * This static method takes as parameter the id and return the personal goal card with that corresponding id
@@ -55,7 +57,7 @@ public class JsonReader {
 
     public static PersonalGoalCard readPersonalGoalCard(int index)
     {
-        try (Reader inputFile = new FileReader("JSON FILE PATH"))
+        try (Reader inputFile = new FileReader("src/main/resources/PersonalGoalCards.JSON"))
         {
             JSONArray cards = (JSONArray) parser.parse(inputFile);
             if (index > 0 && index <= 11)
@@ -79,8 +81,7 @@ public class JsonReader {
 
                     listOfCoordinates.add(new Triplet(row,column,tc));
                 }
-                PersonalGoalCard pgc = new PersonalGoalCard(listOfCoordinates);
-                return pgc;
+                return new PersonalGoalCard(listOfCoordinates);
             }
             else
                 return null;
@@ -95,7 +96,7 @@ public class JsonReader {
     public static List<Coordinate> readCoordinate(int numberOfPlayers){
 
             // Try to read the file, otherwise throw an exception
-            try (Reader inputFile = new FileReader("JSON FILE PATH"))
+            try (Reader inputFile = new FileReader("src/main/resources/ProhibitedCoordinates.JSON"))
             {
 
                 // Read the entire object with all the coordinates
