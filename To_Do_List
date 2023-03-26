@@ -1,0 +1,9 @@
+TO DO LIST:
+
+Creare classe TURNO nel modello 
+Dentro al Model mettere un riferimento a View, valutare se costruire l'oggetto view in base allo Strategy Pattern ( cosi posso decidere quale codice usare per la visualizzazione dell'interfaccia) 
+Capire BENE JVC ed iniziare a modellare il Controller e View basandoci sui loro metodi interazione (è giusto avere metodi di controllo nel check ma attenzioni alle direzionalità di comunicazione tra Model e Controller, Errore Grave)
+Controller decodifica il messaggio del server e chiama uno dei suoi metodi (Observable and Observer)
+Implementare Eccezioni in codice  (già fattibile)
+Cerchiamo le similarità tra carte comuni e scriviamo le righe di codice dei metodi check() dato che possiamo già farli, basta sapere input e output, poi capiamo dove metteremo le righe di codice (probabilmente nelle classi direttamente)
+APPENA scriviamo codice JAVA devono essere accompagnati con i CASI DI TEST
