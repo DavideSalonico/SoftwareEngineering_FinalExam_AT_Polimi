@@ -23,11 +23,20 @@ public class Bag {
         return tiles;
     }
 
-    // Used to insert tiles which was previously in the board before the refill
+    /**
+     * Used to insert tiles, one by one
+     */
     public void insertTile(Tile t){
-
+        tiles.add(t);
     }
 
+    /**
+     * Appends all the tiles, which was previously in the board before the refill, in the array-List at the end of "tiles"
+     * @param t
+     */
+    public void insertAllTile(List<Tile>t){
+        tiles.addAll(t);
+    }
     public void removeTile(Tile tile){
         boolean removed = false;
         for (int i = 0; i<tiles.size() && !removed; i++)
@@ -48,5 +57,13 @@ public class Bag {
             }
         }
         return count;
+    }
+
+    /**
+     * Counter method
+     * @return size of "tiles"
+     */
+    public int countNumOfTiles(){
+        return tiles.size();
     }
 }
