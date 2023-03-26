@@ -42,6 +42,30 @@ public enum TileColor {
         return colors().get(RANDOM.nextInt(colors().size()));
     }
 
+    /**
+     *  This method parses a String into a TileColor type
+     * @param s is a string
+     * @return the corresponding type TileColor
+     */
+    public static TileColor StringToColor(String s){
+        switch (s){
+            case "WHITE":
+                return WHITE;
+            case "RED":
+                return PURPLE;
+            case "GREEN":
+                return GREEN;
+            case "BLUE":
+                return BLUE;
+            case "CYAN":
+                return CYAN;
+            case "YELLOW":
+                return ORANGE;
+            default:
+                return null;
+        }
+    }
+
 
 
 }
