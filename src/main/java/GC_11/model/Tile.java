@@ -12,6 +12,15 @@ public class Tile {
     public Tile(){
         this.color = TileColor.randomColor();
     }
+
+    /**
+     * Duplicate Tile constructor
+     * @param t is the original Tile
+     */
+    public Tile(Tile t){
+        this.color = t.color;
+        this.id = t.id;
+    }
     public Tile(TileColor color){
         this.color=color;
     }
