@@ -45,6 +45,14 @@ public class Bag {
         tiles.addAll(t);
     }
 
+    /**
+     * Check if the bag is empty
+     * @return true if this list contains no elements.
+     */
+    public boolean isBagEmpty(){
+        return tiles.isEmpty();
+    }
+
     // DA SISTEMARE : Si può fare semplicemente con il metodo remove(tile)
     public void removeTile(Tile tile){
         boolean removed = false;
@@ -53,6 +61,14 @@ public class Bag {
                 tiles.remove(i);
                 removed = true;
             }
+    }
+
+    /**
+     * Remove all tiles contained in t from tiles
+     * @param t
+     */
+    public void removeListOfTile(List <Tile> t){
+        tiles.retainAll(t);
     }
 
     /**
@@ -78,8 +94,9 @@ public class Bag {
 
     /**
      * Draw out all the Tiles in the bag, even they are more than requested, after computing
-     * by the Board, it will use the method update(list) (use retainAll(Collection x), an ArrayList method) which Retains
+     * by the Board, it will use the method updateBag(list) (use retainAll(Collection x), an ArrayList method) which Retains
      * only the elements in this list that are contained in the specified collection.
+     * The random selection of Tiles is not managed here
      * @return tiles Array-List
      */
     public List<Tile> drawOutTiles(){
@@ -87,7 +104,8 @@ public class Bag {
     }
 
     /**
-     * After EVERY Draw-Out, the controller put in the bag only the remaining Tiles with this method
+     * After EVERY Draw-Out, the controller keep in the bag only the remaining Tiles,
+     * contained in 'list', and it deletes all the used ones from "tiles"
      * @param list
      */
     public void updateBag(List<Tile> list){
