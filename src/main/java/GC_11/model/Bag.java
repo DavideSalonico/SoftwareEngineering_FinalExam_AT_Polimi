@@ -75,4 +75,22 @@ public class Bag {
     public int countNumOfTiles(){
         return tiles.size();
     }
+
+    /**
+     * Draw out all the Tiles in the bag, even they are more than requested, after computing
+     * by the Board, it will use the method update(list) (use retainAll(Collection x), an ArrayList method) which Retains
+     * only the elements in this list that are contained in the specified collection.
+     * @return tiles Array-List
+     */
+    public List<Tile> drawOutTiles(){
+        return tiles;
+    }
+
+    /**
+     * After EVERY Draw-Out, the controller put in the bag only the remaining Tiles with this method
+     * @param list
+     */
+    public void updateBag(List<Tile> list){
+        tiles.retainAll(list);
+    }
 }
