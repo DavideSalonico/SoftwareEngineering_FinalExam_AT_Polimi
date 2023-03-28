@@ -7,6 +7,11 @@ public class Board {
     private Tile[][] chessBoard;
     private Bag bag;
 
+    /**
+     * Constructor of Board entity, it initializes all the 9x9 matrix in Tile.EMPTY then sets the prohibited cells
+     * into TileColor.PROHIBITED (get coordinates from JSON file)
+     * @param coordinateList
+     */
     public Board(List<Coordinate> coordinateList){
 
         this.bag = new Bag();
@@ -21,6 +26,12 @@ public class Board {
         }
     }
 
+    /**
+     * Return Tile at line 'r' and column 'c'
+     * @param r = line
+     * @param c = column
+     * @return Tile
+     */
     public Tile getTile(int r, int c){
         return chessBoard[r][c];
     }
@@ -29,18 +40,22 @@ public class Board {
         chessBoard[x][y] = t;
     }
 
-    public boolean removeTile(int x, int y){
+    /**
+     * Remove Tile from Board, it creates new Tile with TileColor.EMPTY (Immutable object)
+     * @param x = line
+     * @param y = column
+     */
+    public void drawTile(int x, int y){
+        chessBoard[x][y] = new Tile(TileColor.EMPTY);
 
-        if (chessBoard[x][y] == null){
-            return false;
-        }
-        else{
-            return true;
-        }
     }
 
     //public int checkDraw(){}
 
+    /**
+     * Getter method of bag
+     * @return bag of remaining Tiles
+     */
     public Bag getBag(){
         return this.bag;
     }
