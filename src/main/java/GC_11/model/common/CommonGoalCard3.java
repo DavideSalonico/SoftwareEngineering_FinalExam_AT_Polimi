@@ -63,7 +63,9 @@ public class CommonGoalCard3 extends CommonGoalCard{
             if(player.getShelf().getTile(l,c).getColor()==color){
                 setControlMatrixTrue(l,c);
                 return  1 + verify(player, l, c+1, player.getShelf().getTile(l, c).getColor())+
-                        verify(player,l+1,c,player.getShelf().getTile(l,c).getColor());
+                        verify(player,l+1,c,player.getShelf().getTile(l,c).getColor())+
+                        verify(player,l,c-1,player.getShelf().getTile(l,c).getColor())+
+                        verify(player,l-1,c,player.getShelf().getTile(l,c).getColor());
             }else {return 0;}
         }
         else {return 0;}

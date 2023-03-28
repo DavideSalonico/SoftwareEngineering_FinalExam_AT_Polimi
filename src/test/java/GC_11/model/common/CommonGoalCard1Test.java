@@ -8,8 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CommonGoalCard1Test {
 
-    @BeforeAll
-    Player player= new Player("nome", );
 
     @Test
     void checkTest() {
