@@ -16,11 +16,11 @@ public class Player {
     private Shelf shelf;
 
 
-    public Player(String s, List <Triplet> read){
+    public Player(String s, PersonalGoalCard PersonalCard){
         this.nickname = s;
         this.points=0;
         this.shelf = new Shelf();
-        this.personalGoal = new PersonalGoalCard(read);
+        this.personalGoal = PersonalCard;
     }
 
     public String getNickname(){
