@@ -1,7 +1,7 @@
 package GC_11;
 
 import GC_11.model.Lobby;
-import GC_11.model.Player;
+import GC_11.model.*;
 import org.junit.jupiter.api.Test;
 
 import static junit.framework.Assert.*;
@@ -12,6 +12,7 @@ public class LobbyTest {
     @Test
     public void testHasPlayer(){
         Lobby lobby = new Lobby(2);
+        //PersonalGoalCard pgc = new PersonalGoalCard();
         Player p1 = new Player("Name1");
         Player p2 = new Player("Name2");
         Player p3 = new Player("Name3");

@@ -1,5 +1,6 @@
 package GC_11;
 
+import GC_11.Controller.JsonReader;
 import GC_11.model.PersonalGoalCard;
 import GC_11.model.Triplet;
 import org.junit.jupiter.api.ClassOrderer;

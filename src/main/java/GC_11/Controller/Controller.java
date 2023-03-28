@@ -24,10 +24,6 @@ public class Controller implements Observer {
     /**
      * This method bind random Personal Goal to players of a specific game
      */
-    public void setPersonalGoal (){
-        reader = new JsonReader(game.getPlayers());
-        reader.setGoals();
-    }
 
     /**
      *
