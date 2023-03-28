@@ -50,7 +50,18 @@ public class Board {
 
     }
 
-    //public int checkDraw(){}
+    /**
+     * It checks if there are only isolated Tiles on the Board so the Board needs a refill of Tiles
+     * @return number of isolated Tiles if the board needs a refill, else it return 0
+     */
+    public int checkDraw(){
+        int counter = 0;
+        for (int l =0; l<9;l++){
+            for (int c=0; c<9;c++) {
+                    if ( chessBoard[l][c].get)
+            }
+        }
+    }
 
     /**
      * Getter method of bag
