@@ -41,13 +41,17 @@ public class Board {
     }
 
     /**
-     * Remove Tile from Board, it creates new Tile with TileColor.EMPTY (Immutable object)
+     * Return picked Tile from Board, it creates new Tile with TileColor.EMPTY (Immutable object),
+     * the controller firstly call checkLegalMove method and then the drawTile method
      * @param x = line
      * @param y = column
+     * @return picked Tile
      */
-    public void drawTile(int x, int y){
+    public Tile drawTile(int x, int y){
+        //aggiungi un controllo per vedere se è una mossa legale ( usa exception )
+        Tile picked = new Tile(chessBoard[x][y]);
         chessBoard[x][y] = new Tile(TileColor.EMPTY);
-
+        return picked;
     }
 
     /**
