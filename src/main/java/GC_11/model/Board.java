@@ -7,6 +7,11 @@ public class Board {
     private Tile[][] chessBoard;
     private Bag bag;
 
+    /**
+     * Constructor of Board entity, it initializes all the 9x9 matrix in Tile.EMPTY then sets the prohibited cells
+     * into TileColor.PROHIBITED (get coordinates from JSON file)
+     * @param coordinateList
+     */
     public Board(List<Coordinate> coordinateList){
 
         this.bag = new Bag();
@@ -21,6 +26,12 @@ public class Board {
         }
     }
 
+    /**
+     * Return Tile at line 'r' and column 'c'
+     * @param r = line
+     * @param c = column
+     * @return Tile
+     */
     public Tile getTile(int r, int c){
         return chessBoard[r][c];
     }
@@ -29,18 +40,37 @@ public class Board {
         chessBoard[x][y] = t;
     }
 
-    public boolean removeTile(int x, int y){
+    /**
+     * Return picked Tile from Board, it creates new Tile with TileColor.EMPTY (Immutable object),
+     * the controller firstly call checkLegalMove method and then the drawTile method
+     * @param x = line
+     * @param y = column
+     * @return picked Tile
+     */
+    public Tile drawTile(int x, int y){
+        //aggiungi un controllo per vedere se è una mossa legale ( usa exception )
+        Tile picked = new Tile(chessBoard[x][y]);
+        chessBoard[x][y] = new Tile(TileColor.EMPTY);
+        return picked;
+    }
 
-        if (chessBoard[x][y] == null){
-            return false;
-        }
-        else{
-            return true;
+    /**
+     * It checks if there are only isolated Tiles on the Board so the Board needs a refill of Tiles
+     * @return number of isolated Tiles if the board needs a refill, else it return 0
+     */
+    public int checkDraw(){
+        int counter = 0;
+        for (int l =0; l<9;l++){
+            for (int c=0; c<9;c++) {
+                    if ( chessBoard[l][c].get)
+            }
         }
     }
 
-    //public int checkDraw(){}
-
+    /**
+     * Getter method of bag
+     * @return bag of remaining Tiles
+     */
     public Bag getBag(){
         return this.bag;
     }

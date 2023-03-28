@@ -18,6 +18,7 @@ public class Game {
 
 
 
+    // Passare le coordinate proibite come parametro a game invece che far usare il reader a board
     public Game(List<Player> players, Lobby lobby){
         this.players=players;
         this.board = new Board(JsonReader.readCoordinate(players.size()));
