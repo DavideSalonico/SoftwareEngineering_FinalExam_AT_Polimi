@@ -3,6 +3,7 @@ package GC_11.model;
 import GC_11.exceptions.IllegalMoveException;
 
 import java.util.List;
+import java.util.Random;
 
 public class Board {
 
@@ -26,16 +27,37 @@ public class Board {
         for (Coordinate c : coordinateList){
             this.chessBoard[c.getRow()][c.getColumn()] = new Tile(TileColor.PROHIBITED);
         }
+
+        setBoard();
+    }
+
+
+    /**
+     * It sets empty cells of chessboard into some random Tile picked from the bag (it uses bag's methods)
+     */
+    private void setBoard() {
+        int randomNum;
+        List <Tile> tiles = bag.drawOutTiles();
+        for (int line =0; line<9; line++){
+            for (int column = 0; column<9; column++) {
+                if(chessBoard[line][column].equals(TileColor.EMPTY)) {
+                    randomNum = new Random().nextInt(this.bag.countNumOfTiles());
+                    this.chessBoard[line][column] = tiles.get(randomNum);
+                    tiles.remove(randomNum);
+                }
+            }
+        }
+        this.bag.updateBag(tiles);
     }
 
     /**
      * Return Tile at line 'r' and column 'c'
-     * @param r = line
+     * @param l = line
      * @param c = column
      * @return Tile
      */
-    public Tile getTile(int r, int c){
-        return chessBoard[r][c];
+    public Tile getTile(int l, int c){
+        return chessBoard[l][c];
     }
 
     public void setTile(int x, int y, Tile t){
@@ -45,15 +67,15 @@ public class Board {
     /**
      * Return picked Tile from Board, it creates new Tile with TileColor.EMPTY (Immutable object),
      * the controller firstly call checkLegalMove method and then the drawTile method
-     * @param x = line
-     * @param y = column
+     * @param l = line
+     * @param c = column
      * @return picked Tile
      */
-    public Tile drawTile(int x, int y) throws IllegalMoveException {
+    public Tile drawTile(int l, int c) throws IllegalMoveException {
         if(chessBoard[l][c].getColor().equals(TileColor.PROHIBITED) || chessBoard[l][c].getColor().equals(TileColor.EMPTY))
             throw new IllegalMoveException("You can't pick this Tile!");
-        Tile picked = new Tile(chessBoard[x][y]);
-        chessBoard[x][y] = new Tile(TileColor.EMPTY);
+        Tile picked = new Tile(chessBoard[l][c]);
+        chessBoard[l][c] = new Tile(TileColor.EMPTY);
         return picked;
     }
 
@@ -67,16 +89,16 @@ public class Board {
             for (int c=0; c<9;c++) {
                 if ( !chessBoard[l][c].getColor().equals(TileColor.PROHIBITED) &&
                      !chessBoard[l][c].getColor().equals(TileColor.EMPTY) ){
-                    if(l > 0 && !chessBoard[l-1][c].getColor().equals(TileColor.PROHIBITED) &&
+                    if(l != 0 && !chessBoard[l-1][c].getColor().equals(TileColor.PROHIBITED) &&
                                  !chessBoard[l-1][c].getColor().equals(TileColor.EMPTY))
                          return 0;
-                    if(c > 0 && !chessBoard[l][c-1].getColor().equals(TileColor.PROHIBITED) &&
+                    if(c  != 0 && !chessBoard[l][c-1].getColor().equals(TileColor.PROHIBITED) &&
                             !chessBoard[l][c-1].getColor().equals(TileColor.EMPTY))
                         return 0;
-                    if(l < 9 && !chessBoard[l+1][c].getColor().equals(TileColor.PROHIBITED) &&
+                    if(l != 8 && !chessBoard[l+1][c].getColor().equals(TileColor.PROHIBITED) &&
                             !chessBoard[l+1][c].getColor().equals(TileColor.EMPTY))
                         return 0;
-                    if(c < 9 && !chessBoard[l][c+1].getColor().equals(TileColor.PROHIBITED) &&
+                    if(c != 8 && !chessBoard[l][c+1].getColor().equals(TileColor.PROHIBITED) &&
                             !chessBoard[l][c+1].getColor().equals(TileColor.EMPTY))
                         return 0;
 
