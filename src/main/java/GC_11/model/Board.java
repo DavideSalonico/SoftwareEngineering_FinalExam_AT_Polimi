@@ -110,6 +110,28 @@ public class Board {
     }
 
     /**
+     * Checks (using checkDraw method) if the Board needs a Tiles' refill, if true, it will clean the board from remaining
+     * Tiles inserting them into the Bag and after that it will set again all the Board's cells with random tiles using setBoard() method
+     */
+    public void needRefill(){
+        if(checkDraw()>0){
+            for(int line = 0; line<9; line++){
+                for (int column = 0; column <9; column++){
+                    if(!chessBoard[line][column].getColor().equals(TileColor.PROHIBITED) &&
+                            !chessBoard[line][column].getColor().equals(TileColor.EMPTY)) {
+                        this.bag.insertTile(chessBoard[line][column]);
+                        chessBoard[line][column] = new Tile(TileColor.EMPTY);
+                    }
+                }
+            }
+
+            setBoard();
+        }
+        // else nothing
+    }
+
+
+    /**
      * Getter method of bag
      * @return bag of remaining Tiles
      */
