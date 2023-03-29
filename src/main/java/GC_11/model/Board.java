@@ -106,6 +106,7 @@ public class Board {
                 }
             }
         }
+        //probabilmente non ci interessa sapere quante Tiles isolate ci sono, ma lascio per future necessità
         return counter;
     }
 
