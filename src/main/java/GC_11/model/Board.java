@@ -1,5 +1,7 @@
 package GC_11.model;
 
+import GC_11.exceptions.IllegalMoveException;
+
 import java.util.List;
 
 public class Board {
@@ -47,8 +49,9 @@ public class Board {
      * @param y = column
      * @return picked Tile
      */
-    public Tile drawTile(int x, int y){
-        //aggiungi un controllo per vedere se è una mossa legale ( usa exception )
+    public Tile drawTile(int x, int y) throws IllegalMoveException {
+        if(chessBoard[l][c].getColor().equals(TileColor.PROHIBITED) || chessBoard[l][c].getColor().equals(TileColor.EMPTY))
+            throw new IllegalMoveException("You can't pick this Tile!");
         Tile picked = new Tile(chessBoard[x][y]);
         chessBoard[x][y] = new Tile(TileColor.EMPTY);
         return picked;
@@ -56,15 +59,32 @@ public class Board {
 
     /**
      * It checks if there are only isolated Tiles on the Board so the Board needs a refill of Tiles
-     * @return number of isolated Tiles if the board needs a refill, else it return 0
+     * @return number of isolated Tiles if the board needs a refill, else it returns 0
      */
     public int checkDraw(){
         int counter = 0;
         for (int l =0; l<9;l++){
             for (int c=0; c<9;c++) {
-                    if ( chessBoard[l][c].get)
+                if ( !chessBoard[l][c].getColor().equals(TileColor.PROHIBITED) &&
+                     !chessBoard[l][c].getColor().equals(TileColor.EMPTY) ){
+                    if(l > 0 && !chessBoard[l-1][c].getColor().equals(TileColor.PROHIBITED) &&
+                                 !chessBoard[l-1][c].getColor().equals(TileColor.EMPTY))
+                         return 0;
+                    if(c > 0 && !chessBoard[l][c-1].getColor().equals(TileColor.PROHIBITED) &&
+                            !chessBoard[l][c-1].getColor().equals(TileColor.EMPTY))
+                        return 0;
+                    if(l < 9 && !chessBoard[l+1][c].getColor().equals(TileColor.PROHIBITED) &&
+                            !chessBoard[l+1][c].getColor().equals(TileColor.EMPTY))
+                        return 0;
+                    if(c < 9 && !chessBoard[l][c+1].getColor().equals(TileColor.PROHIBITED) &&
+                            !chessBoard[l][c+1].getColor().equals(TileColor.EMPTY))
+                        return 0;
+
+                    counter++;
+                }
             }
         }
+        return counter;
     }
 
     /**
@@ -75,3 +95,5 @@ public class Board {
         return this.bag;
     }
 }
+
+
