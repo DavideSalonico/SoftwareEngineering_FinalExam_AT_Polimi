@@ -41,7 +41,7 @@ public class CommonGoalCard1 extends CommonGoalCard{
             for(int c=0; c<5; c++) {
                 if(!getControlMatrix(l,c)) {
                     setControlMatrixTrue(l,c);
-                    counterTiles = verify(player, l, c+1, player.getShelf().getTile(l, c).getColor())+
+                    counterTiles = 1+ verify(player, l, c+1, player.getShelf().getTile(l, c).getColor())+
                             verify(player,l+1,c,player.getShelf().getTile(l,c).getColor());
                     if(counterTiles>=2){
                         counterGroups++;
@@ -63,7 +63,9 @@ public class CommonGoalCard1 extends CommonGoalCard{
             if(player.getShelf().getTile(l,c).getColor()==color){
                 setControlMatrixTrue(l,c);
                 return  1 + verify(player, l, c+1, player.getShelf().getTile(l, c).getColor())+
-                        verify(player,l+1,c,player.getShelf().getTile(l,c).getColor());
+                        verify(player,l+1,c,player.getShelf().getTile(l,c).getColor())+
+                        verify(player,l,c-1,player.getShelf().getTile(l,c).getColor())+
+                        verify(player,l-1,c,player.getShelf().getTile(l,c).getColor());
             }else {return 0;}
         }
         else {return 0;}

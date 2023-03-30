@@ -1,71 +1,43 @@
+ @Override
+    public void check(Player player) throws columnIndexOutOfBoundsException {
 
-//Goal 1
-
-
-
-
-//Goal 2
-
-// this code verifies if there are 5 tiles of the same type forming a diagonal. The check is made with 2 counters that
-// counts how many tiles on a diagonal have the same color of the tile on the top left of the diagonal, for counter1,
-// and the one on top right, for counter2. counter1 checks the diagonals that go from top-left to bottom-right,
-// counter2 checks the diagonals that go from top-right to bottom-left
-
-for(int a=5, a>=4, a--){
-    int counter1=0;
-    int counter2=0;
-    for (int l=4, l>=0, l--){
-        for (int c=1, c<=4, c++){
-            if (player.getShelf().getTile(c,l).getColor == player.getShelf().getTile(0,a).getColor() && player.getShelf().getTile(0,a).getColor() != "EMPTY"){
-                counter1++;
+        resetControlMatrix();
+        int counterGroups=0;
+        for(int l = 0; l<5; l++){
+            for(int c=0; c<4; c++) {
+                int counterTiles = 0;
+                if(!getControlMatrix(l,c)) {
+                    setControlMatrixTrue(l,c);
+                    counterTiles = 1+ verify(player, l, c+1, player.getShelf().getTile(l, c).getColor())+
+                            verify(player,l+1,c,player.getShelf().getTile(l,c).getColor())+
+                            verify(player,l+1,c+1,player.getShelf().getTile(l,c).getColor());
+                    if(counterTiles==4){
+                        setControlMatrixTrue(l,c+1);
+                        setControlMatrixTrue(l+1,c);
+                        setControlMatrixTrue(l+1,c+1);
+                        counterGroups++;
+                    }
+                }
             }
-            if (player.getShelf().getTile(4-c,l).getColor() == player.getShelf().getTile(4,a).getColor() && player.getShelf().getTile(4,a).getColor() != "EMPTY"){
-                counter2++;
-            }
-       }
-    }
-    if (counter1==4 || counter2==4){
-        calculatePoint(player);
-        winningPlayers.add(player);
-        return void;
-    }
-}
-return void;
-
-
-
-
-
-//Goal 3
-
-
-
-
-
-//Goal 4
-
-//this code verifies if there are at least 4 line with 5 tiles and maximum 3 different tile types. it uses a set to count the the number of different
-//types and a counter to verify if the line has 5 tiles
-
-int correctLines=0;
-for (int l=0, l<6, l++){
-    int c = 0;
-    Set<TileColor> colors = new HashSet<TileColor> ();
-    for (int c=0, c<5, c++){
-        if(player.getShelf().getTile(0,a).getColor() != "EMPTY"){
-            c++;
-            colors.add(player.getShelf().getTile(0,a).getColor())
         }
+        if(counterGroups>=2){
+            givePoints(player);
+        }
+
     }
-    if (c==5 && color.size()<4){
-        correctLines++;
+
+    public int verify (Player player, int l, int c, TileColor color) throws columnIndexOutOfBoundsException {
+
+        if(l>5 || c>4){
+            return 0;
+        }
+        else if(!getControlMatrix(l,c)){
+            if(player.getShelf().getTile(l,c).getColor()==color){
+                return  1;
+            }else {return 0;}
+        }
+        else {return 0;}
     }
-}
-if (correctLines >= 4){
-    calculatePoint(player);
-    winningPlayers.add(player);
-}
-return void;
 
 
 
