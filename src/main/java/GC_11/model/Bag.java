@@ -23,14 +23,6 @@ public class Bag {
     }
 
     /**
-     * Get method
-     * @return the whole Array-list of tiles in the bag
-     */
-    public List<Tile> getTiles() {
-        return tiles;
-    }
-
-    /**
      * Used to insert tiles, one by one
      */
     public void insertTile(Tile t){
@@ -96,7 +88,7 @@ public class Bag {
      * Draw out all the Tiles in the bag, even they are more than requested, after computing
      * by the Board, it will use the method updateBag(list) (use retainAll(Collection x), an ArrayList method) which Retains
      * only the elements in this list that are contained in the specified collection.
-     * The random selection of Tiles is not managed here
+     * The random selection of Tiles is NOT managed here
      * @return tiles Array-List
      */
     public List<Tile> drawOutTiles(){
@@ -111,4 +103,5 @@ public class Bag {
     public void updateBag(List<Tile> list){
         tiles.retainAll(list);
     }
+
 }

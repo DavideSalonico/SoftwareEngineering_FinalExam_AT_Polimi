@@ -1,5 +1,7 @@
 package GC_11.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Random;
 
 public class Tile {
@@ -34,7 +36,11 @@ public class Tile {
     }
 
 
-    public boolean equals(Tile t) {
+    public boolean equals(@NotNull Tile t) {
         return (t.getColor() == this.color);
     }
+
+    public boolean equals(TileColor tc){
+        return this.color == tc;
+    };
 }

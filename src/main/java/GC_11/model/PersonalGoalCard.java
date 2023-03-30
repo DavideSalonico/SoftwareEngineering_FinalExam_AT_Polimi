@@ -25,6 +25,10 @@ public class PersonalGoalCard {
         // Read from a file one of the 12 personalGoalCards
     }
 
+    public PersonalGoalCard() {
+        this.id = -1;
+        this.goalList = null;
+    }
 
     public List<Triplet> getGoalList() {
         return goalList;

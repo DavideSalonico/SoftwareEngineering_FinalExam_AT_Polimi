@@ -1,10 +1,12 @@
 package GC_11.model;
 
 import GC_11.Controller.JsonReader;
+import GC_11.util.Observable;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Game {
+public class Game extends Observable {
 
     private List<Player> players;
     //private List<CommonGoalCard> commonGoals;
@@ -25,6 +27,20 @@ public class Game {
         this.lobby=lobby;
         this.endGame=false;
 
+    }
+
+    public Game(){
+        int n = 4;
+        this.players = new ArrayList<Player>();
+        for(int i = 0; i < n; i++){
+            this.players.set(i, new Player());
+        }
+
+        this.currentPlayer = players.get(0);
+        this.endGame = false;
+        this.board = new Board();
+        this.lobby = new Lobby();
+        this.endGame = false;
     }
 
     public void run(){
