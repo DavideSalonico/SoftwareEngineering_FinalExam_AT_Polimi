@@ -16,11 +16,18 @@ public class Player {
     private Shelf shelf;
 
 
-    public Player(String s, PersonalGoalCard PersonalCard){
-        this.nickname = s;
+    public Player(String nickname, PersonalGoalCard PersonalCard){
+        this.nickname = nickname;
         this.points=0;
         this.shelf = new Shelf();
         this.personalGoal = PersonalCard;
+    }
+
+    public Player(){
+        this.nickname = "nickname";
+        this.points = 0;
+        this.shelf = new Shelf();
+        this.personalGoal = new PersonalGoalCard();
     }
 
     public String getNickname(){

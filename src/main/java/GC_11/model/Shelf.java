@@ -21,6 +21,11 @@ public class Shelf {
 
     }
 
+    /**
+     *
+     * @param column indicates the column of which I want to know the number of fre spaces
+     * @return an integer indicating how namy more Tiles can be added in the selected column
+     */
     private int freeSpaces(int column){
         int free = 0;
         for(int i=0; i<6; i++){
@@ -31,6 +36,13 @@ public class Shelf {
         return free;
     }
 
+    /**
+     * This method permit to insert a list of Tiles in the desired column
+     * @param tileList is the list of Tiles to be inserted
+     * @param column is the number of the column (starting from 0)
+     * @throws notEnoughFreeSpacesException when there is not enough space in the selected column to insert the tiles
+     * @throws columnIndexOutOfBoundsException when the column index is out of bound
+     */
     public void addTiles(List<Tile> tileList, int column) throws notEnoughFreeSpacesException, columnIndexOutOfBoundsException {
         if(column <0 || column >4){
             throw new columnIndexOutOfBoundsException(column);

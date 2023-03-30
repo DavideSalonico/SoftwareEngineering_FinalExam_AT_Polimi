@@ -1,9 +1,12 @@
 package GC_11;
 
-public class App 
+import GC_11.model.Game;
+
+public class App
 {
-    public static void main( String[] args )
-    {
+    public static void main( String[] args ){
+        //Just a sample code to try if everything works fine
+        Game game = new Game();
 
     }
 }

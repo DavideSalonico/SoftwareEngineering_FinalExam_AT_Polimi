@@ -17,6 +17,15 @@ public class Lobby {
         this.lobbyNumber++;
     }
 
+    public Lobby(){
+        this.lobbyId = 0;
+        this.maxPlayers = 4;
+        this.players = new ArrayList<Player>();
+        for(int i = 0; i < maxPlayers; i++){
+            this.players.set(i, new Player());
+        }
+    }
+
     public synchronized void addPlayer(Player player){
         if (players.size()< maxPlayers && !players.contains(player)){
             players.add(player);
