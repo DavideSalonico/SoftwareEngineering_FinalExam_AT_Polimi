@@ -22,7 +22,7 @@ public class Lobby {
         this.maxPlayers = 4;
         this.players = new ArrayList<Player>();
         for(int i = 0; i < maxPlayers; i++){
-            this.players.set(i, new Player());
+            this.players.add(new Player());
         }
     }
 

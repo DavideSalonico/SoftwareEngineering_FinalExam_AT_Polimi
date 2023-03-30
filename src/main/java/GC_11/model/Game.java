@@ -32,8 +32,8 @@ public class Game extends Observable {
     public Game(){
         int n = 4;
         this.players = new ArrayList<Player>();
-        for(int i = 0; i < n; i++){
-            this.players.set(i, new Player());
+        for(int i=0; i < 4; i++){
+            this.players.add(new Player());
         }
 
         this.currentPlayer = players.get(0);
