@@ -51,7 +51,7 @@ public class Player {
 
     }
 
-    public void insertTiles(List<Tile> tilesOrder, int column){
+    public void insertTiles(List<Tile> tilesOrder, int column) {
         if (column <0 || column > 5){
             // Exception
         }
