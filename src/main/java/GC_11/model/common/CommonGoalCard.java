@@ -3,11 +3,12 @@ package GC_11.model.common;
 import GC_11.exceptions.columnIndexOutOfBoundsException;
 import GC_11.model.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CommonGoalCard {
 
-    private List<Player> winningPlayers;
+    private List<Player> winningPlayers = new ArrayList<>();
     private String text;
 
     public void givePoints(Player player){

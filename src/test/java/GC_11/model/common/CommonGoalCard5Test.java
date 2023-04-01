@@ -1,24 +1,22 @@
+//TODO la classe funziona nel dare i punti quando è giusto, verificare i casi limite
 
 package GC_11.model.common;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import GC_11.exceptions.columnIndexOutOfBoundsException;
 import GC_11.exceptions.notEnoughFreeSpacesException;
 import GC_11.model.Player;
 import GC_11.model.Tile;
 import GC_11.model.TileColor;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CommonGoalCard1Test {
+class CommonGoalCard5Test {
 
-    CommonGoalCard1 carta = new CommonGoalCard1();
+    CommonGoalCard5 carta = new CommonGoalCard5();
     Player player = new Player();
     Tile blue = new Tile(TileColor.BLUE);
     Tile cyan = new Tile(TileColor.CYAN);
@@ -46,8 +44,8 @@ class CommonGoalCard1Test {
         player.getShelf().addTiles(greens,2);
         player.getShelf().addTiles(oranges,3);
         player.getShelf().addTiles(oranges,3);
-        player.getShelf().addTiles(purples,4);
-        player.getShelf().addTiles(whites,4);
+        player.getShelf().addTiles(blues,4);
+        player.getShelf().addTiles(oranges,4);
 
         System.out.println(player.getPoints());
         carta.check(player);
@@ -55,7 +53,4 @@ class CommonGoalCard1Test {
 
     }
 
-    @Test
-    void verifyTest() {
-    }
 }
