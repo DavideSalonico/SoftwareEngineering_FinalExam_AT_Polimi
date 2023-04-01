@@ -16,17 +16,19 @@ public class BagTest {
     @Test
     public void rightNumberOfEachTile(){
         Bag bag = new Bag();
-        ArrayList<Tile> tiles = (ArrayList<Tile>) bag.getTiles();
+        ArrayList<Tile> tiles = (ArrayList<Tile>) bag.drawOutTiles();
         for (TileColor tc : TileColor.values()){
             if(tc != TileColor.PROHIBITED && tc!= TileColor.EMPTY)
                 assertEquals(22,countTiles(tiles,tc));
         }
     }
 
+
+
     @Test
     public void rightNumberOfTiles(){
         Bag bag = new Bag();
-        assertEquals(132, bag.getTiles().size());
+        assertEquals(132, bag.drawOutTiles().size());
     }
 
 
@@ -34,9 +36,9 @@ public class BagTest {
     public void checkRemove(){
         Bag bag = new Bag();
         Tile t = new Tile();
-        int tilesNumberBefore = countTiles(bag.getTiles(),t.getColor());
+        int tilesNumberBefore = countTiles(bag.drawOutTiles(),t.getColor());
         bag.removeTile(t);
-        assertEquals(tilesNumberBefore-1,countTiles(bag.getTiles(),t.getColor()));
+        assertEquals(tilesNumberBefore-1,countTiles(bag.drawOutTiles(),t.getColor()));
     }
 
     private int countTiles(List<Tile> list,TileColor color)
@@ -49,8 +51,6 @@ public class BagTest {
         }
         return count;
     }
-
-
 
 }
 */

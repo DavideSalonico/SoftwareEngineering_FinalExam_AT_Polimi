@@ -17,9 +17,6 @@ public class Shelf {
         }
     }
 
-    private void addTile(Tile t, int column){
-
-    }
 
     /**
      *
@@ -44,7 +41,7 @@ public class Shelf {
      * @throws columnIndexOutOfBoundsException when the column index is out of bound
      */
     public void addTiles(List<Tile> tileList, int column) throws notEnoughFreeSpacesException, columnIndexOutOfBoundsException {
-        if(column <0 || column >4){
+        if(column <0 || column >=5){
             throw new columnIndexOutOfBoundsException(column);
         }
         else
@@ -69,7 +66,7 @@ public class Shelf {
      * @param column indicates the column ti check
      * @return the tile in the position required
      * @throws columnIndexOutOfBoundsException when the position required
-     * is outside the matrix of yhe shelf
+     * is outside the matrix of the shelf
      */
     public Tile getTile(int line, int column) throws columnIndexOutOfBoundsException{
         if (line<0 || line>=6 || column<0 || column>=5){

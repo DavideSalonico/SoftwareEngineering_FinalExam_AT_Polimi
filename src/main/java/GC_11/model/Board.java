@@ -46,7 +46,7 @@ public class Board {
         for (int line =0; line<9; line++){
             for (int column = 0; column<9; column++) {
                 if(chessBoard[line][column].equals(TileColor.EMPTY)) {
-                    randomNum = new Random().nextInt(this.bag.countNumOfTiles());
+                    randomNum = new Random().nextInt(tiles.size());
                     this.chessBoard[line][column] = tiles.get(randomNum);
                     tiles.remove(randomNum);
                 }
