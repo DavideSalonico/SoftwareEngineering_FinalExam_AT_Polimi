@@ -1,6 +1,7 @@
 package GC_11.model;
 
 import GC_11.Controller.JsonReader;
+import GC_11.model.common.CommonGoalCard;
 import GC_11.util.Observable;
 
 import java.util.ArrayList;
@@ -9,23 +10,25 @@ import java.util.List;
 public class Game extends Observable {
 
     private List<Player> players;
-    //private List<CommonGoalCard> commonGoals;
+    private List<CommonGoalCard> commonGoals;
     private Player currentPlayer;
     private boolean endGame;
     private Player endPlayer;
     private Board board;
     private Lobby lobby;
 
-    //TODO: CHANGE FACTORY METHOD IN STRATEGY (for CommonGoalCards)
-
+    int pointsCommonGoalCard1;
+    int pointsCommonGoalCard2;
 
 
     // Passare le coordinate proibite come parametro a game invece che far usare il reader a board
-    public Game(List<Player> players, Lobby lobby){
-        this.players=players;
+    public Game(Lobby lobby){
+        this.players=lobby.getPlayers();
         this.board = new Board(JsonReader.readCoordinate(players.size()));
         this.lobby=lobby;
         this.endGame=false;
+        this.pointsCommonGoalCard1=8;
+        this.pointsCommonGoalCard2=8;
 
     }
 
@@ -47,17 +50,16 @@ public class Game extends Observable {
 
     }
 
+
     /**
-     *
-     * @return
+     * @return the current player
      */
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
 
     /**
-     *
-     * @param currentPlayer
+     * @param currentPlayer the player that is wanted to be set as current
      */
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
@@ -67,7 +69,14 @@ public class Game extends Observable {
         return players;
     }
 
-    //public commonGoalCard getCommonGoal(int i)
+    /**
+     *
+     * @param i is an integer equals to 0 or 1
+     * @return the corresponding CommonGoalCard
+     */
+    public CommonGoalCard getCommonGoal(int i){
+        return commonGoals.get(i);
+    }
 
 
     public Player getEndPlayer() {
@@ -82,7 +91,7 @@ public class Game extends Observable {
         return board;
     }
 
-    private void calculateCommonPoints(Player p){
+    private void calculateCommonPoints(){
 
     }
 
