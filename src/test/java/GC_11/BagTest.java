@@ -1,4 +1,4 @@
-/*
+
 package GC_11;
 
 import GC_11.model.*;
@@ -41,6 +41,35 @@ public class BagTest {
         assertEquals(tilesNumberBefore-1,countTiles(bag.drawOutTiles(),t.getColor()));
     }
 
+    @Test
+    public void checkIsBagEmpty(){
+        Bag bag = new Bag();
+        assertEquals(bag.countNumOfTiles()==0,bag.isBagEmpty());
+
+        bag.removeListOfTile(bag.drawOutTiles());
+        assertEquals(bag.countNumOfTiles()==0,bag.isBagEmpty());
+
+    }
+    @Test
+
+    public void checkAddAllTiles(){
+        Bag bag = new Bag();
+        bag.removeListOfTile(bag.drawOutTiles());
+
+        List<Tile> tileList = new ArrayList<Tile>();
+        for (int i=0; i<20;i++){
+            tileList.add(new Tile(TileColor.randomColor()));
+        }
+        for(Tile t : tileList){
+            assertEquals(false,bag.drawOutTiles().contains(t));
+        }
+
+        bag.insertAllTile(tileList);
+        for(Tile t : tileList){
+            assertEquals(true,bag.drawOutTiles().contains(t));
+        }
+    }
+
     private int countTiles(List<Tile> list,TileColor color)
     {
         int count = 0;
@@ -52,5 +81,6 @@ public class BagTest {
         return count;
     }
 
+
+
 }
-*/
