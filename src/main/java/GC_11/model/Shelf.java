@@ -51,10 +51,10 @@ public class Shelf {
                 throw new notEnoughFreeSpacesException(column, tileList.size());
             }
             else {
-                int firstFreeSpace = 6- freeSpaces(column);
+                int firstFreeSpace = freeSpaces(column)-1;
                 for (Tile t : tileList){
                     myShelf[firstFreeSpace][column] = t;
-                    firstFreeSpace++;
+                    firstFreeSpace--;
                 }
             }
         }

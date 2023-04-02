@@ -23,21 +23,26 @@ public class CommonGoalCard2 extends CommonGoalCard{
      */
     @Override
     public void check(Player player) throws columnIndexOutOfBoundsException {
-        for(int a=5; a>=4; a--){
+        for(int a=1; a>=0; a--){
             int counter1=0;
             int counter2=0;
-            for (int l=a-1; l>=a-4; l--){
-                for (int c=1; c<=4; c++){
-                    if (player.getShelf().getTile(l,c).getColor() == player.getShelf().getTile(a,0).getColor() && !player.getShelf().getTile(a,0).getColor().equals( TileColor.EMPTY )){
+            for (int l=2-a; l<=5-a; l++){
+               // for (int c=1; c<=4; c++){
+
+                    System.out.println("conreollo nella poszione " + l+ " e " + (l-(1-a))+ " con " + player.getShelf().getTile(l,l-(1-a)).getColor() + " e " );
+                    System.out.println(player.getShelf().getTile(a,0).getColor());
+                    if (player.getShelf().getTile(l,l-(1-a)).getColor() == player.getShelf().getTile(1-a,0).getColor() && !player.getShelf().getTile(1-a,0).getColor().equals( TileColor.EMPTY )){
                         counter1++;
                     }
-                    if (player.getShelf().getTile(l,4-c).getColor() == player.getShelf().getTile(a,4).getColor() && !player.getShelf().getTile(a,4).getColor().equals(TileColor.EMPTY)){
+                System.out.println("conreollo nella poszione " + l+ " e " + (4-(l-(1-a))));
+                    if (player.getShelf().getTile(l,4-(l-(1-a))).getColor() == player.getShelf().getTile(1-a,4).getColor() && !player.getShelf().getTile(1-a,4).getColor().equals(TileColor.EMPTY)){
                         counter2++;
                     }
-                }
+               // }
             }
             if (counter1==4 || counter2==4){
                 givePoints(player);
+                return;
             }
         }
     }
