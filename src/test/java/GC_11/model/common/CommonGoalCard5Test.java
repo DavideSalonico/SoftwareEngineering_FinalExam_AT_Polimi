@@ -1,4 +1,7 @@
-//TODO la classe funziona nel dare i punti quando è giusto, verificare i casi limite
+//TODO la classe funziona nel dare i punti quando è giusto,
+// bisogna verificare se il punteggio cambia in base ai giocatori che hanno vinto,  verificare i casi limite:
+// Ho verificato il caso con un angolo sia vuoto, quando tutti sono vuoti e qudno un angolo è diverso
+
 
 package GC_11.model.common;
 
@@ -45,7 +48,7 @@ class CommonGoalCard5Test {
         player.getShelf().addTiles(oranges,3);
         player.getShelf().addTiles(oranges,3);
         player.getShelf().addTiles(blues,4);
-        player.getShelf().addTiles(oranges,4);
+        player.getShelf().addTiles(blues,4);
 
         System.out.println(player.getPoints());
         carta.check(player);
