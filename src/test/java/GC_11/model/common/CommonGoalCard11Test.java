@@ -99,6 +99,30 @@ class CommonGoalCard11Test {
         System.out.println("fine test allvoid");
     }
 
+    /*
+    @Test
+    void checkTestNullPlayer() throws columnIndexOutOfBoundsException, notEnoughFreeSpacesException {
+
+        player = null;
 
 
+        player.getShelf().addTiles(blues,0);
+        player.getShelf().addTiles(blues,0);
+        player.getShelf().addTiles(cyans,1);
+        player.getShelf().addTiles(cyans,1);
+        player.getShelf().addTiles(greens,2);
+        player.getShelf().addTiles(greens,2);
+        player.getShelf().addTiles(oranges,3);
+        player.getShelf().addTiles(oranges,3);
+        player.getShelf().addTiles(blues,4);
+        player.getShelf().addTiles(blues,4);
+
+
+        System.out.println("inizio test player null");
+        System.out.println(player.getPoints());
+        carta.check(player);
+        System.out.println(player.getPoints());
+        System.out.println("fine test player null");
+    }
+    */
 }
