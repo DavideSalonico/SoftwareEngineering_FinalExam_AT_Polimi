@@ -11,7 +11,7 @@ public class CommonGoalCard3 extends CommonGoalCard{
             "4 tiles of the same type (not necessarily in the depicted shape)." +
             "The tiles of one group can be different from those of another group.";
 
-    private boolean[][] controlMatrix = new boolean[6][5];
+    boolean[][] controlMatrix = new boolean[6][5];
 
 
     private boolean getControlMatrix(int l, int c){

@@ -1,7 +1,4 @@
-//TODO la classe funziona nel dare i punti quando è giusto,
-// bisogna verificare se il punteggio cambia in base ai giocatori che hanno vinto,  verificare i casi limite:
-// Ho verificato il caso con un angolo sia vuoto, quando tutti sono vuoti e qudno un angolo è diverso
-
+//TODO la classe funziona nel dare i punti quando è giusto, verificare i casi limite
 
 package GC_11.model.common;
 
@@ -36,7 +33,7 @@ class CommonGoalCard5Test {
 
 
     @Test
-    void checkTestGood() throws columnIndexOutOfBoundsException, notEnoughFreeSpacesException {
+    void checkTest() throws columnIndexOutOfBoundsException, notEnoughFreeSpacesException {
 
 
         player.getShelf().addTiles(blues,0);
@@ -48,61 +45,12 @@ class CommonGoalCard5Test {
         player.getShelf().addTiles(oranges,3);
         player.getShelf().addTiles(oranges,3);
         player.getShelf().addTiles(blues,4);
-        player.getShelf().addTiles(blues,4);
+        player.getShelf().addTiles(oranges,4);
 
-        System.out.println("inizio test good");
         System.out.println(player.getPoints());
         carta.check(player);
         System.out.println(player.getPoints());
-        System.out.println("fine test good");
 
     }
-
-    @Test
-    void checkTestWrong() throws columnIndexOutOfBoundsException, notEnoughFreeSpacesException {
-
-
-        player.getShelf().addTiles(blues,0);
-        player.getShelf().addTiles(blues,0);
-        player.getShelf().addTiles(cyans,1);
-        player.getShelf().addTiles(cyans,1);
-        player.getShelf().addTiles(greens,2);
-        player.getShelf().addTiles(greens,2);
-        player.getShelf().addTiles(oranges,3);
-        player.getShelf().addTiles(oranges,3);
-        player.getShelf().addTiles(whites,4);
-        player.getShelf().addTiles(whites,4);
-
-
-        System.out.println("inizio test wrong");
-        System.out.println(player.getPoints());
-        carta.check(player);
-        System.out.println(player.getPoints());
-        System.out.println("fine test wrong");
-    }
-
-    @Test
-    void checkTestAllVoid() throws columnIndexOutOfBoundsException, notEnoughFreeSpacesException {
-
-        /*
-        player.getShelf().addTiles(blues,0);
-        player.getShelf().addTiles(blues,0);
-        player.getShelf().addTiles(cyans,1);
-        player.getShelf().addTiles(cyans,1);
-        player.getShelf().addTiles(greens,2);
-        player.getShelf().addTiles(greens,2);
-        player.getShelf().addTiles(oranges,3);
-        player.getShelf().addTiles(oranges,3);
-        player.getShelf().addTiles(blues,4);
-        player.getShelf().addTiles(blues,4);
-        */
-
-        System.out.println("inizio test allVoid");
-        System.out.println(player.getPoints());
-        carta.check(player);
-        System.out.println(player.getPoints());
-        System.out.println("fine test allvoid");
-    }
-
 
 }

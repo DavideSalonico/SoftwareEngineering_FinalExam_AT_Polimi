@@ -1,10 +1,9 @@
-/*
+
 package GC_11.View;
 
 import java.io.Serializable;
 
-public class CLIview implements Serializable implements Observer {
-
+public class CLIview implements Serializable /*implements Observer*/ {
 
     private final Choice controllerChoice;
     private final Choice playerChoice;
@@ -12,5 +11,5 @@ public class CLIview implements Serializable implements Observer {
 
 
     // Capire come vogliamo costruire le classi di Choice e di Outcome (output)
- }
-*/
+}
+
