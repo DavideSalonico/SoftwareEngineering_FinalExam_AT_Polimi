@@ -15,7 +15,6 @@ public class Game extends Observable {
     private boolean endGame;
     private Player endPlayer;
     private Board board;
-    private Lobby lobby;
 
     int pointsCommonGoalCard1;
     int pointsCommonGoalCard2;
@@ -30,10 +29,8 @@ public class Game extends Observable {
     }
 
     // Passare le coordinate proibite come parametro a game invece che far usare il reader a board
-    public Game(Lobby lobby){
-        this.players=lobby.getPlayers();
+    public Game(List<Player> players){
         this.board = new Board(JsonReader.readCoordinate(players.size()));
-        this.lobby=lobby;
         this.endGame=false;
         this.pointsCommonGoalCard1=8;
         this.pointsCommonGoalCard2=8;
@@ -50,7 +47,6 @@ public class Game extends Observable {
         this.currentPlayer = players.get(0);
         this.endGame = false;
         this.board = new Board();
-        this.lobby = new Lobby();
         this.endGame = false;
     }
 
@@ -107,7 +103,4 @@ public class Game extends Observable {
 
     }
 
-    public Lobby getLobby(){
-        return lobby;
-    }
 }
