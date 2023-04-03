@@ -2,11 +2,8 @@
 package GC_11.View;
 
 import GC_11.util.Observable;
-import GC_11.util.Observer;
 import GC_11.util.Choice;
 
-import java.awt.*;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -23,9 +20,10 @@ public class CLIview /*implements Serializable*/ extends Observable<Choice> impl
 
             // Controllare tramite view che venga eseguita solo quando è il turno del giocatore giusto
 
+            System.out.println("--- NEW TURN ---");
             Choice choice = getPlayerChoice();
             setChanged();
-            notifyObservers();
+            notifyObservers(choice);
         }
 
 
@@ -50,9 +48,19 @@ public class CLIview /*implements Serializable*/ extends Observable<Choice> impl
             try {
                 return Choice.valueOf(input);
             } catch(IllegalArgumentException e){
-                System.err.println("Invalid choice. Please retake.");
+                System.err.println("Invalid choice: " + input+  " Please retake.");
             }
         }
     }
+
+    @Override
+    public void update(TurnView model, Turn.Event arg) {
+        switch (arg) {
+            case CPU_CHOICE -> showChoices(model);
+            case OUTCOME -> showOutcome(model);
+            default -> System.err.println("Ignoring event from " + model + ": " + arg);
+        }
+    }
+
 }
 
