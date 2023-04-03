@@ -39,7 +39,7 @@ import java.util.Vector;
  * @implNote
  * This class is a Generic Implementation of the deprecated {@link java.util.Observable}.
  */
-public class Observable<Event extends Enum<Event>> {
+public abstract class Observable<Event extends Enum<Event>> {
     private boolean changed = false;
     private Vector<Observer<? extends Observable<Event>, Event>> obs;
 
@@ -190,4 +190,6 @@ public class Observable<Event extends Enum<Event>> {
     public synchronized int countObservers() {
         return obs.size();
     }
+
+    public abstract void update(TurnView model, Turn.Event arg);
 }
