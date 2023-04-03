@@ -10,7 +10,7 @@ public class Lobby {
     private int maxPlayers;
     private List<Player> players;
 
-    private List<Game> gameList;
+    private List<Game> gamesList;
 
     public Lobby(int maxPlayers){
         this.maxPlayers=maxPlayers;
