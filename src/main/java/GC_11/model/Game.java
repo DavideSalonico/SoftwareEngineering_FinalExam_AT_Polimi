@@ -21,6 +21,14 @@ public class Game extends Observable {
     int pointsCommonGoalCard2;
 
 
+    public boolean isEndGame() {
+        return endGame;
+    }
+
+    public void setEndGame(boolean endGame) {
+        this.endGame = endGame;
+    }
+
     // Passare le coordinate proibite come parametro a game invece che far usare il reader a board
     public Game(Lobby lobby){
         this.players=lobby.getPlayers();
