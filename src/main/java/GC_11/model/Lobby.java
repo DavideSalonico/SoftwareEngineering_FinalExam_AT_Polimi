@@ -10,6 +10,8 @@ public class Lobby {
     private int maxPlayers;
     private List<Player> players;
 
+    private List<String> playersNames;
+
     private List<Game> gamesList;
 
     public Lobby(int maxPlayers){
