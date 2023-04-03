@@ -53,6 +53,8 @@ public class CLIview /*implements Serializable*/ extends Observable<Choice> impl
         }
     }
 
+    /*
+    Da implementare quando vuglio essere notificato dal modello e mostrare il cambiamento nella view
     @Override
     public void update(TurnView model, Turn.Event arg) {
         switch (arg) {
@@ -61,6 +63,6 @@ public class CLIview /*implements Serializable*/ extends Observable<Choice> impl
             default -> System.err.println("Ignoring event from " + model + ": " + arg);
         }
     }
-
+    */
 }
 
