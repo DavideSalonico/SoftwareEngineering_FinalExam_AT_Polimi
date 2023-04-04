@@ -100,4 +100,8 @@ public class Player {
     public Shelf getShelf() {
         return shelf;
     }
+
+    public boolean equals(Player currentPlayer) {
+        return (this.nickname.equals(currentPlayer.getNickname()) && this.points == currentPlayer.getPoints());
+    }
 }
