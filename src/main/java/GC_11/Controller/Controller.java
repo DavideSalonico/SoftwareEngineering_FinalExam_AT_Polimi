@@ -61,7 +61,7 @@ public class Controller implements Observer {
     public void update(CLIview view, Choice arg) throws IllegalMoveException {
 
         if (!view.getPlayer().equals(game.getCurrentPlayer())){
-            throw new IllegalMoveException("It's not your Turn");
+            throw new IllegalMoveException("It's not your Turn! Wait, it's " + game.getCurrentPlayer()+ "'s turn");
         }
 
         switch (view.getPlayerChoice()){
@@ -70,4 +70,11 @@ public class Controller implements Observer {
     }
 
 
+    /**
+     * Messa solo perchè da problemi la classe
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
 }

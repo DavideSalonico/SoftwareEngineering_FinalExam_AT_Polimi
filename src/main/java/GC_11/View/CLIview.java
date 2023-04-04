@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class CLIview /*implements Serializable*/ extends Observable<Event> implements Runnable  {
+public class CLIview /*implements Serializable*/ extends Observable implements Runnable  {
 
     // private final Choice controllerChoice;
      private Choice playerChoice;
