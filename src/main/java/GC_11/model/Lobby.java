@@ -5,10 +5,9 @@ import java.util.List;
 
 public class Lobby {
 
+    private final int lobbyID;
     private static int lobbyNumber;
-    private int lobbyId;
     private int maxPlayers;
-    private List<Player> players;
 
     private List<String> playersNames;
 
@@ -16,50 +15,50 @@ public class Lobby {
 
     public Lobby(int maxPlayers){
         this.maxPlayers=maxPlayers;
-        players = new ArrayList<Player>();
-        this.lobbyId = lobbyNumber;
-        this.lobbyNumber++;
+        playersNames = new ArrayList<String>();
+        this.lobbyID=lobbyNumber;
+        lobbyNumber++;
     }
 
-    public Lobby(){
-        this.lobbyId = 0;
-        this.maxPlayers = 4;
-        this.players = new ArrayList<Player>();
-        for(int i = 0; i < maxPlayers; i++){
-            this.players.add(new Player());
+    public boolean nameAlreadyTaken(String playerName){
+        return playersNames.contains(playerName);
+    }
+
+    public synchronized void addPlayer(String playerName){
+        if (playersNames.size()< maxPlayers && !playersNames.contains(playerName)){
+            playersNames.add(playerName);
         }
     }
 
-    public synchronized void addPlayer(Player player){
-        if (players.size()< maxPlayers && !players.contains(player)){
-            players.add(player);
-        }
-    }
-
-    public void removePlayer(Player player){
-        if (players.contains(player)){
-            players.remove(player);
+    public void removePlayer(String playerName){
+        if (playersNames.contains(playerName)){
+            playersNames.remove(playerName);
         }
     }
 
     public boolean isFull(){
-        return (players.size()==maxPlayers);
+        return (playersNames.size()==maxPlayers);
     }
 
-    public boolean hasPlayer(Player player){
-        return (players.contains(player));
+    public boolean hasPlayer(String playerName){
+        return (playersNames.contains(playerName));
     }
 
-    public List<Player> getPlayers() {
-        return players;
+    public List<String> getPlayers() {
+        return playersNames;
     }
 
-    public static int getLobbyNumber() {
-        return lobbyNumber;
+    public int getLobbyID() {
+        return lobbyID;
     }
 
     public int getMaxPlayers() {
         return maxPlayers;
+    }
+
+    public void startGame(){
+        if(playersNames.size()==maxPlayers)
+            this.gamesList.add(new Game());
     }
 
 }
