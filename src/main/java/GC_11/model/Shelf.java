@@ -1,8 +1,8 @@
 package GC_11.model;
 
 import java.util.List;
-import GC_11.exceptions.columnIndexOutOfBoundsException;
-import GC_11.exceptions.notEnoughFreeSpacesException;
+import GC_11.exceptions.ColumnIndexOutOfBoundsException;
+import GC_11.exceptions.NotEnoughFreeSpacesException;
 
 public class Shelf {
 
@@ -37,17 +37,17 @@ public class Shelf {
      * This method permit to insert a list of Tiles in the desired column
      * @param tileList is the list of Tiles to be inserted
      * @param column is the number of the column (starting from 0)
-     * @throws notEnoughFreeSpacesException when there is not enough space in the selected column to insert the tiles
-     * @throws columnIndexOutOfBoundsException when the column index is out of bound
+     * @throws NotEnoughFreeSpacesException when there is not enough space in the selected column to insert the tiles
+     * @throws ColumnIndexOutOfBoundsException when the column index is out of bound
      */
-    public void addTiles(List<Tile> tileList, int column) throws notEnoughFreeSpacesException, columnIndexOutOfBoundsException {
+    public void addTiles(List<Tile> tileList, int column) throws NotEnoughFreeSpacesException, ColumnIndexOutOfBoundsException {
         if(column <0 || column >=5){
-            throw new columnIndexOutOfBoundsException(column);
+            throw new ColumnIndexOutOfBoundsException(column);
         }
         else
         {
             if(freeSpaces(column) < tileList.size()){
-                throw new notEnoughFreeSpacesException(column, tileList.size());
+                throw new NotEnoughFreeSpacesException(column, tileList.size());
             }
             else {
                 int firstFreeSpace = freeSpaces(column)-1;
@@ -64,12 +64,12 @@ public class Shelf {
      * @param line indicates the line to check
      * @param column indicates the column ti check
      * @return the tile in the position required
-     * @throws columnIndexOutOfBoundsException when the position required
+     * @throws ColumnIndexOutOfBoundsException when the position required
      * is outside the matrix of the shelf
      */
-    public Tile getTile(int line, int column) throws columnIndexOutOfBoundsException{
+    public Tile getTile(int line, int column) throws ColumnIndexOutOfBoundsException {
         if (line<0 || line>=6 || column<0 || column>=5){
-            throw new columnIndexOutOfBoundsException(-1);
+            throw new ColumnIndexOutOfBoundsException(-1);
         }
         else{
             return myShelf[line][column];

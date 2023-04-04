@@ -1,14 +1,11 @@
 package GC_11;
 
-import GC_11.Controller.JsonReader;
 import GC_11.model.PersonalGoalCard;
 import GC_11.model.Triplet;
-import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Random;
 
 import static junit.framework.Assert.assertEquals;
 

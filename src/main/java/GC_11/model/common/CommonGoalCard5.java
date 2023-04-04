@@ -1,6 +1,6 @@
 package GC_11.model.common;
 
-import GC_11.exceptions.columnIndexOutOfBoundsException;
+import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.model.Player;
 import GC_11.model.TileColor;
 
@@ -9,7 +9,7 @@ public class CommonGoalCard5 extends CommonGoalCard{
     private final String text = "Four tiles of the same type in the four corners of the bookshelf.";
 
     @Override
-    public void check(Player player) throws columnIndexOutOfBoundsException {
+    public void check(Player player) throws ColumnIndexOutOfBoundsException {
         TileColor color;
         color = player.getShelf().getTile(5,0).getColor();
         if(color != TileColor.EMPTY &&

@@ -1,7 +1,7 @@
 package GC_11;
 
 
-import GC_11.Network.Lobby;
+import GC_11.network.Lobby;
 import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.exceptions.PlayerNotInListException;

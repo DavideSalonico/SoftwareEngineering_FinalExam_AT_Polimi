@@ -1,16 +1,14 @@
 package GC_11;
 
-import GC_11.exceptions.columnIndexOutOfBoundsException;
-import GC_11.exceptions.notEnoughFreeSpacesException;
+import GC_11.exceptions.ColumnIndexOutOfBoundsException;
+import GC_11.exceptions.NotEnoughFreeSpacesException;
 import GC_11.model.Shelf;
 import GC_11.model.Tile;
 import GC_11.model.TileColor;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.awt.desktop.SystemEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +28,7 @@ public class ShelfTest {
 
     @DisplayName("startEmpty test")
     @Test
-    public void startEmpty() throws columnIndexOutOfBoundsException {
+    public void startEmpty() throws ColumnIndexOutOfBoundsException {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
                 assertEquals(shelf.getTile(i, j).getColor(), TileColor.EMPTY);
@@ -49,9 +47,9 @@ public class ShelfTest {
         for (int i = 0; i < 2; i++) {
             try {
                 shelf.addTiles(tiles, 0);
-            } catch (notEnoughFreeSpacesException e) {
+            } catch (NotEnoughFreeSpacesException e) {
                 throw new RuntimeException(e);
-            } catch (columnIndexOutOfBoundsException e) {
+            } catch (ColumnIndexOutOfBoundsException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -59,8 +57,8 @@ public class ShelfTest {
         try {
             shelf.addTiles(tiles, 0);
             fail("addTiles didn't throw Exception when it was supposed to");
-        } catch (notEnoughFreeSpacesException expectedException) {
-        } catch (columnIndexOutOfBoundsException e){
+        } catch (NotEnoughFreeSpacesException expectedException) {
+        } catch (ColumnIndexOutOfBoundsException e){
             fail("addTiles threw up thw wrong exception");
         }
     }
@@ -74,15 +72,15 @@ public class ShelfTest {
         try{
             shelf.addTiles(tiles, -1);
             fail("addTiles didn't throw Exception when it was supposed to");
-        } catch (notEnoughFreeSpacesException e) {
+        } catch (NotEnoughFreeSpacesException e) {
             fail("addTiles threw up thw wrong exception");
-        } catch (columnIndexOutOfBoundsException e) {
+        } catch (ColumnIndexOutOfBoundsException e) {
         }
     }
 
     @DisplayName("isFull test")
     @Test
-    public void fillAll() throws notEnoughFreeSpacesException, columnIndexOutOfBoundsException {
+    public void fillAll() throws NotEnoughFreeSpacesException, ColumnIndexOutOfBoundsException {
         for(int i=0; i < 6; i++){
             for(int j=0; j < 5; j++){
                 System.out.println("i = " + i + " y = " + j);

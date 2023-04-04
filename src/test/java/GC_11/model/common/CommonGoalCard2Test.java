@@ -1,7 +1,7 @@
 package GC_11.model.common;
 
-import GC_11.exceptions.columnIndexOutOfBoundsException;
-import GC_11.exceptions.notEnoughFreeSpacesException;
+import GC_11.exceptions.ColumnIndexOutOfBoundsException;
+import GC_11.exceptions.NotEnoughFreeSpacesException;
 import GC_11.model.Player;
 import GC_11.model.Tile;
 import GC_11.model.TileColor;
@@ -38,7 +38,7 @@ class CommonGoalCard2Test {
      List<Tile> whites2 = Arrays.asList(white,white);
 
     @Test
-    void checkTestWrong() throws columnIndexOutOfBoundsException, notEnoughFreeSpacesException {
+    void checkTestWrong() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
 
         player.getShelf().addTiles(blues,0);
@@ -63,7 +63,7 @@ class CommonGoalCard2Test {
     }
 
     @Test
-    void checkTestAllVoid() throws columnIndexOutOfBoundsException, notEnoughFreeSpacesException {
+    void checkTestAllVoid() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
         /*
         player.getShelf().addTiles(blues,0);
@@ -88,7 +88,7 @@ class CommonGoalCard2Test {
     }
 
     @Test
-    void checkTestDiagonaleSinistraAlta() throws columnIndexOutOfBoundsException, notEnoughFreeSpacesException {
+    void checkTestDiagonaleSinistraAlta() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
         player.getShelf().addTiles(blues,0);
         player.getShelf().addTiles(oranges,0);
@@ -113,7 +113,7 @@ class CommonGoalCard2Test {
     }
 
     @Test
-    void checkTestDiagonaleSinistraBassa() throws columnIndexOutOfBoundsException, notEnoughFreeSpacesException {
+    void checkTestDiagonaleSinistraBassa() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
         player.getShelf().addTiles(blues,0);
         player.getShelf().addTiles(oranges,0);
@@ -138,7 +138,7 @@ class CommonGoalCard2Test {
     }
 
     @Test
-    void checkTestDiagonaleDestraAlta() throws columnIndexOutOfBoundsException, notEnoughFreeSpacesException {
+    void checkTestDiagonaleDestraAlta() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
         player.getShelf().addTiles(blues,0);
         player.getShelf().addTiles(oranges,0);
@@ -163,7 +163,7 @@ class CommonGoalCard2Test {
     }
 
     @Test
-    void checkTestDiagonaleDestraBassa() throws columnIndexOutOfBoundsException, notEnoughFreeSpacesException {
+    void checkTestDiagonaleDestraBassa() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
         player.getShelf().addTiles(blues,0);
         player.getShelf().addTiles(oranges,0);

@@ -1,4 +1,4 @@
-package GC_11.View;
+package GC_11.view;
 
 import GC_11.util.Observer;
 import java.util.Observable;
