@@ -10,7 +10,7 @@ public class Tile {
     private TileColor color;
     private int id;
 
-    //private static Random RANDOM = new Random(3);
+    private static Random RANDOM = new Random();
     public Tile(){
         this.color = TileColor.randomColor();
     }
@@ -21,7 +21,7 @@ public class Tile {
      */
     public Tile(Tile t){
         this.color = t.color;
-        this.id = t.id;
+        this.id = RANDOM.nextInt(3);
     }
     public Tile(TileColor color){
         this.color=color;
