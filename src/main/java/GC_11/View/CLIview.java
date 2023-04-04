@@ -25,13 +25,12 @@ public class CLIview /*implements Serializable*/ extends Observable implements R
         this.player = player;
     }
     public void setPlayerChoice(Choice c){
-        this.playerChoice= c;
+        this.playerChoice = c;
     }
 
     @Override
     public void run(){
         while(true){
-
             System.out.println("--- NEW TURN ---");
             Choice choice = getPlayerChoice();
             setChanged();
@@ -59,6 +58,7 @@ public class CLIview /*implements Serializable*/ extends Observable implements R
             }
         }
     }
+
 
     /*
     Da implementare quando voglio essere notificato dal modello e mostrare il cambiamento nella view
