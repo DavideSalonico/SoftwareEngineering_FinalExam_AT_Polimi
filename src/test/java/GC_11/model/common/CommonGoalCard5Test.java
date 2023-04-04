@@ -48,7 +48,9 @@ class CommonGoalCard5Test {
         player.getShelf().addTiles(oranges,4);
 
         System.out.println(player.getPoints());
+        assertEquals(player.getPoints(),0);
         carta.check(player);
+        assertEquals(player.getPoints(),8);
         System.out.println(player.getPoints());
 
     }
@@ -71,7 +73,9 @@ class CommonGoalCard5Test {
 
         System.out.println("inizio test allVoid");
         System.out.println(player.getPoints());
+        assertEquals(player.getPoints(),0);
         carta.check(player);
+        assertEquals(player.getPoints(),0);
         System.out.println(player.getPoints());
         System.out.println("fine test allvoid");
     }
@@ -94,7 +98,9 @@ class CommonGoalCard5Test {
 
         System.out.println("inizio test wrong");
         System.out.println(player.getPoints());
+        assertEquals(player.getPoints(),0);
         carta.check(player);
+        assertEquals(player.getPoints(),0);
         System.out.println(player.getPoints());
         System.out.println("fine test wrong");
     }

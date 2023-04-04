@@ -55,7 +55,9 @@ class CommonGoalCard2Test {
 
         System.out.println("inizio test wrong");
         System.out.println(player.getPoints());
+        assertEquals(player.getPoints(),0);
         carta.check(player);
+        assertEquals(player.getPoints(),0);
         System.out.println(player.getPoints());
         System.out.println("fine test wrong");
     }
@@ -78,7 +80,9 @@ class CommonGoalCard2Test {
 
         System.out.println("inizio test allVoid");
         System.out.println(player.getPoints());
+        assertEquals(player.getPoints(),0);
         carta.check(player);
+        assertEquals(player.getPoints(),0);
         System.out.println(player.getPoints());
         System.out.println("fine test allvoid");
     }
@@ -100,7 +104,9 @@ class CommonGoalCard2Test {
 
         System.out.println("inizio test diagomale alta sinistra");
                 System.out.println(player.getPoints());
+                assertEquals(player.getPoints(),0);
                 carta.check(player);
+                assertEquals(player.getPoints(),8);
                 System.out.println(player.getPoints());
                 System.out.println("fine test diagonale alta sinistra");
 
@@ -123,7 +129,9 @@ class CommonGoalCard2Test {
 
         System.out.println("inizio test diagomale bassa sinistra");
         System.out.println(player.getPoints());
+        assertEquals(player.getPoints(),0);
         carta.check(player);
+        assertEquals(player.getPoints(),8);
         System.out.println(player.getPoints());
         System.out.println("fine test diagonale bassa sinistra");
 
@@ -146,7 +154,9 @@ class CommonGoalCard2Test {
 
         System.out.println("inizio test diagomale alta destra");
         System.out.println(player.getPoints());
+        assertEquals(player.getPoints(),0);
         carta.check(player);
+        assertEquals(player.getPoints(),8);
         System.out.println(player.getPoints());
         System.out.println("fine test diagonale alta destra");
 
@@ -169,7 +179,9 @@ class CommonGoalCard2Test {
 
         System.out.println("inizio test diagomale bassa destra");
         System.out.println(player.getPoints());
+        assertEquals(player.getPoints(),0);
         carta.check(player);
+        assertEquals(player.getPoints(),8);
         System.out.println(player.getPoints());
         System.out.println("fine test diagonale bassa destra");
 
