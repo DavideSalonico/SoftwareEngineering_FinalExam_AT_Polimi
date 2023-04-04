@@ -89,7 +89,7 @@ public class Shelf {
     //Il test non passa
 
     public void print(){
-        for(int i = 6; i > 0; i--){
+        for(int i = 0; i < 6; i++){
             for(int j = 0; j < 5; j++){
                 System.out.print(myShelf[i][j].getColor() + "\t");
             }

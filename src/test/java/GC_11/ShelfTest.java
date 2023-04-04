@@ -92,8 +92,4 @@ public class ShelfTest {
         }
         assertTrue(shelf.isFull());
     }
-
-    public void tryPrint(){
-        shelf.print();
-    }
 }
