@@ -1,6 +1,9 @@
-package GC_11.model;
+package GC_11.Network;
 
 import GC_11.exceptions.ExceededNumberOfPlayersException;
+import GC_11.exceptions.NameAlreadyTakenException;
+import GC_11.exceptions.PlayerNotInListException;
+import GC_11.model.Game;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +13,7 @@ public class Lobby {
     private final int lobbyID;
     private static int lobbyNumber;
     private int maxPlayers;
+    String fisrtPlayer;
 
     private List<String> playersNames;
 
@@ -21,34 +25,41 @@ public class Lobby {
         lobbyNumber++;
     }
 
-    public boolean nameAlreadyTaken(String playerName){
+    public synchronized boolean nameAlreadyTaken(String playerName){
         return playersNames.contains(playerName);
     }
 
-    public synchronized void addPlayer(String playerName) throws ExceededNumberOfPlayersException{
+    public synchronized void addPlayer(String playerName) throws ExceededNumberOfPlayersException, NameAlreadyTakenException{
         if (playersNames.size()< maxPlayers && !playersNames.contains(playerName)){
             playersNames.add(playerName);
         }
         else if(playersNames.size() == 4){
             throw new ExceededNumberOfPlayersException();
         }
-    }
-
-    public void removePlayer(String playerName){
-        if (playersNames.contains(playerName)){
-            playersNames.remove(playerName);
+        else if(this.nameAlreadyTaken(playerName))
+        {
+            throw new NameAlreadyTakenException(playerName);
         }
     }
 
-    public boolean isFull(){
+    public synchronized void removePlayer(String playerName) throws PlayerNotInListException{
+        if (playersNames.contains(playerName)){
+            playersNames.remove(playerName);
+        }
+        else {
+            throw new PlayerNotInListException(playerName);
+        }
+    }
+
+    public synchronized boolean isFull(){
         return (playersNames.size()==maxPlayers);
     }
 
-    public boolean hasPlayer(String playerName){
+    public synchronized boolean hasPlayer(String playerName){
         return (playersNames.contains(playerName));
     }
 
-    public List<String> getPlayers() {
+    public synchronized List<String> getPlayers() {
         return playersNames;
     }
 
@@ -66,7 +77,7 @@ public class Lobby {
     }
 
     // TODO LOBBY by Mattia
-    // lanciare l'excpetion in addPlayer se eccede il numero massimo o non può inserire il player
+    // fatto - lanciare l'excpetion in addPlayer se eccede il numero massimo o non può inserire il player
     // Il primo giocatore è il capo del gruppo, e sarà l'unico a poter avviare il gioco, gestire la questione dei permessi
     // Rendere la classe observable, fare anche una view generale condivisa per tutti i player (observer), capire come
     // sarà la view, che dovrà far vedere le stesse cose a tutti ma solo il primo giocatore ha i permessi (ricorda che i giocatori
