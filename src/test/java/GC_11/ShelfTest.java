@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.awt.desktop.SystemEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,11 +83,14 @@ public class ShelfTest {
     @DisplayName("isFull test")
     @Test
     public void fillAll() throws notEnoughFreeSpacesException, columnIndexOutOfBoundsException {
-        for(int i=0; i < 5; i++){
-            for(int j=0; j < 6; j++){
+        for(int i=0; i < 6; i++){
+            for(int j=0; j < 5; j++){
+                System.out.println("i = " + i + " y = " + j);
                 List<Tile> tmpTile = new ArrayList<Tile>();
                 tmpTile.add(new Tile());
-                shelf.addTiles(tmpTile, i);
+                shelf.addTiles(tmpTile, j);
+                shelf.print();
+                System.out.println();
                 assertFalse(shelf.isFull());
             }
         }
