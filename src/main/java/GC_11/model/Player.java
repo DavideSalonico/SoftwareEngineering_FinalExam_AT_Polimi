@@ -1,6 +1,7 @@
 package GC_11.model;
 
 import GC_11.exceptions.columnIndexOutOfBoundsException;
+import GC_11.model.common.CommonGoalCard;
 
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class Player {
 
     }
 
-    private int caluclatePersonalPoints() throws columnIndexOutOfBoundsException {
+    private int calculatePersonalPoints() throws columnIndexOutOfBoundsException {
         int totalRight = 0;
         // For every goal in the personal goal card check if matches with the personal shelf
         for (Triplet t : personalGoal.getGoalList()){
@@ -97,10 +98,6 @@ public class Player {
                 return 0;
 
         }
-    }
-
-    private void calculateCommonPoints(){
-
     }
 
     public Shelf getShelf() {
