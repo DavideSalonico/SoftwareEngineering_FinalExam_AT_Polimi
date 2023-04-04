@@ -84,7 +84,7 @@ class CommonGoalCard4Test {
         carta.check(player);
         assertEquals(player.getPoints(),0);
         System.out.println(player.getPoints());
-        System.out.println("fine test 2 all void");
+        System.out.println("fine test all void");
     }
 
     @Test
