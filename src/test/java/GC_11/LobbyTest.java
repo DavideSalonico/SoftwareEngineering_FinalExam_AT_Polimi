@@ -2,6 +2,9 @@ package GC_11;
 
 
 import GC_11.Network.Lobby;
+import GC_11.exceptions.ExceededNumberOfPlayersException;
+import GC_11.exceptions.NameAlreadyTakenException;
+import GC_11.exceptions.PlayerNotInListException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +26,7 @@ public class LobbyTest {
     }
 
     @Test
-    public void testRemovePlayer(){
+    public void testRemovePlayer() throws ExceededNumberOfPlayersException, NameAlreadyTakenException, PlayerNotInListException {
         Lobby lobby=new Lobby();
         lobby.addPlayer(p1);
         lobby.addPlayer(p2);
@@ -35,7 +38,7 @@ public class LobbyTest {
 
 
     @Test
-    public void testHasPlayer(){
+    public void testHasPlayer() throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
         Lobby lobby = new Lobby();
         lobby.addPlayer(p1);
         lobby.addPlayer(p2);
@@ -45,7 +48,7 @@ public class LobbyTest {
     }
 
     @Test
-    public void testNumOfPlayers(){
+    public void testNumOfPlayers() throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
         Lobby lobby = new Lobby();
         String p1 = "Marco";
         lobby.addPlayer(p1);
@@ -54,7 +57,7 @@ public class LobbyTest {
     }
 
     @Test
-    public void testNoDuplicateInPlayerList(){
+    public void testNoDuplicateInPlayerList() throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
         Lobby lobby = new Lobby();
         lobby.addPlayer(p1);
         lobby.addPlayer(p1);
@@ -70,7 +73,7 @@ public class LobbyTest {
     }
 
     @Test
-    public void checkIsFull(){
+    public void checkIsFull() throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
         Lobby lobby = new Lobby();
         lobby.addPlayer(p1);
         assertEquals(lobby.getMaxPlayers()==lobby.getPlayers().size(), lobby.isFull());
@@ -79,7 +82,7 @@ public class LobbyTest {
     }
 
     @Test
-    public void testNameAlreadyTaken(){
+    public void testNameAlreadyTaken() throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
         Lobby lobby = new Lobby();
         lobby.addPlayer(p1);
         lobby.addPlayer(p4);
