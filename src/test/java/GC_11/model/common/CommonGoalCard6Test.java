@@ -132,7 +132,7 @@ class CommonGoalCard6Test {
         System.out.println(player.getPoints());
         assertEquals(player.getPoints(),0);
         carta.check(player);
-        assertEquals(player.getPoints(),8);
+        assertEquals(player.getPoints(),0);
         System.out.println(player.getPoints());
         System.out.println("fine test few colors");
     }
