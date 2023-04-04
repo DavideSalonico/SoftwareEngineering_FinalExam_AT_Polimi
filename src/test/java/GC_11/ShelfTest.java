@@ -78,4 +78,18 @@ public class ShelfTest {
         } catch (columnIndexOutOfBoundsException e) {
         }
     }
+
+    @DisplayName("isFull test")
+    @Test
+    public void fillAll() throws notEnoughFreeSpacesException, columnIndexOutOfBoundsException {
+        for(int i=0; i < 5; i++){
+            for(int j=0; j < 6; j++){
+                List<Tile> tmpTile = new ArrayList<Tile>();
+                tmpTile.add(new Tile());
+                shelf.addTiles(tmpTile, i);
+                assertFalse(shelf.isFull());
+            }
+        }
+        assertTrue(shelf.isFull());
+    }
 }
