@@ -1,6 +1,7 @@
 package GC_11.model;
 
 import GC_11.exceptions.columnIndexOutOfBoundsException;
+import GC_11.model.common.CommonGoalCard;
 
 import java.util.List;
 
@@ -14,7 +15,6 @@ public class Player {
     private PersonalGoalCard personalGoal;
     private List<Integer> ListCommonGoals;
     private Shelf shelf;
-
 
 
     public Player(String nickname, PersonalGoalCard personalCard){
@@ -76,8 +76,8 @@ public class Player {
      * @param tilesDrawn is the list of tiles that the player drawns from the board
      */
 
-    public void setTiles(List<Tile> tilesDrawn){
-        this.tiles=tilesDrawn;
+    public void setTiles(List<Tile> tilesDrawn) {
+        this.tiles = tilesDrawn;
     }
 
     /**

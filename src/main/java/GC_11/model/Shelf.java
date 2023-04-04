@@ -82,7 +82,7 @@ public class Shelf {
      */
     public boolean isFull(){
         for(int i=0; i < 5; i++){
-            if(myShelf[5][i].getColor().equals(TileColor.EMPTY)) return false;
+            if(myShelf[0][i].getColor().equals(TileColor.EMPTY)) return false;
         }
         return true;
     }

@@ -6,6 +6,7 @@ import GC_11.util.Observable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 public class Game extends Observable {
@@ -16,10 +17,6 @@ public class Game extends Observable {
     private boolean endGame;
     private Player endPlayer;
     private Board board;
-
-    int pointsCommonGoalCard1;
-    int pointsCommonGoalCard2;
-
 
     public boolean isEndGame() {
         return endGame;
@@ -33,8 +30,6 @@ public class Game extends Observable {
     public Game(List<Player> players){
         this.board = new Board(JsonReader.readCoordinate(players.size()));
         this.endGame=false;
-        this.pointsCommonGoalCard1=8;
-        this.pointsCommonGoalCard2=8;
 
     }
 
@@ -49,6 +44,12 @@ public class Game extends Observable {
         this.endGame = false;
         this.board = new Board();
         this.endGame = false;
+        Random random = new Random();
+        int tmp1 = random.nextInt(0, 11);
+        int tmp2 = random.nextInt(0, 11);
+        while(tmp1 == tmp2) {
+            tmp2 = random.nextInt(0, 11);
+        }
     }
 
     public Game(Set<String> playersNames){
@@ -57,6 +58,19 @@ public class Game extends Observable {
         for(String s : playersNames){
             players.add(new Player(s));
         }
+    }
+
+    public Game(List<String> playerNames){
+
+        this.players = new ArrayList<Player>();
+        for(int i=0; i<playerNames.size(); i++){
+            this.players.add(new Player(playerNames.get(i)));
+        }
+        this.currentPlayer = this.players.get(0);
+        this.endGame = false;
+        this.commonGoals = new ArrayList<CommonGoalCard>();
+        this.board = new Board();
+
     }
 
     public void run(){
@@ -104,12 +118,16 @@ public class Game extends Observable {
         return board;
     }
 
+    /**
+     * Game launches this method every time the currentPlayer is about to end his Turn, if the player haven't already
+     * completed the Common Goal it invokes commonGoalCard.givePoints() method
+     */
     private void calculateCommonPoints(){
+        if(!commonGoals.get(0).getWinningPlayers().contains(currentPlayer))
+            commonGoals.get(0).givePoints(currentPlayer);
 
-    }
-
-    public void givePoints(Player p){
-
+        if(!commonGoals.get(1).getWinningPlayers().contains(currentPlayer))
+            commonGoals.get(1).givePoints(currentPlayer);
     }
 
 }
