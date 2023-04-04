@@ -6,6 +6,7 @@ import GC_11.util.Observable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class Game extends Observable {
 
@@ -48,6 +49,14 @@ public class Game extends Observable {
         this.endGame = false;
         this.board = new Board();
         this.endGame = false;
+    }
+
+    public Game(Set<String> playersNames){
+        // Create the players with the corresponding name
+
+        for(String s : playersNames){
+            players.add(new Player(s));
+        }
     }
 
     public void run(){

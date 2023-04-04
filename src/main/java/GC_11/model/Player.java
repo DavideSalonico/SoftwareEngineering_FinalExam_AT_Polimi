@@ -23,6 +23,12 @@ public class Player {
         this.personalGoal = personalCard;
     }
 
+    public Player(String nickname){
+        this.nickname = nickname;
+        this.points=0;
+        this.shelf=new Shelf();
+    }
+
     public Player(){
         this.nickname = "nickname";
         this.points = 0;

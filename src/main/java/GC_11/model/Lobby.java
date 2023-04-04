@@ -56,9 +56,9 @@ public class Lobby {
         return maxPlayers;
     }
 
-    public void startGame(){
-        if(playersNames.size()==maxPlayers)
-            this.gamesList.add(new Game());
+    public void startGame(Game game){
+            // Notifica al controller di lanciare creare game e lanciare il gioco
+            this.gamesList.add(game);
     }
 
 }
