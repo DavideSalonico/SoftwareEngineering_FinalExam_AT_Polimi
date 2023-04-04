@@ -3,22 +3,34 @@ package GC_11.View;
 
 import GC_11.util.Observable;
 import GC_11.util.Choice;
+import GC_11.model.Player;
+import org.w3c.dom.events.Event;
 
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class CLIview /*implements Serializable*/ extends Observable<Choice> implements Runnable  {
+public class CLIview /*implements Serializable*/ extends Observable<Event> implements Runnable  {
 
     // private final Choice controllerChoice;
-    // private final Choice playerChoice;
+     private Choice playerChoice;
     // private final Outcome outcome;
+
+    /**
+     * Every view is bound at only one player, it helps to manage every input that the controller receive
+     */
+    private Player player;
+
+    public CLIview(Player player) {
+        this.player = player;
+    }
+    public void setPlayerChoice(Choice c){
+        this.playerChoice= c;
+    }
 
     @Override
     public void run(){
         while(true){
-
-            // Controllare tramite view che venga eseguita solo quando è il turno del giocatore giusto
 
             System.out.println("--- NEW TURN ---");
             Choice choice = getPlayerChoice();
@@ -27,12 +39,7 @@ public class CLIview /*implements Serializable*/ extends Observable<Choice> impl
         }
 
 
-        // Lancia la visuale e chiede ai player cosa vogliono fare
-
-
     }
-
-    // Capire come vogliamo costruire le classi di Choice e di Outcome (output)
 
     public Choice getPlayerChoice(){
 
@@ -48,13 +55,13 @@ public class CLIview /*implements Serializable*/ extends Observable<Choice> impl
             try {
                 return Choice.valueOf(input);
             } catch(IllegalArgumentException e){
-                System.err.println("Invalid choice: " + input+  " Please retake.");
+                System.err.println("Invalid choice: " + input +  " Please retake.");
             }
         }
     }
 
     /*
-    Da implementare quando vuglio essere notificato dal modello e mostrare il cambiamento nella view
+    Da implementare quando voglio essere notificato dal modello e mostrare il cambiamento nella view
     @Override
     public void update(TurnView model, Turn.Event arg) {
         switch (arg) {
@@ -64,5 +71,9 @@ public class CLIview /*implements Serializable*/ extends Observable<Choice> impl
         }
     }
     */
+
+    public Player getPlayer(){
+        return player;
+    }
 }
 
