@@ -55,7 +55,7 @@ public class Controller implements Observer {
     /**
      * Detect updates from view and computes through Controller
      * @param view     the observable object (CLIview)
-     * @param arg   is the 'Choice' = action taken by Player (enum object)
+    git * @param arg   is the 'Choice' = action taken by Player (enum object)
      */
     public void update(CLIview view, Choice arg) throws IllegalMoveException {
 
