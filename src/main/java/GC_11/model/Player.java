@@ -37,26 +37,54 @@ public class Player {
         this.personalGoal = new PersonalGoalCard();
     }
 
+    /**
+     *
+     * @return The nickname of the player
+     */
+
     public String getNickname(){
         return nickname;
     }
 
+    /**
+     *
+     * @return The points of the player
+     */
     public int getPoints(){
         return points;
     }
+
+    /**
+     *
+     * @param n is the number of points that is summed to the current number of points
+     */
 
     public void addPoints(int n){
         this.points+=n;
     }
 
+    /**
+     *
+     * @return the tiles the player is holding from the board and will be put in the shelf
+     */
     public List<Tile> getTiles() {
         return tiles;
     }
 
-    public void draw(){
+    /**
+     *
+     * @param tilesDrawn is the list of tiles that the player drawns from the board
+     */
 
-
+    public void setTiles(List<Tile> tilesDrawn) {
+        this.tiles = tilesDrawn;
     }
+
+    /**
+     *  This method insert the tiles in the column and by the order choosen by the player
+     * @param tilesOrder is the list of the tiles in the order that the player want to insert them into the shelf
+     * @param column is the columns in which the player want to insert the insert
+     */
 
     public void insertTiles(List<Tile> tilesOrder, int column) {
         if (column <0 || column > 5){
@@ -73,7 +101,13 @@ public class Player {
 
     }
 
-    private int calculatePersonalPoints() throws columnIndexOutOfBoundsException {
+    /**
+     * This method calculate the personal point checking how many personal goal are right
+     * @return the number of points according to the right number of tiles
+     * @throws columnIndexOutOfBoundsException
+     */
+
+    private int caluclatePersonalPoints() throws columnIndexOutOfBoundsException {
         int totalRight = 0;
         // For every goal in the personal goal card check if matches with the personal shelf
         for (Triplet t : personalGoal.getGoalList()){
@@ -100,6 +134,14 @@ public class Player {
         }
     }
 
+    private void calculateCommonPoints(){
+
+    }
+
+    /**
+     *
+     * @return the shelf of the player
+     */
     public Shelf getShelf() {
         return shelf;
     }

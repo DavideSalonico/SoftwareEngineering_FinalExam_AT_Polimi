@@ -1,7 +1,7 @@
 package GC_11.model;
 
 import GC_11.Controller.JsonReader;
-import GC_11.model.common.CommonGoalCard;
+import GC_11.model.common.*;
 import GC_11.util.Observable;
 
 import java.util.ArrayList;
@@ -18,48 +18,6 @@ public class Game extends Observable {
     private Player endPlayer;
     private Board board;
 
-    public boolean isEndGame() {
-        return endGame;
-    }
-
-    public void setEndGame(boolean endGame) {
-        this.endGame = endGame;
-    }
-
-    // Passare le coordinate proibite come parametro a game invece che far usare il reader a board
-    public Game(List<Player> players){
-        this.board = new Board(JsonReader.readCoordinate(players.size()));
-        this.endGame=false;
-
-    }
-
-    public Game(){
-        int n = 4;
-        this.players = new ArrayList<Player>();
-        for(int i=0; i < 4; i++){
-            this.players.add(new Player());
-        }
-
-        this.currentPlayer = players.get(0);
-        this.endGame = false;
-        this.board = new Board();
-        this.endGame = false;
-        Random random = new Random();
-        int tmp1 = random.nextInt(0, 11);
-        int tmp2 = random.nextInt(0, 11);
-        while(tmp1 == tmp2) {
-            tmp2 = random.nextInt(0, 11);
-        }
-    }
-
-    public Game(Set<String> playersNames){
-        // Create the players with the corresponding name
-
-        for(String s : playersNames){
-            players.add(new Player(s));
-        }
-    }
-
     public Game(List<String> playerNames){
 
         this.players = new ArrayList<Player>();
@@ -70,7 +28,41 @@ public class Game extends Observable {
         this.endGame = false;
         this.commonGoals = new ArrayList<CommonGoalCard>();
         this.board = new Board();
+        Random random = new Random();
+        int tmp1 = random.nextInt(0, 11);
+        int tmp2 = random.nextInt(0, 11);
+        while(tmp1 == tmp2) {
+            tmp2 = random.nextInt(0, 11);
+        }
+        this.commonGoals.add(loadCommon(tmp1));
+        this.commonGoals.add(loadCommon(tmp2));
+    }
 
+    private CommonGoalCard loadCommon(int i){
+        CommonGoalCard tmp = null;
+        switch (i){
+            case 0: tmp = new CommonGoalCard1();
+            case 1: tmp = new CommonGoalCard2();
+            case 2: tmp = new CommonGoalCard3();
+            case 3: tmp = new CommonGoalCard4();
+            case 4: tmp = new CommonGoalCard5();
+            case 5: tmp = new CommonGoalCard6();
+            case 6: tmp = new CommonGoalCard7();
+            case 7: tmp = new CommonGoalCard8();
+            case 8: tmp = new CommonGoalCard9();
+            case 9: tmp = new CommonGoalCard10();
+            case 10: tmp = new CommonGoalCard11();
+            case 11: tmp = new CommonGoalCard12();
+        }
+        return tmp;
+    }
+
+    public boolean isEndGame() {
+        return endGame;
+    }
+
+    public void setEndGame(boolean endGame) {
+        this.endGame = endGame;
     }
 
     public void run(){
