@@ -11,6 +11,8 @@ import GC_11.model.Tile;
 import GC_11.model.TileColor;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class CommonGoalCard1Test {
 
     CommonGoalCard1 carta = new CommonGoalCard1();
@@ -30,7 +32,7 @@ class CommonGoalCard1Test {
 
 
     @Test
-    void checkTest() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+    void checkTestGood() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
 
         player.getShelf().addTiles(blues,0);
@@ -44,9 +46,13 @@ class CommonGoalCard1Test {
         player.getShelf().addTiles(purples,4);
         player.getShelf().addTiles(whites,4);
 
+        System.out.println("inizio test good");
         System.out.println(player.getPoints());
+        assertEquals(player.getPoints(),0);
         carta.check(player);
+        assertEquals(player.getPoints(),8);
         System.out.println(player.getPoints());
+        System.out.println("fine test good");
 
     }
 

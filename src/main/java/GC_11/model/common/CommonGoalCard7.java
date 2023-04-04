@@ -76,7 +76,7 @@ public class CommonGoalCard7 extends CommonGoalCard{
 
     public int verify (Player player, int l, int c, TileColor color) throws ColumnIndexOutOfBoundsException {
 
-        if(l>5 || c>4){
+        if(l>5 || c>4 || l<0 || c<0){
             return 0;
         }
         else if(!getControlMatrix(l,c)){
