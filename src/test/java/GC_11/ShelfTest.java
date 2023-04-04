@@ -91,7 +91,7 @@ public class ShelfTest {
                 shelf.addTiles(tmpTile, j);
                 shelf.print();
                 System.out.println();
-                assertFalse(shelf.isFull());
+                if(!(i == 5 && j == 4)) assertFalse(shelf.isFull());
             }
         }
         assertTrue(shelf.isFull());
