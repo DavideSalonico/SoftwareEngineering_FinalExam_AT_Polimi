@@ -55,9 +55,8 @@ public class Controller implements Observer {
     /**
      * Detect updates from view and computes through Controller
      * @param view     the observable object (CLIview)
-     * @param arg   is the 'Choice' = action taken by Player (enum object)
+    git * @param arg   is the 'Choice' = action taken by Player (enum object)
      */
-    @Override
     public void update(CLIview view, Choice arg) throws IllegalMoveException {
 
         if (!view.getPlayer().equals(game.getCurrentPlayer())){
@@ -65,10 +64,37 @@ public class Controller implements Observer {
         }
 
         switch (view.getPlayerChoice()){
-
+            // Azioni da mettere dentro al client
+            //case INSERT_NAME
+            //case LOGIN
+            //case FIND_MATCH
+            case SEE_COMMONGOAL-> seeCommonGoal();
+            case SEE_PERSONALGOAL -> seePersonalGoal();
+            case SELECT_TILE -> selectTile();
+            case PICK_COLUMN-> pickColumn();
+            case CHOOSE_ORDER ->chooseOrder();
         }
     }
 
+    private void seeCommonGoal(){
+
+    }
+
+    private void seePersonalGoal(){
+
+    }
+
+    private void selectTile(){
+
+    }
+
+    private void pickColumn(){
+
+    }
+
+    private void chooseOrder(){
+
+    }
 
     /**
      * Messa solo perchè da problemi la classe

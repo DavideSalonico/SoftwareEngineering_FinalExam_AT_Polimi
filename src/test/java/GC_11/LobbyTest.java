@@ -1,7 +1,7 @@
 package GC_11;
 
 
-import GC_11.model.Lobby;
+import GC_11.Network.Lobby;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +24,7 @@ public class LobbyTest {
 
     @Test
     public void testRemovePlayer(){
-        Lobby lobby=new Lobby(3);
+        Lobby lobby=new Lobby();
         lobby.addPlayer(p1);
         lobby.addPlayer(p2);
         lobby.addPlayer(p3);
@@ -36,7 +36,7 @@ public class LobbyTest {
 
     @Test
     public void testHasPlayer(){
-        Lobby lobby = new Lobby(2);
+        Lobby lobby = new Lobby();
         lobby.addPlayer(p1);
         lobby.addPlayer(p2);
         assertEquals(lobby.getPlayers().contains(p1),lobby.hasPlayer(p1));
@@ -46,32 +46,32 @@ public class LobbyTest {
 
     @Test
     public void testNumOfPlayers(){
-        Lobby lobby = new Lobby(2);
+        Lobby lobby = new Lobby();
         String p1 = "Marco";
         lobby.addPlayer(p1);
         lobby.addPlayer(p2);
-        assertEquals(lobby.getPlayers().size(), lobby.getMaxPlayers());
+        assertEquals(2, lobby.getPlayers().size());
     }
 
     @Test
     public void testNoDuplicateInPlayerList(){
-        Lobby lobby = new Lobby(2);
+        Lobby lobby = new Lobby();
         lobby.addPlayer(p1);
         lobby.addPlayer(p1);
         assertEquals(1,lobby.getPlayers().size());
     }
 
     @Test void testGetLobbyNumber(){
-        Lobby lobby0 = new Lobby(2);
+        Lobby lobby0 = new Lobby();
         assertEquals(0,lobby0.getLobbyID());
-        Lobby lobby1 = new Lobby(2);
+        Lobby lobby1 = new Lobby();
         assertEquals(1,lobby1.getLobbyID());
 
     }
 
     @Test
     public void checkIsFull(){
-        Lobby lobby = new Lobby(2);
+        Lobby lobby = new Lobby();
         lobby.addPlayer(p1);
         assertEquals(lobby.getMaxPlayers()==lobby.getPlayers().size(), lobby.isFull());
         lobby.addPlayer(p2);
@@ -80,7 +80,7 @@ public class LobbyTest {
 
     @Test
     public void testNameAlreadyTaken(){
-        Lobby lobby = new Lobby(2);
+        Lobby lobby = new Lobby();
         lobby.addPlayer(p1);
         lobby.addPlayer(p4);
         assertTrue(lobby.nameAlreadyTaken(p4));
