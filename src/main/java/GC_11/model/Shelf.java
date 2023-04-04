@@ -47,7 +47,6 @@ public class Shelf {
         else
         {
             if(freeSpaces(column) < tileList.size()){
-
                 throw new notEnoughFreeSpacesException(column, tileList.size());
             }
             else {
@@ -86,5 +85,15 @@ public class Shelf {
             if(myShelf[5][i].getColor().equals(TileColor.EMPTY)) return false;
         }
         return true;
+    }
+    //Il test non passa
+
+    public void print(){
+        for(int i = 6; i > 0; i--){
+            for(int j = 0; j < 5; j++){
+                System.out.print(myShelf[i][j].getColor() + "\t");
+            }
+            System.out.println();
+        }
     }
 }
