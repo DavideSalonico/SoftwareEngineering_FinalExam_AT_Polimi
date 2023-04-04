@@ -57,6 +57,53 @@ class CommonGoalCard1Test {
     }
 
     @Test
-    void verifyTest() {
+    void checkTestAllVoid() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+
+
+        // player.getShelf().addTiles(blues,0);
+        // player.getShelf().addTiles(blues,0);
+        // player.getShelf().addTiles(cyans,1);
+        // player.getShelf().addTiles(cyans,1);
+        // player.getShelf().addTiles(greens,2);
+        // player.getShelf().addTiles(greens,2);
+        //  player.getShelf().addTiles(oranges,3);
+        //  player.getShelf().addTiles(oranges,3);
+        //  player.getShelf().addTiles(whites,4);
+        //  player.getShelf().addTiles(whites,4);
+
+
+        System.out.println("inizio test all void");
+        System.out.println(player.getPoints());
+        assertEquals(player.getPoints(),0);
+        carta.check(player);
+        assertEquals(player.getPoints(),0);
+        System.out.println(player.getPoints());
+        System.out.println("fine test all void");
     }
+
+    @Test
+    void checkTestSameColor() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+
+
+        player.getShelf().addTiles(blues,0);
+        player.getShelf().addTiles(blues,0);
+        player.getShelf().addTiles(blues,1);
+        player.getShelf().addTiles(blues,1);
+        player.getShelf().addTiles(blues,2);
+        player.getShelf().addTiles(blues,2);
+        player.getShelf().addTiles(blues,3);
+        player.getShelf().addTiles(blues,3);
+        player.getShelf().addTiles(blues,4);
+        player.getShelf().addTiles(blues,4);
+
+
+        System.out.println("inizio test same color");
+        System.out.println(player.getPoints());
+        assertEquals(player.getPoints(),0);
+        carta.check(player);
+        assertEquals(player.getPoints(),0);
+        System.out.println(player.getPoints());
+        System.out.println("fine test all same color");
+    }
+
 }
