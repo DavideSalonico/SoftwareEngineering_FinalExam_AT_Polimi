@@ -190,6 +190,4 @@ public abstract class Observable<Event extends Enum<Event>> {
     public synchronized int countObservers() {
         return obs.size();
     }
-
-    public abstract void update(TurnView model, Turn.Event arg);
 }

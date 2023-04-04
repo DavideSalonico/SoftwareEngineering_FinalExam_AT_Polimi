@@ -27,18 +27,13 @@ public class CommonGoalCard2 extends CommonGoalCard{
             int counter1=0;
             int counter2=0;
             for (int l=2-a; l<=5-a; l++){
-               // for (int c=1; c<=4; c++){
 
-                    System.out.println("conreollo nella poszione " + l+ " e " + (l-(1-a))+ " con " + player.getShelf().getTile(l,l-(1-a)).getColor() + " e " );
-                    System.out.println(player.getShelf().getTile(a,0).getColor());
                     if (player.getShelf().getTile(l,l-(1-a)).getColor() == player.getShelf().getTile(1-a,0).getColor() && !player.getShelf().getTile(1-a,0).getColor().equals( TileColor.EMPTY )){
                         counter1++;
                     }
-                System.out.println("conreollo nella poszione " + l+ " e " + (4-(l-(1-a))));
                     if (player.getShelf().getTile(l,4-(l-(1-a))).getColor() == player.getShelf().getTile(1-a,4).getColor() && !player.getShelf().getTile(1-a,4).getColor().equals(TileColor.EMPTY)){
                         counter2++;
                     }
-               // }
             }
             if (counter1==4 || counter2==4){
                 givePoints(player);

@@ -76,4 +76,15 @@ public class Shelf {
             return myShelf[line][column];
         }
     }
+
+    /**
+     * this method is used to check if a shelf is complete
+     * @return a boolean which indicates if all the Tiles in the Shelf are occupied
+     */
+    public boolean isFull(){
+        for(int i=0; i < 5; i++){
+            if(myShelf[5][i].getColor().equals(TileColor.EMPTY)) return false;
+        }
+        return true;
+    }
 }
