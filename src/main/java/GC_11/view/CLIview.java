@@ -1,10 +1,9 @@
 
-package GC_11.View;
+package GC_11.view;
 
 import GC_11.util.Observable;
 import GC_11.util.Choice;
 import GC_11.model.Player;
-import org.w3c.dom.events.Event;
 
 import java.util.Arrays;
 import java.util.Scanner;

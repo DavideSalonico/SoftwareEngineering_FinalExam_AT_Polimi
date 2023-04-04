@@ -1,6 +1,6 @@
 package GC_11.model.common;
 
-import GC_11.exceptions.columnIndexOutOfBoundsException;
+import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.model.Player;
 import GC_11.model.TileColor;
 
@@ -15,10 +15,10 @@ public class CommonGoalCard8 extends CommonGoalCard{
     /**
      * This method check if the common goal of the card has been achieved and in this case adds points to the player
      * @param player is the player to which you want to control the shelf
-     * @throws columnIndexOutOfBoundsException when trying to control a position outside the matrix
+     * @throws ColumnIndexOutOfBoundsException when trying to control a position outside the matrix
      */
     @Override
-    public void check(Player player) throws columnIndexOutOfBoundsException {
+    public void check(Player player) throws ColumnIndexOutOfBoundsException {
 
         int correctLines=0;
         for (int l=0; l<6; l++){

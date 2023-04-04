@@ -1,7 +1,6 @@
-package GC_11.Controller;
+package GC_11.controller;
 
-import GC_11.View.CLIview;
-import GC_11.View.View;
+import GC_11.view.CLIview;
 import GC_11.exceptions.IllegalMoveException;
 import GC_11.model.Game;
 import GC_11.util.Choice;

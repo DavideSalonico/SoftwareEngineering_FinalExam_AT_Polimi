@@ -1,20 +1,15 @@
 
 package GC_11.model.common;
 
-import java.io.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import GC_11.exceptions.columnIndexOutOfBoundsException;
-import GC_11.exceptions.notEnoughFreeSpacesException;
+import GC_11.exceptions.ColumnIndexOutOfBoundsException;
+import GC_11.exceptions.NotEnoughFreeSpacesException;
 import GC_11.model.Player;
 import GC_11.model.Tile;
 import GC_11.model.TileColor;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CommonGoalCard1Test {
 
@@ -35,7 +30,7 @@ class CommonGoalCard1Test {
 
 
     @Test
-    void checkTest() throws columnIndexOutOfBoundsException, notEnoughFreeSpacesException {
+    void checkTest() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
 
         player.getShelf().addTiles(blues,0);

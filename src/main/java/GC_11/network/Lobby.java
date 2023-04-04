@@ -1,4 +1,4 @@
-package GC_11.Network;
+package GC_11.network;
 
 import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;

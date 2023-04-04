@@ -1,6 +1,6 @@
 package GC_11.model.common;
 
-import GC_11.exceptions.columnIndexOutOfBoundsException;
+import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.model.Player;
 import GC_11.model.TileColor;
 
@@ -31,7 +31,7 @@ public class CommonGoalCard7 extends CommonGoalCard{
     }
 
     @Override
-    public void check(Player player) throws columnIndexOutOfBoundsException {
+    public void check(Player player) throws ColumnIndexOutOfBoundsException {
 
         resetControlMatrix();
         int counterTiles = 0;
@@ -61,7 +61,7 @@ public class CommonGoalCard7 extends CommonGoalCard{
 
     }
 
-    public int verifySquare (Player player, int l, int c, TileColor color) throws columnIndexOutOfBoundsException {
+    public int verifySquare (Player player, int l, int c, TileColor color) throws ColumnIndexOutOfBoundsException {
 
         if(l>5 || c>4){
             return 0;
@@ -74,7 +74,7 @@ public class CommonGoalCard7 extends CommonGoalCard{
         else {return 0;}
     }
 
-    public int verify (Player player, int l, int c, TileColor color) throws columnIndexOutOfBoundsException {
+    public int verify (Player player, int l, int c, TileColor color) throws ColumnIndexOutOfBoundsException {
 
         if(l>5 || c>4){
             return 0;

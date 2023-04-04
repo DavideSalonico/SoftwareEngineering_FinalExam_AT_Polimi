@@ -1,13 +1,11 @@
 package GC_11.model;
 
-import GC_11.Controller.JsonReader;
 import GC_11.model.common.*;
 import GC_11.util.Observable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 public class Game extends Observable {
 

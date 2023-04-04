@@ -1,7 +1,7 @@
 package GC_11.model.common;
 
-import GC_11.exceptions.columnIndexOutOfBoundsException;
-import GC_11.exceptions.notEnoughFreeSpacesException;
+import GC_11.exceptions.ColumnIndexOutOfBoundsException;
+import GC_11.exceptions.NotEnoughFreeSpacesException;
 import GC_11.model.Player;
 import GC_11.model.Tile;
 import GC_11.model.TileColor;
@@ -38,7 +38,7 @@ class CommonGoalCard4Test {
     List<Tile> whites2 = Arrays.asList(white,white);
 
     @Test
-    void checkTest2ColonneVuote() throws columnIndexOutOfBoundsException, notEnoughFreeSpacesException {
+    void checkTest2ColonneVuote() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
 
         player.getShelf().addTiles(blues,0);
@@ -63,7 +63,7 @@ class CommonGoalCard4Test {
     }
 
     @Test
-    void checkTestAllVoid() throws columnIndexOutOfBoundsException, notEnoughFreeSpacesException {
+    void checkTestAllVoid() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
 
        // player.getShelf().addTiles(blues,0);
@@ -88,7 +88,7 @@ class CommonGoalCard4Test {
     }
 
     @Test
-    void checkTestGood() throws columnIndexOutOfBoundsException, notEnoughFreeSpacesException {
+    void checkTestGood() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
 
         player.getShelf().addTiles(blues,0);
@@ -113,7 +113,7 @@ class CommonGoalCard4Test {
     }
 
     @Test
-    void checkTestOnly3Line() throws columnIndexOutOfBoundsException, notEnoughFreeSpacesException {
+    void checkTestOnly3Line() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
 
         player.getShelf().addTiles(blues,0);
@@ -138,7 +138,7 @@ class CommonGoalCard4Test {
     }
 
     @Test
-    void checkTestExactly4Line() throws columnIndexOutOfBoundsException, notEnoughFreeSpacesException {
+    void checkTestExactly4Line() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
 
         player.getShelf().addTiles(blues2,0);
@@ -163,7 +163,7 @@ class CommonGoalCard4Test {
     }
 
     @Test
-    void checkTest5Color() throws columnIndexOutOfBoundsException, notEnoughFreeSpacesException {
+    void checkTest5Color() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
 
         player.getShelf().addTiles(blues,0);

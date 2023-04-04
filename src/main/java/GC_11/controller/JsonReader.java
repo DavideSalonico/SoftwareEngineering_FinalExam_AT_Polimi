@@ -1,12 +1,10 @@
-package GC_11.Controller;
+package GC_11.controller;
 
 import GC_11.model.*;
-import GC_11.model.common.CommonGoalCard;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
 import java.util.ArrayList;

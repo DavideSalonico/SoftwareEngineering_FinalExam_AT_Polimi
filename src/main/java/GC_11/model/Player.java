@@ -1,7 +1,6 @@
 package GC_11.model;
 
-import GC_11.exceptions.columnIndexOutOfBoundsException;
-import GC_11.model.common.CommonGoalCard;
+import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 
 import java.util.List;
 
@@ -104,10 +103,10 @@ public class Player {
     /**
      * This method calculate the personal point checking how many personal goal are right
      * @return the number of points according to the right number of tiles
-     * @throws columnIndexOutOfBoundsException
+     * @throws ColumnIndexOutOfBoundsException
      */
 
-    private int caluclatePersonalPoints() throws columnIndexOutOfBoundsException {
+    private int caluclatePersonalPoints() throws ColumnIndexOutOfBoundsException {
         int totalRight = 0;
         // For every goal in the personal goal card check if matches with the personal shelf
         for (Triplet t : personalGoal.getGoalList()){

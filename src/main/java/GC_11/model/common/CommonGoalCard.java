@@ -1,6 +1,6 @@
 package GC_11.model.common;
 
-import GC_11.exceptions.columnIndexOutOfBoundsException;
+import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.model.Player;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public abstract class CommonGoalCard {
         int point = 10 - 2*winningPlayers.size();
         player.addPoints(point);
     }
-    public abstract void check(Player player) throws columnIndexOutOfBoundsException;
+    public abstract void check(Player player) throws ColumnIndexOutOfBoundsException;
 
     public List<Player> getWinningPlayers() {
         return winningPlayers;
