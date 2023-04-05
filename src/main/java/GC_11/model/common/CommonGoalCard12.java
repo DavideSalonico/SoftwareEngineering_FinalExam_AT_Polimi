@@ -21,13 +21,12 @@ public class CommonGoalCard12 extends CommonGoalCard {
         for (int a = 0; a <= 1; a++) {
             int counter1 = 0;
             int counter2 = 0;
-            for (int l = a + 1; l < 6; l++) {
-                for (int c = 1; c <= 4; c++) {
+            for (int l = a + 1; l < 5+a; l++) {
                     if((a==0 && !player.getShelf().getTile(a, 0).getColor().equals(TileColor.EMPTY)) ||
                             (a==1 && !player.getShelf().getTile(a, 0).getColor().equals(TileColor.EMPTY) &&
                                     player.getShelf().getTile(0, 0).getColor().equals(TileColor.EMPTY))) {
-                        if (!player.getShelf().getTile(l, c).getColor().equals(TileColor.EMPTY) &&
-                                player.getShelf().getTile(l-1, c).getColor().equals(TileColor.EMPTY   )) {
+                        if (!player.getShelf().getTile(l, l+a).getColor().equals(TileColor.EMPTY) &&
+                                player.getShelf().getTile(l-1, l+a).getColor().equals(TileColor.EMPTY   )) {
                             counter1++;
                         }
                     }
@@ -35,12 +34,11 @@ public class CommonGoalCard12 extends CommonGoalCard {
                     if((a==0 && !player.getShelf().getTile(a, 4).getColor().equals(TileColor.EMPTY)) ||
                             (a==1 && !player.getShelf().getTile(a, 4).getColor().equals(TileColor.EMPTY) &&
                                     player.getShelf().getTile(0, 4).getColor().equals(TileColor.EMPTY))) {
-                        if (!player.getShelf().getTile(l, 4 - c).getColor().equals(TileColor.EMPTY) &&
-                                player.getShelf().getTile(l-1, 4 - c).getColor().equals(TileColor.EMPTY)) {
+                        if (!player.getShelf().getTile(l, 4-(l+a)).getColor().equals(TileColor.EMPTY) &&
+                                player.getShelf().getTile(l-1, 4-(l+a)).getColor().equals(TileColor.EMPTY)) {
                             counter2++;
                         }
                     }
-                }
             }
             if (counter1 == 4 || counter2 == 4) {
                 givePoints(player);

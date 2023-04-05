@@ -69,4 +69,119 @@ class CommonGoalCard12Test {
         System.out.println("fine test all void");
     }
 
+    @Test
+    void checkTestWrong() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+
+
+        player.getShelf().addTiles(blues,0);
+        player.getShelf().addTiles(blues,0);
+        player.getShelf().addTiles(cyans,1);
+        player.getShelf().addTiles(cyans,1);
+        player.getShelf().addTiles(greens,2);
+        player.getShelf().addTiles(greens,2);
+        player.getShelf().addTiles(oranges,3);
+        player.getShelf().addTiles(oranges,3);
+        player.getShelf().addTiles(whites,4);
+        player.getShelf().addTiles(whites,4);
+
+
+        System.out.println("inizio test wrong");
+        System.out.println(player.getPoints());
+        assertEquals(player.getPoints(),0);
+        carta.check(player);
+        assertEquals(player.getPoints(),0);
+        System.out.println(player.getPoints());
+        System.out.println("fine test wrong");
+    }
+
+    @Test
+    void checkTestDiagonaleSinistraAlta() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+
+        player.getShelf().addTiles(blues,0);
+        player.getShelf().addTiles(oranges,0);
+        player.getShelf().addTiles(cyans,1);
+        player.getShelf().addTiles(oranges2,1);
+        player.getShelf().addTiles(greens,2);
+        player.getShelf().addTiles(oranges1,2);
+        player.getShelf().addTiles(oranges,3);
+        player.getShelf().addTiles(oranges2,4);
+
+
+        System.out.println("inizio test diagomale alta sinistra");
+        System.out.println(player.getPoints());
+        assertEquals(player.getPoints(),0);
+        carta.check(player);
+        assertEquals(player.getPoints(),8);
+        System.out.println(player.getPoints());
+        System.out.println("fine test diagonale alta sinistra");
+
+    }
+
+    @Test
+    void checkTestDiagonaleDestraAlta() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+
+        player.getShelf().addTiles(blues2,0);
+        player.getShelf().addTiles(blues,1);
+        player.getShelf().addTiles(purples,2);
+        player.getShelf().addTiles(blues2,2);
+        player.getShelf().addTiles(oranges,3);
+        player.getShelf().addTiles(blues2,3);
+        player.getShelf().addTiles(oranges,4);
+        player.getShelf().addTiles(blues,4);
+
+
+        System.out.println("inizio test diagomale alta destra");
+        System.out.println(player.getPoints());
+        assertEquals(player.getPoints(),0);
+        carta.check(player);
+        assertEquals(player.getPoints(),8);
+        System.out.println(player.getPoints());
+        System.out.println("fine test diagonale alta destra");
+
+    }
+
+    @Test
+    void checkTestDiagonaleSinistraBassa() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+
+        player.getShelf().addTiles(blues,0);
+        player.getShelf().addTiles(oranges2,0);
+        player.getShelf().addTiles(cyans,1);
+        player.getShelf().addTiles(oranges1,1);
+        player.getShelf().addTiles(oranges,2);
+        player.getShelf().addTiles(oranges2,3);
+        player.getShelf().addTiles(oranges1,4);
+
+
+        System.out.println("inizio test diagomale bassa sinistra");
+        System.out.println(player.getPoints());
+        assertEquals(player.getPoints(),0);
+        carta.check(player);
+        assertEquals(player.getPoints(),8);
+        System.out.println(player.getPoints());
+        System.out.println("fine test diagonale bassa sinistra");
+
+    }
+
+    @Test
+    void checkTestDiagonaleDestraBassa() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+
+        player.getShelf().addTiles(blues1,0);
+        player.getShelf().addTiles(blues2,1);
+        player.getShelf().addTiles(blues,2);
+        player.getShelf().addTiles(oranges,3);
+        player.getShelf().addTiles(blues2,3);
+        player.getShelf().addTiles(oranges,4);
+        player.getShelf().addTiles(blues2,4);
+
+
+        System.out.println("inizio test diagomale bassa destra");
+        System.out.println(player.getPoints());
+        assertEquals(player.getPoints(),0);
+        carta.check(player);
+        assertEquals(player.getPoints(),8);
+        System.out.println(player.getPoints());
+        System.out.println("fine test diagonale bassa destra");
+
+    }
+
 }
