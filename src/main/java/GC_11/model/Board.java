@@ -1,7 +1,10 @@
 package GC_11.model;
 
+import GC_11.controller.JsonReader;
 import GC_11.exceptions.IllegalMoveException;
 
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -9,6 +12,8 @@ public class Board {
 
     private Tile[][] chessBoard;
     private Bag bag;
+
+    PropertyChangeListener listener;
 
     /**
      * Constructor of Board entity, it initializes all the 9x9 matrix in Tile.EMPTY then sets the prohibited cells
@@ -34,6 +39,29 @@ public class Board {
     public Board(){
         this.bag = new Bag();
         this.chessBoard = new Tile[9][9]; //TODO: to correct
+    }
+
+    /**
+     * Builder (overloaded)
+     * @param num is the number of players
+     */
+    public Board(int num){
+        this.bag = new Bag();
+        this.chessBoard = new Tile[9][9];
+        List<Coordinate> coordinateList = new ArrayList<Coordinate>();
+        JsonReader json = new JsonReader();
+        coordinateList = json.readCoordinate(num);
+
+        for (int i =0; i<9;i++){
+            for (int j=0; j<9;j++){
+                chessBoard[i][j] = new Tile(TileColor.EMPTY);
+            }
+        }
+        for (Coordinate c : coordinateList){
+            this.chessBoard[c.getRow()][c.getColumn()] = new Tile(TileColor.PROHIBITED);
+        }
+
+        setBoard();
     }
 
 
@@ -143,6 +171,19 @@ public class Board {
      */
     public Bag getBag(){
         return this.bag;
+    }
+
+    public void print(){
+        for(int i=0; i < 9; i++){
+            for(int j=0; j < 9; j++){
+                System.out.print(getTile(i, j).getColor() + "\t");
+            }
+            System.out.println();
+        }
+    }
+
+    public void setListener(PropertyChangeListener listener){
+        this.listener = listener;
     }
 }
 
