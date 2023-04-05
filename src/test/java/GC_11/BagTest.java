@@ -81,6 +81,14 @@ public class BagTest {
         return count;
     }
 
+    @Test
+    public void testInsertAllTile (){
+        Bag bag = new Bag();
+        Board board = new Board();
+
+
+    }
+
 
 
 }
