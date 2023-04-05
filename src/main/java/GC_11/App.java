@@ -1,6 +1,8 @@
 package GC_11;
 
 import GC_11.model.Game;
+import GC_11.model.Tile;
+import GC_11.model.TileColor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,12 @@ public class App
         tmpPlayerNames.add("Pluto");
         tmpPlayerNames.add("Paperino");
         Game game = new Game(tmpPlayerNames);
+        game.getBoard().setListener(game);
+
+        game.getBoard().print();
+        game.getBoard().setTile(0, 0, new Tile(TileColor.GREEN));
+
+
 
     }
 }

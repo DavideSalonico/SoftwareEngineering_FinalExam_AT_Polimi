@@ -1,5 +1,6 @@
 package GC_11.model;
 
+import java.beans.PropertyChangeListener;
 import java.util.List;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.NotEnoughFreeSpacesException;
@@ -7,6 +8,8 @@ import GC_11.exceptions.NotEnoughFreeSpacesException;
 public class Shelf {
 
     private Tile[][] myShelf;
+
+    PropertyChangeListener listener;
 
     public Shelf(){
         myShelf= new Tile[6][5];
@@ -96,4 +99,9 @@ public class Shelf {
             System.out.println();
         }
     }
+
+    public void setListener(PropertyChangeListener listener){
+        this.listener = listener;
+    }
+
 }

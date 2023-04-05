@@ -2,11 +2,11 @@ package GC_11.model;
 
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
 public class Player {
-
-
 
     private String nickname;
     private int points;
