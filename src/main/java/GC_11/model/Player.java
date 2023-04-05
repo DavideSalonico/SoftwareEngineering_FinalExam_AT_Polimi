@@ -1,6 +1,7 @@
 package GC_11.model;
 
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
+import GC_11.exceptions.NotEnoughFreeSpacesException;
 
 import java.util.List;
 
@@ -91,19 +92,12 @@ public class Player {
      * @param column is the columns in which the player want to insert the insert
      */
 
-    public void insertTiles(List<Tile> tilesOrder, int column) {
+    public void insertTiles(List<Tile> tilesOrder, int column) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
         if (column <0 || column > 5){
-            // Exception
-        }
-        try {
-            shelf.addTiles(tilesOrder,column);
-        }
-        catch(Exception e){
-            // Handle the exception that signals if the player is trying to insert the tiles in a column which has not enough free spaces
-            // or the exception if column number is less than 0 or greater than 5
-            e.getMessage();
+            throw new IndexOutOfBoundsException("Wrong column index received");
         }
 
+        shelf.addTiles(tilesOrder,column);
     }
 
     /**
@@ -139,10 +133,6 @@ public class Player {
         }
     }
 
-    private void calculateCommonPoints(){
-
-    }
-
     /**
      * Get 'Shelf' method
      * @return the shelf of the player
@@ -151,7 +141,12 @@ public class Player {
         return shelf;
     }
 
-    public boolean equals(Player currentPlayer) {
-        return (this.nickname.equals(currentPlayer.getNickname()) && this.points == currentPlayer.getPoints());
+    /**
+     * Method that compare two instance of PLayer
+     * @param p
+     * @return true if this Player equals to player 'p' passed as argument of function
+     */
+    public boolean equals(Player p) {
+        return (this.nickname.equals(p.getNickname()) && this.points == p.getPoints());
     }
 }
