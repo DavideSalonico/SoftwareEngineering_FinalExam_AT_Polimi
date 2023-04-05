@@ -55,7 +55,7 @@ public class Game extends Observable {
         return tmp;
     }
 
-    public boolean isEndGame() {
+    public boolean isGameEnded() {
         return endGame;
     }
 

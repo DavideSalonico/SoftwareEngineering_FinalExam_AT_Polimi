@@ -33,7 +33,7 @@ public class Bag {
      * Appends all the tiles, which was previously in the board before the refill, in the array-List at the end of "tiles"
      * @param t
      */
-    public void insertAllTile(List<Tile>t){
+    public void insertAllTile(List<Tile> t){
         tiles.addAll(t);
     }
 

@@ -31,11 +31,6 @@ public class Board {
         setBoard();
     }
 
-    public Board(){
-        this.bag = new Bag();
-        this.chessBoard = new Tile[9][9]; //TODO: to correct
-    }
-
 
     /**
      * It sets empty cells of chessboard into some random Tile picked from the bag (it uses bag's methods)
