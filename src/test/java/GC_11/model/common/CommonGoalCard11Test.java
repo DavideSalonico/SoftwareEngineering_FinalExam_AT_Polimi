@@ -12,9 +12,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CommonGoalCard9Test {
+class CommonGoalCard11Test {
 
-    CommonGoalCard9 carta = new CommonGoalCard9();
+    CommonGoalCard11 carta = new CommonGoalCard11();
     Player player = new Player();
     Tile blue = new Tile(TileColor.BLUE);
     Tile cyan = new Tile(TileColor.CYAN);
@@ -70,23 +70,72 @@ class CommonGoalCard9Test {
     }
 
     @Test
+    void checkTestSameColor() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+
+
+        player.getShelf().addTiles(blues,0);
+        player.getShelf().addTiles(blues,0);
+        player.getShelf().addTiles(blues,1);
+        player.getShelf().addTiles(blues,1);
+        player.getShelf().addTiles(blues,2);
+        player.getShelf().addTiles(blues,2);
+        player.getShelf().addTiles(blues,3);
+        player.getShelf().addTiles(blues,3);
+        player.getShelf().addTiles(blues,4);
+        player.getShelf().addTiles(blues,4);
+
+
+        System.out.println("inizio test same color");
+        System.out.println(player.getPoints());
+        assertEquals(player.getPoints(),0);
+        carta.check(player);
+        assertEquals(player.getPoints(),8);
+        System.out.println(player.getPoints());
+        System.out.println("fine test all same color");
+    }
+
+    @Test
+    void checkTestGood() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+
+
+        player.getShelf().addTiles(blues1,0);
+        player.getShelf().addTiles(greens1,0);
+        player.getShelf().addTiles(blues1,0);
+        player.getShelf().addTiles(blues1,1);
+        player.getShelf().addTiles(greens1,1);
+        player.getShelf().addTiles(blues1,2);
+        player.getShelf().addTiles(greens1,2);
+        player.getShelf().addTiles(blues1,2);
+        player.getShelf().addTiles(blues1,3);
+        player.getShelf().addTiles(greens1,3);
+        player.getShelf().addTiles(blues1,4);
+        player.getShelf().addTiles(greens1,4);
+        player.getShelf().addTiles(blues1,4);
+
+
+
+
+        System.out.println("inizio test good");
+        System.out.println(player.getPoints());
+        assertEquals(player.getPoints(),0);
+        carta.check(player);
+        assertEquals(player.getPoints(),8);
+        System.out.println(player.getPoints());
+        System.out.println("fine test good");
+    }
+
+    @Test
     void checkTestWrong() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
 
-        player.getShelf().addTiles(blues2,0);
-        player.getShelf().addTiles(purples2,0);
-        player.getShelf().addTiles(cyans1,0);
-        player.getShelf().addTiles(greens1,0);
+        player.getShelf().addTiles(blues,0);
+        player.getShelf().addTiles(blues,0);
         player.getShelf().addTiles(cyans,1);
         player.getShelf().addTiles(cyans,1);
-        player.getShelf().addTiles(greens2,2);
-        player.getShelf().addTiles(whites2,2);
-        player.getShelf().addTiles(purples1,2);
-        player.getShelf().addTiles(cyans1,2);
-        player.getShelf().addTiles(purples2,3);
-        player.getShelf().addTiles(oranges2,3);
-        player.getShelf().addTiles(whites1,3);
-        player.getShelf().addTiles(cyans1,3);
+        player.getShelf().addTiles(greens,2);
+        player.getShelf().addTiles(greens,2);
+        player.getShelf().addTiles(purples,3);
+        player.getShelf().addTiles(purples,3);
         player.getShelf().addTiles(whites,4);
         player.getShelf().addTiles(whites,4);
 
@@ -100,35 +149,7 @@ class CommonGoalCard9Test {
         System.out.println("fine test wrong");
     }
 
-    @Test
-    void checkTestGood() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
-
-        player.getShelf().addTiles(blues2,0);
-        player.getShelf().addTiles(purples2,0);
-        player.getShelf().addTiles(cyans1,0);
-        player.getShelf().addTiles(greens1,0);
-        player.getShelf().addTiles(cyans,1);
-        player.getShelf().addTiles(cyans,1);
-        player.getShelf().addTiles(greens2,2);
-        player.getShelf().addTiles(whites2,2);
-        player.getShelf().addTiles(purples1,2);
-        player.getShelf().addTiles(cyans1,2);
-        player.getShelf().addTiles(purples2,3);
-        player.getShelf().addTiles(oranges2,3);
-        player.getShelf().addTiles(whites2,3);
-        player.getShelf().addTiles(whites,4);
-        player.getShelf().addTiles(whites,4);
-
-
-        System.out.println("inizio test good");
-        System.out.println(player.getPoints());
-        assertEquals(player.getPoints(),0);
-        carta.check(player);
-        assertEquals(player.getPoints(),8);
-        System.out.println(player.getPoints());
-        System.out.println("fine test good");
-    }
 
 
 }

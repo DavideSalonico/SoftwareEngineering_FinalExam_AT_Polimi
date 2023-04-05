@@ -66,12 +66,11 @@ public class CommonGoalCard7 extends CommonGoalCard{
         if(l>5 || c>4){
             return 0;
         }
-        else if(!getControlMatrix(l,c)){
+        else{
             if(player.getShelf().getTile(l,c).getColor()==color){
                 return  1;
             }else {return 0;}
         }
-        else {return 0;}
     }
 
     public int verify (Player player, int l, int c, TileColor color) throws ColumnIndexOutOfBoundsException {

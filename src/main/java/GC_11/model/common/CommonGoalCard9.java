@@ -22,10 +22,10 @@ public class CommonGoalCard9 extends CommonGoalCard{
     public void check(Player player) throws ColumnIndexOutOfBoundsException {
 
         int correctColumns=0;
-        for (int l=0; l<6; l++){
+        for (int c=0; c<5; c++){
             int counter = 0;
             Set<TileColor> colors = new HashSet<TileColor>();
-            for (int c=0; c<5; c++){
+            for (int l=0; l<6; l++){
                 if(player.getShelf().getTile(l,c).getColor() != TileColor.EMPTY){
                     counter++;
                     colors.add(player.getShelf().getTile(l,c).getColor());
@@ -35,7 +35,7 @@ public class CommonGoalCard9 extends CommonGoalCard{
                 correctColumns++;
             }
         }
-        if (correctColumns >= 4){
+        if (correctColumns >= 3){
             givePoints(player);
         }
 

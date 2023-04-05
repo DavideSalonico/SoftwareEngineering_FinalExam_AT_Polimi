@@ -2,6 +2,7 @@ package GC_11.model.common;
 
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.model.Player;
+import GC_11.model.TileColor;
 
 public class CommonGoalCard10 extends CommonGoalCard{
 
@@ -16,12 +17,13 @@ public class CommonGoalCard10 extends CommonGoalCard{
     public void check(Player player) throws ColumnIndexOutOfBoundsException {
 
         for(int l=0; l<4; l++){
-            for(int c=0; c<5; c++){
+            for(int c=0; c<3; c++){
 
                 if(player.getShelf().getTile(l,c).getColor().equals(player.getShelf().getTile(l+1,c+1).getColor())&&
                         player.getShelf().getTile(l,c).getColor().equals(player.getShelf().getTile(l+2,c+2).getColor())&&
                 player.getShelf().getTile(l,c).getColor().equals(player.getShelf().getTile(l,c+2).getColor())&&
-                player.getShelf().getTile(l,c).getColor().equals(player.getShelf().getTile(l+2,c).getColor())){
+                player.getShelf().getTile(l,c).getColor().equals(player.getShelf().getTile(l+2,c).getColor())&&
+                !player.getShelf().getTile(l,c).getColor().equals(TileColor.EMPTY)){
 
                     givePoints(player);
                     return;
