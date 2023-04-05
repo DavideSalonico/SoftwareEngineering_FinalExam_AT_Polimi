@@ -3,11 +3,13 @@ package GC_11.model;
 import GC_11.model.common.*;
 import GC_11.util.Observable;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Game extends Observable {
+public class Game extends Observable implements PropertyChangeListener {
 
     private List<Player> players;
     private List<CommonGoalCard> commonGoals;
@@ -25,7 +27,7 @@ public class Game extends Observable {
         this.currentPlayer = this.players.get(0);
         this.endGame = false;
         this.commonGoals = new ArrayList<CommonGoalCard>();
-        this.board = new Board();
+        this.board = new Board(players.size());
         Random random = new Random();
         int tmp1 = random.nextInt(0, 11);
         int tmp2 = random.nextInt(0, 11);
@@ -120,4 +122,9 @@ public class Game extends Observable {
             commonGoals.get(1).givePoints(currentPlayer);
     }
 
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("Board changed");
+        this.board.print();
+    }
 }
