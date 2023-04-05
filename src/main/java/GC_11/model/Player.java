@@ -15,7 +15,11 @@ public class Player {
     private List<Integer> ListCommonGoals;
     private Shelf shelf;
 
-
+    /**
+     * Main constructor of Player
+     * @param nickname of the Player, received by Controller
+     * @param personalCard generated in random way and given by JsonReader
+     */
     public Player(String nickname, PersonalGoalCard personalCard){
         this.nickname = nickname;
         this.points=0;
@@ -23,12 +27,14 @@ public class Player {
         this.personalGoal = personalCard;
     }
 
+    //Solo per test, da cancellare
     public Player(String nickname){
         this.nickname = nickname;
         this.points=0;
         this.shelf=new Shelf();
     }
 
+    //Solo per test, da cancellare
     public Player(){
         this.nickname = "nickname";
         this.points = 0;
@@ -37,7 +43,7 @@ public class Player {
     }
 
     /**
-     *
+     * Get 'nickname' method
      * @return The nickname of the player
      */
 
@@ -46,7 +52,7 @@ public class Player {
     }
 
     /**
-     *
+     * Get 'point' method
      * @return The points of the player
      */
     public int getPoints(){
@@ -54,7 +60,7 @@ public class Player {
     }
 
     /**
-     *
+     * This method add Points to a specif Player
      * @param n is the number of points that is summed to the current number of points
      */
 
@@ -63,7 +69,7 @@ public class Player {
     }
 
     /**
-     *
+     * This method returns the List of Tiles that the Player drawn in his Turn, it needs to be empty at the end of the Turn
      * @return the tiles the player is holding from the board and will be put in the shelf
      */
     public List<Tile> getTiles() {
@@ -71,8 +77,8 @@ public class Player {
     }
 
     /**
-     *
-     * @param tilesDrawn is the list of tiles that the player drawns from the board
+     * Player draws Tiles from Board
+     * @param tilesDrawn is the list of tiles that the player drawn from the board
      */
 
     public void setTiles(List<Tile> tilesDrawn) {
@@ -80,7 +86,7 @@ public class Player {
     }
 
     /**
-     *  This method insert the tiles in the column and by the order choosen by the player
+     *  This method insert the tiles in the column and by the order chosen by the player
      * @param tilesOrder is the list of the tiles in the order that the player want to insert them into the shelf
      * @param column is the columns in which the player want to insert the insert
      */
@@ -106,7 +112,7 @@ public class Player {
      * @throws ColumnIndexOutOfBoundsException
      */
 
-    private int caluclatePersonalPoints() throws ColumnIndexOutOfBoundsException {
+    private int calculatePersonalPoints() throws ColumnIndexOutOfBoundsException {
         int totalRight = 0;
         // For every goal in the personal goal card check if matches with the personal shelf
         for (Triplet t : personalGoal.getGoalList()){
@@ -138,7 +144,7 @@ public class Player {
     }
 
     /**
-     *
+     * Get 'Shelf' method
      * @return the shelf of the player
      */
     public Shelf getShelf() {
