@@ -1,6 +1,7 @@
 package GC_11.model;
 
-import org.example.Choice;
+import GC_11.util.Choice;
+
 
 public class Pair {
 
