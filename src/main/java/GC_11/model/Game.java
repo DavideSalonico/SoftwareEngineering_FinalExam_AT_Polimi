@@ -25,6 +25,7 @@ public class Game extends Observable {
         this.currentPlayer = this.players.get(0);
         this.endGame = false;
         this.commonGoals = new ArrayList<CommonGoalCard>();
+        // Farsi mandare lista coordinate dal JsonReader e darle al costruttore di Board()
         this.board = new Board();
         Random random = new Random();
         int tmp1 = random.nextInt(0, 11);
