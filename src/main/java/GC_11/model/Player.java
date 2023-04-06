@@ -11,10 +11,15 @@ public class Player {
 
     private String nickname;
     private int points;
+
+    private int pointsAdjacency;
     private List<Tile> tiles;
     private PersonalGoalCard personalGoal;
     private List<Integer> ListCommonGoals;
     private Shelf shelf;
+
+    private ControlMatrix matrix = new ControlMatrix();
+
 
     /**
      * Main constructor of Player
@@ -149,4 +154,61 @@ public class Player {
     public boolean equals(Player p) {
         return (this.nickname.equals(p.getNickname()) && this.points == p.getPoints());
     }
+
+    public void pointsForAdjacency() throws ColumnIndexOutOfBoundsException {
+
+        this.pointsAdjacency=0;
+        matrix.reset();
+        int counterTiles = 0;
+        for (int l = 0; l < 6; l++) {
+            for (int c = 0; c < 5; c++) {
+                if (!matrix.get(l, c)) {
+                    matrix.setTrue(l, c);
+                    counterTiles = 1 + verify(l, c + 1, this.getShelf().getTile(l, c).getColor()) +
+                            verify(l + 1, c, this.getShelf().getTile(l, c).getColor());
+                    switch (counterTiles){
+                        case 1:
+                        case 2:
+                            break;
+                        case 3:
+                            this.pointsAdjacency= this.pointsAdjacency +2;
+                            break;
+                        case 4:
+                            this.pointsAdjacency= this.pointsAdjacency +3;
+                            break;
+                        case 5:
+                            this.pointsAdjacency= this.pointsAdjacency +5;
+                            break;
+                        default:
+                            this.pointsAdjacency= this.pointsAdjacency +8;
+                            break;
+
+                    }
+
+                }
+            }
+        }
+    }
+
+    public int verify (int l, int c, TileColor color) throws ColumnIndexOutOfBoundsException {
+
+        if(l>5 || c>4 || l<0 || c<0){
+            return 0;
+        }
+        else if(!matrix.get(l,c)){
+            if(this.getShelf().getTile(l,c).getColor()==color){
+                matrix.setTrue(l,c);
+                return  1 + verify(l, c+1, this.getShelf().getTile(l, c).getColor())+
+                        verify(l+1,c,this.getShelf().getTile(l,c).getColor())+
+                        verify(l,c-1,this.getShelf().getTile(l,c).getColor())+
+                        verify(l-1,c,this.getShelf().getTile(l,c).getColor());
+            }else {return 0;}
+        }
+        else {return 0;}
+    }
+
+
+
 }
+
+
