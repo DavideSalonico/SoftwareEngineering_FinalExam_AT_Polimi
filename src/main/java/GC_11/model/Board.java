@@ -176,7 +176,7 @@ public class Board {
     public void print(){
         for(int i=0; i < 9; i++){
             for(int j=0; j < 9; j++){
-                System.out.print(getTile(i, j).getColor() + "\t");
+                System.out.print("\t" + getTile(i, j).getColor());
             }
             System.out.println();
         }

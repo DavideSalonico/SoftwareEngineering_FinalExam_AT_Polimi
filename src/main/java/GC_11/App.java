@@ -20,6 +20,8 @@ public class App
 
         game.getBoard().print();
         game.getBoard().setTile(0, 0, new Tile(TileColor.GREEN));
+        System.out.println();
+        game.getBoard().print();
 
 
 
