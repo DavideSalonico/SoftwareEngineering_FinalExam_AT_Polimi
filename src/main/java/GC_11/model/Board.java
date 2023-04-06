@@ -31,6 +31,10 @@ public class Board {
         setBoard();
     }
 
+    public Board(){
+
+    }
+
 
     /**
      * It sets empty cells of chessboard into some random Tile picked from the bag (it uses bag's methods)

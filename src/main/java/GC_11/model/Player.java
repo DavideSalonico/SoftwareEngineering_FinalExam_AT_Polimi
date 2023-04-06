@@ -66,6 +66,16 @@ public class Player {
     }
 
     /**
+     * Get 'pointsAdjacency' method
+     * @return The pointsAdjacency of the player
+     */
+    public int getPointsAdjacency(){
+
+        return this.pointsAdjacency;
+
+    }
+
+    /**
      * This method add Points to a specif Player
      * @param n is the number of points that is summed to the current number of points
      */
@@ -155,7 +165,7 @@ public class Player {
         return (this.nickname.equals(p.getNickname()) && this.points == p.getPoints());
     }
 
-    public void pointsForAdjacency() throws ColumnIndexOutOfBoundsException {
+    public void calculateAdjacencyPoint() throws ColumnIndexOutOfBoundsException {
 
         this.pointsAdjacency=0;
         matrix.reset();
@@ -164,25 +174,26 @@ public class Player {
             for (int c = 0; c < 5; c++) {
                 if (!matrix.get(l, c)) {
                     matrix.setTrue(l, c);
+                    if(!this.getShelf().getTile(l,c).getColor().equals(TileColor.EMPTY)){
                     counterTiles = 1 + verify(l, c + 1, this.getShelf().getTile(l, c).getColor()) +
                             verify(l + 1, c, this.getShelf().getTile(l, c).getColor());
-                    switch (counterTiles){
+                    switch (counterTiles) {
                         case 1:
                         case 2:
                             break;
                         case 3:
-                            this.pointsAdjacency= this.pointsAdjacency +2;
+                            this.pointsAdjacency = this.pointsAdjacency + 2;
                             break;
                         case 4:
-                            this.pointsAdjacency= this.pointsAdjacency +3;
+                            this.pointsAdjacency = this.pointsAdjacency + 3;
                             break;
                         case 5:
-                            this.pointsAdjacency= this.pointsAdjacency +5;
+                            this.pointsAdjacency = this.pointsAdjacency + 5;
                             break;
                         default:
-                            this.pointsAdjacency= this.pointsAdjacency +8;
+                            this.pointsAdjacency = this.pointsAdjacency + 8;
                             break;
-
+                    }
                     }
 
                 }

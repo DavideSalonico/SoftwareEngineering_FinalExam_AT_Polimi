@@ -39,7 +39,7 @@ public class CommonGoalCard7 extends CommonGoalCard{
         int counterForSquare=0;
         for(int l = 0; l<5; l++){
             for(int c=0; c<4; c++) {
-                if(!getControlMatrix(l,c)) {
+                if(!getControlMatrix(l,c) && !player.getShelf().getTile(l, c).getColor().equals(TileColor.EMPTY)) {
                     setControlMatrixTrue(l,c);
                     counterTiles = 1 + verify(player, l, c+1, player.getShelf().getTile(l, c).getColor())+
                             verify(player,l+1,c,player.getShelf().getTile(l,c).getColor());

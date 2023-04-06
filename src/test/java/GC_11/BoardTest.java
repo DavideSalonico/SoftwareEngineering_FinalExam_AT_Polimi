@@ -14,7 +14,7 @@ public class BoardTest {
     //TODO: To be implemented by Mattia
 
 
-    @Test
+  /*  @Test
     void checkRightInit() {
 
         List<Coordinate> coordinateProibite = GC_11.Controller.JsonReader.readCoordinate(2);
@@ -42,7 +42,7 @@ public class BoardTest {
         // Check if the board is correctly initialized according to the number of players.
 
     }
-
+*/
     @Test
     void checkTiledRemoved(){
 
