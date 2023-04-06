@@ -1,7 +1,6 @@
 
 package GC_11.view;
 
-import GC_11.util.Observable;
 import GC_11.util.Choice;
 import GC_11.model.Player;
 
@@ -9,7 +8,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class CLIview /*implements Serializable*/ extends Observable implements Runnable  {
+public class CLIview /*implements Serializable*/ implements Runnable  {
 
     // private final Choice controllerChoice;
      private Choice playerChoice;
@@ -32,8 +31,8 @@ public class CLIview /*implements Serializable*/ extends Observable implements R
         while(true){
             System.out.println("--- NEW TURN ---");
             Choice choice = getPlayerChoice();
-            setChanged();
-            notifyObservers(choice);
+            //setChanged();
+            //notifyObservers(choice);
         }
 
 

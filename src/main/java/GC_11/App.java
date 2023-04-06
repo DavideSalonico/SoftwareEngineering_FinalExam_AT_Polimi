@@ -16,7 +16,7 @@ public class App
         tmpPlayerNames.add("Pluto");
         tmpPlayerNames.add("Paperino");
         Game game = new Game(tmpPlayerNames);
-        game.getBoard().setListener(game);
+        //game.getBoard().setListener(game);
 
         game.getBoard().print();
         game.getBoard().setTile(0, 0, new Tile(TileColor.GREEN));

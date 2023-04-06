@@ -1,7 +1,6 @@
 package GC_11.model;
 
 import GC_11.model.common.*;
-import GC_11.util.Observable;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -9,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Game extends Observable implements PropertyChangeListener {
+public class Game{
 
     private List<Player> players;
     private List<CommonGoalCard> commonGoals;
@@ -120,11 +119,5 @@ public class Game extends Observable implements PropertyChangeListener {
 
         if(!commonGoals.get(1).getWinningPlayers().contains(currentPlayer))
             commonGoals.get(1).givePoints(currentPlayer);
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("Board changed");
-        this.board.print();
     }
 }

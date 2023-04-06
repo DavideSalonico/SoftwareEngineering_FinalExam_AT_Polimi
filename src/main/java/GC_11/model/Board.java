@@ -3,7 +3,6 @@ package GC_11.model;
 import GC_11.controller.JsonReader;
 import GC_11.exceptions.IllegalMoveException;
 
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -12,8 +11,6 @@ public class Board {
 
     private Tile[][] chessBoard;
     private Bag bag;
-
-    PropertyChangeListener listener;
 
     /**
      * Constructor of Board entity, it initializes all the 9x9 matrix in Tile.EMPTY then sets the prohibited cells
@@ -180,10 +177,6 @@ public class Board {
             }
             System.out.println();
         }
-    }
-
-    public void setListener(PropertyChangeListener listener){
-        this.listener = listener;
     }
 }
 
