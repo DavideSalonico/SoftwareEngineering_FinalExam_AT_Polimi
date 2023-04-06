@@ -1,6 +1,7 @@
 package GC_11.model.common;
 
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
+import GC_11.model.ControlMatrix;
 import GC_11.model.Player;
 import GC_11.model.TileColor;
 
@@ -9,38 +10,20 @@ public class CommonGoalCard7 extends CommonGoalCard{
     private final String text = "Two groups each containing 4 tiles of the same type in a 2x2 square. " +
             "The tiles of one square can be different from those of the other square.";
 
-    boolean[][] controlMatrix = new boolean[6][5];
 
-
-    private boolean getControlMatrix(int l, int c){
-
-        return controlMatrix [l][c];
-
-    }
-
-    private void setControlMatrixTrue(int l, int c){
-
-        controlMatrix [l][c]= true;
-
-    }
-
-    private void resetControlMatrix(){
-
-        controlMatrix = new boolean[6][5];
-
-    }
+    ControlMatrix matrix = new ControlMatrix();
 
     @Override
     public void check(Player player) throws ColumnIndexOutOfBoundsException {
 
-        resetControlMatrix();
+        matrix.reset();
         int counterTiles = 0;
         int counterGroups=0;
         int counterForSquare=0;
         for(int l = 0; l<5; l++){
             for(int c=0; c<4; c++) {
-                if(!getControlMatrix(l,c) && !player.getShelf().getTile(l, c).getColor().equals(TileColor.EMPTY)) {
-                    setControlMatrixTrue(l,c);
+                if(!matrix.get(l, c) && !player.getShelf().getTile(l, c).getColor().equals(TileColor.EMPTY)) {
+                    matrix.setTrue(l,c);
                     counterTiles = 1 + verify(player, l, c+1, player.getShelf().getTile(l, c).getColor())+
                             verify(player,l+1,c,player.getShelf().getTile(l,c).getColor());
                     if(counterTiles==4){
@@ -78,9 +61,9 @@ public class CommonGoalCard7 extends CommonGoalCard{
         if(l>5 || c>4 || l<0 || c<0){
             return 0;
         }
-        else if(!getControlMatrix(l,c)){
+        else if(!matrix.get(l, c)){
             if(player.getShelf().getTile(l,c).getColor()==color){
-                setControlMatrixTrue(l,c);
+                matrix.setTrue(l,c);
                 return  1 + verify(player, l, c+1, player.getShelf().getTile(l, c).getColor())+
                         verify(player,l+1,c,player.getShelf().getTile(l,c).getColor())+
                         verify(player,l,c-1,player.getShelf().getTile(l,c).getColor())+
