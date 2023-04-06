@@ -1,3 +1,5 @@
+//TODO: To be implemented by Rei
+
 package GC_11;
 
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
@@ -14,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PlayerTest {
-    //TODO: To be implemented by Rei
+
 
     Player player = new Player();
 
