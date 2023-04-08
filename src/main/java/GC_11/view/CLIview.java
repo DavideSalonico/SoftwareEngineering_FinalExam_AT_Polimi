@@ -4,11 +4,13 @@ package GC_11.view;
 import GC_11.util.Choice;
 import GC_11.model.Player;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class CLIview /*implements Serializable*/ implements Runnable  {
+public class CLIview implements Runnable, PropertyChangeListener {
 
     // private final Choice controllerChoice;
      private Choice playerChoice;
@@ -72,6 +74,11 @@ public class CLIview /*implements Serializable*/ implements Runnable  {
 
     public Player getPlayer(){
         return player;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("evt" + evt);
     }
 }
 

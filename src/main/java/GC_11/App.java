@@ -1,8 +1,11 @@
 package GC_11;
 
+import GC_11.controller.Controller;
 import GC_11.model.Game;
+import GC_11.model.GameView;
 import GC_11.model.Tile;
 import GC_11.model.TileColor;
+import GC_11.view.CLIview;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +18,13 @@ public class App
         tmpPlayerNames.add("Pippo");
         tmpPlayerNames.add("Pluto");
         tmpPlayerNames.add("Paperino");
-        Game game = new Game(tmpPlayerNames);
-        //game.getBoard().setListener(game);
+        Game model = new Game(tmpPlayerNames);
+        GameView modelView = new GameView(model);
+        CLIview view = new CLIview(model.getCurrentPlayer());
+        Controller controller = new Controller(model, view);
 
-        game.getBoard().print();
-        game.getBoard().setTile(0, 0, new Tile(TileColor.GREEN));
-        System.out.println();
-        game.getBoard().print();
-
-
-
+        System.out.println("Hello World!");
+        model.setListener(view);
+        model.setEndGame(true);
     }
 }

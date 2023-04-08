@@ -17,6 +17,8 @@ public class Game{
     private Player endPlayer;
     private Board board;
 
+    PropertyChangeListener listener;
+
     public Game(List<String> playerNames){
 
         this.players = new ArrayList<Player>();
@@ -61,7 +63,14 @@ public class Game{
     }
 
     public void setEndGame(boolean endGame) {
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "END_GAME_SET",
+                this.endGame,
+                endGame);
         this.endGame = endGame;
+
+        this.listener.propertyChange(evt);
     }
 
     public void run(){
@@ -119,5 +128,9 @@ public class Game{
 
         if(!commonGoals.get(1).getWinningPlayers().contains(currentPlayer))
             commonGoals.get(1).givePoints(currentPlayer);
+    }
+
+    public void setListener(PropertyChangeListener listener) {
+        this.listener = listener;
     }
 }

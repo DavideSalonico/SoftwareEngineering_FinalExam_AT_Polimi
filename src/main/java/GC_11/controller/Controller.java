@@ -6,8 +6,6 @@ import GC_11.model.Game;
 import GC_11.util.Choice;
 
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 
 /**
@@ -15,17 +13,19 @@ import java.util.Observer;
  * of Game and it can give to JsonReader the job of receiving the List of Players and bind them to a generic Personal
  * Card read from JSON file
  */
-public class Controller implements Observer {
+public class Controller{
     public List<CLIview> view;
     public JsonReader reader;
-    private Game game;
+    private Game model;
 
     /**
      * Initialize Controller with 'Game' reference and JsonReader object
+     *
      * @param game reference to game
+     * @param view
      */
-    public Controller(Game game) {
-        this.game = game;
+    public Controller(Game game, CLIview view) {
+        this.model = game;
         this.reader = new JsonReader();
     }
 
@@ -34,10 +34,10 @@ public class Controller implements Observer {
      * @param game
      */
     public void setGame(Game game) {
-        this.game = game;
+        this.model = game;
     }
     public Game getGame(){
-        return this.game;
+        return this.model;
     }
 
     /**
@@ -58,8 +58,8 @@ public class Controller implements Observer {
      */
     public void update(CLIview view, Choice arg) throws IllegalMoveException {
 
-        if (!view.getPlayer().equals(game.getCurrentPlayer())){
-            throw new IllegalMoveException("It's not your Turn! Wait, it's " + game.getCurrentPlayer()+ "'s turn");
+        if (!view.getPlayer().equals(model.getCurrentPlayer())){
+            throw new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer()+ "'s turn");
         }
 
         switch (view.getPlayerChoice()){
@@ -92,14 +92,6 @@ public class Controller implements Observer {
     }
 
     private void chooseOrder(){
-
-    }
-
-    /**
-     * Messa solo perchè da problemi la classe
-     */
-    @Override
-    public void update(Observable o, Object arg) {
 
     }
 }
