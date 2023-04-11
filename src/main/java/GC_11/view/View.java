@@ -20,7 +20,7 @@ public abstract class View implements PropertyChangeListener, Runnable{
         return player;
     }
 
-    public void show(){}
+    public abstract void show();
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -40,5 +40,9 @@ public abstract class View implements PropertyChangeListener, Runnable{
                 null,
                 choice);
         this.listener.propertyChange(evt);
+    }
+
+    public void setListener(PropertyChangeListener listener) {
+        this.listener = listener;
     }
 }

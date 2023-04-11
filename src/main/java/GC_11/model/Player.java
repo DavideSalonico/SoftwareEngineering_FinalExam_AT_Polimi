@@ -15,6 +15,10 @@ public class Player implements PropertyChangeListener{
     private List<Integer> ListCommonGoals;
     private Shelf shelf;
 
+    public void setListener(PropertyChangeListener listener) {
+        this.listener = listener;
+    }
+
     //Game must register
     PropertyChangeListener listener;
 
@@ -23,6 +27,7 @@ public class Player implements PropertyChangeListener{
         this.nickname = nickname;
         this.points=0;
         this.shelf = new Shelf();
+        this.shelf.setListener(this);
         this.personalGoal = personalCard;
     }
 
@@ -30,12 +35,14 @@ public class Player implements PropertyChangeListener{
         this.nickname = nickname;
         this.points=0;
         this.shelf=new Shelf();
+        this.shelf.setListener(this);
     }
 
     public Player(){
         this.nickname = "nickname";
         this.points = 0;
         this.shelf = new Shelf();
+        this.shelf.setListener(this);
         this.personalGoal = new PersonalGoalCard();
     }
 

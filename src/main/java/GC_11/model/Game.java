@@ -25,11 +25,13 @@ public class Game implements PropertyChangeListener{
         this.players = new ArrayList<Player>();
         for(int i=0; i<playerNames.size(); i++){
             this.players.add(new Player(playerNames.get(i)));
+            players.get(i).setListener(this);
         }
         this.currentPlayer = this.players.get(0);
         this.endGame = false;
         this.commonGoals = new ArrayList<CommonGoalCard>();
         this.board = new Board(players.size());
+        this.board.setListener(this);
         Random random = new Random();
         int tmp1 = random.nextInt(0, 11);
         int tmp2 = random.nextInt(0, 11);

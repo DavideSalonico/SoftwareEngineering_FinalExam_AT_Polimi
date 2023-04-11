@@ -9,6 +9,10 @@ public class Bag {
 
     private List<Tile> tiles; // 132 tiles, 22 x 6
 
+    public void setListener(PropertyChangeListener listener) {
+        this.listener = listener;
+    }
+
     //The listener must be the Board,TODO: change Board builder
     PropertyChangeListener listener;
 

@@ -14,6 +14,10 @@ public class Board implements PropertyChangeListener{
     private Tile[][] chessBoard;
     private Bag bag;
 
+    public void setListener(PropertyChangeListener listener) {
+        this.listener = listener;
+    }
+
     //The listener must be Game
     PropertyChangeListener listener;
 
@@ -25,6 +29,7 @@ public class Board implements PropertyChangeListener{
     public Board(List<Coordinate> coordinateList){
 
         this.bag = new Bag();
+        this.bag.setListener(this);
         chessBoard = new Tile[9][9];
         for (int i =0; i<9;i++){
             for (int j=0; j<9;j++){
@@ -40,6 +45,7 @@ public class Board implements PropertyChangeListener{
 
     public Board(){
         this.bag = new Bag();
+        this.bag.setListener(this);
         this.chessBoard = new Tile[9][9]; //TODO: to correct
     }
 
@@ -49,6 +55,7 @@ public class Board implements PropertyChangeListener{
      */
     public Board(int num){
         this.bag = new Bag();
+        this.bag.setListener(this);
         this.chessBoard = new Tile[9][9];
         List<Coordinate> coordinateList = new ArrayList<Coordinate>();
         JsonReader json = new JsonReader();
