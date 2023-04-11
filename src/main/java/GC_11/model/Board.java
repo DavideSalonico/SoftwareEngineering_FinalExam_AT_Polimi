@@ -3,14 +3,19 @@ package GC_11.model;
 import GC_11.controller.JsonReader;
 import GC_11.exceptions.IllegalMoveException;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Board {
+public class Board implements PropertyChangeListener{
 
     private Tile[][] chessBoard;
     private Bag bag;
+
+    //The listener must be Game
+    PropertyChangeListener listener;
 
     /**
      * Constructor of Board entity, it initializes all the 9x9 matrix in Tile.EMPTY then sets the prohibited cells
@@ -105,6 +110,12 @@ public class Board {
         if(chessBoard[l][c].getColor().equals(TileColor.PROHIBITED) || chessBoard[l][c].getColor().equals(TileColor.EMPTY))
             throw new IllegalMoveException("You can't pick this Tile!");
         Tile picked = new Tile(chessBoard[l][c]);
+
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "TILE_PICKED",
+                this.chessBoard[l][c],
+                new Tile(TileColor.EMPTY));
         chessBoard[l][c] = new Tile(TileColor.EMPTY);
         return picked;
     }
@@ -155,10 +166,16 @@ public class Board {
                     }
                 }
             }
-
+            /* Can't manage to give right OldValue e NewValue */
+            PropertyChangeEvent evt = new PropertyChangeEvent(
+                    this,
+                    "BOARD_REFILLED",
+                    this.chessBoard,
+                    this.chessBoard);
+            this.listener.propertyChange(evt);
             setBoard();
+
         }
-        // else nothing
     }
 
 
@@ -177,6 +194,11 @@ public class Board {
             }
             System.out.println();
         }
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        this.listener.propertyChange(evt);
     }
 }
 

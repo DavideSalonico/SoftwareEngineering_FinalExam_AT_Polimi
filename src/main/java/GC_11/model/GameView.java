@@ -19,4 +19,6 @@ public class GameView{
     public Board getBoard() { return model.getBoard(); }
 
     public List<Player> getPlayers(){ return model.getPlayers(); }
+
+    public Player getCurrentPlayer(){ return model.getCurrentPlayer(); }
 }

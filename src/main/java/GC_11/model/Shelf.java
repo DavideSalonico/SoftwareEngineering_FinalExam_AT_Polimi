@@ -1,5 +1,6 @@
 package GC_11.model;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
@@ -9,6 +10,7 @@ public class Shelf {
 
     private Tile[][] myShelf;
 
+    //Player must register
     PropertyChangeListener listener;
 
     public Shelf(){
@@ -44,6 +46,7 @@ public class Shelf {
      * @throws ColumnIndexOutOfBoundsException when the column index is out of bound
      */
     public void addTiles(List<Tile> tileList, int column) throws NotEnoughFreeSpacesException, ColumnIndexOutOfBoundsException {
+        Tile[][] oldShelf = myShelf;
         if(column <0 || column >=5){
             throw new ColumnIndexOutOfBoundsException(column);
         }
@@ -60,6 +63,12 @@ public class Shelf {
                 }
             }
         }
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "SHELF_MODIFIED",
+                oldShelf,
+                this.myShelf);
+        this.listener.propertyChange(evt);
     }
 
     /**

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Game{
+public class Game implements PropertyChangeListener{
 
     private List<Player> players;
     private List<CommonGoalCard> commonGoals;
@@ -16,6 +16,7 @@ public class Game{
     private boolean endGame;
     private Player endPlayer;
     private Board board;
+    private boolean changed = false;
 
     PropertyChangeListener listener;
 
@@ -132,5 +133,16 @@ public class Game{
 
     public void setListener(PropertyChangeListener listener) {
         this.listener = listener;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        this.changed = true;
+        PropertyChangeEvent move = new PropertyChangeEvent(
+                this,
+                evt.getPropertyName(),
+                null,
+                new GameView(this));
+        this.listener.propertyChange(move);
     }
 }

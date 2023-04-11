@@ -1,11 +1,16 @@
 package GC_11.model;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Bag {
 
     private List<Tile> tiles; // 132 tiles, 22 x 6
+
+    //The listener must be the Board,TODO: change Board builder
+    PropertyChangeListener listener;
 
     /**
      * Initialization of the Bag (new Game)
@@ -34,7 +39,13 @@ public class Bag {
      * @param t
      */
     public void insertAllTile(List<Tile>t){
-        tiles.addAll(t);
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "END_GAME_SET",
+                this.tiles,
+                this.tiles.addAll(t));
+
+        this.listener.propertyChange(evt);
     }
 
     /**
@@ -60,7 +71,14 @@ public class Bag {
      * @param t
      */
     public void removeListOfTile(List <Tile> t){
-        tiles.retainAll(t);
+
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "END_GAME_SET",
+                this.tiles,
+                this.tiles.retainAll(t));
+
+        this.listener.propertyChange(evt);
     }
 
     /**
@@ -103,5 +121,6 @@ public class Bag {
     public void updateBag(List<Tile> list){
         tiles.retainAll(list);
     }
+    //Duplicate of removeListOfTiles???
 
 }

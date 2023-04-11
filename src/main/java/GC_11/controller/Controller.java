@@ -5,6 +5,8 @@ import GC_11.exceptions.IllegalMoveException;
 import GC_11.model.Game;
 import GC_11.util.Choice;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
 
@@ -13,7 +15,7 @@ import java.util.List;
  * of Game and it can give to JsonReader the job of receiving the List of Players and bind them to a generic Personal
  * Card read from JSON file
  */
-public class Controller{
+public class Controller implements PropertyChangeListener {
     public List<CLIview> view;
     public JsonReader reader;
     private Game model;
@@ -93,5 +95,14 @@ public class Controller{
 
     private void chooseOrder(){
 
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        try {
+            update((CLIview) evt.getSource(), (Choice) evt.getNewValue());
+        } catch (IllegalMoveException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

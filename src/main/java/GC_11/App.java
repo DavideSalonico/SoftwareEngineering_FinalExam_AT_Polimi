@@ -20,7 +20,7 @@ public class App
         tmpPlayerNames.add("Paperino");
         Game model = new Game(tmpPlayerNames);
         GameView modelView = new GameView(model);
-        CLIview view = new CLIview(model.getCurrentPlayer());
+        CLIview view = new CLIview(model.getCurrentPlayer(), modelView);
         Controller controller = new Controller(model, view);
 
         System.out.println("Hello World!");

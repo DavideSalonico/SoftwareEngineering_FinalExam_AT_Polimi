@@ -1,6 +1,8 @@
 
 package GC_11.view;
 
+import GC_11.model.GameView;
+import GC_11.model.Tile;
 import GC_11.util.Choice;
 import GC_11.model.Player;
 
@@ -10,7 +12,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class CLIview implements Runnable, PropertyChangeListener {
+public class CLIview extends View /*implements Runnable*/{
 
     // private final Choice controllerChoice;
      private Choice playerChoice;
@@ -19,25 +21,31 @@ public class CLIview implements Runnable, PropertyChangeListener {
     /**
      * Every view is bound at only one player, it helps to manage every input that the controller receive
      */
-    private Player player;
 
-    public CLIview(Player player) {
+    public CLIview(Player player, GameView modelView) {
         this.player = player;
+        this.modelView = modelView;
     }
     public void setPlayerChoice(Choice c){
         this.playerChoice = c;
     }
 
     @Override
-    public void run(){
-        while(true){
-            System.out.println("--- NEW TURN ---");
-            Choice choice = getPlayerChoice();
-            //setChanged();
-            //notifyObservers(choice);
+    public void show(){
+        Player current = this.modelView.getCurrentPlayer();
+        System.out.println("*****************************************************");
+        this.modelView.getBoard().print();
+        //TODO: Print CommonGoalCard
+        for(Player p : this.modelView.getPlayers()){
+            System.out.println("Player : " + p.getNickname());
+            p.getShelf().print();
+            if(p.equals(current)){
+                for(Tile t : current.getTiles()){
+                    System.out.println("Tile: " + t.getColor() + ", " + t.getId());
+                }
+                //TODO: Print PersonalGoalCard
+            }
         }
-
-
     }
 
     public Choice getPlayerChoice(){
@@ -71,14 +79,5 @@ public class CLIview implements Runnable, PropertyChangeListener {
         }
     }
     */
-
-    public Player getPlayer(){
-        return player;
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("evt" + evt);
-    }
 }
 

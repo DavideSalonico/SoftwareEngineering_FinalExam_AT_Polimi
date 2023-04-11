@@ -6,7 +6,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-public class Player {
+public class Player implements PropertyChangeListener{
 
     private String nickname;
     private int points;
@@ -14,6 +14,9 @@ public class Player {
     private PersonalGoalCard personalGoal;
     private List<Integer> ListCommonGoals;
     private Shelf shelf;
+
+    //Game must register
+    PropertyChangeListener listener;
 
 
     public Player(String nickname, PersonalGoalCard personalCard){
@@ -147,5 +150,10 @@ public class Player {
 
     public boolean equals(Player currentPlayer) {
         return (this.nickname.equals(currentPlayer.getNickname()) && this.points == currentPlayer.getPoints());
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        this.listener.propertyChange(evt);
     }
 }
