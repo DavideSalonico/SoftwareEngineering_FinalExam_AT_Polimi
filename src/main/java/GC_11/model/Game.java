@@ -1,6 +1,7 @@
 package GC_11.model;
 
 import GC_11.model.common.*;
+import GC_11.util.CircularList;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -10,7 +11,7 @@ import java.util.Random;
 
 public class Game implements PropertyChangeListener{
 
-    private List<Player> players;
+    private CircularList<Player> players;
     private List<CommonGoalCard> commonGoals;
     private Player currentPlayer;
     private boolean endGame;
@@ -22,7 +23,7 @@ public class Game implements PropertyChangeListener{
 
     public Game(List<String> playerNames){
 
-        this.players = new ArrayList<Player>();
+        this.players = new CircularList<>();
         for(int i=0; i<playerNames.size(); i++){
             this.players.add(new Player(playerNames.get(i)));
             players.get(i).setListener(this);
@@ -131,6 +132,10 @@ public class Game implements PropertyChangeListener{
 
         if(!commonGoals.get(1).getWinningPlayers().contains(currentPlayer))
             commonGoals.get(1).givePoints(currentPlayer);
+    }
+
+    public void setNextCurrent(){
+        this.currentPlayer = this.players.get(this.players.indexOf(this.currentPlayer) + 1);
     }
 
     public void setListener(PropertyChangeListener listener) {

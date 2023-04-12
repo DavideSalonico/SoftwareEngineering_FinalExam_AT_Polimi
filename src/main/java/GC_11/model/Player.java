@@ -155,6 +155,10 @@ public class Player implements PropertyChangeListener{
         return shelf;
     }
 
+    public void pickTile(Tile t){
+        this.tiles.add(t);
+    }
+
     public boolean equals(Player currentPlayer) {
         return (this.nickname.equals(currentPlayer.getNickname()) && this.points == currentPlayer.getPoints());
     }
