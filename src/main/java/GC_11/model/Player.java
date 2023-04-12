@@ -3,11 +3,11 @@ package GC_11.model;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.NotEnoughFreeSpacesException;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
-public class Player {
-
-
+public class Player implements PropertyChangeListener{
 
     private String nickname;
     private int points;
@@ -19,6 +19,13 @@ public class Player {
     private Shelf shelf;
 
     private ControlMatrix matrix = new ControlMatrix();
+    public void setListener(PropertyChangeListener listener) {
+        this.listener = listener;
+    }
+
+    //Game must register
+    PropertyChangeListener listener;
+
 
 
     /**
@@ -30,6 +37,7 @@ public class Player {
         this.nickname = nickname;
         this.points=0;
         this.shelf = new Shelf();
+        this.shelf.setListener(this);
         this.personalGoal = personalCard;
     }
 
@@ -38,6 +46,7 @@ public class Player {
         this.nickname = nickname;
         this.points=0;
         this.shelf=new Shelf();
+        this.shelf.setListener(this);
     }
 
     //Solo per test, da cancellare
@@ -45,6 +54,7 @@ public class Player {
         this.nickname = "nickname";
         this.points = 0;
         this.shelf = new Shelf();
+        this.shelf.setListener(this);
         this.personalGoal = new PersonalGoalCard();
     }
 
@@ -156,46 +166,48 @@ public class Player {
         return shelf;
     }
 
-    /**
-     * Method that compare two instance of PLayer
-     * @param p
-     * @return true if this Player equals to player 'p' passed as argument of function
-     */
-    public boolean equals(Player p) {
-        return (this.nickname.equals(p.getNickname()) && this.points == p.getPoints());
+    public void pickTile(Tile t){
+        this.tiles.add(t);
+    }
+
+    public boolean equals(Player currentPlayer) {
+        return (this.nickname.equals(currentPlayer.getNickname()) && this.points == currentPlayer.getPoints());
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        this.listener.propertyChange(evt);
     }
 
     public void calculateAdjacencyPoint() throws ColumnIndexOutOfBoundsException {
-
-        this.pointsAdjacency=0;
+        this.pointsAdjacency = 0;
         matrix.reset();
         int counterTiles = 0;
         for (int l = 0; l < 6; l++) {
             for (int c = 0; c < 5; c++) {
                 if (!matrix.get(l, c)) {
                     matrix.setTrue(l, c);
-                    if(!this.getShelf().getTile(l,c).getColor().equals(TileColor.EMPTY)){
-                    counterTiles = 1 + verify(l, c + 1, this.getShelf().getTile(l, c).getColor()) +
-                            verify(l + 1, c, this.getShelf().getTile(l, c).getColor());
-                    switch (counterTiles) {
-                        case 1:
-                        case 2:
-                            break;
-                        case 3:
-                            this.pointsAdjacency = this.pointsAdjacency + 2;
-                            break;
-                        case 4:
-                            this.pointsAdjacency = this.pointsAdjacency + 3;
-                            break;
-                        case 5:
-                            this.pointsAdjacency = this.pointsAdjacency + 5;
-                            break;
-                        default:
-                            this.pointsAdjacency = this.pointsAdjacency + 8;
-                            break;
+                    if (!this.getShelf().getTile(l, c).getColor().equals(TileColor.EMPTY)) {
+                        counterTiles = 1 + verify(l, c + 1, this.getShelf().getTile(l, c).getColor()) +
+                                verify(l + 1, c, this.getShelf().getTile(l, c).getColor());
+                        switch (counterTiles) {
+                            case 1:
+                            case 2:
+                                break;
+                            case 3:
+                                this.pointsAdjacency = this.pointsAdjacency + 2;
+                                break;
+                            case 4:
+                                this.pointsAdjacency = this.pointsAdjacency + 3;
+                                break;
+                            case 5:
+                                this.pointsAdjacency = this.pointsAdjacency + 5;
+                                break;
+                            default:
+                                this.pointsAdjacency = this.pointsAdjacency + 8;
+                                break;
+                        }
                     }
-                    }
-
                 }
             }
         }

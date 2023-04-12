@@ -1,32 +1,38 @@
 package GC_11.model;
 
 import GC_11.model.common.*;
-import GC_11.util.Observable;
+import GC_11.util.CircularList;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Game extends Observable {
+public class Game implements PropertyChangeListener{
 
-    private List<Player> players;
+    private CircularList<Player> players;
     private List<CommonGoalCard> commonGoals;
     private Player currentPlayer;
     private boolean endGame;
     private Player endPlayer;
     private Board board;
+    private boolean changed = false;
+
+    PropertyChangeListener listener;
 
     public Game(List<String> playerNames){
 
-        this.players = new ArrayList<Player>();
+        this.players = new CircularList<>();
         for(int i=0; i<playerNames.size(); i++){
             this.players.add(new Player(playerNames.get(i)));
+            players.get(i).setListener(this);
         }
         this.currentPlayer = this.players.get(0);
         this.endGame = false;
         this.commonGoals = new ArrayList<CommonGoalCard>();
-        // Farsi mandare lista coordinate dal JsonReader e darle al costruttore di Board()
-        this.board = new Board();
+        this.board = new Board(players.size());
+        this.board.setListener(this);
         Random random = new Random();
         int tmp1 = random.nextInt(0, 11);
         int tmp2 = random.nextInt(0, 11);
@@ -56,12 +62,19 @@ public class Game extends Observable {
         return tmp;
     }
 
-    public boolean isGameEnded() {
+    public boolean isEndGame() {
         return endGame;
     }
 
     public void setEndGame(boolean endGame) {
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "END_GAME_SET",
+                this.endGame,
+                endGame);
         this.endGame = endGame;
+
+        this.listener.propertyChange(evt);
     }
 
     public void run(){
@@ -121,4 +134,22 @@ public class Game extends Observable {
             commonGoals.get(1).givePoints(currentPlayer);
     }
 
+    public void setNextCurrent(){
+        this.currentPlayer = this.players.get(this.players.indexOf(this.currentPlayer) + 1);
+    }
+
+    public void setListener(PropertyChangeListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        this.changed = true;
+        PropertyChangeEvent move = new PropertyChangeEvent(
+                this,
+                evt.getPropertyName(),
+                null,
+                new GameView(this));
+        this.listener.propertyChange(move);
+    }
 }
