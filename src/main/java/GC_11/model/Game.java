@@ -66,17 +66,6 @@ public class Game implements PropertyChangeListener{
         return endGame;
     }
 
-    public void setEndGame(boolean endGame) {
-        PropertyChangeEvent evt = new PropertyChangeEvent(
-                this,
-                "END_GAME_SET",
-                this.endGame,
-                endGame);
-        this.endGame = endGame;
-
-        this.listener.propertyChange(evt);
-    }
-
     public void run(){
 
     }
@@ -142,6 +131,13 @@ public class Game implements PropertyChangeListener{
         this.listener = listener;
     }
 
+
+    // TODO: Queste due metodi sottostanti dovranno generare un oggetto GameView
+    /**
+     * Notify a property change in one of object connected to 'Game' to Game Listener
+     * @param evt A PropertyChangeEvent object describing the event source
+     *          and the property that has changed.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         this.changed = true;
@@ -151,5 +147,20 @@ public class Game implements PropertyChangeListener{
                 null,
                 new GameView(this));
         this.listener.propertyChange(move);
+    }
+
+    /**
+     * Notify a property change in 'Game' to Game Listener
+     * @param endGame
+     */
+    public void setEndGame(boolean endGame) {
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "END_GAME_SET",
+                this.endGame,
+                endGame);
+        this.endGame = endGame;
+
+        this.listener.propertyChange(evt);
     }
 }
