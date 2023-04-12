@@ -6,8 +6,6 @@ import GC_11.model.Tile;
 import GC_11.util.Choice;
 import GC_11.model.Player;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -48,19 +46,19 @@ public class CLIview extends View /*implements Runnable*/{
         }
     }
 
-    public Choice getPlayerChoice(){
+    public Choice.Type getPlayerChoice(){
 
         Scanner s = new Scanner(System.in);
         System.out.println("Options available: ");
         System.out.println( "Signs: " +
-                Arrays.stream(Choice.values())
-                        .map(Choice::name)
+                Arrays.stream(Choice.Type.values())
+                        .map(Choice.Type::name)
                         .collect(
                                 Collectors.joining(",", "[", "]")));
         while (true){
             String input = s.next();
             try {
-                return Choice.valueOf(input);
+                return Choice.Type.valueOf(input);
             } catch(IllegalArgumentException e){
                 System.err.println("Invalid choice: " + input +  " Please retake.");
             }

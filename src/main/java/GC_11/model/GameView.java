@@ -8,6 +8,7 @@ import java.util.List;
 public class GameView{
 
     private final Game model;
+    //TODO:[RAM] remove model reference and copy every significant attribute
 
     public GameView(Game model){
         if (model == null){
