@@ -1,5 +1,7 @@
 package GC_11.controller;
 
+import GC_11.distributed.Client;
+import GC_11.distributed.ClientImpl;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.NotEnoughFreeSpacesException;
 import GC_11.model.Coordinate;
@@ -14,6 +16,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
+
+import GC_11.util.Choice;
 
 
 /**
@@ -74,6 +78,34 @@ public class Controller implements PropertyChangeListener {
         String params = null;
 
         switch (view.getPlayerChoice()){
+            // Azioni da mettere dentro al client
+            //case INSERT_NAME
+            //case LOGIN
+            //case FIND_MATCH
+            //case SEE_COMMONGOAL-> seeCommonGoal(); gestita direttamente dalla view?
+            //case SEE_PERSONALGOAL -> seePersonalGoal();
+            case SELECT_TILE -> selectTile(player, params);
+            case CHOOSE_ORDER ->chooseOrder(player, params);
+            case PICK_COLUMN-> pickColumn(player, params);
+        }
+
+        model.setNextCurrent();
+    }
+
+
+    // [MATTIA] : Ho aggiunto questo metodo con diversa signature per gestirlo sul server. Vediamo bene come fare con i parametri
+    public void update(ClientImpl client, Choice arg) throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+
+        if (!client.getPlayer().equals(model.getCurrentPlayer())){
+            throw new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer()+ "'s turn");
+        }
+
+        Player player = client.getPlayer();
+        String params = null;
+
+        //Choice.Type choice =  arg;
+
+        switch (arg.getChoice()){
             // Azioni da mettere dentro al client
             //case INSERT_NAME
             //case LOGIN
