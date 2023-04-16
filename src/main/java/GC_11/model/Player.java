@@ -15,7 +15,6 @@ public class Player implements PropertyChangeListener, Serializable {
 
     private String nickname;
     private int points;
-
     private int pointsAdjacency;
     private List<Tile> tiles;
     private PersonalGoalCard personalGoal;
@@ -61,6 +60,28 @@ public class Player implements PropertyChangeListener, Serializable {
         this.shelf = new Shelf();
         this.shelf.setListener(this);
         this.personalGoal = new PersonalGoalCard();
+    }
+
+    /**
+     * Duplicate instance of Player
+     * @param p original player
+     */
+    public Player(Player p){
+        this.nickname = p.getNickname();
+        this.points = p.getPoints();
+        this.tiles = p.getTiles();
+        this.shelf = p.getShelf();
+        this.pointsAdjacency = p.getPointsAdjacency();
+        this.personalGoal = p.getPersonalGoal();
+        this.ListCommonGoals = p.getListCommonGoals();
+    }
+
+    private List<Integer> getListCommonGoals() {
+        return this.ListCommonGoals;
+    }
+
+    private PersonalGoalCard getPersonalGoal() {
+        return this.personalGoal;
     }
 
     /**

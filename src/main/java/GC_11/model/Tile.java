@@ -39,7 +39,6 @@ public class Tile implements Serializable {
         return this.id;
     }
 
-
     public boolean equals(@NotNull Tile t) {
         return (t.getColor() == this.color);
     }

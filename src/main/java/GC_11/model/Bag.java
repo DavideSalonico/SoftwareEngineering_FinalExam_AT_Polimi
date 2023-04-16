@@ -16,6 +16,16 @@ public class Bag {
     //The listener must be the Board,TODO: change Board builder
     PropertyChangeListener listener;
 
+
+    public Bag(Bag bag){
+        this.tiles = bag.getTiles();
+        this.listener = bag.listener;
+    }
+
+    private List<Tile> getTiles() {
+        return this.tiles;
+    }
+
     /**
      * Initialization of the Bag (new Game)
      */

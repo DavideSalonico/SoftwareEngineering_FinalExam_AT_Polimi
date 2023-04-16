@@ -21,6 +21,19 @@ public class Board implements PropertyChangeListener{
     //The listener must be Game
     PropertyChangeListener listener;
 
+    public Board(Board board){
+        this.chessBoard = board.getChessBoard();
+        this.bag = board.getBag();
+    }
+
+    /**
+     * Duplicate method
+     * @return
+     */
+    private Tile[][] getChessBoard() {
+        return chessBoard;
+    }
+
     /**
      * Constructor of Board entity, it initializes all the 9x9 matrix in Tile.EMPTY then sets the prohibited cells
      * into TileColor.PROHIBITED (get coordinates from JSON file)

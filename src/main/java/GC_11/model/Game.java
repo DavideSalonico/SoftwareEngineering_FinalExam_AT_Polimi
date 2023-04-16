@@ -28,6 +28,25 @@ public class Game implements PropertyChangeListener, Serializable {
     //It's not necessary to serialize the listener (attribute transient)
     public transient PropertyChangeListener  listener;
 
+    //Need a constructor which allows the deserialization of the class
+    public Game(Game game){
+        this.players = game.getPlayers();
+        this.commonGoals = game.getCommonGoal();
+        this.currentPlayer = game.getCurrentPlayer();
+        this.endGame = game.getEndGame();
+        this.endPlayer = game.getEndPlayer();
+        this.board = game.getBoard();
+        this.changed = game.getChanged();
+    }
+
+    private boolean getChanged() {
+        return this.changed;
+    }
+
+    private boolean getEndGame() {
+        return this.endGame;
+    }
+
     public Game(List<String> playerNames){
 
         this.players = new CircularList<>();
@@ -92,7 +111,7 @@ public class Game implements PropertyChangeListener, Serializable {
         this.currentPlayer = currentPlayer;
     }
 
-    public List<Player> getPlayers() {
+    public CircularList<Player> getPlayers() {
         return players;
     }
 
@@ -105,6 +124,7 @@ public class Game implements PropertyChangeListener, Serializable {
         return commonGoals.get(i);
     }
 
+    public List<CommonGoalCard> getCommonGoal(){ return commonGoals;}
 
     public Player getEndPlayer() {
         return endPlayer;

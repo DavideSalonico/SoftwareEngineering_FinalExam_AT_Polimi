@@ -26,6 +26,18 @@ public class Shelf implements Serializable {
     }
 
     /**
+     * Duplicate method
+     * @param shelf is the original instance
+     */
+    public Shelf(Shelf shelf){
+        this.myShelf = shelf.getMyShelf();
+    }
+
+    private Tile[][] getMyShelf() {
+        return this.myShelf;
+    }
+
+    /**
      * @param column indicates the column of which I want to know the number of fre spaces
      * @return an integer indicating how namy more Tiles can be added in the selected column
      */
