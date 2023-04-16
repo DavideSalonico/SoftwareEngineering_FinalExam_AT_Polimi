@@ -5,11 +5,17 @@ import GC_11.util.CircularList;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Game implements PropertyChangeListener{
+/**
+ * Game's class, it is the center of all the game model, it contains references with all the object and can also
+ * interact with them to settle the changes sent by controller
+ * it's a Serializable class, so the GameView can serialize a copy of its status every time something changes
+ */
+public class Game implements PropertyChangeListener, Serializable {
 
     private CircularList<Player> players;
     private List<CommonGoalCard> commonGoals;
@@ -19,7 +25,8 @@ public class Game implements PropertyChangeListener{
     private Board board;
     private boolean changed = false;
 
-    PropertyChangeListener listener;
+    //It's not necessary to serialize the listener (attribute transient)
+    public transient PropertyChangeListener  listener;
 
     public Game(List<String> playerNames){
 

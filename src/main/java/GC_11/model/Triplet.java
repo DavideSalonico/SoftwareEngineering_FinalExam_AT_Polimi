@@ -1,6 +1,11 @@
 package GC_11.model;
 
-public class Triplet {
+import java.io.Serializable;
+
+/**
+ * Triplet is a side class which give the possibility to save a combination of row,column and color of a Tile
+ */
+public class Triplet implements Serializable {
 
     private int row;
     private int col;

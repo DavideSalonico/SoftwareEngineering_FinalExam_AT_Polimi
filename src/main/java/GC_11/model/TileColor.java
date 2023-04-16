@@ -1,10 +1,14 @@
 package GC_11.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public enum TileColor {
+/**
+ * TileColor represents the status that a cell of the Board can assume, enum is serializable
+ */
+public enum TileColor implements Serializable {
     WHITE,
     BLUE,
     PURPLE,

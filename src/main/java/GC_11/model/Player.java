@@ -5,9 +5,13 @@ import GC_11.exceptions.NotEnoughFreeSpacesException;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.util.List;
 
-public class Player implements PropertyChangeListener{
+/**
+ * Player's class, all serializable attributes except for ControlMatrix and the Listener of the class
+ */
+public class Player implements PropertyChangeListener, Serializable {
 
     private String nickname;
     private int points;
@@ -18,15 +22,16 @@ public class Player implements PropertyChangeListener{
     private List<Integer> ListCommonGoals;
     private Shelf shelf;
 
-    private ControlMatrix matrix = new ControlMatrix();
+    //ControlMatrix and Listener don't need to be Serialized
+    private transient ControlMatrix matrix = new ControlMatrix();
+
+    //Game must register
+    public transient PropertyChangeListener listener;
+
+
     public void setListener(PropertyChangeListener listener) {
         this.listener = listener;
     }
-
-    //Game must register
-    PropertyChangeListener listener;
-
-
 
     /**
      * Main constructor of Player

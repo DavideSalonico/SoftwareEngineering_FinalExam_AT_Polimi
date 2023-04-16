@@ -3,10 +3,11 @@ package GC_11.model.common;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.model.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CommonGoalCard {
+public abstract class CommonGoalCard implements Serializable {
 
     private List<Player> winningPlayers = new ArrayList<>();
     private String text;

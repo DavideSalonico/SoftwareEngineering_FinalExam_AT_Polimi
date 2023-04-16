@@ -2,9 +2,13 @@ package GC_11.model;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Tile {
+/**
+ * Tile's class, serializable except for Random attribute
+ */
+public class Tile implements Serializable {
 
     // Attributes
     private TileColor color;

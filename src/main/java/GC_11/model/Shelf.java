@@ -2,16 +2,19 @@ package GC_11.model;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.util.List;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.NotEnoughFreeSpacesException;
 
-public class Shelf {
-
+/**
+ * Shelf's class, it is composed by a matrix
+ * it's a Serializable class except for the listener attribute
+ */
+public class Shelf implements Serializable {
     private Tile[][] myShelf;
-
     //Player must register
-    PropertyChangeListener listener;
+    public transient PropertyChangeListener listener;
 
     public Shelf(){
         myShelf= new Tile[6][5];
