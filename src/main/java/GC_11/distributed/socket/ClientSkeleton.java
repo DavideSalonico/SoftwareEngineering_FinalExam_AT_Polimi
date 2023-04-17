@@ -1,6 +1,7 @@
 package GC_11.distributed.socket;
 
 import GC_11.distributed.Client;
+import GC_11.distributed.Server;
 import GC_11.model.GameView;
 import GC_11.util.Choice;
 
@@ -13,7 +14,6 @@ import java.rmi.RemoteException;
 public class ClientSkeleton implements Client {
 
     private final ObjectOutputStream oos;
-
     private final ObjectInputStream ois;
 
     public ClientSkeleton(Socket socket) throws RemoteException{
@@ -53,6 +53,23 @@ public class ClientSkeleton implements Client {
         {
             throw new RemoteException("Cannot send event", e);
         }
+    }
+
+    public void receive(Server server) throws RemoteException{
+        Choice choice;
+        try
+        {
+            choice = (Choice) ois.readObject();
+        }
+        catch(IOException e)
+        {
+            throw new RemoteException("Cannot receive choice from server", e);
+        }
+        catch(ClassNotFoundException e)
+        {
+            throw new RemoteException("Cannot deserialize choice from client", e);
+        }
+        //server.update(this, choice);
     }
 
 
