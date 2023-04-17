@@ -29,23 +29,16 @@ public class Game implements PropertyChangeListener, Serializable {
     public transient PropertyChangeListener  listener;
 
     //Need a constructor which allows the deserialization of the class
-    public Game(Game game){
-        this.players = game.getPlayers();
-        this.commonGoals = game.getCommonGoal();
-        this.currentPlayer = game.getCurrentPlayer();
-        this.endGame = game.getEndGame();
-        this.endPlayer = game.getEndPlayer();
-        this.board = game.getBoard();
-        this.changed = game.getChanged();
-    }
+    //public Game(Game game){
+    //    this.players = game.getPlayers();
+    //    this.commonGoals = game.getCommonGoal();
+    //    this.currentPlayer = game.getCurrentPlayer();
+    //    this.endGame = game.getEndGame();
+    //    this.endPlayer = game.getEndPlayer();
+    //    this.board = game.getBoard();
+    //    this.changed = game.getChanged();
+    //}
 
-    private boolean getChanged() {
-        return this.changed;
-    }
-
-    private boolean getEndGame() {
-        return this.endGame;
-    }
 
     public Game(List<String> playerNames){
 
@@ -67,6 +60,8 @@ public class Game implements PropertyChangeListener, Serializable {
         }
         this.commonGoals.add(loadCommon(tmp1));
         this.commonGoals.add(loadCommon(tmp2));
+        this.commonGoals.get(0).setListener(this);
+        this.commonGoals.get(1).setListener(this);
     }
 
     private CommonGoalCard loadCommon(int i){
@@ -88,29 +83,6 @@ public class Game implements PropertyChangeListener, Serializable {
         return tmp;
     }
 
-    public boolean isEndGame() {
-        return endGame;
-    }
-
-    public void run(){
-
-    }
-
-
-    /**
-     * @return the current player
-     */
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    /**
-     * @param currentPlayer the player that is wanted to be set as current
-     */
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
     public CircularList<Player> getPlayers() {
         return players;
     }
@@ -120,11 +92,57 @@ public class Game implements PropertyChangeListener, Serializable {
      * @param i is an integer equals to 0 or 1
      * @return the corresponding CommonGoalCard
      */
-    public CommonGoalCard getCommonGoal(int i){
-        return commonGoals.get(i);
+    public List<CommonGoalCard> getCommonGoal(){
+        return commonGoals;
     }
 
-    public List<CommonGoalCard> getCommonGoal(){ return commonGoals;}
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    /**
+     * @param currentPlayer the player that is wanted to be set as current
+     */
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+        this.changed = true;
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "CHANGED_CURRENT_PLAYER",
+                null,
+                new GameView(this));
+        this.listener.propertyChange(evt);
+    }
+
+    public void setNextCurrent(){
+        this.currentPlayer = this.players.get(this.players.indexOf(this.currentPlayer) + 1);
+        this.changed = true;
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "CHANGED_CURRENT_PLAYER(NEXT)",
+                null,
+                new GameView(this));
+        this.listener.propertyChange(evt);
+    }
+
+    public boolean isEndGame() {
+        return this.endGame;
+    }
+
+    /**
+     * Notify a property change in 'Game' to Game Listener
+     * @param endGame
+     */
+    public void setEndGame(boolean endGame) {
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "END_GAME_SET",
+                this.endGame,
+                endGame);
+        this.endGame = endGame;
+
+        this.listener.propertyChange(evt);
+    }
 
     public Player getEndPlayer() {
         return endPlayer;
@@ -132,10 +150,21 @@ public class Game implements PropertyChangeListener, Serializable {
 
     public void setEndPlayer(Player endPlayer) {
         this.endPlayer = endPlayer;
+        this.changed = true;
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "END_GAME_SET",
+                null,
+                new GameView(this));
+        this.listener.propertyChange(evt);
     }
 
     public Board getBoard() {
         return board;
+    }
+
+    private boolean getChanged() {
+        return this.changed;
     }
 
     /**
@@ -148,10 +177,6 @@ public class Game implements PropertyChangeListener, Serializable {
 
         if(!commonGoals.get(1).getWinningPlayers().contains(currentPlayer))
             commonGoals.get(1).givePoints(currentPlayer);
-    }
-
-    public void setNextCurrent(){
-        this.currentPlayer = this.players.get(this.players.indexOf(this.currentPlayer) + 1);
     }
 
     public void setListener(PropertyChangeListener listener) {
@@ -174,20 +199,5 @@ public class Game implements PropertyChangeListener, Serializable {
                 null,
                 new GameView(this));
         this.listener.propertyChange(move);
-    }
-
-    /**
-     * Notify a property change in 'Game' to Game Listener
-     * @param endGame
-     */
-    public void setEndGame(boolean endGame) {
-        PropertyChangeEvent evt = new PropertyChangeEvent(
-                this,
-                "END_GAME_SET",
-                this.endGame,
-                endGame);
-        this.endGame = endGame;
-
-        this.listener.propertyChange(evt);
     }
 }
