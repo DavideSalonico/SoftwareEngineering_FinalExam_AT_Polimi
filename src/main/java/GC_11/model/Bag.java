@@ -2,10 +2,11 @@ package GC_11.model;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Bag {
+public class Bag implements Serializable {
 
     private List<Tile> tiles; // 132 tiles, 22 x 6
 
@@ -14,7 +15,7 @@ public class Bag {
     }
 
     //The listener must be the Board,TODO: change Board builder
-    PropertyChangeListener listener;
+    transient PropertyChangeListener listener;
 
 
     public Bag(Bag bag){

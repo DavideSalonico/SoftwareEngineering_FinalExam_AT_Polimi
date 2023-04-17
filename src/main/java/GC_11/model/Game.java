@@ -104,6 +104,10 @@ public class Game implements PropertyChangeListener, Serializable {
         return currentPlayer;
     }
 
+    public Player getPlayers(int i){
+        return players.get(i);
+    }
+
     /**
      * @param currentPlayer the player that is wanted to be set as current
      */
@@ -167,7 +171,7 @@ public class Game implements PropertyChangeListener, Serializable {
         return board;
     }
 
-    private boolean getChanged() {
+    public boolean getChanged() {
         return this.changed;
     }
 

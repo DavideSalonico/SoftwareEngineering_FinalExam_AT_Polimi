@@ -5,11 +5,12 @@ import GC_11.exceptions.IllegalMoveException;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Board implements PropertyChangeListener{
+public class Board implements PropertyChangeListener, Serializable {
 
     private Tile[][] chessBoard;
     private Bag bag;
@@ -19,7 +20,7 @@ public class Board implements PropertyChangeListener{
     }
 
     //The listener must be Game
-    PropertyChangeListener listener;
+    transient PropertyChangeListener listener;
 
     public Board(Board board){
         this.chessBoard = board.getChessBoard();
