@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -102,7 +103,8 @@ public class GameTest {
     public void testSetEndGame() {
         List<String> playerNames = Arrays.asList("Player 1", "Player 2");
         Game game = new Game(playerNames);
-
+        PropertyChangeListener prova;
+        game.setListener(prova);
         assertFalse(game.isEndGame());
 
         game.setEndGame(true);
