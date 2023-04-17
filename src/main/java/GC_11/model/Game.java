@@ -92,6 +92,10 @@ public class Game implements PropertyChangeListener, Serializable {
      * @param i is an integer equals to 0 or 1
      * @return the corresponding CommonGoalCard
      */
+    public CommonGoalCard getCommonGoal(int i){
+        return commonGoals.get(i);
+    }
+
     public List<CommonGoalCard> getCommonGoal(){
         return commonGoals;
     }
