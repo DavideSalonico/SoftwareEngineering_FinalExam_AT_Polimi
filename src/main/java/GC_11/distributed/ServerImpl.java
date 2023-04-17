@@ -4,12 +4,13 @@ import GC_11.controller.Controller;
 import GC_11.model.Game;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 
-public class ServerImpl extends UnicastRemoteObject implements Server{
+public class ServerImpl extends UnicastRemoteObject implements Server, PropertyChangeListener {
 
     private Game game;
 
@@ -40,4 +41,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server{
         // this.controller.update(client.getView(), arg);
     }
 
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        // Viene chiamato quando il model (Game) cambia qualcosa
+    }
 }
