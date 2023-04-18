@@ -119,6 +119,7 @@ public class Player implements PropertyChangeListener, Serializable {
      */
 
     public void addPoints(int n){
+
         this.points+=n;
     }
 

@@ -69,7 +69,7 @@ public class Controller implements PropertyChangeListener {
     git * @param arg   is the 'Choice' = action taken by Player (enum object)
      */
     public void update(CLIview view, Choice arg) throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
-
+/*
         if (!view.getPlayer().equals(model.getCurrentPlayer())){
             throw new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer()+ "'s turn");
         }
@@ -87,9 +87,7 @@ public class Controller implements PropertyChangeListener {
             case SELECT_TILE -> selectTile(player, params);
             case CHOOSE_ORDER ->chooseOrder(player, params);
             case PICK_COLUMN-> pickColumn(player, params);
-        }
-
-        model.setNextCurrent();
+        }*/
     }
 
 
@@ -101,9 +99,8 @@ public class Controller implements PropertyChangeListener {
         }
 
         Player player = client.getPlayer();
-        String params = null;
-
-        //Choice.Type choice =  arg;
+        Choice.Type choice =  arg.getChoice();
+        List<String> params = arg.getParams();
 
         switch (arg.getChoice()){
             // Azioni da mettere dentro al client
@@ -128,7 +125,7 @@ public class Controller implements PropertyChangeListener {
 
     }
 
-    private void selectTile(Player player, String parameters){
+    private void selectTile(Player player, List<String> parameters){
         //TODO: decide if for every tile picked must be triggered a single event from the view (I think so) [Davide]
         List<Coordinate> coords = stringToCoordinate(parameters);
         List<Tile> tmp_list = new ArrayList<>();
@@ -137,22 +134,59 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    private List<Coordinate> stringToCoordinate(String parameters) {
+    private List<Coordinate> stringToCoordinate(List<String> parameters) {
         //TODO: to be implemented
-        return null;
+
+        if (parameters.size()%2 != 0){
+            // Errore
+            System.out.println("Coordinate number must be even. You can't have odd numver of coordinate");
+        }
+
+        int row = 0;
+        int col = 0;
+
+        int num = 0;
+
+        List<Coordinate> listOfCoordinates = new ArrayList<Coordinate>();
+
+        int parsed = 0;
+        for (int i=0; i<parameters.size();i++)
+        {
+
+            try{
+                num = Integer.parseInt(parameters.get(i));
+            }
+            catch (NumberFormatException e){
+                System.out.println("Formato illegale");
+            }
+            if (i%2==0){
+                row = num;
+                parsed++;
+            }
+            else {
+                col = num;
+                parsed++;
+            }
+            if (parsed == 2){
+
+                listOfCoordinates.add(new Coordinate(row,col));
+                parsed=0;
+            }
+        }
+        return listOfCoordinates;
     }
 
-    private void pickColumn(Player player, String parameters) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+    private void pickColumn(Player player, List<String> parameters) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
         int column = paramsToColumnIndex(parameters);
         player.getShelf().addTiles(player.getTiles(), column);
     }
 
-    private int paramsToColumnIndex(String parameters) {
+    private int paramsToColumnIndex(List<String> parameters) {
         //TODO: to be implemented
         return 0;
     }
 
-    private void chooseOrder(Player player, String parameters){
+    private void chooseOrder(Player player, List<String> parameters){
         //TODO: how do we decide tiles' order?
     }
 

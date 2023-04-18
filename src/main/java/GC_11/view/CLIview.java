@@ -20,12 +20,15 @@ public class CLIview extends View /*implements Runnable*/{
      * Every view is bound at only one player, it helps to manage every input that the controller receive
      */
 
-    public CLIview(Player player, GameView modelView) {
+    public CLIview(Player player) {
         this.player = player;
-        this.modelView = modelView;
     }
     public void setPlayerChoice(Choice c){
         this.playerChoice = c;
+    }
+
+    public void setModelView(GameView modelView){
+        this.modelView = modelView;
     }
 
     @Override
@@ -46,7 +49,7 @@ public class CLIview extends View /*implements Runnable*/{
         }
     }
 
-    public Choice.Type getPlayerChoice(){
+    public Choice getPlayerChoice(){
 
         Scanner s = new Scanner(System.in);
         System.out.println("Options available: ");
@@ -58,7 +61,7 @@ public class CLIview extends View /*implements Runnable*/{
         while (true){
             String input = s.nextLine();
             try {
-                return new Choice(input).getChoice();
+                return new Choice(input);
             } catch(IllegalArgumentException e){
                 System.err.println("Invalid choice: " + input +  " Please retake.");
             }
