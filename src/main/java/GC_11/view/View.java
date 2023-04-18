@@ -37,7 +37,7 @@ public abstract class View implements PropertyChangeListener, Runnable{
 
     public void run(){
         show();
-        Choice.Type choice = getPlayerChoice();
+        Choice choice = getPlayerChoice();
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "CHOICE",
