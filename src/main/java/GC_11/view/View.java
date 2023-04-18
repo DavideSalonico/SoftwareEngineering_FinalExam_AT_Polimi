@@ -29,7 +29,7 @@ public abstract class View implements PropertyChangeListener, Runnable{
         this.modelView = (GameView) evt.getNewValue();
     }
 
-    public abstract Choice.Type getPlayerChoice();
+    public abstract Choice getPlayerChoice();
 
     public void run(){
         show();

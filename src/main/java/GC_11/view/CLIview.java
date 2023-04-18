@@ -46,7 +46,7 @@ public class CLIview extends View /*implements Runnable*/{
         }
     }
 
-    public Choice.Type getPlayerChoice(){
+    public Choice getPlayerChoice(){
 
         Scanner s = new Scanner(System.in);
         System.out.println("Options available: ");
@@ -58,7 +58,7 @@ public class CLIview extends View /*implements Runnable*/{
         while (true){
             String input = s.nextLine();
             try {
-                return new Choice(input).getChoice();
+                return new Choice(input);
             } catch(IllegalArgumentException e){
                 System.err.println("Invalid choice: " + input +  " Please retake.");
             }

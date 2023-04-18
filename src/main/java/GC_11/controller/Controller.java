@@ -88,8 +88,6 @@ public class Controller implements PropertyChangeListener {
             case CHOOSE_ORDER ->chooseOrder(player, params);
             case PICK_COLUMN-> pickColumn(player, params);
         }
-
-        model.setNextCurrent();
     }
 
 
