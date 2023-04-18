@@ -31,6 +31,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server, PropertyC
     // [MATTIA]: capire bene come comportarsi quando ricevo la registrazione dal server
     @Override
     public void register(Client client) throws RemoteException {
+        // this.game = new Game();
 
     }
 
@@ -41,8 +42,9 @@ public class ServerImpl extends UnicastRemoteObject implements Server, PropertyC
         // this.controller.update(client.getView(), arg);
     }
 
+    // Viene chiamato quando il model cambia qualcosa
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        // Viene chiamato quando il model (Game) cambia qualcosa
+
     }
 }
