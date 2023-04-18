@@ -1,6 +1,5 @@
 package GC_11.controller;
 
-import GC_11.distributed.ClientImpl;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.IllegalMoveException;
 import GC_11.exceptions.NotEnoughFreeSpacesException;
@@ -10,8 +9,6 @@ import GC_11.model.Player;
 import GC_11.model.Tile;
 import GC_11.model.common.CommonGoalCard;
 import GC_11.util.Choice;
-import GC_11.view.View;
-import GC_11.view.View;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -84,14 +81,14 @@ public class Controller implements PropertyChangeListener {
 
     // [MATTIA] : Ho aggiunto questo metodo con diversa signature per gestirlo sul server. Vediamo bene come fare con i parametri
     // TODO: Mettere tutti i metodi del controller in Try and Catch e gestire l'eccezzioni
-    public void update(ClientImpl client, Choice arg) throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+    public void update(Choice arg) throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
 
-        if (!client.getPlayer().equals(model.getCurrentPlayer())){
+        if (!checkTurn()){
             throw new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer()+ "'s turn");
         }
 
-        Player player = client.getPlayer();
+        Player player = choice.getPlayer();
         Choice.Type choice =  arg.getChoice();
         List<String> params = arg.getParams();
 
@@ -186,7 +183,7 @@ public class Controller implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         try {
-            update((View) evt.getSource(), (Choice) evt.getNewValue());
+            update((Choice) evt.getNewValue());
         } catch (IllegalMoveException | ColumnIndexOutOfBoundsException | NotEnoughFreeSpacesException e) {
             throw new RuntimeException(e);
         }
