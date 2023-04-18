@@ -104,6 +104,7 @@ public class GameTest {
         // Create a new Game object to be serialized
         List<String> playerNames = Arrays.asList("Player 1", "Player 2");
         Game game = new Game(playerNames);
+        //game.setEndPlayer(game.getPlayers(0));
         // ... initialize the game object with required data
 
         // Serialize the game object to a byte array
@@ -128,8 +129,9 @@ public class GameTest {
         assertEquals(game.getCommonGoal(1).getText(), deserializedGame.getCommonGoal(1).getText());
         assertEquals(game.getCurrentPlayer().getNickname(), deserializedGame.getCurrentPlayer().getNickname());
         assertEquals(game.isEndGame(), deserializedGame.isEndGame());
-       //assertEquals(game.getEndPlayer().getNickname(), deserializedGame.getEndPlayer().getNickname());
-        //assertEquals(game.getBoard(), deserializedGame.getBoard());
+
+        //assertEquals(game.getEndPlayer().getNickname(), deserializedGame.getEndPlayer().getNickname());
+        assertEquals(game.getBoard().getBag().countNumOfTiles(), deserializedGame.getBoard().getBag().countNumOfTiles());
         assertEquals(game.getChanged(), deserializedGame.getChanged());
 
         // Check if the transient attribute is null in the deserialized Game object
