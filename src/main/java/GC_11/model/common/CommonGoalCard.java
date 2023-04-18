@@ -21,7 +21,7 @@ public abstract class CommonGoalCard implements Serializable{
         List<Player> oldWinning = this.winningPlayers;
         winningPlayers.add(player);
         int point = 10 - 2*winningPlayers.size();
-        player.addPoints(point);
+        player.addPointsCommonGoals(point);
 
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,

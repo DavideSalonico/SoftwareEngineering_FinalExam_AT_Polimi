@@ -15,6 +15,8 @@ public class Player implements PropertyChangeListener, Serializable {
 
     private String nickname;
     private int points;
+    private int pointsCommonGoals;
+    private int pointsPersonalGoal;
     private int pointsAdjacency;
     private List<Tile> tiles;
     private PersonalGoalCard personalGoal;
@@ -121,6 +123,8 @@ public class Player implements PropertyChangeListener, Serializable {
         this.points+=n;
     }
 
+    public void addPointsCommonGoals (int n){this.pointsCommonGoals += n;}
+
     /**
      * This method returns the List of Tiles that the Player drawn in his Turn, it needs to be empty at the end of the Turn
      * @return the tiles the player is holding from the board and will be put in the shelf
@@ -158,7 +162,8 @@ public class Player implements PropertyChangeListener, Serializable {
      * @throws ColumnIndexOutOfBoundsException
      */
 
-    private int calculatePersonalPoints() throws ColumnIndexOutOfBoundsException {
+    private void updatesPointsPersonalGoal() throws ColumnIndexOutOfBoundsException {
+        this.pointsPersonalGoal=0;
         int totalRight = 0;
         // For every goal in the personal goal card check if matches with the personal shelf
         for (Triplet t : personalGoal.getGoalList()){
@@ -168,20 +173,25 @@ public class Player implements PropertyChangeListener, Serializable {
         }
         switch (totalRight){
             case 1:
-                return 1;
+                this.pointsPersonalGoal = 1;
+                break;
             case 2:
-                return 2;
+                this.pointsPersonalGoal = 2;
+                break;
             case 3:
-                return 4;
+                this.pointsPersonalGoal = 4;
+                break;
             case 4:
-                return 6;
+                this.pointsPersonalGoal = 6;
+                break;
             case 5:
-                return 9;
+                this.pointsPersonalGoal = 9;
+                break;
             case 6:
-                return 12;
+                this.pointsPersonalGoal = 12;
+                break;
             default:
-                return 0;
-
+                this.pointsPersonalGoal = 0;
         }
     }
 
@@ -240,7 +250,7 @@ public class Player implements PropertyChangeListener, Serializable {
         }
     }
 
-    public int verify (int l, int c, TileColor color) throws ColumnIndexOutOfBoundsException {
+    private int verify (int l, int c, TileColor color) throws ColumnIndexOutOfBoundsException {
 
         if(l>5 || c>4 || l<0 || c<0){
             return 0;
