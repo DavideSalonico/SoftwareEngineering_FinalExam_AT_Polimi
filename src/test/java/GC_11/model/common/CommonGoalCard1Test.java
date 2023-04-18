@@ -35,7 +35,7 @@ class CommonGoalCard1Test {
     void checkTestGood() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
 
-        player.getShelf().addTiles(blues,0);
+        player.insertTiles(blues,0);
         player.getShelf().addTiles(blues,0);
         player.getShelf().addTiles(cyans,1);
         player.getShelf().addTiles(cyans,1);

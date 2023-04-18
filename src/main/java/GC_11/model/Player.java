@@ -134,25 +134,14 @@ public class Player implements PropertyChangeListener, Serializable {
     }
 
     /**
-     * Player draws Tiles from Board
-     * @param tilesDrawn is the list of tiles that the player drawn from the board
-     */
-
-    public void setTiles(List<Tile> tilesDrawn) {
-        this.tiles = tilesDrawn;
-    }
-
-    /**
      *  This method insert the tiles in the column and by the order chosen by the player
      * @param tilesOrder is the list of the tiles in the order that the player want to insert them into the shelf
      * @param column is the columns in which the player want to insert the insert
      */
-
     public void insertTiles(List<Tile> tilesOrder, int column) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
         if (column <0 || column > 5){
             throw new IndexOutOfBoundsException("Wrong column index received");
         }
-
         shelf.addTiles(tilesOrder,column);
     }
 
@@ -216,7 +205,7 @@ public class Player implements PropertyChangeListener, Serializable {
         this.listener.propertyChange(evt);
     }
 
-    public void calculateAdjacencyPoint() throws ColumnIndexOutOfBoundsException {
+    public void calculateAndGiveAdjacencyPoint() throws ColumnIndexOutOfBoundsException {
         this.pointsAdjacency = 0;
         matrix.reset();
         int counterTiles = 0;

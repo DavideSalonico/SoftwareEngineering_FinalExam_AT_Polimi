@@ -48,16 +48,16 @@ class CommonGoalCard3Test {
     void checkTestAllVoid() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
 
-        // player.getShelf().addTiles(blues,0);
-        // player.getShelf().addTiles(blues,0);
-        // player.getShelf().addTiles(cyans,1);
-        // player.getShelf().addTiles(cyans,1);
-        // player.getShelf().addTiles(greens,2);
-        // player.getShelf().addTiles(greens,2);
-        //  player.getShelf().addTiles(oranges,3);
-        //  player.getShelf().addTiles(oranges,3);
-        //  player.getShelf().addTiles(whites,4);
-        //  player.getShelf().addTiles(whites,4);
+        // player.insertTiles(blues,0);
+        // player.insertTiles(blues,0);
+        // player.insertTiles(cyans,1);
+        // player.insertTiles(cyans,1);
+        // player.insertTiles(greens,2);
+        // player.insertTiles(greens,2);
+        //  player.insertTiles(oranges,3);
+        //  player.insertTiles(oranges,3);
+        //  player.insertTiles(whites,4);
+        //  player.insertTiles(whites,4);
 
 
         System.out.println("inizio test all void");
@@ -73,12 +73,12 @@ class CommonGoalCard3Test {
     void checkTestWrong() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
 
-        player.getShelf().addTiles(blues2,0);
-        player.getShelf().addTiles(blues2,0);
-        player.getShelf().addTiles(blues2,1);
-        player.getShelf().addTiles(blues2,1);
-        player.getShelf().addTiles(whites,4);
-        player.getShelf().addTiles(purples2,4);
+        player.insertTiles(blues2,0);
+        player.insertTiles(blues2,0);
+        player.insertTiles(blues2,1);
+        player.insertTiles(blues2,1);
+        player.insertTiles(whites,4);
+        player.insertTiles(purples2,4);
 
 
         System.out.println("inizio test wrong");
@@ -94,14 +94,14 @@ class CommonGoalCard3Test {
     void checkTestGood() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
 
-        player.getShelf().addTiles(blues,0);
-        player.getShelf().addTiles(blues,0);
-        player.getShelf().addTiles(whites,1);
-        player.getShelf().addTiles(whites2,1);
-        player.getShelf().addTiles(blues2,2);
-        player.getShelf().addTiles(blues2,2);
-        player.getShelf().addTiles(blues,4);
-        player.getShelf().addTiles(blues,4);
+        player.insertTiles(blues,0);
+        player.insertTiles(blues,0);
+        player.insertTiles(whites,1);
+        player.insertTiles(whites2,1);
+        player.insertTiles(blues2,2);
+        player.insertTiles(blues2,2);
+        player.insertTiles(blues,4);
+        player.insertTiles(blues,4);
 
 
 

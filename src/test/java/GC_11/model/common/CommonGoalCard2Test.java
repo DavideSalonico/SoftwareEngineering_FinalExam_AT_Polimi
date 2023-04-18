@@ -41,16 +41,16 @@ class CommonGoalCard2Test {
     void checkTestWrong() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
 
-        player.getShelf().addTiles(blues,0);
-        player.getShelf().addTiles(blues,0);
-        player.getShelf().addTiles(cyans,1);
-        player.getShelf().addTiles(cyans,1);
-        player.getShelf().addTiles(greens,2);
-        player.getShelf().addTiles(greens,2);
-        player.getShelf().addTiles(oranges,3);
-        player.getShelf().addTiles(oranges,3);
-        player.getShelf().addTiles(whites,4);
-        player.getShelf().addTiles(whites,4);
+        player.insertTiles(blues,0);
+        player.insertTiles(blues,0);
+        player.insertTiles(cyans,1);
+        player.insertTiles(cyans,1);
+        player.insertTiles(greens,2);
+        player.insertTiles(greens,2);
+        player.insertTiles(oranges,3);
+        player.insertTiles(oranges,3);
+        player.insertTiles(whites,4);
+        player.insertTiles(whites,4);
 
 
         System.out.println("inizio test wrong");
@@ -66,11 +66,11 @@ class CommonGoalCard2Test {
     void checkTestAllVoid() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
         /*
-        player.getShelf().addTiles(blues,0);
-        player.getShelf().addTiles(blues,0);
-        player.getShelf().addTiles(cyans,1);
-        player.getShelf().addTiles(cyans,1);
-        player.getShelf().addTiles(greens,2);
+        player.insertTiles(blues,0);
+        player.insertTiles(blues,0);
+        player.insertTiles(cyans,1);
+        player.insertTiles(cyans,1);
+        player.insertTiles(greens,2);
         player.getShelf().addTiles(greens,2);
         player.getShelf().addTiles(oranges,3);
         player.getShelf().addTiles(oranges,3);
