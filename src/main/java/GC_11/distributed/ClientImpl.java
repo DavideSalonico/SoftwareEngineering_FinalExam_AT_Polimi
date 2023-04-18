@@ -34,6 +34,13 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable,
         initialize(server);
     }
 
+    // Just for test
+
+    public ClientImpl(Server server) throws RemoteException{
+        super();
+        this.server=server;
+    }
+
     public ClientImpl(Server server,View view, int port) throws RemoteException {
         super(port);
         this.server=server;
@@ -69,6 +76,13 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable,
     @Override
     public void update(GameView gameView, Choice arg) throws RemoteException {
 
+    }
+
+    public void update(Server server,PropertyChangeEvent arg) throws RemoteException {
+        System.out.print("Ricevuto da:");
+        System.out.println(arg.getSource());
+        System.out.println(arg.getPropertyName());
+        System.out.println(arg.getNewValue());
     }
 
     /**

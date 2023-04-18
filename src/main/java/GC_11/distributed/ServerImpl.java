@@ -2,6 +2,7 @@ package GC_11.distributed;
 
 import GC_11.controller.Controller;
 import GC_11.model.Game;
+import GC_11.util.Choice;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -9,6 +10,8 @@ import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServerImpl extends UnicastRemoteObject implements Server, PropertyChangeListener {
 
@@ -16,15 +19,20 @@ public class ServerImpl extends UnicastRemoteObject implements Server, PropertyC
 
     private Controller controller;
 
-    protected ServerImpl() throws RemoteException {
+    List<Client> clients = new ArrayList<Client>();
+    Client currentClient = null;
+
+    String response;
+
+    public ServerImpl() throws RemoteException {
         super();
     }
 
-    protected ServerImpl(int port) throws RemoteException {
+    public ServerImpl(int port) throws RemoteException {
         super(port);
     }
 
-    protected ServerImpl(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
+    public ServerImpl(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
         super(port, csf, ssf);
     }
 
@@ -32,6 +40,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server, PropertyC
     @Override
     public void register(Client client) throws RemoteException {
         // this.game = new Game();
+        this.clients.add(client);
 
     }
 
@@ -40,11 +49,23 @@ public class ServerImpl extends UnicastRemoteObject implements Server, PropertyC
     @Override
     public void update(Client client, PropertyChangeEvent arg) throws RemoteException {
         // this.controller.update(client.getView(), arg);
+
+        this.currentClient= client;
+        System.out.print("Ricevuto da: ");
+        System.out.println(arg.getSource());
+        System.out.println(arg.getPropertyName());
+        System.out.println(arg.getNewValue());
+        response="Risposta a " + arg.getNewValue();
     }
 
     // Viene chiamato quando il model cambia qualcosa
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        PropertyChangeEvent newEvent = new PropertyChangeEvent(this,"Reply",null,response);
+        try {
+            currentClient.update(this,newEvent);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

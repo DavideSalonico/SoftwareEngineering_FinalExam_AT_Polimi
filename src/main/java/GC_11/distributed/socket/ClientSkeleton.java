@@ -5,6 +5,7 @@ import GC_11.distributed.Server;
 import GC_11.model.GameView;
 import GC_11.util.Choice;
 
+import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -53,6 +54,11 @@ public class ClientSkeleton implements Client {
         {
             throw new RemoteException("Cannot send event", e);
         }
+    }
+
+    @Override
+    public void update(Server server, PropertyChangeEvent arg) throws RemoteException {
+
     }
 
     public void receive(Server server) throws RemoteException{
