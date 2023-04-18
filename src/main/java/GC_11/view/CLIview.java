@@ -58,7 +58,7 @@ public class CLIview extends View /*implements Runnable*/{
         while (true){
             String input = s.nextLine();
             try {
-                return new Choice(input);
+                return new Choice(input).getChoice();
             } catch(IllegalArgumentException e){
                 System.err.println("Invalid choice: " + input +  " Please retake.");
             }
