@@ -3,10 +3,8 @@ package GC_11.util;
 import GC_11.model.Player;
 
 import java.io.Serializable;
-import java.io.StreamTokenizer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Choice implements Serializable{
@@ -65,9 +63,4 @@ public class Choice implements Serializable{
     public Player getPlayer() {
         return player;
     }
-
-    //Parameters
-    //Common Goal: 0 o 1 (int)
-    //Personal Goal: NO PARAMS
-    //Select Tile: riga e colonna (int, int)
 }
