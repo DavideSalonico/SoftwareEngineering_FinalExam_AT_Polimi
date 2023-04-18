@@ -8,6 +8,7 @@ import GC_11.model.Coordinate;
 import GC_11.model.Game;
 import GC_11.model.Player;
 import GC_11.model.Tile;
+import GC_11.model.common.CommonGoalCard;
 import GC_11.util.Choice;
 import GC_11.view.View;
 import GC_11.view.View;
@@ -189,5 +190,12 @@ public class Controller implements PropertyChangeListener {
         } catch (IllegalMoveException | ColumnIndexOutOfBoundsException | NotEnoughFreeSpacesException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void insertTiles(List<Tile> tilesOrder, int column, Player player) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+        player.insertTiles(tilesOrder, column);
+        player.calculateAndGiveAdjacencyPoint();
+        player.updatesPointsPersonalGoal();
+        this.getGame().calculateCommonPoints();
     }
 }

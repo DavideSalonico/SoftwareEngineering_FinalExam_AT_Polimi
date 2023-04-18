@@ -151,7 +151,7 @@ public class Player implements PropertyChangeListener, Serializable {
      * @throws ColumnIndexOutOfBoundsException
      */
 
-    private void updatesPointsPersonalGoal() throws ColumnIndexOutOfBoundsException {
+    public void updatesPointsPersonalGoal() throws ColumnIndexOutOfBoundsException {
         this.pointsPersonalGoal=0;
         int totalRight = 0;
         // For every goal in the personal goal card check if matches with the personal shelf

@@ -1,5 +1,6 @@
 package GC_11.model;
 
+import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.model.common.*;
 import GC_11.util.CircularList;
 
@@ -179,12 +180,12 @@ public class Game implements PropertyChangeListener, Serializable {
      * Game launches this method every time the currentPlayer is about to end his Turn, if the player haven't already
      * completed the Common Goal it invokes commonGoalCard.givePoints() method
      */
-    private void calculateCommonPoints(){
+    public void calculateCommonPoints() throws ColumnIndexOutOfBoundsException {
         if(!commonGoals.get(0).getWinningPlayers().contains(currentPlayer))
-            commonGoals.get(0).givePoints(currentPlayer);
+            commonGoals.get(0).check(currentPlayer);
 
         if(!commonGoals.get(1).getWinningPlayers().contains(currentPlayer))
-            commonGoals.get(1).givePoints(currentPlayer);
+            commonGoals.get(1).check(currentPlayer);
     }
 
     public void setListener(PropertyChangeListener listener) {
