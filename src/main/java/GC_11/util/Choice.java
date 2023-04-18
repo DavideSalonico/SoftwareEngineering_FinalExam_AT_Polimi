@@ -1,5 +1,7 @@
 package GC_11.util;
 
+import GC_11.model.Player;
+
 import java.io.Serializable;
 import java.io.StreamTokenizer;
 import java.util.ArrayList;
@@ -8,36 +10,38 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Choice implements Serializable{
-    public Choice(String input) throws IllegalArgumentException {
-        String[] tmp = input.split(" ");
+    public Choice(Player player, String input) throws IllegalArgumentException {
+        this.player = player;
 
-        this.choice = Choice.Type.valueOf(tmp[0]);
+        List<String> tmp = new ArrayList<String>();
+        StringTokenizer st = new StringTokenizer(input);
+        while (st.hasMoreTokens()) {
+            tmp.add(st.nextToken());
+        }
 
-        //Forse si potrebbe cambiare il tipo di tmp in modo da copiare direttamente i parametri in params e in questo switch fare i controlli
+        this.choice = Choice.Type.valueOf(tmp.get(0));
+
+        for(String p : tmp){
+            if(tmp.indexOf(p) != 0){
+                params.add(p);
+            }
+        }
+
+        //Controls
         switch(this.choice){
+            case FIND_MATCH:
+            case SEE_PERSONALGOAL:
+                if(params.size() != 0) throw new IllegalArgumentException();
+                break;
             case SEE_COMMONGOAL:
             case PICK_COLUMN:
-                if(tmp[1]
-                this.params.set(0, tmp[1]); //column index
             case INSERT_NAME:
-                this.params.set(0, tmp[1]); //name
-                break;
-            case SEE_PERSONALGOAL:
-            case FIND_MATCH:
-                break;
-            case CHOOSE_ORDER:
-                //Gestire il numero di carte pescate
-                this.params.set(0, tmp[1]); //first card to be inserted index
-                this.params.set(1, tmp[2]); //second card to be inserted index
-                this.params.set(2, tmp[3]); //third card to be inserted index
-                break;
+                if(params.size() != 1) throw new IllegalArgumentException();
             case SELECT_TILE:
-                this.params.set(0, tmp[1]); //row
-                this.params.set(1, tmp[2]); //column
             case LOGIN:
-                this.params.set(0, tmp[1]); //name
-                this.params.set(1, tmp[2]); //password
-                break;
+                if(params.size() != 2) throw new IllegalArgumentException();
+            case CHOOSE_ORDER:
+                if(params.size() > 3) throw new IllegalArgumentException();
         }
     }
 
@@ -48,12 +52,18 @@ public class Choice implements Serializable{
     private List<String> params;
     private Type choice;
 
+    private Player player;
+
     public Type getChoice() {
         return choice;
     }
 
     public List<String> getParams() {
         return params;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     //Parameters
