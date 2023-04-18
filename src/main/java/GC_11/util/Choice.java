@@ -31,4 +31,9 @@ public class Choice implements Serializable{
     public List<String> getParams() {
         return params;
     }
+
+    //Parameters
+    //Common Goal: 0 o 1 (int)
+    //Personal Goal: NO PARAMS
+    //Select Tile: riga e colonna (int, int)
 }
