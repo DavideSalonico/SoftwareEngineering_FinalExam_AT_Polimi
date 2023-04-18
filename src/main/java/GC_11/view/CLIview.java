@@ -56,9 +56,9 @@ public class CLIview extends View /*implements Runnable*/{
                         .collect(
                                 Collectors.joining(",", "[", "]")));
         while (true){
-            String input = s.next();
+            String input = s.nextLine();
             try {
-                return Choice.Type.valueOf(input);
+                return new Choice(input);
             } catch(IllegalArgumentException e){
                 System.err.println("Invalid choice: " + input +  " Please retake.");
             }
