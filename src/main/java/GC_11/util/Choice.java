@@ -17,6 +17,7 @@ public class Choice implements Serializable{
         switch(this.choice){
             case SEE_COMMONGOAL:
             case PICK_COLUMN:
+                if(tmp[1]
                 this.params.set(0, tmp[1]); //column index
             case INSERT_NAME:
                 this.params.set(0, tmp[1]); //name
