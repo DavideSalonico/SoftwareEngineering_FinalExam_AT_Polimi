@@ -1,23 +1,21 @@
 package GC_11.controller;
 
-import GC_11.distributed.Client;
 import GC_11.distributed.ClientImpl;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
+import GC_11.exceptions.IllegalMoveException;
 import GC_11.exceptions.NotEnoughFreeSpacesException;
 import GC_11.model.Coordinate;
+import GC_11.model.Game;
 import GC_11.model.Player;
 import GC_11.model.Tile;
-import GC_11.view.CLIview;
-import GC_11.exceptions.IllegalMoveException;
-import GC_11.model.Game;
 import GC_11.util.Choice;
+import GC_11.view.View;
+import GC_11.view.View;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
-
-import GC_11.util.Choice;
 
 
 /**
@@ -26,25 +24,36 @@ import GC_11.util.Choice;
  * Card read from JSON file
  */
 public class Controller implements PropertyChangeListener {
-    public List<CLIview> view;
+    // Controller receive directly from Server an Object Choice which contains Player reference, choice and params
+    public Choice choice;
     public JsonReader reader;
     private Game model;
 
     /**
-     * Initialize Controller with 'Game' reference and JsonReader object
-     *
-     * @param game reference to game
-     * @param view
+     * Generic constructor of Controller with all params
+     * @param game reference to Model
+     * @param choice reference to User's choice
      */
-    public Controller(Game game, CLIview view) {
+    public Controller(Game game, Choice choice) {
         this.model = game;
         this.reader = new JsonReader();
+        this.choice = choice;
     }
 
+    /**
+     * Generic constructor of Controller with only the model
+     * @param game reference to Model
+     */
+    public Controller(Game game) {
+        this.model = game;
+        this.reader = new JsonReader();
+        this.choice = null;
+    }
     /**
      * Set and Get of game attribute
      * @param game
      */
+
     public void setGame(Game game) {
         this.model = game;
     }
@@ -52,47 +61,30 @@ public class Controller implements PropertyChangeListener {
         return this.model;
     }
 
-    /**
-     * Add and Remove playerView from Controller list
-     * @param x
-     */
-    public void addPlayerViewToGame(CLIview x){
-        view.add(x);
-    }
-    public void removePlayerView(CLIview x){
-        view.remove(x);
-    }
 
     /**
-     * Detect updates from view and computes through Controller
-     * @param view     the observable object (CLIview)
-    git * @param arg   is the 'Choice' = action taken by Player (enum object)
+     * Set and Get of Choice attribute, which will be updated by Server
+     * @param choice
      */
-    public void update(CLIview view, Choice arg) throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
-/*
-        if (!view.getPlayer().equals(model.getCurrentPlayer())){
-            throw new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer()+ "'s turn");
-        }
-
-        Player player = view.getPlayer();
-        String params = null;
-
-        switch (view.getPlayerChoice()){
-            // Azioni da mettere dentro al client
-            //case INSERT_NAME
-            //case LOGIN
-            //case FIND_MATCH
-            //case SEE_COMMONGOAL-> seeCommonGoal(); gestita direttamente dalla view?
-            //case SEE_PERSONALGOAL -> seePersonalGoal();
-            case SELECT_TILE -> selectTile(player, params);
-            case CHOOSE_ORDER ->chooseOrder(player, params);
-            case PICK_COLUMN-> pickColumn(player, params);
-        }*/
+    public void setChoice(Choice choice){
+        this.choice = choice;
+    }
+    public Choice getChoice(){
+        return this.choice;
     }
 
+    /**
+     * Check if the Client who execute the action Choice is actually the Current Player of the Turn
+     * @return True if it's the current Player
+     */
+    public boolean checkTurn(){
+        return model.getCurrentPlayer().equals(choice.getPlayer());
+    }
 
     // [MATTIA] : Ho aggiunto questo metodo con diversa signature per gestirlo sul server. Vediamo bene come fare con i parametri
+    // TODO: Mettere tutti i metodi del controller in Try and Catch e gestire l'eccezzioni
     public void update(ClientImpl client, Choice arg) throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+
 
         if (!client.getPlayer().equals(model.getCurrentPlayer())){
             throw new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer()+ "'s turn");
@@ -193,7 +185,7 @@ public class Controller implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         try {
-            update((CLIview) evt.getSource(), (Choice) evt.getNewValue());
+            update((View) evt.getSource(), (Choice) evt.getNewValue());
         } catch (IllegalMoveException | ColumnIndexOutOfBoundsException | NotEnoughFreeSpacesException e) {
             throw new RuntimeException(e);
         }
