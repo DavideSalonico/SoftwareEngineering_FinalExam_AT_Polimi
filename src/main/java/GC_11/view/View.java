@@ -7,6 +7,10 @@ import GC_11.util.Choice;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+/**
+ * Abstract class view, father of all the views,it defines the signature of all the method that the view require to print
+ * all the necessary data during the Game
+ */
 public abstract class View implements PropertyChangeListener, Runnable{
 
     protected Player player;
