@@ -22,7 +22,7 @@ public class App
         GameView modelView = new GameView(model);
         CLIview view = new CLIview(model.getCurrentPlayer());
         view.setModelView(modelView);
-        Controller controller = new Controller(model, view);
+        Controller controller = new Controller(model);
 
         System.out.println("Hello World!");
         model.setListener(view);

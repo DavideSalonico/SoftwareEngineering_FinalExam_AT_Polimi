@@ -67,18 +67,5 @@ public class CLIview extends View /*implements Runnable*/{
             }
         }
     }
-
-
-    /*
-    Da implementare quando voglio essere notificato dal modello e mostrare il cambiamento nella view
-    @Override
-    public void update(TurnView model, Turn.Event arg) {
-        switch (arg) {
-            case CPU_CHOICE -> showChoices(model);
-            case OUTCOME -> showOutcome(model);
-            default -> System.err.println("Ignoring event from " + model + ": " + arg);
-        }
-    }
-    */
 }
 
