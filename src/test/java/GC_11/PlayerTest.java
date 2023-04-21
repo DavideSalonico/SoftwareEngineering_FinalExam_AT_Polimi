@@ -58,7 +58,7 @@ public class PlayerTest {
         System.out.println("inizio test good");
         System.out.println(player.getPointsAdjacency());
         assertEquals(player.getPointsAdjacency(),0);
-        player.calculateAdjacencyPoint();
+        player.calculateAndGiveAdjacencyPoint();
         assertEquals(player.getPointsAdjacency(),14);
         System.out.println(player.getPointsAdjacency());
         System.out.println("fine test good");
