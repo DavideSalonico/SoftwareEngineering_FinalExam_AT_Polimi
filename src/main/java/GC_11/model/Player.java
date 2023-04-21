@@ -256,8 +256,13 @@ public class Player implements PropertyChangeListener, Serializable {
         else {return 0;}
     }
 
+    public void resetTiles(){
+        this.tiles.clear();
+    }
 
-
+    public void setTiles(List<Tile> tiles){
+        this.tiles = tiles;
+    }
 }
 
 

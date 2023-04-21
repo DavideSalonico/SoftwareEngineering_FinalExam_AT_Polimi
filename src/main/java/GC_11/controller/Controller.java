@@ -12,6 +12,7 @@ import GC_11.util.Choice;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,9 +81,8 @@ public class Controller implements PropertyChangeListener {
     }
 
     // [MATTIA] : Ho aggiunto questo metodo con diversa signature per gestirlo sul server. Vediamo bene come fare con i parametri
-    // TODO: Mettere tutti i metodi del controller in Try and Catch e gestire l'eccezzioni
+    // TODO: Mettere tutti i metodi del controller in Try and Catch e gestire l'eccezioni
     public void update(Choice arg) throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
-
 
         if (!checkTurn()){
             throw new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer()+ "'s turn");
@@ -116,12 +116,18 @@ public class Controller implements PropertyChangeListener {
     }
 
     private void selectTile(Player player, List<String> parameters){
-        //TODO: decide if for every tile picked must be triggered a single event from the view (I think so) [Davide]
-        List<Coordinate> coords = stringToCoordinate(parameters);
-        List<Tile> tmp_list = new ArrayList<>();
-        for(Coordinate c : coords){
-            player.pickTile(model.getBoard().getTile(c.getRow(), c.getColumn()));
+        if(parameters.size() != 2) throw new IllegalArgumentException();
+        Integer row, col;
+        try{
+            row = Integer.parseInt(parameters.get(0));
+            col = Integer.parseInt(parameters.get(1));
+        } catch(NumberFormatException e){
+            throw new InvalidParameterException();
         }
+        if(row < 0 || row >= 9 || col < 0 || col >= 9 ) throw new InvalidParameterException();
+        //It could be possible to make a control about prohibited positions in the board based on the number of players
+        //Maybe not necessary if we check Tile.Type?
+        player.pickTile(model.getBoard().getTile(row, col));
     }
 
     private List<Coordinate> stringToCoordinate(List<String> parameters) {
@@ -169,15 +175,50 @@ public class Controller implements PropertyChangeListener {
     private void pickColumn(Player player, List<String> parameters) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
         int column = paramsToColumnIndex(parameters);
         player.getShelf().addTiles(player.getTiles(), column);
+        player.resetTiles();
     }
 
     private int paramsToColumnIndex(List<String> parameters) {
-        //TODO: to be implemented
-        return 0;
+        if(parameters.size() != 1) throw new IllegalArgumentException();
+        Integer column_index;
+        try{
+            column_index = Integer.parseInt(parameters.get(0));
+        } catch(NumberFormatException e){
+            throw new InvalidParameterException();
+        }
+        if(column_index < 0 || column_index >= 5) throw new InvalidParameterException();
+        return column_index;
     }
 
     private void chooseOrder(Player player, List<String> parameters){
-        //TODO: how do we decide tiles' order?
+        //Integer parameters control
+        Integer tilesSize = player.getTiles().size();
+        if(parameters.size() > tilesSize) throw new IllegalArgumentException();
+        List<Integer> ind = new ArrayList<>();
+        try{
+            for(int i = 0; i < tilesSize; i++){
+                ind.set(i, Integer.parseInt(parameters.get(i)));
+            }
+        } catch(NumberFormatException e){
+            throw new InvalidParameterException();
+        }
+        //Not out of bound index control
+        for(int i = 0; i < tilesSize; i++){
+            if(ind.get(i) < 1 || ind.get(i) > tilesSize) throw new InvalidParameterException();
+        }
+        //No duplicates control
+        for(int i = 0; i < tilesSize; i++){
+            for(int j = i + 1; j < tilesSize; j++){
+                if(ind.get(i).equals(ind.get(j))) throw new InvalidParameterException();
+            }
+        }
+
+        List<Tile> tmpTiles = new ArrayList<Tile>(player.getTiles());
+        for(int i = 0; i < tilesSize; i++){
+            tmpTiles.set(ind.get(i), player.getTiles().get(i));
+        }
+        player.resetTiles(); //Probably it's not necessary
+        player.setTiles(tmpTiles);
     }
 
     @Override
