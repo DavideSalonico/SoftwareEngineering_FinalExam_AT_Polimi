@@ -82,7 +82,7 @@ public class Player implements PropertyChangeListener, Serializable {
         return this.ListCommonGoals;
     }
 
-    private PersonalGoalCard getPersonalGoal() {
+    public PersonalGoalCard getPersonalGoal() {
         return this.personalGoal;
     }
 
@@ -262,6 +262,10 @@ public class Player implements PropertyChangeListener, Serializable {
 
     public void setTiles(List<Tile> tiles){
         this.tiles = tiles;
+    }
+
+    public void setPersonalGoal(PersonalGoalCard p) {
+        this.personalGoal = p;
     }
 }
 

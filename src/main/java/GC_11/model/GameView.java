@@ -1,6 +1,8 @@
 package GC_11.model;
 
 
+import GC_11.model.common.CommonGoalCard;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
@@ -40,4 +42,10 @@ public class GameView implements Serializable {
     public List<Player> getPlayers(){ return model.getPlayers(); }
 
     public Player getCurrentPlayer(){ return model.getCurrentPlayer(); }
+
+    public void setPersonalNull(Player player){
+        for(Player p : this.getPlayers()){
+            if(!p.equals(player)) p.setPersonalGoal(null);
+        }
+    }
 }

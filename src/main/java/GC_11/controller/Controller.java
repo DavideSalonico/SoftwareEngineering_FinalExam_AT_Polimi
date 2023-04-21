@@ -1,13 +1,12 @@
 package GC_11.controller;
 
-import GC_11.exceptions.ColumnIndexOutOfBoundsException;
-import GC_11.exceptions.IllegalMoveException;
-import GC_11.exceptions.NotEnoughFreeSpacesException;
+import GC_11.exceptions.*;
 import GC_11.model.Coordinate;
 import GC_11.model.Game;
 import GC_11.model.Player;
 import GC_11.model.Tile;
 import GC_11.model.common.CommonGoalCard;
+import GC_11.network.Lobby;
 import GC_11.util.Choice;
 
 import java.beans.PropertyChangeEvent;
@@ -27,16 +26,18 @@ public class Controller implements PropertyChangeListener {
     public Choice choice;
     public JsonReader reader;
     private Game model;
+    private Lobby lobbyModel;
 
     /**
      * Generic constructor of Controller with all params
      * @param game reference to Model
      * @param choice reference to User's choice
      */
-    public Controller(Game game, Choice choice) {
+    public Controller(Game game, Choice choice, Lobby lobby) {
         this.model = game;
         this.reader = new JsonReader();
         this.choice = choice;
+        this.lobbyModel = lobby;
     }
 
     /**
@@ -82,7 +83,12 @@ public class Controller implements PropertyChangeListener {
 
     // [MATTIA] : Ho aggiunto questo metodo con diversa signature per gestirlo sul server. Vediamo bene come fare con i parametri
     // TODO: Mettere tutti i metodi del controller in Try and Catch e gestire l'eccezioni
-    public void update(Choice arg) throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+    public void update(Choice arg)
+            throws IllegalMoveException,
+            ColumnIndexOutOfBoundsException,
+            NotEnoughFreeSpacesException,
+            ExceededNumberOfPlayersException,
+            NameAlreadyTakenException {
 
         if (!checkTurn()){
             throw new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer()+ "'s turn");
@@ -93,10 +99,9 @@ public class Controller implements PropertyChangeListener {
         List<String> params = arg.getParams();
 
         switch (arg.getChoice()){
-            // Azioni da mettere dentro al client
-            //case INSERT_NAME
-            //case LOGIN
-            //case FIND_MATCH
+            case INSERT_NAME -> insertName(player, params);
+            case LOGIN -> login(player, params);
+            case FIND_MATCH -> findMatch(player, params);
             //case SEE_COMMONGOAL-> seeCommonGoal(); gestita direttamente dalla view?
             //case SEE_PERSONALGOAL -> seePersonalGoal();
             case SELECT_TILE -> selectTile(player, params);
@@ -105,6 +110,24 @@ public class Controller implements PropertyChangeListener {
         }
 
         model.setNextCurrent();
+    }
+
+    private void findMatch(Player player, List<String> params) {
+        //if(player.equals(lobbyModel.getBoss()))) We should check that only the main player can start the game
+        this.model = new Game(lobbyModel.getPlayers());
+        lobbyModel.startGame(this.model);
+    }
+
+    private void login(Player player, List<String> params) {
+        //TODO
+        System.out.println("Player "+ params.get(0) + " logged successfully");
+    }
+
+    private void insertName(Player player, List<String> params) throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
+        //TODO
+        if(params.size() != 1) throw new IllegalArgumentException();
+        if(params.get(0).length() >= 64) throw new InvalidParameterException();
+        lobbyModel.addPlayer(params.get(0));
     }
 
     private void seeCommonGoal(){
@@ -225,7 +248,8 @@ public class Controller implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         try {
             update((Choice) evt.getNewValue());
-        } catch (IllegalMoveException | ColumnIndexOutOfBoundsException | NotEnoughFreeSpacesException e) {
+        } catch (IllegalMoveException | ColumnIndexOutOfBoundsException | NotEnoughFreeSpacesException |
+                 ExceededNumberOfPlayersException | NameAlreadyTakenException e) {
             throw new RuntimeException(e);
         }
     }
