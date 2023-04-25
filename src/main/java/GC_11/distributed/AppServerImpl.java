@@ -1,7 +1,9 @@
 package GC_11.distributed;
 
+import GC_11.distributed.socket.ServerGame;
 import GC_11.network.Lobby;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -11,23 +13,16 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AppServerImpl extends UnicastRemoteObject implements GC_11.distributed.socket.AppServer {
+public class AppServerImpl  {
 
-    List<Lobby> lobbyList = new ArrayList<Lobby>();
-
-    protected AppServerImpl() throws RemoteException {
+    public static void main(String[] args){
+        ServerGame server = new ServerGame(4321);
+        try{
+            server.startServer();
+        }
+        catch(IOException e){
+            System.err.println(e.getMessage());
+        }
     }
 
-    protected AppServerImpl(int port) throws RemoteException {
-        super(port);
-    }
-
-    protected AppServerImpl(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
-        super(port, csf, ssf);
-    }
-
-    @Override
-    public Server connect() throws RemoteException {
-        return null;
-    }
 }
