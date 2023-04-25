@@ -17,7 +17,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable,
 
     View view;
     Player player;
-    GameView gameView;
     Server server;
 
     /**
@@ -70,13 +69,19 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable,
      * This method is called when the server update the model and the modelview
      * and need to notify
      * @param gameView The resulting model view
-     * @param arg   The causing event
      * @throws RemoteException
      */
     @Override
-    public void update(GameView gameView, Choice arg) throws RemoteException {
-
+    public void update(GameView gameView) throws RemoteException {
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "NewGameView",
+                null,
+                gameView
+        );
+        this.view.propertyChange(evt);
     }
+
 
     public void update(Server server,PropertyChangeEvent arg) throws RemoteException {
         System.out.print("Ricevuto da:");
@@ -103,7 +108,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable,
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         try{
-            server.update(this, evt);
+            server.update(this, (Choice) evt.getNewValue());
         }catch(RemoteException e){
             System.out.println("Unable to update the server");
         }

@@ -12,10 +12,10 @@ public interface Client extends Remote {
     /**
      * Notify the client of a model change
      * @param gameView the sending server
-     * @param arg   The causing event
      */
-    void update(GameView gameView, Choice arg) throws RemoteException;
+    void update(GameView gameView) throws RemoteException;
 
     void update(Server server, PropertyChangeEvent arg) throws RemoteException;
+
 
 }

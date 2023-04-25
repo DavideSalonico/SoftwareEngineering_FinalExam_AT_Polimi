@@ -2,6 +2,7 @@ package GC_11.distributed;
 
 import GC_11.controller.Controller;
 import GC_11.model.Game;
+import GC_11.model.GameView;
 import GC_11.util.Choice;
 
 import java.beans.PropertyChangeEvent;
@@ -21,7 +22,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server, PropertyC
 
     List<Client> clients = new ArrayList<Client>();
     Client currentClient = null;
-
     String response;
 
     public ServerImpl() throws RemoteException {
@@ -39,23 +39,17 @@ public class ServerImpl extends UnicastRemoteObject implements Server, PropertyC
     // [MATTIA]: capire bene come comportarsi quando ricevo la registrazione dal server
     @Override
     public void register(Client client) throws RemoteException {
-        // this.game = new Game();
         this.clients.add(client);
-
     }
 
     // Got a problem with this, need to check parameters and Choice Class
 
     @Override
-    public void update(Client client, PropertyChangeEvent arg) throws RemoteException {
+    public void update(Client client, Choice arg) throws RemoteException {
         // this.controller.update(client.getView(), arg);
 
-        this.currentClient= client;
-        System.out.print("Ricevuto da: ");
-        System.out.println(arg.getSource());
-        System.out.println(arg.getPropertyName());
-        System.out.println(arg.getNewValue());
-        response="Risposta a " + arg.getNewValue();
+        this.currentClient = client;
+        System.out.print("Ricevuto da: " + client);
     }
 
     // Viene chiamato quando il model cambia qualcosa
@@ -63,7 +57,10 @@ public class ServerImpl extends UnicastRemoteObject implements Server, PropertyC
     public void propertyChange(PropertyChangeEvent evt) {
         PropertyChangeEvent newEvent = new PropertyChangeEvent(this,"Reply",null,response);
         try {
-            currentClient.update(this,newEvent);
+            currentClient.update(this,newEvent); // For debugging
+            /*for(Client c : clients){
+                c.update((GameView) evt.getNewValue());
+            }*/
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }

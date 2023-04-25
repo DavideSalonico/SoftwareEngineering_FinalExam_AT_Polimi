@@ -1,53 +1,33 @@
 package GC_11.distributed;
 
+import GC_11.network.Lobby;
+
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.RMIClientSocketFactory;
+import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AppServerImpl extends UnicastRemoteObject implements GC_11.distributed.socket.AppServer {
 
-    private static AppServerImpl instance;
+    List<Lobby> lobbyList = new ArrayList<Lobby>();
 
     protected AppServerImpl() throws RemoteException {
     }
 
-    public static AppServerImpl getInstance() throws RemoteException{
-        if (instance == null){
-            instance = new AppServerImpl();
-        }
-        return instance;
+    protected AppServerImpl(int port) throws RemoteException {
+        super(port);
     }
 
-    public static void main(String[] args) {
-        Thread rmiThread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    startRMI();
-                } catch (RemoteException e) {
-                    System.err.println("Cannot start RMI. This protocol will be disabled.");
-                }
-            }
-        };
-
-        rmiThread.start();
-
-        try {
-            rmiThread.join();
-        } catch (InterruptedException e) {
-            System.err.println("No connection protocol available. Exiting...");
-        }
+    protected AppServerImpl(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
+        super(port, csf, ssf);
     }
 
-    private static void startRMI() throws RemoteException {
-        AppServerImpl server = getInstance();
-
-        Registry registry = LocateRegistry.getRegistry();
-        registry.rebind("server", server);
-    }
     @Override
     public Server connect() throws RemoteException {
-        return new ServerImpl();
+        return null;
     }
 }

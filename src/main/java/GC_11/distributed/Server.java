@@ -18,7 +18,7 @@ public interface Server extends Remote {
      * @param client  the client that generated the event
      * @param arg     the choice made by the client
      */
-    void update (Client client, PropertyChangeEvent arg) throws RemoteException;
+    void update (Client client, Choice arg) throws RemoteException;
 
 
 }
