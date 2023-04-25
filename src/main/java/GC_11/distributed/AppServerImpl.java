@@ -20,7 +20,7 @@ public class AppServerImpl  {
         try{
             server.startServer();
         }
-        catch(IOException e){
+        catch(IOException | ClassNotFoundException e){
             System.err.println(e.getMessage());
         }
     }

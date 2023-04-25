@@ -16,6 +16,8 @@ public class AppClientImpl {
             client.startClient();
         }catch (IOException e){
             System.err.println(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.err.println(e.getMessage());
         }
 
     }

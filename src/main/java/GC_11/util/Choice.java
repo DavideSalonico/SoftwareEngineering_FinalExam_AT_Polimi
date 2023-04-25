@@ -11,6 +11,7 @@ import java.util.StringTokenizer;
 public class Choice implements Serializable{
     public Choice(Player player, String input) throws IllegalArgumentException {
         this.player = player;
+        this.params=new ArrayList<String>();
 
         List<String> tmp = new ArrayList<String>();
         StringTokenizer st = new StringTokenizer(input);
