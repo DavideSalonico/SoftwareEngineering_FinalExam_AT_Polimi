@@ -1,5 +1,6 @@
 package GC_11.distributed.socket;
 
+import GC_11.distributed.Server;
 import GC_11.util.Choice;
 
 import java.io.IOException;
@@ -8,13 +9,16 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ServerClientHandler implements Runnable {
+
+    private ServerGame server;
     private Socket clientSocket;
 
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
 
-    public ServerClientHandler(Socket socket) {
+    public ServerClientHandler(Socket socket, ServerGame server) {
         this.clientSocket = socket;
+        this.server=server;
     }
 
     @Override
@@ -57,6 +61,7 @@ public class ServerClientHandler implements Runnable {
                 }
                 catch(IOException e){
                     System.err.println("Unable to reply to client");
+                    closeConnection();
                 }
             }
             if (clientChoice.getChoice().equals(Choice.Type.LOGIN)){
@@ -84,6 +89,17 @@ public class ServerClientHandler implements Runnable {
             clientSocket.close();
         } catch (IOException e) {
             System.err.println("Unable to close socket");
+        }
+        this.server.notifyDisconnectionAllSockets(this.clientSocket);
+    }
+
+    public void notifyDisconnection(Socket socket){
+        String alert = "Socket " + socket.getInetAddress() + ":" + socket.getPort() + " has disconnected";
+        try{
+            outputStream.writeObject(alert);
+            outputStream.flush();
+        }catch(IOException e){
+            System.err.println("Unable to notify socket disconnection");
         }
     }
 }

@@ -10,7 +10,9 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -20,7 +22,7 @@ public class ServerGame {
     private ServerSocket serverSocket;
     private ExecutorService executor = Executors.newCachedThreadPool();
 
-    private HashMap<String, Socket> socketsMap;
+    private List<ServerClientHandler> serverClientHandlerList;
 
 
     private ObjectOutputStream outputStream;
@@ -45,7 +47,7 @@ public class ServerGame {
             System.out.println("Error during initialization phase...");
             System.out.println(e.getMessage());
         }
-        this.socketsMap=new HashMap<String,Socket>();
+        this.serverClientHandlerList= new ArrayList<ServerClientHandler>();
 
         // Waiting for connection
         while(true){
@@ -53,7 +55,9 @@ public class ServerGame {
                 Socket socket = serverSocket.accept();
                 System.out.println("Received client connection");
                 System.out.println("CLIENT INFO:\nIP: "+ socket.getInetAddress()+"\nPORT:" + socket.getPort());
-                executor.submit(new ServerClientHandler(socket));
+                ServerClientHandler sch = new ServerClientHandler(socket,this);
+                this.serverClientHandlerList.add(sch);
+                executor.submit(sch);
             }
             catch (IOException e){
                 System.err.println(e.getMessage());
@@ -61,5 +65,10 @@ public class ServerGame {
         }
     }
 
+    public void notifyDisconnectionAllSockets(Socket socket) {
+        for (ServerClientHandler sch : serverClientHandlerList) {
+            sch.notifyDisconnection(socket);
+        }
+    }
 }
 
