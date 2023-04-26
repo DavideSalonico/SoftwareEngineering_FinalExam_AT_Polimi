@@ -3,6 +3,8 @@ package GC_11.view;
 
 import GC_11.model.GameView;
 import GC_11.model.Tile;
+import GC_11.model.Triplet;
+import GC_11.model.common.CommonGoalCard;
 import GC_11.util.Choice;
 import GC_11.model.Player;
 
@@ -35,8 +37,16 @@ public class CLIview extends View /*implements Runnable*/{
     public void show(){
         Player current = this.modelView.getCurrentPlayer();
         System.out.println("*****************************************************");
+
+        //Printing Board
         this.modelView.getBoard().print();
-        //TODO: Print CommonGoalCard
+
+        //Printing CommonGoalCards
+        for(CommonGoalCard common : this.modelView.getCommonGoalCards()){
+            System.out.println(common.getText());
+        }
+
+        //Printing Players with relative objects
         for(Player p : this.modelView.getPlayers()){
             System.out.println("Player : " + p.getNickname());
             p.getShelf().print();
@@ -44,7 +54,11 @@ public class CLIview extends View /*implements Runnable*/{
                 for(Tile t : current.getTiles()){
                     System.out.println("Tile: " + t.getColor() + ", " + t.getId());
                 }
-                //TODO: Print PersonalGoalCard
+                //Printing Personal Goal Card
+                System.out.println("Persona Goal Card:");
+                for(Triplet goal : current.getPersonalGoal().getGoalList()){
+                    System.out.println(goal.getRow() + goal.getCol() + goal.getCol());
+                }
             }
         }
     }

@@ -43,6 +43,10 @@ public class GameView implements Serializable {
 
     public Player getCurrentPlayer(){ return model.getCurrentPlayer(); }
 
+    public List<CommonGoalCard> getCommonGoalCards(){
+        return model.getCommonGoal();
+    }
+
     public void setPersonalNull(Player player){
         for(Player p : this.getPlayers()){
             if(!p.equals(player)) p.setPersonalGoal(null);
