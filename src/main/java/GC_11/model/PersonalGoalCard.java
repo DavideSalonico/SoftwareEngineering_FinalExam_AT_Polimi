@@ -35,4 +35,11 @@ public class PersonalGoalCard implements Serializable {
     public List<Triplet> getGoalList() {
         return goalList;
     }
+
+    public void print() {
+        System.out.println("Personal Goal Card:");
+        for(Triplet goal : this.getGoalList()){
+            System.out.println(goal.getRow() + goal.getCol() + goal.getCol());
+        }
+    }
 }

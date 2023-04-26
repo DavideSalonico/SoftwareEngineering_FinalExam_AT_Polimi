@@ -55,10 +55,7 @@ public class CLIview extends View /*implements Runnable*/{
                     System.out.println("Tile: " + t.getColor() + ", " + t.getId());
                 }
                 //Printing Personal Goal Card
-                System.out.println("Persona Goal Card:");
-                for(Triplet goal : current.getPersonalGoal().getGoalList()){
-                    System.out.println(goal.getRow() + goal.getCol() + goal.getCol());
-                }
+                current.getPersonalGoal().print();
             }
         }
     }

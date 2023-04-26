@@ -7,6 +7,8 @@ import GC_11.util.Choice;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import static java.lang.Integer.parseInt;
+
 /**
  * Abstract class view, father of all the views,it defines the signature of all the method that the view require to print
  * all the necessary data during the Game
@@ -38,12 +40,28 @@ public abstract class View implements PropertyChangeListener, Runnable{
     public void run(){
         show();
         Choice choice = getPlayerChoice();
-        PropertyChangeEvent evt = new PropertyChangeEvent(
-                this,
-                "CHOICE",
-                null,
-                choice);
-        this.listener.propertyChange(evt);
+        switch (choice.getChoice()){
+            //Controls already made in the creation of choice client-side
+            case SEE_COMMONGOAL -> seeCommonGoal(choice);
+            case SEE_PERSONALGOAL -> seePersonalGoal(choice);
+            default -> {
+                PropertyChangeEvent evt = new PropertyChangeEvent(
+                    this,
+                    "CHOICE",
+                    null,
+                    choice);
+                    this.listener.propertyChange(evt);
+                }
+        }
+    }
+
+    private void seePersonalGoal(Choice choice) {
+        this.modelView.getCurrentPlayer().getPersonalGoal().print();
+    }
+
+    private void seeCommonGoal(Choice choice) {
+        int index = parseInt(choice.getParams().get(0));
+        System.out.println(this.modelView.getCommonGoalCard(index));
     }
 
     public void setListener(PropertyChangeListener listener) {

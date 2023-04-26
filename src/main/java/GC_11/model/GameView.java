@@ -52,4 +52,8 @@ public class GameView implements Serializable {
             if(!p.equals(player)) p.setPersonalGoal(null);
         }
     }
+
+    public CommonGoalCard getCommonGoalCard(int index) {
+        return this.model.getCommonGoal(index);
+    }
 }
