@@ -39,10 +39,8 @@ public class ServerClientHandler implements Runnable {
                 System.out.println("Received: "+ clientChoice.getChoice() + "from"+ clientChoice.getPlayer());
             } catch (IOException e) {
                 System.err.println("Unable to get choice from client");
-                if(clientSocket.isClosed()){
-                    System.out.println("Closing socket: "+ clientSocket.getInetAddress()+ ":" + clientSocket.getPort());
-                    this.closeConnection();
-                }
+                this.closeConnection();
+
             } catch (ClassNotFoundException e) {
                 System.err.println("Unable to deserialize choice from client");
             }
@@ -71,6 +69,7 @@ public class ServerClientHandler implements Runnable {
 
     }
     private void closeConnection(){
+        System.out.println("Closing socket: "+ clientSocket.getInetAddress()+ ":" + clientSocket.getPort());
         try {
             inputStream.close();
         } catch (IOException e) {
