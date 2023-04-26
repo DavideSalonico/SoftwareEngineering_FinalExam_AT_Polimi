@@ -1,6 +1,5 @@
 package GC_11.distributed.socket;
 
-import GC_11.distributed.Server;
 import GC_11.util.Choice;
 
 import java.io.IOException;
@@ -10,8 +9,8 @@ import java.net.Socket;
 
 public class ServerClientHandler implements Runnable {
 
-    private ServerGame server;
-    private Socket clientSocket;
+    private final ServerGame server;
+    private final Socket clientSocket;
 
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
@@ -57,15 +56,15 @@ public class ServerClientHandler implements Runnable {
             // Risposta
             if (clientChoice != null){
                 try{
-                    outputStream.writeObject(new String("Risposta a" +clientChoice.getChoice() + "from" + clientChoice.getPlayer() ));
+                    outputStream.writeObject("Risposta a" +clientChoice.getChoice() + "from" + clientChoice.getPlayer() );
                 }
                 catch(IOException e){
                     System.err.println("Unable to reply to client");
                     closeConnection();
                 }
-            }
-            if (clientChoice.getChoice().equals(Choice.Type.LOGIN)){
-                break;
+                if (clientChoice.getChoice().equals(Choice.Type.LOGIN)){
+                    break;
+                }
             }
         }
 
@@ -90,7 +89,7 @@ public class ServerClientHandler implements Runnable {
         } catch (IOException e) {
             System.err.println("Unable to close socket");
         }
-        this.server.notifyDisconnectionAllSockets(this.clientSocket);
+        this.server.notifyDisconnectionAllSockets(this.clientSocket,this);
     }
 
     public void notifyDisconnection(Socket socket){

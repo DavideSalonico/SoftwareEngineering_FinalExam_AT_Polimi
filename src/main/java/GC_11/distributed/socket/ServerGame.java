@@ -1,32 +1,21 @@
 package GC_11.distributed.socket;
 
-import GC_11.distributed.Client;
-import GC_11.util.Choice;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ServerGame {
-    private int port;
+    private final int port;
     private ServerSocket serverSocket;
-    private ExecutorService executor = Executors.newCachedThreadPool();
+    private final ExecutorService executor = Executors.newCachedThreadPool();
 
     private List<ServerClientHandler> serverClientHandlerList;
 
-
-    private ObjectOutputStream outputStream;
-    private ObjectInputStream inputStream;
 
     public ServerGame(int port){
 
@@ -47,7 +36,7 @@ public class ServerGame {
             System.out.println("Error during initialization phase...");
             System.out.println(e.getMessage());
         }
-        this.serverClientHandlerList= new ArrayList<ServerClientHandler>();
+        this.serverClientHandlerList= new ArrayList<>();
 
         // Waiting for connection
         while(true){
@@ -65,7 +54,8 @@ public class ServerGame {
         }
     }
 
-    public void notifyDisconnectionAllSockets(Socket socket) {
+    public void notifyDisconnectionAllSockets(Socket socket, ServerClientHandler sourceHandler) {
+        serverClientHandlerList.remove(sourceHandler);
         for (ServerClientHandler sch : serverClientHandlerList) {
             sch.notifyDisconnection(socket);
         }

@@ -1,27 +1,21 @@
 package GC_11.distributed.socket;
 
-import GC_11.model.GameView;
+
 import GC_11.model.Player;
 import GC_11.util.Choice;
 import GC_11.view.View;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.rmi.RemoteException;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class ClientGame {
 
     private View view;
-    private String ip;
-    private int port;
-    private Player player;
-
-    private boolean active = true;
+    private final String ip;
+    private final int port;
+    private final Player player;
 
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
@@ -30,14 +24,6 @@ public class ClientGame {
         this.ip=ip;
         this.port=port;
         this.player=new Player();
-    }
-
-    public synchronized boolean isActive(){
-        return this.active;
-    }
-
-    public synchronized void setActive(boolean active){
-        this.active=active;
     }
 
 
@@ -87,21 +73,6 @@ public class ClientGame {
         inputStream.close();
         socket.close();
     }
-
-    public void sendChoice(Choice choice) throws RemoteException{
-        try{
-            outputStream.writeObject(choice);
-        }
-        catch(IOException e){
-            throw new RemoteException("Cannot send choice to the server",e);
-        }
-    }
-
-
-
-
-
-
 
 }
 
