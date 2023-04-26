@@ -18,6 +18,7 @@ public abstract class View implements PropertyChangeListener, Runnable{
     protected Player player;
 
     protected GameView modelView;
+    private boolean inGame = true;
 
     //Controller must register
     PropertyChangeListener listener;
@@ -38,33 +39,34 @@ public abstract class View implements PropertyChangeListener, Runnable{
     public abstract Choice getPlayerChoice();
 
     public void run(){
-        show();
-        Choice choice = getPlayerChoice();
-        switch (choice.getChoice()){
-            //Controls already made in the creation of choice client-side
-            case SEE_COMMONGOAL -> seeCommonGoal(choice);
-            case SEE_PERSONALGOAL -> seePersonalGoal(choice);
-            default -> {
-                PropertyChangeEvent evt = new PropertyChangeEvent(
-                    this,
-                    "CHOICE",
-                    null,
-                    choice);
+        while(inGame){
+            show();
+            Choice choice = getPlayerChoice();
+            switch (choice.getChoice()){
+                //Controls already made in the creation of choice client-side
+                case SEE_COMMONGOAL -> seeCommonGoal(choice);
+                case SEE_PERSONALGOAL -> seePersonalGoal(choice);
+                default -> {
+                    PropertyChangeEvent evt = new PropertyChangeEvent(
+                            this,
+                            "CHOICE",
+                            null,
+                            choice);
                     this.listener.propertyChange(evt);
                 }
+            }
         }
-    }
-
-    private void seePersonalGoal(Choice choice) {
-        this.modelView.getCurrentPlayer().getPersonalGoal().print();
-    }
-
-    private void seeCommonGoal(Choice choice) {
-        int index = parseInt(choice.getParams().get(0));
-        System.out.println(this.modelView.getCommonGoalCard(index));
     }
 
     public void setListener(PropertyChangeListener listener) {
         this.listener = listener;
     }
+
+    public void setInGame(boolean inGame) {
+        this.inGame = inGame;
+    }
+
+    protected abstract void seeCommonGoal(Choice choice);
+
+    protected abstract void seePersonalGoal(Choice choice);
 }
