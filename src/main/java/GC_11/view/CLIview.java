@@ -3,7 +3,6 @@ package GC_11.view;
 
 import GC_11.model.GameView;
 import GC_11.model.Tile;
-import GC_11.model.Triplet;
 import GC_11.model.common.CommonGoalCard;
 import GC_11.util.Choice;
 import GC_11.model.Player;
@@ -11,6 +10,8 @@ import GC_11.model.Player;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+
+import static java.lang.Integer.parseInt;
 
 public class CLIview extends View /*implements Runnable*/{
 
@@ -51,11 +52,13 @@ public class CLIview extends View /*implements Runnable*/{
             System.out.println("Player : " + p.getNickname());
             p.getShelf().print();
             if(p.equals(current)){
-                for(Tile t : current.getTiles()){
-                    System.out.println("Tile: " + t.getColor() + ", " + t.getId());
+                if(current.getTiles() != null) {
+                    for (Tile t : current.getTiles()) {
+                        System.out.println("Tile: " + t.getColor() + ", " + t.getId());
+                    }
+                    //Printing Personal Goal Card
+                    current.getPersonalGoal().print();
                 }
-                //Printing Personal Goal Card
-                current.getPersonalGoal().print();
             }
         }
     }
@@ -77,6 +80,17 @@ public class CLIview extends View /*implements Runnable*/{
                 System.err.println("Invalid choice: " + input +  " Please retake.");
             }
         }
+    }
+
+    @Override
+    protected void seeCommonGoal(Choice choice) {
+        int index = parseInt(choice.getParams().get(0));
+        System.out.println(this.modelView.getCommonGoalCard(index).getText());
+    }
+
+    @Override
+    protected void seePersonalGoal(Choice choice) {
+        this.modelView.getCurrentPlayer().getPersonalGoal().print();
     }
 }
 

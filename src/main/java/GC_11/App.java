@@ -23,9 +23,11 @@ public class App
         CLIview view = new CLIview(model.getCurrentPlayer());
         view.setModelView(modelView);
         Controller controller = new Controller(model);
+        model.setListener(view);
+
 
         System.out.println("Hello World!");
-        model.setListener(view);
-        model.setEndGame(true);
+
+        view.run();
     }
 }
