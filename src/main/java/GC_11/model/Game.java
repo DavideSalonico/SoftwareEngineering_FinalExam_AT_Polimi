@@ -119,7 +119,7 @@ public class Game implements PropertyChangeListener, Serializable {
                 this,
                 "CHANGED_CURRENT_PLAYER",
                 null,
-                new GameView(this));
+                new GameView(this, null));
         this.listener.propertyChange(evt);
     }
 
@@ -130,7 +130,7 @@ public class Game implements PropertyChangeListener, Serializable {
                 this,
                 "CHANGED_CURRENT_PLAYER(NEXT)",
                 null,
-                new GameView(this));
+                new GameView(this, null));
         this.listener.propertyChange(evt);
     }
 
@@ -164,7 +164,7 @@ public class Game implements PropertyChangeListener, Serializable {
                 this,
                 "END_GAME_SET",
                 null,
-                new GameView(this));
+                new GameView(this, null));
         this.listener.propertyChange(evt);
     }
 
@@ -206,7 +206,17 @@ public class Game implements PropertyChangeListener, Serializable {
                 this,
                 evt.getPropertyName(),
                 null,
-                new GameView(this));
+                new GameView(this, null));
         this.listener.propertyChange(move);
+    }
+
+    public void triggerException() {
+        this.changed = true;
+        PropertyChangeEvent exception = new PropertyChangeEvent(
+                this,
+                "GENERIC_EXCEPTION",
+                null,
+                new GameView(null, new Exception("Generic Exception")));
+        this.listener.propertyChange(exception);
     }
 }

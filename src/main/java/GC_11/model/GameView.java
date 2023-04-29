@@ -27,12 +27,19 @@ public class GameView implements Serializable {
     public int[] playersPoints;
      */
 
-    private final Game model;
-    //TODO:[RAM] remove model reference and copy every significant attribute
+    private boolean error;
 
-    public GameView(Game model){
+    //TODO: Is it clean to do?
+    private Exception exception;
+    private final Game model;
+
+    public GameView(Game model, Exception exception){
         if (model == null){
             throw new IllegalArgumentException();
+        }
+        if(exception != null){
+            this.error = true;
+            this.exception = exception;
         }
         this.model = model;
     }
@@ -55,5 +62,17 @@ public class GameView implements Serializable {
 
     public CommonGoalCard getCommonGoalCard(int index) {
         return this.model.getCommonGoal(index);
+    }
+
+    public boolean isError() {
+        return this.error;
+    }
+
+    public void setException(Exception e){
+        this.exception = e;
+    }
+
+    public Exception getException(){
+        return this.exception;
     }
 }

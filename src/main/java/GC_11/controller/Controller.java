@@ -81,35 +81,36 @@ public class Controller implements PropertyChangeListener {
         return model.getCurrentPlayer().equals(choice.getPlayer());
     }
 
-    // [MATTIA] : Ho aggiunto questo metodo con diversa signature per gestirlo sul server. Vediamo bene come fare con i parametri
-    // TODO: Mettere tutti i metodi del controller in Try and Catch e gestire l'eccezioni
     public void update(Choice arg)
             throws IllegalMoveException,
             ColumnIndexOutOfBoundsException,
             NotEnoughFreeSpacesException,
             ExceededNumberOfPlayersException,
             NameAlreadyTakenException {
+        this.choice = arg;
 
         if (!checkTurn()){
             throw new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer()+ "'s turn");
         }
 
         Player player = choice.getPlayer();
-        Choice.Type choice =  arg.getChoice();
         List<String> params = arg.getParams();
 
-        switch (arg.getChoice()){
-            case INSERT_NAME -> insertName(player, params);
-            case LOGIN -> login(player, params);
-            case FIND_MATCH -> findMatch(player, params);
-            //case SEE_COMMONGOAL-> seeCommonGoal(); gestita direttamente dalla view?
-            //case SEE_PERSONALGOAL -> seePersonalGoal();
-            case SELECT_TILE -> selectTile(player, params);
-            case CHOOSE_ORDER ->chooseOrder(player, params);
-            case PICK_COLUMN-> pickColumn(player, params);
+        try{
+            switch (arg.getChoice()){
+                case INSERT_NAME -> insertName(player, params);
+                case LOGIN -> login(player, params);
+                case FIND_MATCH -> findMatch(player, params);
+                case SELECT_TILE -> selectTile(player, params);
+                case CHOOSE_ORDER ->chooseOrder(player, params);
+                case PICK_COLUMN-> pickColumn(player, params);
+            }
+            //TODO: sbagliato metterlo qui, va cambiato il prossimo giocatore sse la mossa è di un certo tipo
+            model.setNextCurrent();
+        } catch (IllegalArgumentException e){
+            this.model.triggerException();
         }
 
-        model.setNextCurrent();
     }
 
     private void findMatch(Player player, List<String> params) {
@@ -130,14 +131,6 @@ public class Controller implements PropertyChangeListener {
         lobbyModel.addPlayer(params.get(0));
     }
 
-    private void seeCommonGoal(){
-
-    }
-
-    private void seePersonalGoal(){
-
-    }
-
     private void selectTile(Player player, List<String> parameters){
         if(parameters.size() != 2) throw new IllegalArgumentException();
         Integer row, col;
@@ -151,48 +144,6 @@ public class Controller implements PropertyChangeListener {
         //It could be possible to make a control about prohibited positions in the board based on the number of players
         //Maybe not necessary if we check Tile.Type?
         player.pickTile(model.getBoard().getTile(row, col));
-    }
-
-    private List<Coordinate> stringToCoordinate(List<String> parameters) {
-        //TODO: to be implemented
-
-        if (parameters.size()%2 != 0){
-            // Errore
-            System.out.println("Coordinate number must be even. You can't have odd numver of coordinate");
-        }
-
-        int row = 0;
-        int col = 0;
-
-        int num = 0;
-
-        List<Coordinate> listOfCoordinates = new ArrayList<Coordinate>();
-
-        int parsed = 0;
-        for (int i=0; i<parameters.size();i++)
-        {
-
-            try{
-                num = Integer.parseInt(parameters.get(i));
-            }
-            catch (NumberFormatException e){
-                System.out.println("Formato illegale");
-            }
-            if (i%2==0){
-                row = num;
-                parsed++;
-            }
-            else {
-                col = num;
-                parsed++;
-            }
-            if (parsed == 2){
-
-                listOfCoordinates.add(new Coordinate(row,col));
-                parsed=0;
-            }
-        }
-        return listOfCoordinates;
     }
 
     private void pickColumn(Player player, List<String> parameters) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
@@ -260,4 +211,45 @@ public class Controller implements PropertyChangeListener {
         player.updatesPointsPersonalGoal();
         this.getGame().calculateCommonPoints();
     }
+
+//    private List<Coordinate> stringToCoordinate(List<String> parameters) {
+//
+//        if (parameters.size()%2 != 0){
+//            // Errore
+//            System.out.println("Coordinate number must be even. You can't have odd numver of coordinate");
+//        }
+//
+//        int row = 0;
+//        int col = 0;
+//
+//        int num = 0;
+//
+//        List<Coordinate> listOfCoordinates = new ArrayList<Coordinate>();
+//
+//        int parsed = 0;
+//        for (int i=0; i<parameters.size();i++)
+//        {
+//
+//            try{
+//                num = Integer.parseInt(parameters.get(i));
+//            }
+//            catch (NumberFormatException e){
+//                System.out.println("Formato illegale");
+//            }
+//            if (i%2==0){
+//                row = num;
+//                parsed++;
+//            }
+//            else {
+//                col = num;
+//                parsed++;
+//            }
+//            if (parsed == 2){
+//
+//                listOfCoordinates.add(new Coordinate(row,col));
+//                parsed=0;
+//            }
+//        }
+//        return listOfCoordinates;
+//    }
 }

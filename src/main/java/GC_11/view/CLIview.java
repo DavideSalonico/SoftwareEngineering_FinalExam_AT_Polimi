@@ -36,6 +36,11 @@ public class CLIview extends View /*implements Runnable*/{
 
     @Override
     public void show(){
+        if(this.modelView.isError()){
+            System.out.println(this.modelView.getException().toString());
+            return;
+        }
+
         Player current = this.modelView.getCurrentPlayer();
         System.out.println("*****************************************************");
 
@@ -57,7 +62,8 @@ public class CLIview extends View /*implements Runnable*/{
                         System.out.println("Tile: " + t.getColor() + ", " + t.getId());
                     }
                     //Printing Personal Goal Card
-                    current.getPersonalGoal().print();
+                    if(current.getPersonalGoal() == null) System.out.println("Null personal goal card");
+                    else current.getPersonalGoal().print();
                 }
             }
         }
