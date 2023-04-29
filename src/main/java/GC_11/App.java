@@ -19,11 +19,12 @@ public class App
         tmpPlayerNames.add("Pluto");
         tmpPlayerNames.add("Paperino");
         Game model = new Game(tmpPlayerNames);
-        GameView modelView = new GameView(model);
+        GameView modelView = new GameView(model, null);
         CLIview view = new CLIview(model.getCurrentPlayer());
         view.setModelView(modelView);
         Controller controller = new Controller(model);
         model.setListener(view);
+        view.setListener(controller);
 
 
         System.out.println("Hello World!");

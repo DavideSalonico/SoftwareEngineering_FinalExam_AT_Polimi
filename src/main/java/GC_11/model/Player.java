@@ -6,6 +6,7 @@ import GC_11.exceptions.NotEnoughFreeSpacesException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public class Player implements PropertyChangeListener, Serializable {
     private int pointsCommonGoals;
     private int pointsPersonalGoal;
     private int pointsAdjacency;
-    private List<Tile> tiles;
+    private List<Tile> tiles = new ArrayList<Tile>();
     private PersonalGoalCard personalGoal;
     private List<Integer> ListCommonGoals;
     private Shelf shelf;
