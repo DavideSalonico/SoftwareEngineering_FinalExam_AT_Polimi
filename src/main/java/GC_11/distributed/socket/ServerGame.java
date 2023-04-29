@@ -1,6 +1,8 @@
 package GC_11.distributed.socket;
 
 
+import GC_11.network.Lobby;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,6 +12,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ServerGame {
+
+    Lobby lobby;
     private final int port;
     private ServerSocket serverSocket;
     private final ExecutorService executor = Executors.newCachedThreadPool();
@@ -31,12 +35,14 @@ public class ServerGame {
             this.serverSocket = new ServerSocket(this.port);
             System.out.println("---Server---");
             System.out.println("Server ready on port: "+ port);
+
         }
         catch(IOException e){
             System.out.println("Error during initialization phase...");
             System.out.println(e.getMessage());
         }
         this.serverClientHandlerList= new ArrayList<>();
+        this.lobby=new Lobby();
 
         // Waiting for connection
         while(true){
@@ -59,6 +65,10 @@ public class ServerGame {
         for (ServerClientHandler sch : serverClientHandlerList) {
             sch.notifyDisconnection(socket);
         }
+    }
+
+    public Lobby getLobby() {
+        return lobby;
     }
 }
 

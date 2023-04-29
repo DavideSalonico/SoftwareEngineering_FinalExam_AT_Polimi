@@ -49,6 +49,9 @@ public class ClientGame {
             System.err.println("Cannot get input stream");
             System.err.println(e.getMessage());
         }
+
+        lobbySubscribe();
+
         Scanner commandInput = new Scanner(System.in);
         while(true){
             String command = commandInput.nextLine();
@@ -72,6 +75,46 @@ public class ClientGame {
         outputStream.close();
         inputStream.close();
         socket.close();
+    }
+
+    private void lobbySubscribe() {
+        try{
+            String msg = getServerMessage();
+            System.out.println(msg);
+            Scanner input = new Scanner(System.in);
+            String reply = input.nextLine();
+            outputStream.writeObject(reply);
+            outputStream.flush();
+            msg=getServerMessage();
+            System.out.println(msg);
+            while(!msg.equals("OK")){
+                reply = input.nextLine();
+                outputStream.writeObject(reply);
+                outputStream.flush();
+                msg =(String) inputStream.readObject();
+                System.out.println(msg);
+                msg =(String) inputStream.readObject();
+                System.out.println(msg);
+            }
+            msg=(String) inputStream.readObject();
+            System.out.println(msg);
+            reply=input.nextLine();
+            outputStream.writeObject(reply);
+            outputStream.flush();
+            msg=(String) inputStream.readObject();
+            System.out.println(msg);
+
+        }
+        catch(IOException e){
+            System.out.println("Impossibile contattare il server.");
+        }
+        catch(ClassNotFoundException e){
+            System.out.println("Errore nella deserializzazione");
+        }
+    }
+
+    private String getServerMessage() throws IOException, ClassNotFoundException {
+        return (String) inputStream.readObject();
     }
 
 }
