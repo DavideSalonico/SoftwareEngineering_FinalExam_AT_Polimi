@@ -132,7 +132,8 @@ public class ServerClientHandler implements Runnable {
                 outputStream.flush();
                 String playerName = (String) inputStream.readObject();
                 try{
-                    this.server.lobby.addPlayer(playerName);
+                    this.server.getLobby().addPlayer(playerName);
+                    this.server.getLobby().setFisrtPlayer(playerName);
                     System.out.println("Aggiunto " + playerName + " alla lobby");
                     outputStream.writeObject("Sei stato aggiunto alla lobby!");
                     outputStream.flush();

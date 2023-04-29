@@ -81,6 +81,14 @@ public class Lobby {
         this.maxPlayers=maxPlayers;
     }
 
+    public String getFisrtPlayer() {
+        return fisrtPlayer;
+    }
+
+    public void setFisrtPlayer(String player){
+        this.fisrtPlayer=player;
+    }
+
     // TODO LOBBY by Mattia
     // fatto - lanciare l'excpetion in addPlayer se eccede il numero massimo o non può inserire il player
     // Il primo giocatore è il capo del gruppo, e sarà l'unico a poter avviare il gioco, gestire la questione dei permessi
