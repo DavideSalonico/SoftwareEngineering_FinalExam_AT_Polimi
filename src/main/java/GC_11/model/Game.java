@@ -193,7 +193,6 @@ public class Game implements PropertyChangeListener, Serializable {
     }
 
 
-    // TODO: Queste due metodi sottostanti dovranno generare un oggetto GameView
     /**
      * Notify a property change in one of object connected to 'Game' to Game Listener
      * @param evt A PropertyChangeEvent object describing the event source

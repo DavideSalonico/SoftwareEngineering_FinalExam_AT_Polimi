@@ -13,7 +13,8 @@ import java.util.List;
 public abstract class CommonGoalCard implements Serializable{
 
     private List<Player> winningPlayers = new ArrayList<>();
-    private static String text;
+    //TODO: to change based on CommonGoalCard number
+    private static String text = "sample common goal card text";
 
     PropertyChangeListener listener;
 

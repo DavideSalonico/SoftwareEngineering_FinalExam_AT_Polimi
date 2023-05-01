@@ -39,13 +39,20 @@ public abstract class View implements PropertyChangeListener, Runnable{
     public abstract Choice getPlayerChoice();
 
     public void run(){
+        boolean show_en = true;
         while(inGame){
-            show();
+            if(show_en) show();
             Choice choice = getPlayerChoice();
             switch (choice.getChoice()){
                 //Controls already made in the creation of choice client-side
-                case SEE_COMMONGOAL -> seeCommonGoal(choice);
-                case SEE_PERSONALGOAL -> seePersonalGoal(choice);
+                case SEE_COMMONGOAL -> {
+                    seeCommonGoal(choice);
+                    show_en = false;
+                }
+                case SEE_PERSONALGOAL -> {
+                    seePersonalGoal(choice);
+                    show_en = false;
+                }
                 default -> {
                     PropertyChangeEvent evt = new PropertyChangeEvent(
                             this,
@@ -53,6 +60,7 @@ public abstract class View implements PropertyChangeListener, Runnable{
                             null,
                             choice);
                     this.listener.propertyChange(evt);
+                    show_en = true;
                 }
             }
         }

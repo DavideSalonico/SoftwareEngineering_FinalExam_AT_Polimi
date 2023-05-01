@@ -15,7 +15,6 @@ public class LobbyTest {
     private String p2;
     private String p3;
     private String p4;
-    //TODO: To be implemented by Mattia
 
     @BeforeEach
     public void setup(){

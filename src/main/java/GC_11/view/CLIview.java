@@ -88,6 +88,7 @@ public class CLIview extends View /*implements Runnable*/{
         }
     }
 
+    // 0-BASED INDEXING !!!
     @Override
     protected void seeCommonGoal(Choice choice) {
         int index = parseInt(choice.getParams().get(0));
@@ -96,7 +97,8 @@ public class CLIview extends View /*implements Runnable*/{
 
     @Override
     protected void seePersonalGoal(Choice choice) {
-        this.modelView.getCurrentPlayer().getPersonalGoal().print();
+        if(choice.getPlayer().getPersonalGoal() != null) choice.getPlayer().getPersonalGoal().print();
+        else System.out.println("Null PersonalGoalCard");
     }
 }
 

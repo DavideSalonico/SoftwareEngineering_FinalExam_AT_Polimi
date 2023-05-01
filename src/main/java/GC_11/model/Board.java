@@ -60,7 +60,7 @@ public class Board implements PropertyChangeListener, Serializable {
     public Board(){
         this.bag = new Bag();
         this.bag.setListener(this);
-        this.chessBoard = new Tile[9][9]; //TODO: to correct
+        this.chessBoard = new Tile[9][9];
     }
 
     /**

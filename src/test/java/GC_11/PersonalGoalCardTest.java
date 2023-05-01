@@ -10,7 +10,6 @@ import java.util.List;
 import static junit.framework.Assert.assertEquals;
 
 public class PersonalGoalCardTest {
-    //TODO: To be implemented by Davide
 
     @DisplayName("Exactly six tiles")
     @Test

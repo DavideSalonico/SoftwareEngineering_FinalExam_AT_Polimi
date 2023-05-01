@@ -29,7 +29,6 @@ public class GameView implements Serializable {
 
     private boolean error;
 
-    //TODO: Is it clean to do?
     private Exception exception;
     private final Game model;
 

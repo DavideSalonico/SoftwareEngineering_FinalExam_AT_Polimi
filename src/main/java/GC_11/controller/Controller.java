@@ -105,8 +105,7 @@ public class Controller implements PropertyChangeListener {
                 case CHOOSE_ORDER ->chooseOrder(player, params);
                 case PICK_COLUMN-> pickColumn(player, params);
             }
-            //TODO: sbagliato metterlo qui, va cambiato il prossimo giocatore sse la mossa è di un certo tipo
-            model.setNextCurrent();
+
         } catch (IllegalArgumentException e){
             this.model.triggerException();
         }
@@ -150,6 +149,8 @@ public class Controller implements PropertyChangeListener {
         int column = paramsToColumnIndex(parameters);
         player.getShelf().addTiles(player.getTiles(), column);
         player.resetTiles();
+        //pickColumn è l'unico metodo dopo il quale bisogna cambiare turno
+        this.model.setNextCurrent();
     }
 
     private int paramsToColumnIndex(List<String> parameters) {
@@ -201,7 +202,7 @@ public class Controller implements PropertyChangeListener {
             update((Choice) evt.getNewValue());
         } catch (IllegalMoveException | ColumnIndexOutOfBoundsException | NotEnoughFreeSpacesException |
                  ExceededNumberOfPlayersException | NameAlreadyTakenException e) {
-            throw new RuntimeException(e);
+            this.model.triggerException();
         }
     }
 

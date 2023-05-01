@@ -11,7 +11,6 @@ import static junit.framework.Assert.*;
 //import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BagTest {
-    //TODO: To be implemented by Mattia
 
     @Test
     public void rightNumberOfEachTile(){

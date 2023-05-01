@@ -1,5 +1,3 @@
-//TODO: To be implemented by Rei
-
 package GC_11;
 
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
