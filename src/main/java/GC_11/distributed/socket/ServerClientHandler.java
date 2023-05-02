@@ -11,13 +11,13 @@ import java.net.Socket;
 
 public class ServerClientHandler implements Runnable {
 
-    private final ServerGame server;
+    private final ServerSock server;
     private final Socket clientSocket;
 
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
 
-    public ServerClientHandler(Socket socket, ServerGame server) {
+    public ServerClientHandler(Socket socket, ServerSock server) {
         this.clientSocket = socket;
         this.server=server;
     }

@@ -1,6 +1,6 @@
 package GC_11.distributed;
 
-import GC_11.distributed.socket.ClientGame;
+import GC_11.distributed.socket.ClientSock;
 
 
 import java.io.IOException;
@@ -12,7 +12,7 @@ public class AppClientImpl {
         Scanner input = new Scanner(System.in);
         System.out.println("---CLIENT---\nEnter ip address of the server");
         String ip = input.next();
-        ClientGame client = new ClientGame(ip, 4321);
+        ClientSock client = new ClientSock(ip, 4321);
         try{
             client.startClient();
         }catch (IOException e){
