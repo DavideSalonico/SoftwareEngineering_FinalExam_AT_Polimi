@@ -15,7 +15,6 @@ import java.util.List;
 public class Player implements PropertyChangeListener, Serializable {
 
     private String nickname;
-    private int points;
     private int pointsCommonGoals;
     private int pointsPersonalGoal;
     private int pointsAdjacency;
@@ -42,7 +41,6 @@ public class Player implements PropertyChangeListener, Serializable {
      */
     public Player(String nickname, PersonalGoalCard personalCard){
         this.nickname = nickname;
-        this.points=0;
         this.shelf = new Shelf();
         this.shelf.setListener(this);
         this.personalGoal = personalCard;
@@ -51,7 +49,6 @@ public class Player implements PropertyChangeListener, Serializable {
     //Solo per test, da cancellare
     public Player(String nickname){
         this.nickname = nickname;
-        this.points=0;
         this.shelf=new Shelf();
         this.shelf.setListener(this);
     }
@@ -59,7 +56,6 @@ public class Player implements PropertyChangeListener, Serializable {
     //Solo per test, da cancellare
     public Player(){
         this.nickname = "nickname";
-        this.points = 0;
         this.shelf = new Shelf();
         this.shelf.setListener(this);
         this.personalGoal = new PersonalGoalCard();
@@ -71,7 +67,7 @@ public class Player implements PropertyChangeListener, Serializable {
      */
     public Player(Player p){
         this.nickname = p.getNickname();
-        this.points = p.getPoints();
+        // this.points = p.getPoints(); da modificare aggiungendo i nuovi punti
         this.tiles = p.getTiles();
         this.shelf = p.getShelf();
         this.pointsAdjacency = p.getPointsAdjacency();
@@ -101,7 +97,7 @@ public class Player implements PropertyChangeListener, Serializable {
      * @return The points of the player
      */
     public int getPoints(){
-        return points;
+        return this.pointsAdjacency + this.pointsPersonalGoal + this.pointsCommonGoals;
     }
 
     /**
@@ -119,10 +115,6 @@ public class Player implements PropertyChangeListener, Serializable {
      * @param n is the number of points that is summed to the current number of points
      */
 
-    public void addPoints(int n){
-
-        this.points+=n;
-    }
 
     public void addPointsCommonGoals (int n){this.pointsCommonGoals += n;}
 
@@ -198,7 +190,7 @@ public class Player implements PropertyChangeListener, Serializable {
     }
 
     public boolean equals(Player currentPlayer) {
-        return (this.nickname.equals(currentPlayer.getNickname()) && this.points == currentPlayer.getPoints());
+        return (this.nickname.equals(currentPlayer.getNickname()) && (this.pointsAdjacency + this.pointsPersonalGoal + this.pointsCommonGoals) == currentPlayer.getPoints());
     }
 
     @Override
