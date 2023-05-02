@@ -142,7 +142,12 @@ public class Controller implements PropertyChangeListener {
         if(row < 0 || row >= 9 || col < 0 || col >= 9 ) throw new InvalidParameterException();
         //It could be possible to make a control about prohibited positions in the board based on the number of players
         //Maybe not necessary if we check Tile.Type?
-        player.pickTile(model.getBoard().getTile(row, col));
+        try{
+            player.pickTile(model.getBoard().drawTile(row, col));
+        } catch(IllegalMoveException e){
+            throw new InvalidParameterException();
+        }
+
     }
 
     private void pickColumn(Player player, List<String> parameters) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {

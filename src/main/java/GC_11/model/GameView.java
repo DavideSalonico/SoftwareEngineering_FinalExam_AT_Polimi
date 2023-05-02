@@ -3,8 +3,6 @@ package GC_11.model;
 
 import GC_11.model.common.CommonGoalCard;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.util.List;
 
@@ -29,16 +27,16 @@ public class GameView implements Serializable {
 
     private boolean error;
 
-    private Exception exception;
+    private String exceptionMessage;
     private final Game model;
 
     public GameView(Game model, Exception exception){
-        if (model == null){
-            throw new IllegalArgumentException();
-        }
+        //if (model == null){
+        //    throw new IllegalArgumentException();
+        //}
         if(exception != null){
             this.error = true;
-            this.exception = exception;
+            this.exceptionMessage = exception.getMessage();
         }
         this.model = model;
     }
@@ -67,11 +65,16 @@ public class GameView implements Serializable {
         return this.error;
     }
 
-    public void setException(Exception e){
-        this.exception = e;
+    public void setExceptionMessage(Exception e){
+        this.exceptionMessage = e.getMessage();
     }
 
-    public Exception getException(){
-        return this.exception;
+    public void setExceptionMessage(String mess){
+        this.exceptionMessage = mess;
+    }
+
+
+    public String getExceptionMessage(){
+        return this.exceptionMessage;
     }
 }

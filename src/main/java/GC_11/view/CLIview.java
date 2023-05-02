@@ -37,7 +37,7 @@ public class CLIview extends View /*implements Runnable*/{
     @Override
     public void show(){
         if(this.modelView.isError()){
-            System.out.println(this.modelView.getException().toString());
+            System.out.println(this.modelView.getExceptionMessage());
             return;
         }
 
