@@ -13,6 +13,7 @@ import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 
+/*
 public class ClientImpl extends UnicastRemoteObject implements Client, Runnable, PropertyChangeListener {
 
     View view;
@@ -25,7 +26,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable,
      * @param view is the view the client is listening to
      * @throws RemoteException the exception can occur in network layer
      */
-
+/*
     public ClientImpl(Server server, View view) throws RemoteException{
         super();
         this.server=server;
@@ -59,6 +60,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable,
      * server and set itself as view's listener
      * @param server is the server the client want to register to
      */
+
+/*
     private void initialize(Server server) throws RemoteException{
         server.register(this);
         view.setListener(this);
@@ -71,6 +74,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable,
      * @param gameView The resulting model view
      * @throws RemoteException
      */
+
+/*
     @Override
     public void update(GameView gameView) throws RemoteException {
         PropertyChangeEvent evt = new PropertyChangeEvent(
@@ -93,7 +98,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable,
     /**
      * Clients run a view's instance
      */
-
+/*
     public void run(){ view.run();}
 
     /**
@@ -105,6 +110,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable,
      * @param evt is the event passed from the view.
      *
      */
+
+/*
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         try{
@@ -126,3 +133,5 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable,
         return server;
     }
 }
+
+*/

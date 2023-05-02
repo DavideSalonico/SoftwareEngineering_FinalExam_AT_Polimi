@@ -9,6 +9,7 @@ public class LobbyTUI implements Runnable{
     private LobbyView lobbyView;
     Scanner inputLine;
 
+
     public LobbyTUI(){
         this.inputLine = new Scanner(System.in);
     }
@@ -28,22 +29,11 @@ public class LobbyTUI implements Runnable{
 
     private void evaluateUserCommand(String command){
         if(command.equals("1")){
+            System.out.println("Inserire indirizzo ip del server:\n");
+            String ip = inputLine.nextLine();
             System.out.println("Vuoi utilizzare RMI o socket?\n1 - Socket\n2 - RMI [Attualmente non disponibile]\n");
             String input = inputLine.nextLine();
-            while (input.equals("1") || input.equals("2")){
-                if (input.equals("1")){
-                    System.out.println("Connessione al socket");
-                    // socketConnect();
-                }
-                else if (input.equals("2")){
-                    System.out.println("Connessione a RMI");
-                    //RMIConnect();
-                }
-                else{
-                    System.out.println("Input non riconosciuto. Reinserire");
-                    input=inputLine.nextLine();
-                }
-            }
+
         }
     }
 
