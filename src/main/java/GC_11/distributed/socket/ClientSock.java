@@ -19,23 +19,22 @@ import java.util.Scanner;
 public class ClientSock extends Client implements PropertyChangeListener {
 
     private View view;
-    private final String ip;
-    private final int port;
+    private String ip;
+    private int port;
     private final Player player;
     private Socket socket;
 
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
 
-    public ClientSock(String ip, int port){
-        this.ip=ip;
-        this.port=port;
+    public ClientSock(){
         this.player=new Player();
     }
 
 
     public void startClient() throws IOException, ClassNotFoundException {
         System.out.println("---Client---");
+        this.view.run();
         connectionSetup();
 
 
@@ -67,6 +66,7 @@ public class ClientSock extends Client implements PropertyChangeListener {
         socket.close();
     }
 
+    /*
     private void lobbySubscribe() {
         try{
             String msg = getServerMessage();
@@ -102,17 +102,9 @@ public class ClientSock extends Client implements PropertyChangeListener {
             System.out.println("Errore nella deserializzazione");
         }
     }
-
+*/
     private Object getServerMessage() throws IOException, ClassNotFoundException {
         return inputStream.readObject();
-    }
-
-    private void sendMessage(Object o){
-        try{
-            outputStream.writeObject(o);
-        }catch(IOException e){
-            System.out.println("Unable to send message");
-        }
     }
 
     /**
@@ -161,12 +153,22 @@ public class ClientSock extends Client implements PropertyChangeListener {
 
     @Override
     protected void lobbySetup() {
-
+        try{
+            String msg = (String) inputStream.readObject();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    protected void sendMessage() {
-
+    protected void sendMessage(Object o) {
+        try{
+            this.outputStream.writeObject(o);
+        } catch (IOException e) {
+            System.out.println("Unable to send message.\n");
+        }
     }
 }
 

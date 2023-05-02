@@ -1,7 +1,5 @@
 package GC_11.distributed;
 
-import GC_11.distributed.ClientImpl;
-import GC_11.distributed.ServerImpl;
 import GC_11.distributed.socket.AppServer;
 import GC_11.model.Game;
 import GC_11.model.GameView;
@@ -16,6 +14,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
 
+/*
 public class AppClientRMI {
 
     public static void main( String[] args ) throws RemoteException, NotBoundException {
@@ -37,3 +36,4 @@ public class AppClientRMI {
 
     }
 }
+*/

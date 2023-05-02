@@ -16,7 +16,7 @@ public abstract class Client implements Remote {
 
     protected abstract void connectionSetup();
     protected abstract void lobbySetup();
-    protected abstract void sendMessage();
+    protected abstract void sendMessage(Object o);
 
 
 

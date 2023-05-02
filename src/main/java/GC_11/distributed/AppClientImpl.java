@@ -12,7 +12,7 @@ public class AppClientImpl {
         Scanner input = new Scanner(System.in);
         System.out.println("---CLIENT---\nEnter ip address of the server");
         String ip = input.next();
-        ClientSock client = new ClientSock(ip, 4321);
+        ClientSock client = new ClientSock();
         try{
             client.startClient();
         }catch (IOException e){
