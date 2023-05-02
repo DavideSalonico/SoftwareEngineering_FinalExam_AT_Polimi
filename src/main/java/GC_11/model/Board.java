@@ -57,12 +57,6 @@ public class Board implements PropertyChangeListener, Serializable {
         setBoard();
     }
 
-    public Board(){
-        this.bag = new Bag();
-        this.bag.setListener(this);
-        this.chessBoard = new Tile[9][9];
-    }
-
     /**
      * Builder (overloaded)
      * @param num is the number of players
