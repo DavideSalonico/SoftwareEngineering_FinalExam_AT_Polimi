@@ -19,13 +19,7 @@ public class Board implements PropertyChangeListener, Serializable {
         this.listener = listener;
     }
 
-    //The listener must be Game
     transient PropertyChangeListener listener;
-
-    public Board(Board board){
-        this.chessBoard = board.getChessBoard();
-        this.bag = board.getBag();
-    }
 
     /**
      * Duplicate method
@@ -33,28 +27,6 @@ public class Board implements PropertyChangeListener, Serializable {
      */
     private Tile[][] getChessBoard() {
         return chessBoard;
-    }
-
-    /**
-     * Constructor of Board entity, it initializes all the 9x9 matrix in Tile.EMPTY then sets the prohibited cells
-     * into TileColor.PROHIBITED (get coordinates from JSON file)
-     * @param coordinateList
-     */
-    public Board(List<Coordinate> coordinateList){
-
-        this.bag = new Bag();
-        this.bag.setListener(this);
-        chessBoard = new Tile[9][9];
-        for (int i =0; i<9;i++){
-            for (int j=0; j<9;j++){
-                chessBoard[i][j] = new Tile(TileColor.EMPTY);
-            }
-        }
-        for (Coordinate c : coordinateList){
-            this.chessBoard[c.getRow()][c.getColumn()] = new Tile(TileColor.PROHIBITED);
-        }
-
-        setBoard();
     }
 
     /**
@@ -206,7 +178,11 @@ public class Board implements PropertyChangeListener, Serializable {
     public void print(){
         for(int i=0; i < 9; i++){
             for(int j=0; j < 9; j++){
-                System.out.print("\t" + getTile(i, j).getColor().toString().charAt(0));
+                TileColor color = getTile(i,j).getColor();
+                if(color != TileColor.PROHIBITED)
+                    System.out.print("\t" + color.toString().charAt(0));
+                else
+                    System.out.print("\t" + "X");
             }
             System.out.println();
         }
