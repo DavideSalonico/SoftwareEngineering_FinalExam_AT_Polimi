@@ -144,7 +144,7 @@ public class Controller implements PropertyChangeListener {
         //Maybe not necessary if we check Tile.Type?
         try{
             player.pickTile(model.getBoard().drawTile(row, col));
-        } catch(IllegalMoveException e){
+        } catch(IllegalMoveException | FullTilesException e){
             throw new InvalidParameterException();
         }
 

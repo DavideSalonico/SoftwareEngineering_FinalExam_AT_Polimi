@@ -1,6 +1,7 @@
 package GC_11.model;
 
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
+import GC_11.exceptions.FullTilesException;
 import GC_11.exceptions.NotEnoughFreeSpacesException;
 
 import java.beans.PropertyChangeEvent;
@@ -185,8 +186,11 @@ public class Player implements PropertyChangeListener, Serializable {
         return shelf;
     }
 
-    public void pickTile(Tile t){
-        this.tiles.add(t);
+    public void pickTile(Tile t) throws FullTilesException {
+        if(this.tiles.size() < 3){
+           this.tiles.add(t);
+        } else throw new FullTilesException();
+
     }
 
     public boolean equals(Player currentPlayer) {
