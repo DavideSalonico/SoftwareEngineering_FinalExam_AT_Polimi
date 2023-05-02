@@ -1,5 +1,6 @@
 package GC_11.distributed;
 
+/*
 import GC_11.controller.Controller;
 import GC_11.model.Game;
 import GC_11.model.GameView;
@@ -61,8 +62,10 @@ public class ServerImpl extends UnicastRemoteObject implements Server, PropertyC
             /*for(Client c : clients){
                 c.update((GameView) evt.getNewValue());
             }*/
+/*
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
     }
 }
+*/
