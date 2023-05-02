@@ -1,21 +1,28 @@
 package GC_11.distributed.socket;
 
 
+import GC_11.distributed.Client;
 import GC_11.model.Player;
 import GC_11.util.Choice;
 import GC_11.view.View;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Objects;
 import java.util.Scanner;
 
-public class ClientSock {
+public class ClientSock extends Client implements PropertyChangeListener {
 
     private View view;
     private final String ip;
     private final int port;
     private final Player player;
+    private Socket socket;
 
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
@@ -28,29 +35,12 @@ public class ClientSock {
 
 
     public void startClient() throws IOException, ClassNotFoundException {
-        Socket socket = new Socket(ip,port);
         System.out.println("---Client---");
-        System.out.println("Connection established");
-        System.out.println("Initializing output stream...");
-        try {
-            this.outputStream=new ObjectOutputStream(socket.getOutputStream());
-            System.out.println("Got output stream");
-        }
-        catch (IOException e){
-            System.err.println("Cannot get output stream");
-            System.err.println(e.getMessage());
-        }
-        System.out.println("Initializing input stream...");
-        try{
-            this.inputStream=new ObjectInputStream(socket.getInputStream());
-            System.out.println("Got input stream");
-        }
-        catch (IOException e){
-            System.err.println("Cannot get input stream");
-            System.err.println(e.getMessage());
-        }
+        connectionSetup();
 
-        lobbySubscribe();
+
+
+        /*lobbySubscribe();
 
         Scanner commandInput = new Scanner(System.in);
         while(true){
@@ -70,7 +60,7 @@ public class ClientSock {
             }catch (IllegalArgumentException e){
                 System.out.println("Errore nel comando");
             }
-        }
+        }*/
 
         outputStream.close();
         inputStream.close();
@@ -113,9 +103,70 @@ public class ClientSock {
         }
     }
 
-    private String getServerMessage() throws IOException, ClassNotFoundException {
-        return (String) inputStream.readObject();
+    private Object getServerMessage() throws IOException, ClassNotFoundException {
+        return inputStream.readObject();
     }
 
+    private void sendMessage(Object o){
+        try{
+            outputStream.writeObject(o);
+        }catch(IOException e){
+            System.out.println("Unable to send message");
+        }
+    }
+
+    /**
+     * This method is called by the view. Whenever the view get an input,
+     * notify the client with this method. This method, once called, try to send a message to the server
+     * @param evt A PropertyChangeEvent object describing the event source
+     *          and the property that has changed.
+     */
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        this.sendMessage(evt.getNewValue());
+    }
+
+    @Override
+    protected void connectionSetup() {
+        try {
+            this.socket = new Socket(this.ip, this.port);
+        } catch (UnknownHostException e) {
+            System.out.println("Unable to reach the server.\n");
+        } catch (IOException e) {
+            System.out.println("Error during setup phase.\n");
+        }
+        finally {
+            System.out.println("Connection established");
+        }
+
+        System.out.println("Initializing output stream...");
+        try {
+            this.outputStream=new ObjectOutputStream(socket.getOutputStream());
+            System.out.println("Got output stream");
+        }
+        catch (IOException e){
+            System.err.println("Cannot get output stream");
+            System.err.println(e.getMessage());
+        }
+        System.out.println("Initializing input stream...");
+        try{
+            this.inputStream=new ObjectInputStream(socket.getInputStream());
+            System.out.println("Got input stream");
+        }
+        catch (IOException e){
+            System.err.println("Cannot get input stream");
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @Override
+    protected void lobbySetup() {
+
+    }
+
+    @Override
+    protected void sendMessage() {
+
+    }
 }
 
