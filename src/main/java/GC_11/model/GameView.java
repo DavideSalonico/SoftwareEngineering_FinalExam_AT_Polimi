@@ -19,6 +19,13 @@ public class GameView implements Serializable {
     private String exceptionMessage;
     private final Game model;
 
+    /**
+     * Game creates instance of GameView through listener, if there is an exception it only initializes attributes 'exceptionMessage'
+     *  and 'error', the model remains null because the Player doesn't need a view refresh, but just the exception Error,
+     *  so the network don't send heavier packets
+     * @param model Game model
+     * @param exception caught during the game
+     */
     public GameView(Game model, Exception exception){
         //if (model == null){
         //    throw new IllegalArgumentException();
