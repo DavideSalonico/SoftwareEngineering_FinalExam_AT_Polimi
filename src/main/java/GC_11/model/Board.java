@@ -125,13 +125,13 @@ public class Board implements PropertyChangeListener, Serializable {
         if(chessBoard[l][c].getColor().equals(TileColor.PROHIBITED) || chessBoard[l][c].getColor().equals(TileColor.EMPTY))
             throw new IllegalMoveException("You can't pick this Tile!");
         Tile picked = new Tile(chessBoard[l][c]);
-
+        chessBoard[l][c] = new Tile(TileColor.EMPTY);
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "TILE_PICKED",
-                this.chessBoard[l][c],
+                picked,
                 new Tile(TileColor.EMPTY));
-        chessBoard[l][c] = new Tile(TileColor.EMPTY);
+        this.listener.propertyChange(evt);
         return picked;
     }
 
