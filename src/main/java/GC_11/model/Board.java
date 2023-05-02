@@ -8,11 +8,16 @@ import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
+
+import static java.lang.Math.abs;
 
 public class Board implements PropertyChangeListener, Serializable {
 
     private Tile[][] chessBoard;
+
+    private List<Coordinate> selectedTiles = new ArrayList<>();
     private Bag bag;
 
     public void setListener(PropertyChangeListener listener) {
@@ -107,11 +112,62 @@ public class Board implements PropertyChangeListener, Serializable {
         return picked;
     }
 
+    public void selectTile(int l, int c)throws IllegalMoveException{
+        if (l<0 || l>8 || c<0 || c>8)
+            throw new IndexOutOfBoundsException();
+        if(!this.isPlayable(l,c) || this.freeSides(l,c)==0 || this.selectedTiles.size()==3)
+            throw new IllegalMoveException("You can't pick this Tile!");
+
+
+        if(this.selectedTiles.size()==0)
+            this.selectedTiles.add(new Coordinate(l,c));
+        else if (this.selectedTiles.size()==1){
+            if((l==this.selectedTiles.get(0).getRow() && abs(c-this.selectedTiles.get(0).getColumn())==1)||
+                    (c==this.selectedTiles.get(0).getColumn() && abs(l-this.selectedTiles.get(0).getRow())==1))
+                this.selectedTiles.add(new Coordinate(l,c));
+            else {
+                if(this.selectedTiles.get(0).getRow()==this.selectedTiles.get(1).getRow()){
+                    int max = this.selectedTiles.stream().mapToInt(Coordinate::getColumn).max().orElseThrow(NoSuchElementException::new);
+                    int min = this.selectedTiles.stream().mapToInt(Coordinate::getColumn).min().orElseThrow(NoSuchElementException::new);
+                    if(l == min-1 || l==max+1)
+                        this.selectedTiles.add(new Coordinate(l,c));
+                    else
+                        throw new IllegalMoveException("You can't pick this Tile!");
+                }
+                else{
+                    int max = this.selectedTiles.stream().mapToInt(Coordinate::getRow).max().orElseThrow(NoSuchElementException::new);
+                    int min = this.selectedTiles.stream().mapToInt(Coordinate::getRow).min().orElseThrow(NoSuchElementException::new);
+                    if(c == min-1 || c==max+1)
+                        this.selectedTiles.add(new Coordinate(l,c));
+                    else
+                        throw new IllegalMoveException("You can't pick this Tile!");
+
+                }
+
+            }
+        }
+
+
+    }
+
+    private int freeSides(int l, int c){
+        int counter = 0;
+        if( l == 0 || !this.isPlayable(l-1,c)) {counter++;}
+        if(l==8 || !this.isPlayable(l+1, c)){counter++;}
+        if(c==0 || !this.isPlayable(l, c-1)){counter++;}
+        if(c==8 || !this.isPlayable(l,c+1)){counter++;}
+        return counter;
+    }
+
+    public boolean isPlayable(int l, int c){
+        return !chessBoard[l][c].getColor().equals(TileColor.EMPTY) && !chessBoard[l][c].getColor().equals(TileColor.PROHIBITED);
+    }
+
     /**
      * It checks if there are only isolated Tiles on the Board so the Board needs a refill of Tiles
      * @return number of isolated Tiles if the board needs a refill, else it returns 0
      */
-    public int checkDraw(){
+    private int checkDraw(){
         int counter = 0;
         for (int l =0; l<9;l++){
             for (int c=0; c<9;c++) {
@@ -142,7 +198,7 @@ public class Board implements PropertyChangeListener, Serializable {
      * Checks (using checkDraw method) if the Board needs a Tiles' refill, if true, it will clean the board from remaining
      * Tiles inserting them into the Bag and after that it will set again all the Board's cells with random tiles using setBoard() method
      */
-    public void needRefill(){
+    public void refillBoard(){
         if(checkDraw()>0){
             for(int line = 0; line<9; line++){
                 for (int column = 0; column <9; column++){
@@ -153,6 +209,8 @@ public class Board implements PropertyChangeListener, Serializable {
                     }
                 }
             }
+
+            setBoard();
             /* Can't manage to give right OldValue e NewValue */
             PropertyChangeEvent evt = new PropertyChangeEvent(
                     this,
@@ -160,10 +218,8 @@ public class Board implements PropertyChangeListener, Serializable {
                     this.chessBoard,
                     this.chessBoard);
             this.listener.propertyChange(evt);
-            setBoard();
 
         }
-        // else nothing
     }
 
 
