@@ -5,6 +5,7 @@ import GC_11.distributed.socket.ClientSock;
 import GC_11.network.LobbyView;
 import GC_11.util.Choice;
 
+import java.beans.PropertyChangeEvent;
 import java.util.Scanner;
 
 public class LobbyTUI extends View implements Runnable {
@@ -18,6 +19,14 @@ public class LobbyTUI extends View implements Runnable {
         this.client=c;
     }
 
+    public LobbyTUI(){
+        this.inputLine=new Scanner(System.in);
+    }
+
+    public void setClient (Client c){
+        this.client=c;
+    }
+
     @Override
     public void show() {
 
@@ -25,7 +34,15 @@ public class LobbyTUI extends View implements Runnable {
 
     @Override
     public Choice getPlayerChoice() {
-        return null;
+        while(true){
+            String msg = inputLine.nextLine();
+            PropertyChangeEvent evt = new PropertyChangeEvent(
+                    this,
+                    "message",
+                    null,
+                    msg);
+            this.client.propertyChange(evt);
+        }
     }
 
     public void run(){
@@ -65,9 +82,4 @@ public class LobbyTUI extends View implements Runnable {
 
         }
     }
-
-
-
-
-
 }

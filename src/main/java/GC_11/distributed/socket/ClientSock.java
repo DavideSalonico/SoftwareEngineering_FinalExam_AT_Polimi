@@ -27,8 +27,9 @@ public class ClientSock extends Client implements PropertyChangeListener {
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
 
-    public ClientSock(){
+    public ClientSock(View view){
         this.player=new Player();
+        this.view=view;
     }
 
 
