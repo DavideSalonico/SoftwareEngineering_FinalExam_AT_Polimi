@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ServerGame {
+public class ServerSock {
 
     Lobby lobby;
     private final int port;
@@ -21,7 +21,7 @@ public class ServerGame {
     private List<ServerClientHandler> serverClientHandlerList;
 
 
-    public ServerGame(int port){
+    public ServerSock(int port){
 
         // Opening TCP port
         this.port=port;

@@ -10,7 +10,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class ClientGame {
+public class ClientSock {
 
     private View view;
     private final String ip;
@@ -20,7 +20,7 @@ public class ClientGame {
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
 
-    public ClientGame(String ip, int port){
+    public ClientSock(String ip, int port){
         this.ip=ip;
         this.port=port;
         this.player=new Player();
