@@ -30,6 +30,7 @@ public class Choice implements Serializable{
         //Controls
         switch(this.choice){
             case FIND_MATCH:
+            case DESELECT_TILE:
             case SEE_PERSONALGOAL:
                 if(params.size() != 0) throw new IllegalArgumentException();
                 break;
@@ -95,7 +96,15 @@ public class Choice implements Serializable{
     }
 
     public enum Type{
-        INSERT_NAME, LOGIN, FIND_MATCH, SEE_COMMONGOAL, SEE_PERSONALGOAL, SELECT_TILE, PICK_COLUMN, CHOOSE_ORDER
+        INSERT_NAME,
+        LOGIN,
+        FIND_MATCH,
+        SEE_COMMONGOAL,
+        SEE_PERSONALGOAL,
+        SELECT_TILE,
+        DESELECT_TILE,
+        PICK_COLUMN,
+        CHOOSE_ORDER
     }
 
     private List<String> params;

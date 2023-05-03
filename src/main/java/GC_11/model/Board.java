@@ -6,6 +6,8 @@ import GC_11.exceptions.IllegalMoveException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
+import java.lang.invoke.VolatileCallSite;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -14,12 +16,11 @@ import java.util.Random;
 import static java.lang.Math.abs;
 
 public class Board implements PropertyChangeListener, Serializable {
+    //TODO: [Davide e Rei] Collegare al controller, gestire il cambio di ordine, l'inserimento nella shelf, la rimozione dalla board
 
     private Tile[][] chessBoard;
-
     private List<Coordinate> selectedTiles = new ArrayList<>();
     private Bag bag;
-
     public void setListener(PropertyChangeListener listener) {
         this.listener = listener;
     }
@@ -35,7 +36,7 @@ public class Board implements PropertyChangeListener, Serializable {
     }
 
     /**
-     * Builder (overloaded)
+     * Builder
      * @param num is the number of players
      */
     public Board(int num){
@@ -113,8 +114,6 @@ public class Board implements PropertyChangeListener, Serializable {
     }
 
     public void selectTile(int l, int c)throws IllegalMoveException{
-        if (l<0 || l>8 || c<0 || c>8)
-            throw new IndexOutOfBoundsException();
         if(!this.isPlayable(l,c) || this.freeSides(l,c)==0 || this.selectedTiles.size()==3)
             throw new IllegalMoveException("You can't pick this Tile!");
 
@@ -194,6 +193,27 @@ public class Board implements PropertyChangeListener, Serializable {
         return counter;
     }
 
+    public void changeOrder(List<Integer> positions) throws Exception {
+        if(positions.size() != this.selectedTiles.size())
+            throw new InvalidParameterException("Position numbers are not the same of selected tiles!");
+
+        List<Coordinate> tmp_selected = new ArrayList<Coordinate>();
+
+        //Controlli fatti dal Controller?
+
+        for(Coordinate c : selectedTiles){
+            tmp_selected.set(positions.get(selectedTiles.indexOf(c)), c);
+        }
+
+        //Controlli finali, non dovrebbero mai essere sollevati
+        for(Coordinate tmp_c : tmp_selected){
+            if(tmp_c == null)
+                throw new Exception("Something went wrong!");
+        }
+
+        selectedTiles = tmp_selected;
+    }
+
     /**
      * Checks (using checkDraw method) if the Board needs a Tiles' refill, if true, it will clean the board from remaining
      * Tiles inserting them into the Bag and after that it will set again all the Board's cells with random tiles using setBoard() method
@@ -222,6 +242,13 @@ public class Board implements PropertyChangeListener, Serializable {
         }
     }
 
+    public void deselectTile() throws IllegalMoveException {
+        int l = this.selectedTiles.size();
+        if(l == 0)
+            throw new IllegalMoveException("You haven't selected any tile!");
+        this.selectedTiles.remove(l-1);
+    }
+
 
     /**
      * Getter method of bag
@@ -242,6 +269,15 @@ public class Board implements PropertyChangeListener, Serializable {
             }
             System.out.println();
         }
+        System.out.println("Board selected tiles:");
+        for(Coordinate c : selectedTiles){
+            System.out.println(c.getRow() + ", " + c.getColumn() + ", " +
+                    this.getTile(c.getRow(), c.getColumn()).getColor().toString().charAt(0));
+        }
+    }
+
+    public List<Coordinate> getSelectedTiles() {
+        return selectedTiles;
     }
 
     @Override

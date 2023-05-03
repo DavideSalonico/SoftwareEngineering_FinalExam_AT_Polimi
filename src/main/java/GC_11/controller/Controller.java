@@ -102,6 +102,7 @@ public class Controller implements PropertyChangeListener {
                 case LOGIN -> login(player, params);
                 case FIND_MATCH -> findMatch(player, params);
                 case SELECT_TILE -> selectTile(player, params);
+                case DESELECT_TILE -> deselectTile(player, params);
                 case CHOOSE_ORDER ->chooseOrder(player, params);
                 case PICK_COLUMN-> pickColumn(player, params);
             }
@@ -110,6 +111,10 @@ public class Controller implements PropertyChangeListener {
             this.model.triggerException();
         }
 
+    }
+
+    private void deselectTile(Player player, List<String> params) throws IllegalMoveException{
+        this.model.getBoard().deselectTile();
     }
 
     private void findMatch(Player player, List<String> params) {
@@ -143,8 +148,8 @@ public class Controller implements PropertyChangeListener {
         //It could be possible to make a control about prohibited positions in the board based on the number of players
         //Maybe not necessary if we check Tile.Type?
         try{
-            player.pickTile(model.getBoard().drawTile(row, col));
-        } catch(IllegalMoveException | FullTilesException e){
+            this.model.getBoard().selectTile(row, col);
+        } catch(IllegalMoveException e){
             throw new InvalidParameterException();
         }
 
@@ -152,9 +157,7 @@ public class Controller implements PropertyChangeListener {
 
     private void pickColumn(Player player, List<String> parameters) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
         int column = paramsToColumnIndex(parameters);
-        player.getShelf().addTiles(player.getTiles(), column);
-        player.resetTiles();
-        //pickColumn è l'unico metodo dopo il quale bisogna cambiare turno
+        //player.getShelf().addTiles(model.getBoard().getSelectedTiles(), column); //TODO: aggiungere più tessere alla volta
         this.model.setNextCurrent();
     }
 
@@ -172,7 +175,7 @@ public class Controller implements PropertyChangeListener {
 
     private void chooseOrder(Player player, List<String> parameters){
         //Integer parameters control
-        Integer tilesSize = player.getTiles().size();
+        Integer tilesSize = this.model.getBoard().getSelectedTiles().size();
         if(parameters.size() > tilesSize) throw new IllegalArgumentException();
         List<Integer> ind = new ArrayList<>();
         try{
@@ -193,12 +196,11 @@ public class Controller implements PropertyChangeListener {
             }
         }
 
-        List<Tile> tmpTiles = new ArrayList<Tile>(player.getTiles());
-        for(int i = 0; i < tilesSize; i++){
-            tmpTiles.set(ind.get(i), player.getTiles().get(i));
+        try {
+            this.model.getBoard().changeOrder(ind);
+        } catch (Exception e) {
+            throw new InvalidParameterException();
         }
-        player.resetTiles(); //Probably it's not necessary
-        player.setTiles(tmpTiles);
     }
 
     @Override

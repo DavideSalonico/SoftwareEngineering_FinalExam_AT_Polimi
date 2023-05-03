@@ -19,7 +19,6 @@ public class Player implements PropertyChangeListener, Serializable {
     private int pointsCommonGoals;
     private int pointsPersonalGoal;
     private int pointsAdjacency;
-    private List<Tile> tiles = new ArrayList<Tile>();
     private PersonalGoalCard personalGoal;
     private List<Integer> ListCommonGoals;
     private Shelf shelf;
@@ -69,7 +68,6 @@ public class Player implements PropertyChangeListener, Serializable {
     public Player(Player p){
         this.nickname = p.getNickname();
         // this.points = p.getPoints(); da modificare aggiungendo i nuovi punti
-        this.tiles = p.getTiles();
         this.shelf = p.getShelf();
         this.pointsAdjacency = p.getPointsAdjacency();
         this.personalGoal = p.getPersonalGoal();
@@ -118,14 +116,6 @@ public class Player implements PropertyChangeListener, Serializable {
 
 
     public void addPointsCommonGoals (int n){this.pointsCommonGoals += n;}
-
-    /**
-     * This method returns the List of Tiles that the Player drawn in his Turn, it needs to be empty at the end of the Turn
-     * @return the tiles the player is holding from the board and will be put in the shelf
-     */
-    public List<Tile> getTiles() {
-        return tiles;
-    }
 
     /**
      *  This method insert the tiles in the column and by the order chosen by the player
@@ -186,13 +176,6 @@ public class Player implements PropertyChangeListener, Serializable {
         return shelf;
     }
 
-    public void pickTile(Tile t) throws FullTilesException {
-        if(this.tiles.size() < 3){
-           this.tiles.add(t);
-        } else throw new FullTilesException();
-
-    }
-
     public boolean equals(Player currentPlayer) {
         return (this.nickname.equals(currentPlayer.getNickname()) && (this.pointsAdjacency + this.pointsPersonalGoal + this.pointsCommonGoals) == currentPlayer.getPoints());
     }
@@ -251,14 +234,6 @@ public class Player implements PropertyChangeListener, Serializable {
             }else {return 0;}
         }
         else {return 0;}
-    }
-
-    public void resetTiles(){
-        this.tiles.clear();
-    }
-
-    public void setTiles(List<Tile> tiles){
-        this.tiles = tiles;
     }
 
     public void setPersonalGoal(PersonalGoalCard p) {

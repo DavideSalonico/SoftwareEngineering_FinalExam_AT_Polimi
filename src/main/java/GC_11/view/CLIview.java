@@ -57,14 +57,9 @@ public class CLIview extends View /*implements Runnable*/{
             System.out.println("Player : " + p.getNickname());
             p.getShelf().print();
             if(p.equals(current)){
-                if(current.getTiles() != null) {
-                    for (Tile t : current.getTiles()) {
-                        System.out.println("Tile: " + t.getColor() + ", " + t.getId());
-                    }
-                    //Printing Personal Goal Card
-                    if(current.getPersonalGoal() == null) System.out.println("Null personal goal card");
-                    else current.getPersonalGoal().print();
-                }
+                //Printing Personal Goal Card
+                if(current.getPersonalGoal() == null) System.out.println("Null personal goal card");
+                else current.getPersonalGoal().print();
             }
         }
     }
