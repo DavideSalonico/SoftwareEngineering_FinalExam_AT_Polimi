@@ -32,6 +32,7 @@ public class Choice implements Serializable{
             case FIND_MATCH:
             case DESELECT_TILE:
             case SEE_PERSONALGOAL:
+            case RESET_TURN:
                 if(params.size() != 0) throw new IllegalArgumentException();
                 break;
             case SEE_COMMONGOAL:
@@ -104,7 +105,8 @@ public class Choice implements Serializable{
         SELECT_TILE,
         DESELECT_TILE,
         PICK_COLUMN,
-        CHOOSE_ORDER
+        CHOOSE_ORDER,
+        RESET_TURN
     }
 
     private List<String> params;

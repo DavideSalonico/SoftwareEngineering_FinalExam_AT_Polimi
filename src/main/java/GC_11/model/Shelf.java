@@ -106,7 +106,18 @@ public class Shelf implements Serializable {
         }
         return true;
     }
-    //Il test non passa
+
+    public int maxFreeVerticalSpaces(){
+        int max = 0;
+        for(int j = 0; j < 5; j++){
+            int column_max = 0;
+            for(int i = 6; i > 0; i--){
+                if(myShelf[i][j].getColor().equals(TileColor.EMPTY)) column_max++;
+            }
+            max = max > column_max ? max : column_max;
+        }
+        return max;
+    }
 
     public void print() {
         for (int i = 0; i < 6; i++) {

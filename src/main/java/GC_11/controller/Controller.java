@@ -1,11 +1,7 @@
 package GC_11.controller;
 
 import GC_11.exceptions.*;
-import GC_11.model.Coordinate;
-import GC_11.model.Game;
-import GC_11.model.Player;
-import GC_11.model.Tile;
-import GC_11.model.common.CommonGoalCard;
+import GC_11.model.*;
 import GC_11.network.Lobby;
 import GC_11.util.Choice;
 
@@ -14,6 +10,8 @@ import java.beans.PropertyChangeListener;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Math.min;
 
 
 /**
@@ -26,19 +24,7 @@ public class Controller implements PropertyChangeListener {
     public Choice choice;
     public JsonReader reader;
     private Game model;
-    private Lobby lobbyModel;
-
-    /**
-     * Generic constructor of Controller with all params
-     * @param game reference to Model
-     * @param choice reference to User's choice
-     */
-    public Controller(Game game, Choice choice, Lobby lobby) {
-        this.model = game;
-        this.reader = new JsonReader();
-        this.choice = choice;
-        this.lobbyModel = lobby;
-    }
+    private Choice.Type lastChoice = Choice.Type.RESET_TURN;
 
     /**
      * Generic constructor of Controller with only the model
@@ -93,49 +79,65 @@ public class Controller implements PropertyChangeListener {
             throw new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer()+ "'s turn");
         }
 
-        Player player = choice.getPlayer();
+        checkExpectedMove();
+
         List<String> params = arg.getParams();
 
         try{
             switch (arg.getChoice()){
-                case INSERT_NAME -> insertName(player, params);
-                case LOGIN -> login(player, params);
-                case FIND_MATCH -> findMatch(player, params);
-                case SELECT_TILE -> selectTile(player, params);
-                case DESELECT_TILE -> deselectTile(player, params);
-                case CHOOSE_ORDER ->chooseOrder(player, params);
-                case PICK_COLUMN-> pickColumn(player, params);
+                case SELECT_TILE -> selectTile(params);
+                case DESELECT_TILE -> deselectTile(params);
+                case CHOOSE_ORDER ->chooseOrder(params);
+                case PICK_COLUMN-> pickColumn(params);
+                case RESET_TURN -> resetTurn(params);
             }
 
         } catch (IllegalArgumentException e){
             this.model.triggerException();
         }
 
+        this.lastChoice = this.choice.getChoice();
     }
 
-    private void deselectTile(Player player, List<String> params) throws IllegalMoveException{
+    private void resetTurn(List<String> params) {
+        if(params.size() != 0) throw new IllegalArgumentException();
+
+        this.model.getBoard().getSelectedTiles().clear();
+    }
+
+    //Sort of FSM to garantee the correct logic flow of moves
+    private void checkExpectedMove() throws IllegalMoveException {
+        Choice.Type currentChoice = this.choice.getChoice();
+        switch(this.lastChoice){
+            case SELECT_TILE, DESELECT_TILE, RESET_TURN-> {
+                if(currentChoice.equals(Choice.Type.DESELECT_TILE) && this.model.getBoard().getSelectedTiles().size() == 0){
+                    throw new IllegalMoveException("You can't make this move!");
+                }
+                else if(currentChoice.equals(Choice.Type.SELECT_TILE)
+                        && this.model.getBoard().getSelectedTiles().size() == min(3, this.model.getCurrentPlayer().getShelf().maxFreeVerticalSpaces())){
+                    throw new IllegalMoveException("You can't make this move!");
+                }
+            }
+            case CHOOSE_ORDER -> {
+                if(currentChoice.equals(Choice.Type.CHOOSE_ORDER)
+                        || currentChoice.equals(Choice.Type.PICK_COLUMN)
+                        || currentChoice.equals(Choice.Type.RESET_TURN))
+                    return;
+                else  throw new IllegalMoveException("You can't make this move!");
+            }
+            case PICK_COLUMN -> {
+                throw new IllegalMoveException("You can't make this move!"); //Non deve mai essere l'ultima mossa scelta, se va a buon fine viene resettato
+            }
+        }
+    }
+
+    private void deselectTile(List<String> params) throws IllegalMoveException{
+        if(params.size() != 0) throw new IllegalArgumentException();
+
         this.model.getBoard().deselectTile();
     }
 
-    private void findMatch(Player player, List<String> params) {
-        //if(player.equals(lobbyModel.getBoss()))) We should check that only the main player can start the game
-        this.model = new Game(lobbyModel.getPlayers());
-        lobbyModel.startGame(this.model);
-    }
-
-    private void login(Player player, List<String> params) {
-        //TODO
-        System.out.println("Player "+ params.get(0) + " logged successfully");
-    }
-
-    private void insertName(Player player, List<String> params) throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
-        //TODO
-        if(params.size() != 1) throw new IllegalArgumentException();
-        if(params.get(0).length() >= 64) throw new InvalidParameterException();
-        lobbyModel.addPlayer(params.get(0));
-    }
-
-    private void selectTile(Player player, List<String> parameters){
+    private void selectTile(List<String> parameters) throws IllegalMoveException {
         if(parameters.size() != 2) throw new IllegalArgumentException();
         Integer row, col;
         try{
@@ -147,6 +149,9 @@ public class Controller implements PropertyChangeListener {
         if(row < 0 || row >= 9 || col < 0 || col >= 9 ) throw new InvalidParameterException();
         //It could be possible to make a control about prohibited positions in the board based on the number of players
         //Maybe not necessary if we check Tile.Type?
+        if(this.model.getBoard().getSelectedTiles().size() >= min(3, this.model.getCurrentPlayer().getShelf().maxFreeVerticalSpaces()))
+            throw new IllegalMoveException("Unable to select one more tile. You've already selected 3 or you don't have enough space in your shelf");
+
         try{
             this.model.getBoard().selectTile(row, col);
         } catch(IllegalMoveException e){
@@ -155,9 +160,15 @@ public class Controller implements PropertyChangeListener {
 
     }
 
-    private void pickColumn(Player player, List<String> parameters) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+    private void pickColumn(List<String> parameters) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
         int column = paramsToColumnIndex(parameters);
-        //player.getShelf().addTiles(model.getBoard().getSelectedTiles(), column); //TODO: aggiungere più tessere alla volta
+        //TODO: Da rivedere, se possibile farlo senza creare una lista di appoggio
+        List<Tile> tmp_tiles = new ArrayList<Tile>();
+        for(Coordinate c : model.getBoard().getSelectedTiles()){
+            tmp_tiles.add(this.model.getBoard().getTile(c.getRow(), c.getColumn()));
+            this.model.getBoard().setTile(c.getRow(), c.getColumn(), new Tile(TileColor.EMPTY));
+        }
+        this.model.getCurrentPlayer().getShelf().addTiles(tmp_tiles, column);
         this.model.setNextCurrent();
     }
 
@@ -173,7 +184,7 @@ public class Controller implements PropertyChangeListener {
         return column_index;
     }
 
-    private void chooseOrder(Player player, List<String> parameters){
+    private void chooseOrder(List<String> parameters){
         //Integer parameters control
         Integer tilesSize = this.model.getBoard().getSelectedTiles().size();
         if(parameters.size() > tilesSize) throw new IllegalArgumentException();
@@ -219,45 +230,4 @@ public class Controller implements PropertyChangeListener {
         player.updatesPointsPersonalGoal();
         this.getGame().calculateCommonPoints();
     }
-
-//    private List<Coordinate> stringToCoordinate(List<String> parameters) {
-//
-//        if (parameters.size()%2 != 0){
-//            // Errore
-//            System.out.println("Coordinate number must be even. You can't have odd numver of coordinate");
-//        }
-//
-//        int row = 0;
-//        int col = 0;
-//
-//        int num = 0;
-//
-//        List<Coordinate> listOfCoordinates = new ArrayList<Coordinate>();
-//
-//        int parsed = 0;
-//        for (int i=0; i<parameters.size();i++)
-//        {
-//
-//            try{
-//                num = Integer.parseInt(parameters.get(i));
-//            }
-//            catch (NumberFormatException e){
-//                System.out.println("Formato illegale");
-//            }
-//            if (i%2==0){
-//                row = num;
-//                parsed++;
-//            }
-//            else {
-//                col = num;
-//                parsed++;
-//            }
-//            if (parsed == 2){
-//
-//                listOfCoordinates.add(new Coordinate(row,col));
-//                parsed=0;
-//            }
-//        }
-//        return listOfCoordinates;
-//    }
 }
