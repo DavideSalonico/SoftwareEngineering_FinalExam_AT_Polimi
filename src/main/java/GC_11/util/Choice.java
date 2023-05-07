@@ -9,6 +9,20 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class Choice implements Serializable{
+
+    public enum Type{
+        INSERT_NAME,
+        LOGIN,
+        FIND_MATCH,
+        SEE_COMMONGOAL,
+        SEE_PERSONALGOAL,
+        SELECT_TILE,
+        DESELECT_TILE,
+        PICK_COLUMN,
+        CHOOSE_ORDER,
+        RESET_TURN
+    }
+
     public Choice(Player player, String input) throws IllegalArgumentException {
         this.player = player;
         this.params=new ArrayList<String>();
@@ -39,7 +53,7 @@ public class Choice implements Serializable{
                 if(params.size() != 1) throw new IllegalArgumentException();
                 Integer common_checker;
                 try{
-                   common_checker = Integer.parseInt(params.get(0));
+                    common_checker = Integer.parseInt(params.get(0));
                 } catch(NumberFormatException e){
                     throw new InvalidParameterException();
                 }
@@ -96,23 +110,9 @@ public class Choice implements Serializable{
         }
     }
 
-    public enum Type{
-        INSERT_NAME,
-        LOGIN,
-        FIND_MATCH,
-        SEE_COMMONGOAL,
-        SEE_PERSONALGOAL,
-        SELECT_TILE,
-        DESELECT_TILE,
-        PICK_COLUMN,
-        CHOOSE_ORDER,
-        RESET_TURN
-    }
-
-    private List<String> params;
-    private Type choice;
-
-    private Player player;
+    protected List<String> params;
+    protected Type choice;
+    protected Player player;
 
     public Type getChoice() {
         return choice;
