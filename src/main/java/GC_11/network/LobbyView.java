@@ -1,8 +1,9 @@
 package GC_11.network;
 
 import java.util.List;
+import java.util.Scanner;
 
-public class LobbyView {
+public class LobbyView{
 
     private enum MSG_TYPE  { ERROR, NOTIFICATION, INPUT_STRING, INPUT_INT, UPDATE};
 
@@ -55,4 +56,5 @@ public class LobbyView {
     public String getMessage() {
         return message;
     }
+
 }

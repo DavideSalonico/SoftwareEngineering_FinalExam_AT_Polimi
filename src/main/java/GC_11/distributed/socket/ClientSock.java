@@ -171,5 +171,10 @@ public class ClientSock extends Client implements PropertyChangeListener {
             System.out.println("Unable to send message.\n");
         }
     }
+
+    public void setIp(String ip){
+        this.ip = ip;
+    }
+
 }
 

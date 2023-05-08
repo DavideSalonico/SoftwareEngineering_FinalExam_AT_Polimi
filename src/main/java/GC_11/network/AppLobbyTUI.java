@@ -10,9 +10,8 @@ import java.beans.PropertyChangeListener;
 public class AppLobbyTUI implements PropertyChangeListener {
 
     public static void main(String[] args){
-        //Client client = new ClientSock();
-        //LobbyTUI lt = new LobbyTUI();
-        //lt.run();
+        LobbyTUI lt = new LobbyTUI();
+        lt.run();
 
 
     }

@@ -67,19 +67,23 @@ public class LobbyTUI extends View implements Runnable {
 
     }
 
+
     private void evaluateUserCommand(String command){
         if(command.equals("1")){
             System.out.println("Inserire indirizzo ip del server:\n");
             String ip = inputLine.nextLine();
             System.out.println("Vuoi utilizzare RMI o socket?\n1 - Socket\n2 - RMI [Attualmente non disponibile]\n");
-            String input = inputLine.nextLine();
-            if (input.equals("1")){
-                System.out.println("Inizializzazione del server");
+            String netMod = inputLine.nextLine();
+            switch(Integer.parseInt(netMod)){
+                case 1 :
+                    //Crea client Socket
+                    break;
+                case 2:
+                    //Crea client RMI
+                    break;
+                default:
+                    System.out.println("Operazione non gestita. Riprovare");
             }
-            else {
-                System.out.println("Errore, comando non conosciuto");
-            }
-
         }
     }
 }
