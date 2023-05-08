@@ -42,6 +42,8 @@ public class CommonGoalCard2 extends CommonGoalCard{
         }
     }
 
-
+    public String getText() {
+        return this.text;
+    }
 
 }

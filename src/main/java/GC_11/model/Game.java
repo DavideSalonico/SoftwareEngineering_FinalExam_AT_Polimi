@@ -66,22 +66,22 @@ public class Game implements PropertyChangeListener, Serializable {
     }
 
     private CommonGoalCard loadCommon(int i){
-        CommonGoalCard tmp = null;
         switch (i){
-            case 0: tmp = new CommonGoalCard1();
-            case 1: tmp = new CommonGoalCard2();
-            case 2: tmp = new CommonGoalCard3();
-            case 3: tmp = new CommonGoalCard4();
-            case 4: tmp = new CommonGoalCard5();
-            case 5: tmp = new CommonGoalCard6();
-            case 6: tmp = new CommonGoalCard7();
-            case 7: tmp = new CommonGoalCard8();
-            case 8: tmp = new CommonGoalCard9();
-            case 9: tmp = new CommonGoalCard10();
-            case 10: tmp = new CommonGoalCard11();
-            case 11: tmp = new CommonGoalCard12();
+            case 0: return new CommonGoalCard1();
+            case 1: return new CommonGoalCard2();
+            case 2: return new CommonGoalCard3();
+            case 3: return new CommonGoalCard4();
+            case 4: return new CommonGoalCard5();
+            case 5: return new CommonGoalCard6();
+            case 6: return new CommonGoalCard7();
+            case 7: return new CommonGoalCard8();
+            case 8: return new CommonGoalCard9();
+            case 9: return new CommonGoalCard10();
+            case 10: return new CommonGoalCard11();
+            case 11: return new CommonGoalCard12();
+            default : throw new RuntimeException("Common goal non selezionata correttamente");
         }
-        return tmp;
+
     }
 
     public CircularList<Player> getPlayers() {
@@ -101,6 +101,9 @@ public class Game implements PropertyChangeListener, Serializable {
         return commonGoals;
     }
 
+    public void setCommonGoal(int index, CommonGoalCard c){
+        commonGoals.set(index, c);
+    }
     public Player getCurrentPlayer() {
         return currentPlayer;
     }

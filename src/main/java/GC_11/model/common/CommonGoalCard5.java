@@ -19,4 +19,7 @@ public class CommonGoalCard5 extends CommonGoalCard{
             givePoints(player);
         }
     }
+    public String getText() {
+        return this.text;
+    }
 }

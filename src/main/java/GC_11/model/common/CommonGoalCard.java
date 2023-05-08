@@ -1,7 +1,6 @@
 package GC_11.model.common;
 
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
-import GC_11.model.GameView;
 import GC_11.model.Player;
 
 import java.beans.PropertyChangeEvent;
@@ -38,9 +37,7 @@ public abstract class CommonGoalCard implements Serializable{
         return winningPlayers;
     }
 
-    public String getText() {
-        return text;
-    }
+    public abstract String getText();
 
     public void setListener(PropertyChangeListener listener){
         this.listener = listener;

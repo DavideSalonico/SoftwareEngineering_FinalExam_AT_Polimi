@@ -44,4 +44,7 @@ public class CommonGoalCard4 extends CommonGoalCard{
         }
 
     }
+    public String getText() {
+        return this.text;
+    }
 }

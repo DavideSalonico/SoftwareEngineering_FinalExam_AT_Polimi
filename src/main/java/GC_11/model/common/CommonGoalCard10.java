@@ -33,4 +33,7 @@ public class CommonGoalCard10 extends CommonGoalCard{
         }
 
     }
+    public String getText() {
+        return this.text;
+    }
 }
