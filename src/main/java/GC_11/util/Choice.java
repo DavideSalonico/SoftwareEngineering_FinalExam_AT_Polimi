@@ -93,17 +93,16 @@ public class Choice implements Serializable{
                 break;
             case CHOOSE_ORDER:
                 if(params.size() > 3) throw new IllegalArgumentException();
-                Integer ord1_checker, ord2_checker, ord3_checker;
+                List<Integer> checkers = new ArrayList<Integer>(params.size());
                 try{
-                    ord1_checker = Integer.parseInt(params.get(0));
-                    ord2_checker = Integer.parseInt(params.get(1));
-                    ord3_checker = Integer.parseInt(params.get(2));
+                    for(String p : params){
+                        checkers.set(params.indexOf(p), Integer.parseInt(p));
+                    }
                 } catch(NumberFormatException e){
                     throw new InvalidParameterException();
                 }
-                if(ord1_checker < 1 || ord1_checker > 3) throw new InvalidParameterException();
-                if(ord2_checker < 1 || ord2_checker > 3) throw new InvalidParameterException();
-                if(ord3_checker < 1 || ord3_checker > 3) throw new InvalidParameterException();
+                for(Integer checker : checkers)
+                    if(checker < 1 || checker > 3) throw new InvalidParameterException();
                 break;
             default:
                 throw new IllegalArgumentException();
