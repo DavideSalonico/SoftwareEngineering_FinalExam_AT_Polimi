@@ -6,6 +6,7 @@ import GC_11.model.GameView;
 import GC_11.model.Tile;
 import GC_11.model.TileColor;
 import GC_11.view.CLIview;
+import GC_11.view.View;
 
 import java.util.ArrayList;
 import java.util.List;

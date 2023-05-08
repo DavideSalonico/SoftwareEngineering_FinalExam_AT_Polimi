@@ -284,6 +284,10 @@ public class Board implements PropertyChangeListener, Serializable {
     public void propertyChange(PropertyChangeEvent evt) {
         this.listener.propertyChange(evt);
     }
+
+    public void resetSelectedTiles() {
+        this.selectedTiles.removeAll(selectedTiles);
+    }
 }
 
 

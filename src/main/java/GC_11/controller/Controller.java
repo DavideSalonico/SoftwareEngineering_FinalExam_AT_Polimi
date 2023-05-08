@@ -169,6 +169,7 @@ public class Controller implements PropertyChangeListener {
             this.model.getBoard().setTile(c.getRow(), c.getColumn(), new Tile(TileColor.EMPTY));
         }
         this.model.getCurrentPlayer().getShelf().addTiles(tmp_tiles, column);
+        this.model.getBoard().resetSelectedTiles();
         this.model.setNextCurrent();
     }
 
