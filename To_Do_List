@@ -79,8 +79,9 @@ Appunti sulla GUI:
     HO BISOGNO DI CHIAMARE initialThread.INVOKELATER() perchè è initialThread che riceve info da fonti esterne,
     per inserire anche le modifiche di agenti esterni nella coda delle azioni da eseguire dall' EDT
 
+-Posso inserire file XML per configurazioni base
 
-
+-Scene Builder su Java FX è grafica, conviene prima fare in Java Swing e poi andare in Java FX perchè è molto difficile debuggare poi
 
 
 
