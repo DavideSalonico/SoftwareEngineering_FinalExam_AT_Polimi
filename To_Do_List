@@ -65,6 +65,23 @@ Appunti sulla GUI:
 -I bordi devono essere settati con i .setBorder("metodi da doc")
 
 
+-EventListener è un interfaccia generale che ascolta gli eventi, EventHandler li gestisce
+-ActionEvent(interfaccia) è l'evento che passo, actionEvent.getSource() mi ritorna il componente chi lo ha generato (deprecato perchè mi serve un Switch case terribile)
+-   .addActionListener(oggetto che cattura l'evento)   scatena la actionPerformed(ActionEvent e) in automatico, in piu l'attributo gli viene passato automaticamente senza bisogno che lo setti manualmente
+        capisco in automatico chi mi scatena l'evento cossichè non devo fare nessuno switch.... in ogni caso per fini di debug si puo sempre prendere il
+        .getSource() dall'ActionEvent per capire chi ha scatenato l'evento.
+
+-Swing Thread per fare cose in parallelo e non sequenziale
+    InitialThread istanzia la GUI ed esegue codice base
+    EventDispatchThread (EDT)ascolta gli eventi e li distribuisce a chi di interesse, possiede coda di eventi e smistati a dovere
+
+    EDT ha una coda di azioni da eseguire a livello di software, se io ho interagisco col mouse per fare delle modifiche,
+    HO BISOGNO DI CHIAMARE initialThread.INVOKELATER() perchè è initialThread che riceve info da fonti esterne,
+    per inserire anche le modifiche di agenti esterni nella coda delle azioni da eseguire dall' EDT
+
+
+
+
 
 
 
