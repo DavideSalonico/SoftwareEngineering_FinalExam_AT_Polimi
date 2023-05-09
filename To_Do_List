@@ -1,9 +1,81 @@
 TO DO LIST:
 
-Creare classe TURNO nel modello 
-Dentro al Model mettere un riferimento a View, valutare se costruire l'oggetto view in base allo Strategy Pattern ( cosi posso decidere quale codice usare per la visualizzazione dell'interfaccia) 
-Capire BENE JVC ed iniziare a modellare il Controller e View basandoci sui loro metodi interazione (è giusto avere metodi di controllo nel check ma attenzioni alle direzionalità di comunicazione tra Model e Controller, Errore Grave)
-Controller decodifica il messaggio del server e chiama uno dei suoi metodi (Observable and Observer)
-Implementare Eccezioni in codice  (già fattibile)
-Cerchiamo le similarità tra carte comuni e scriviamo le righe di codice dei metodi check() dato che possiamo già farli, basta sapere input e output, poi capiamo dove metteremo le righe di codice (probabilmente nelle classi direttamente)
-APPENA scriviamo codice JAVA devono essere accompagnati con i CASI DI TEST
+
+
+Appunti sulla GUI:
+
+-Non conviene piu usare gli Observer perchè sono poco scalabili, ho sempre bisogno di una lista di Observer e devo gestire il comportamento tra di loro;
+ utilizzo quindi Publish-Subscriber che gestiscono la loro interazione in maniera modulare
+
+-Cosa fondamentale, capire bene come separarle dalla logica, una GUI deve essere abbastanza responsiva ed estendibile, altrimenti un generico
+ user penserà che si sia bloccato il funzionamento, cosa che con CLI non accade
+
+-Libreria da usare "Swing", che dovrebbe comprendere tutte le funzionalità pure della "AWT"
+
+-Tutti i componenti della libreria Swing inziano con J (tipo JButton etc)
+
+-Swing astrae già di suo i componenti leggeri, a noi basta eridetarli e ovverridarli a piacere
+
+-All'interno della GUI ci sarà un ulteriore MVC, modello definisce gli attributi modificabili di un componente della view, la view
+ rifletterà il comportamento che viene invece definito dentro il controller (che definisci tramite i listener, il comportamento
+ da scatenare)
+
+-C'è un importante gerarchia da rispettare all'interno dell'interfaccia grafica
+
+-Componente tipici elementi generici (bottoni, checkbox etc)
+
+-Contanainer contiene componenti, permette di aggiungerne e mostrarli a piacimento, serve pure banalmente per permettere un click su
+ zona piu ampia di interfaccia, una Top-level può essere rappresentata indipendemente, le altre no. (JApplet deprecato)
+ Nel container ci sono vari layer, quello che ci interessa modificare è CONTENT PANE (ci inserisco i componenti), infine c'è un GLASS PANE
+ che permette di catturare tutti gli eventi, è quello che capta l'eventuale click e scatena i click nei relativi component
+
+-Frame (tipo specifico di Window), definisce la struttura dell'interfaccia, inizia i suoi layer dalla rootPane (da non toccare),
+ per poi modificare i layer sottostanti.
+ Ha metodi semplici come setSize(x,y) della interf, o setLocation(x,y),
+ Mettere sempre setVisible(true), ovviamente a discrezione del componente, del frame etc
+ Quando chiudo la finestra principale sto chiudendo il gioco definitavemento, setDefaultCloseOperation(JFRAME.exit),
+ Guarda la documentazione su cose tipo centrare la finestra senza sbattersi sulle size etc,
+ Se faccio direttamente una add sul frame la mette direttamente nel contentPane,
+ frame.pack() lo compatta in dimensioni ottimali, posso pure fissare la dimensione di una Prefered-Window-Size,
+
+-JDialog sono delle window ben strutturate per mostrare dei messaggi a schermo, stile non troppo modificabile, posso modificarne
+ il conetenuto aggiungendo pure buttoni di selezione etc ( tipo "Sei sicuro di voler continuare "  SI  NO  CHIUDI),
+ setta il LOOKANDFEEL che è più carino
+
+-JPanel serve per organizzare a livello visivo certi componenti, anche a livello Gerarchico
+
+-PER CHAT: FRAME -> JSCrollPane -> Componente di Testo per chat (altrimenti non è scorribile)
+
+-JLayeredPane serve per definire dei livelli dentro al frame (componenti che si sovrappongono per priorità)
+
+-Svariati componenti sulle slide
+
+-JText Field ( hanno dei figli specifici per il login, vedi slide )
+
+-metodo setTollTipText(testo) da suggerimento di testo sulle icone
+
+
+-Layout specifica la vista in base ai Container (utilizza un Strategy), SE CAMBIO LAYOUT BISOGNA PRIMA INVALIDARE I COMPONENTI E
+ POI RIACCENDERE QUELLI DI INTERESSE (solo alcuni lo fanno in automatico)
+
+    -FlowLayout, tutti componenti uno di fianco all'altro, se sono troppi non vengono mostrati quelli extra, serve finestra piu grossa
+    -BorderLayout, diviso in 5 zone (N,S,W,E,Center) e si allargano in funzione dell'espansione in una direzione
+    -GridLayout o GridBadLayout è una grafica tutta a griglia e lavoro su determinate celle dell'interfaccia
+
+-I bordi devono essere settati con i .setBorder("metodi da doc")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
