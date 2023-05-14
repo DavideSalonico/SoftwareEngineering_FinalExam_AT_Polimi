@@ -11,6 +11,8 @@ public class CommonGoalCard9 extends CommonGoalCard{
 
     private final String text = "Three columns each formed by 6 tiles of maximum three different types." +
             " One column can show the same or a different combination of another column.";
+    public int id = 9;
+
 
 
     /**

@@ -11,7 +11,7 @@ public class CommonGoalCard4 extends CommonGoalCard{
 
     private  final String text = "Four lines each formed by 5 tiles of maximum three different types. " +
             "One line can show the same or a different combination of another line.";
-
+    public int id = 4;
 
 
     //this code verifies if there are at least 4 line with 5 tiles and maximum 3 different tile types.

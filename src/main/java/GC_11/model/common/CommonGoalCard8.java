@@ -11,6 +11,8 @@ public class CommonGoalCard8 extends CommonGoalCard{
 
     private final String text = "Two lines each formed by 5 different types of tiles." +
             " One line can show the same or a different combination of the other line.";
+    public int id = 8;
+
 
     /**
      * This method check if the common goal of the card has been achieved and in this case adds points to the player

@@ -10,6 +10,7 @@ public class CommonGoalCard2 extends CommonGoalCard{
 
 
     private final String text = "Five tiles of the same type forming a diagonal.";
+    public int id = 2;
 
 
 // this code verifies if there are 5 tiles of the same type forming a diagonal. The check is made with 2 counters that

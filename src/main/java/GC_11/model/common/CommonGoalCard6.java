@@ -10,6 +10,7 @@ import java.util.Set;
 public class CommonGoalCard6 extends CommonGoalCard{
 
     private final String text = "Two columns each formed by 6 different types of tiles.";
+    public int id = 6;
 
     /**
      * This method check if the common goal of the card has been achieved and in this case adds points to the player

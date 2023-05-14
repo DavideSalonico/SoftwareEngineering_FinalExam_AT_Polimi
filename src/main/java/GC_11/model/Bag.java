@@ -33,12 +33,12 @@ public class Bag implements Serializable {
     public Bag(){
         this.tiles = new ArrayList<Tile>();
         for (int i=0; i< 22;i++){
-            tiles.add(new Tile(TileColor.WHITE));
-            tiles.add(new Tile(TileColor.BLUE));
-            tiles.add(new Tile(TileColor.GREEN));
-            tiles.add(new Tile(TileColor.CYAN));
-            tiles.add(new Tile(TileColor.PURPLE));
-            tiles.add(new Tile(TileColor.ORANGE));
+            tiles.add(new Tile(TileColor.WHITE, i%3));
+            tiles.add(new Tile(TileColor.BLUE, i%3));
+            tiles.add(new Tile(TileColor.GREEN, i%3));
+            tiles.add(new Tile(TileColor.CYAN, i%3));
+            tiles.add(new Tile(TileColor.PURPLE,i%3));
+            tiles.add(new Tile(TileColor.ORANGE, i%3));
         }
     }
 
