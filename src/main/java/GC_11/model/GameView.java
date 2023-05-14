@@ -99,4 +99,11 @@ public class GameView implements Serializable {
     public String getExceptionMessage(){
         return this.exceptionMessage;
     }
+
+    public Player getPlayer(String clientNickName) {
+        for(Player p : this.getPlayers()){
+            if(p.getNickname().equals(clientNickName)) return p;
+        }
+        return null;   //ATTENZIONE A QUESTO NULL non gestito
+    }
 }

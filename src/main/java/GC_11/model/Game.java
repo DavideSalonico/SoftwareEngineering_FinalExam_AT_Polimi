@@ -171,6 +171,13 @@ public class Game implements PropertyChangeListener, Serializable {
         this.listener.propertyChange(evt);
     }
 
+    public Player getPlayer(String nickname){
+        for(Player p : players){
+            if(p.getNickname().equals(nickname))
+                return p;
+        }
+        return null;
+    }
     public Board getBoard() {
         return board;
     }

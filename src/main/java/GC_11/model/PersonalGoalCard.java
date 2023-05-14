@@ -3,7 +3,6 @@ package GC_11.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 
 /**
@@ -41,5 +40,9 @@ public class PersonalGoalCard implements Serializable {
         for(Triplet goal : this.getGoalList()){
             System.out.println(goal.getRow() + goal.getCol() + goal.getCol());
         }
+    }
+
+    public int getId() {
+        return id;
     }
 }

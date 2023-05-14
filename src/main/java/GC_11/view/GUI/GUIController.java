@@ -1,2 +1,4 @@
-package GC_11.view.GUI;public class GUIController {
+package GC_11.view.GUI;
+
+public class GUIController {
 }

@@ -18,8 +18,7 @@ public class GUIModel  {
         YourTurn
     }
     static GameView model;
-
-    private String clientNickName;
+    private static String clientNickName;
 
 
     private static class MainFrame extends JFrame{
@@ -47,15 +46,21 @@ public class GUIModel  {
                 background[5] = ImageIO.read(new File("src/resources/GraphicalResources/common goals cards/" + model.getCommonGoalCard(1).id + ".png"));
                 background[6] = ImageIO.read(new File("src/resources/GraphicalResources/common goals cards/Sacchetto Chiuso.png"));
 
+                //ATTENZIONE : getPlayer(nickname) può tornare null
+                background[7] = ImageIO.read(new File("src/resources/GraphicalResources/personal goal card/Personal_Goals"+model.getPlayer(clientNickName).getPersonalGoal().getId()+".png"));
+
                 for(int i = 1; i<=3; i++){
                     blueTiles.put(i, ImageIO.read(new File("src/resources/GraphicalResources/item tiles/Cornici1."+ i +".png")));
                     whiteTiles.put(i, ImageIO.read(new File("src/resources/GraphicalResources/item tiles/Libri1."+ i +".png")));
                     greenTiles.put(i, ImageIO.read(new File("src/resources/GraphicalResources/item tiles/Gatti1."+ i +".png")));
                     orangeTiles.put(i, ImageIO.read(new File("src/resources/GraphicalResources/item tiles/Giochi1."+ i +".png")));
+                    purpleTiles.put(i, ImageIO.read(new File("src/resources/GraphicalResources/item tiles/Piante1."+ i +".png")));
+                    cyanTiles.put(i, ImageIO.read(new File("src/resources/GraphicalResources/item tiles/Trofei1."+ i +".png")));
                 }
 
-                for (int i = 0; i<  model.getPlayers().size(); i++){
-                    otherPlayers.put(model.getPlayers().get(i).getNickname(), ImageIO.read(new File("src/resources/GraphicalResources/boards/bookshelf_orth.png")));
+                for (int i = 0; i<  model.getPlayers().size()-1; i++){
+                    if(!model.getPlayers().get(i).getNickname().equals(clientNickName))
+                        otherPlayers.put(model.getPlayers().get(i).getNickname(), ImageIO.read(new File("src/resources/GraphicalResources/boards/bookshelf_orth.png")));
                     //i punti
                 }
             }catch (IOException e){
@@ -64,10 +69,11 @@ public class GUIModel  {
         }
     }
 
-    public GUIModel(GameView model) {
-        this.model = model;
-    }
+    public GUIModel(GameView model, String clientNickName) {
 
+        this.model = model;
+        this.clientNickName = clientNickName();
+    }
 
     public String getClientNickName() {
         return clientNickName;
