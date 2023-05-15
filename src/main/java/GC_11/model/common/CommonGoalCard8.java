@@ -14,6 +14,10 @@ public class CommonGoalCard8 extends CommonGoalCard{
     public int id = 8;
 
 
+    public int getId() {
+        return id;
+    }
+
     /**
      * This method check if the common goal of the card has been achieved and in this case adds points to the player
      * @param player is the player to which you want to control the shelf

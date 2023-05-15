@@ -9,6 +9,9 @@ public class CommonGoalCard10 extends CommonGoalCard{
     private final String text = "Five tiles of the same type forming an X.";
     public int id = 10;
 
+    public int getId() {
+        return id;
+    }
 
     /**
      * This method check if the common goal of the card has been achieved and in this case adds points to the player
