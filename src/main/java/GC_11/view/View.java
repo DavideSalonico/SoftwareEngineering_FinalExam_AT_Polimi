@@ -21,7 +21,7 @@ public abstract class View implements PropertyChangeListener, Runnable{
     private boolean inGame = true;
 
     //Controller must register
-    PropertyChangeListener listener;
+     PropertyChangeListener listener;
 
     public Player getPlayer(){
         return player;
@@ -31,7 +31,7 @@ public abstract class View implements PropertyChangeListener, Runnable{
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("evt" + evt);
+        //System.out.println("evt" + evt);
         System.out.println("Event Type: " + evt.getPropertyName());
         this.modelView = (GameView) evt.getNewValue();
     }

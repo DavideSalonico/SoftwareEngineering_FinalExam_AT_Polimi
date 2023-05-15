@@ -98,6 +98,8 @@ public class Choice implements Serializable{
             case CHOOSE_ORDER:
                 if(params.size() > 3) throw new IllegalArgumentException();
                 List<Integer> checkers = new ArrayList<Integer>(params.size());
+                for(int i = 0; i < params.size(); i++)
+                    checkers.add(-1);
                 try{
                     for(String p : params){
                         checkers.set(params.indexOf(p), Integer.parseInt(p));
@@ -106,7 +108,7 @@ public class Choice implements Serializable{
                     throw new InvalidParameterException();
                 }
                 for(Integer checker : checkers)
-                    if(checker < 1 || checker > 3) throw new InvalidParameterException();
+                    if(checker < 0 || checker > 2) throw new InvalidParameterException();
                 break;
             default:
                 throw new IllegalArgumentException();

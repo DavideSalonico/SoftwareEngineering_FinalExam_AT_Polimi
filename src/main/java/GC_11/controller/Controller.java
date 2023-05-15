@@ -93,14 +93,14 @@ public class Controller implements PropertyChangeListener {
             }
 
         } catch (IllegalArgumentException e){
-            this.model.triggerException();
+            this.model.triggerException(e);
         }
 
         this.lastChoice = this.choice.getChoice();
     }
 
     private void resetTurn(List<String> params) {
-        if(params.size() != 0) throw new IllegalArgumentException();
+        if(params.size() != 0) throw new IllegalArgumentException("There shouldn't be options for this command!");
 
         this.model.getBoard().getSelectedTiles().clear();
     }
@@ -132,21 +132,21 @@ public class Controller implements PropertyChangeListener {
     }
 
     private void deselectTile(List<String> params) throws IllegalMoveException{
-        if(params.size() != 0) throw new IllegalArgumentException();
+        if(params.size() != 0) throw new IllegalArgumentException("There shouldn't be options for this command!");
 
         this.model.getBoard().deselectTile();
     }
 
     private void selectTile(List<String> parameters) throws IllegalMoveException {
-        if(parameters.size() != 2) throw new IllegalArgumentException();
+        if(parameters.size() != 2) throw new IllegalArgumentException("There shouldn't be options for this command!");
         Integer row, col;
         try{
             row = Integer.parseInt(parameters.get(0));
             col = Integer.parseInt(parameters.get(1));
         } catch(NumberFormatException e){
-            throw new InvalidParameterException();
+            throw new InvalidParameterException("Invalid format. Row and column numbers must be integers!");
         }
-        if(row < 0 || row >= 9 || col < 0 || col >= 9 ) throw new InvalidParameterException();
+        if(row < 0 || row >= 9 || col < 0 || col >= 9 ) throw new InvalidParameterException("Row or column out of bound!");
         //It could be possible to make a control about prohibited positions in the board based on the number of players
         //Maybe not necessary if we check Tile.Type?
         if(this.model.getBoard().getSelectedTiles().size() >= min(3, this.model.getCurrentPlayer().getShelf().maxFreeVerticalSpaces()))
@@ -155,7 +155,7 @@ public class Controller implements PropertyChangeListener {
         try{
             this.model.getBoard().selectTile(row, col);
         } catch(IllegalMoveException e){
-            throw new InvalidParameterException();
+            throw new InvalidParameterException("You can't pick this tile!");
         }
 
     }
@@ -174,37 +174,40 @@ public class Controller implements PropertyChangeListener {
     }
 
     private int paramsToColumnIndex(List<String> parameters) {
-        if(parameters.size() != 1) throw new IllegalArgumentException();
+        if(parameters.size() != 1) throw new IllegalArgumentException("There shouldn't be options for this command!");
         Integer column_index;
         try{
             column_index = Integer.parseInt(parameters.get(0));
         } catch(NumberFormatException e){
-            throw new InvalidParameterException();
+            throw new InvalidParameterException("Invalid format. Column number must be an integer!");
         }
-        if(column_index < 0 || column_index >= 5) throw new InvalidParameterException();
+        if(column_index < 0 || column_index >= 5) throw new InvalidParameterException("Column index out of bound!");
         return column_index;
     }
 
     private void chooseOrder(List<String> parameters){
         //Integer parameters control
         Integer tilesSize = this.model.getBoard().getSelectedTiles().size();
-        if(parameters.size() > tilesSize) throw new IllegalArgumentException();
+        if(parameters.size() != tilesSize) throw new IllegalArgumentException("There shouldn't be options for this command!");
         List<Integer> ind = new ArrayList<>();
+        for(int i = 0; i < tilesSize; i++){
+            ind.add(null);
+        }
         try{
             for(int i = 0; i < tilesSize; i++){
                 ind.set(i, Integer.parseInt(parameters.get(i)));
             }
         } catch(NumberFormatException e){
-            throw new InvalidParameterException();
+            throw new InvalidParameterException("Order list must be made by integers!");
         }
         //Not out of bound index control
         for(int i = 0; i < tilesSize; i++){
-            if(ind.get(i) < 1 || ind.get(i) > tilesSize) throw new InvalidParameterException();
+            if(ind.get(i) < 1 || ind.get(i) > tilesSize) throw new InvalidParameterException("Invalid order!");
         }
         //No duplicates control
         for(int i = 0; i < tilesSize; i++){
             for(int j = i + 1; j < tilesSize; j++){
-                if(ind.get(i).equals(ind.get(j))) throw new InvalidParameterException();
+                if(ind.get(i).equals(ind.get(j))) throw new InvalidParameterException("Invalid order. There are some duplicate positions!");
             }
         }
 
@@ -221,7 +224,7 @@ public class Controller implements PropertyChangeListener {
             update((Choice) evt.getNewValue());
         } catch (IllegalMoveException | ColumnIndexOutOfBoundsException | NotEnoughFreeSpacesException |
                  ExceededNumberOfPlayersException | NameAlreadyTakenException e) {
-            this.model.triggerException();
+            this.model.triggerException(e);
         }
     }
 
