@@ -61,7 +61,7 @@ public class GUIModel  {
                     cyanTiles.put(i, ImageIO.read(new File("src/resources/GraphicalResources/item tiles/Trofei1."+ i +".png")));
                 }
 
-                for (int i = 0; i<  model.getPlayers().size()-1; i++){
+                for (int i = 0; i<  model.getPlayers().size(); i++){
                     if(!model.getPlayers().get(i).getNickname().equals(clientNickName))
                         otherPlayers.put(model.getPlayers().get(i).getNickname(), ImageIO.read(new File("src/resources/GraphicalResources/boards/bookshelf_orth.png")));
                     //i punti
@@ -71,15 +71,14 @@ public class GUIModel  {
             }
         }
 
-        private final JLabel backgroundLabel = new JLabel(new ImageIcon(background[0]));
 
-        private final ImagePanel title = new ImagePanel(background[3]);
-        private final ImagePanel mainBookShelf = new ImagePanel(background[2]);
-        private final ImagePanel board = new ImagePanel(background[1]);
+        private final ImagePanel title = new ImagePanel(background[3], "",2);
+        private final ImagePanel mainBookShelf = new ImagePanel(background[2], "YOUR SHELF",5);
+        private final ImagePanel board = new ImagePanel(background[1], "BOARD",5);
 
-        private final ImagePanel commonGoalCard1Label =new ImagePanel(background[4]);
-        private final ImagePanel commonGoalCard2Label = new ImagePanel(background[5]);
-        private final JLabel bagLabel = new JLabel(new ImageIcon(background[6]));
+        private final ImagePanel commonGoalCard1Label =new ImagePanel(background[4], "1° COMMON GOAL CARD",5);
+        private final ImagePanel commonGoalCard2Label = new ImagePanel(background[5], "2° COMMON GOAL CARD",5);
+        private final ImagePanel bagLabel = new ImagePanel(background[6], "BAG WITH TILES",5);
 
         //private final JLabel personalGoalCardLabel = new JLabel(new ImageIcon(background[7]));
 
@@ -88,7 +87,7 @@ public class GUIModel  {
             super("MY SHELFIE");
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setSize(1920, 1080);
-            setPreferredSize(new Dimension(900, 1080));
+            setPreferredSize(new Dimension(950, 1080));
             //it sets the background image
             setContentPane(new JPanel() {
                 @Override
@@ -110,15 +109,15 @@ public class GUIModel  {
             firstRow.add(board);
             firstRow.add(mainBookShelf);
 
-            /*
-            for(otherPlayers : otherPlayers.values()){
-                secondRow.add(otherPlayers);
+
+            for(BufferedImage otherPlayers : otherPlayers.values()){
+                secondRow.add(new ImagePanel(otherPlayers, "Giocatore x", 5));
             }
-            */
+
 
             add(title);
             add(firstRow);
-            setBackground(Color.ORANGE);  // if the bakcground is not set, it will be orange
+            setBackground(Color.ORANGE);  // if the background is not set, it will be orange
             add(secondRow);
             pack();
 
@@ -129,9 +128,13 @@ public class GUIModel  {
 
     public static class ImagePanel extends JPanel {
         private BufferedImage image;
+        private String labelText;
+        private int padding;
 
-        public ImagePanel(BufferedImage image) {
+        public ImagePanel(BufferedImage image,  String labelText, int padding){
             this.image = image;
+            this.labelText = labelText;
+            this.padding = padding;
             setOpaque(false);
         }
 
@@ -139,37 +142,52 @@ public class GUIModel  {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             if (image != null) {
-                int width = getWidth();
-                int height = getHeight();
+                int width = getWidth()-10;
+                int height = getHeight()-10;
 
-                // auto resize image to fit in panel
-                Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                // Calculate available space for image and text
+                int availableWidth = width - 2 * padding;
+                int availableHeight = height - 2 * padding;
 
-                // dispose old graphics and set new image
-                g.drawImage(scaledImage, 0, 0, null);
+                // Calculate image position and size
+                int imageWidth;
+                int imageHeight;
+                double aspectRatio = (double) image.getWidth() / image.getHeight();
+                if (aspectRatio > 1) {
+                    imageWidth = availableWidth;
+                    imageHeight = (int) (availableWidth / aspectRatio);
+                } else {
+                    imageHeight = availableHeight;
+                    imageWidth = (int) (availableHeight * aspectRatio);
+                }
+                int imageX = (width - imageWidth) / 2;
+                int imageY = (height - imageHeight) / 2;
+
+                // Calculate text position and size
+                g.setColor(Color.BLACK);
+                g.setFont(new Font("Arial", Font.PLAIN, 12));
+                FontMetrics fm = g.getFontMetrics();
+                int textWidth = fm.stringWidth(labelText);
+                int textHeight = fm.getHeight();
+                int textX = (width - textWidth) / 2;
+                int textY = imageY + imageHeight + textHeight + padding;
+
+                // Check if there is enough space for the text
+                if (textY + textHeight <= height - padding) {
+                    // Draw image
+                    g.drawImage(image, imageX, imageY, imageWidth, imageHeight, null);
+
+                    // Draw label text below the image
+                    g.drawString(labelText, textX, textY);
+                } else {
+                    // Draw image centered if there is no space for the text
+                    g.drawImage(image, imageX, imageY, imageWidth, imageHeight, null);
+                }
             }
         }
 
     }
-    private static Dimension getScaledImageSize(JLabel panel, ImageIcon image) {
-        int maxWidth = panel.getWidth();
-        int maxHeight = panel.getHeight();
-        int imageWidth = image.getIconWidth();
-        int imageHeight = image.getIconHeight();
 
-        if (imageWidth <= maxWidth && imageHeight <= maxHeight) {
-            return new Dimension(imageWidth, imageHeight);
-        }
-
-        double widthRatio = (double) maxWidth / imageWidth;
-        double heightRatio = (double) maxHeight / imageHeight;
-        double scaleFactor = Math.min(widthRatio, heightRatio);
-
-        int scaledWidth = (int) (imageWidth * scaleFactor);
-        int scaledHeight = (int) (imageHeight * scaleFactor);
-
-        return new Dimension(scaledWidth, scaledHeight);
-    }
 
     public GUIModel(GameView model, String clientNickName) {
 
