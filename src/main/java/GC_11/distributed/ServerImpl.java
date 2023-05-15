@@ -1,7 +1,8 @@
 package GC_11.distributed;
 
-/*
+
 import GC_11.controller.Controller;
+import GC_11.exceptions.*;
 import GC_11.model.Game;
 import GC_11.model.GameView;
 import GC_11.util.Choice;
@@ -46,8 +47,14 @@ public class ServerImpl extends UnicastRemoteObject implements Server, PropertyC
     // Got a problem with this, need to check parameters and Choice Class
 
     @Override
-    public void update(Client client, Choice arg) throws RemoteException {
-        // this.controller.update(client.getView(), arg);
+    public void update(Client client, Choice arg)
+            throws RemoteException,
+            ColumnIndexOutOfBoundsException,
+            ExceededNumberOfPlayersException,
+            NotEnoughFreeSpacesException,
+            NameAlreadyTakenException,
+            IllegalMoveException {
+        this.controller.update(arg);
 
         this.currentClient = client;
         System.out.print("Ricevuto da: " + client);
@@ -56,16 +63,18 @@ public class ServerImpl extends UnicastRemoteObject implements Server, PropertyC
     // Viene chiamato quando il model cambia qualcosa
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        PropertyChangeEvent newEvent = new PropertyChangeEvent(this,"Reply",null,response);
+       /* PropertyChangeEvent newEvent = new PropertyChangeEvent(this,"Reply",null,response);
         try {
             currentClient.update(this,newEvent); // For debugging
-            /*for(Client c : clients){
+            for(Client c : clients){
                 c.update((GameView) evt.getNewValue());
-            }*/
-/*
+            }
+
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
+
+        */
     }
+
 }
-*/

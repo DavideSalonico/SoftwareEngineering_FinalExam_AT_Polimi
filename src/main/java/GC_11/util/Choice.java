@@ -10,6 +10,10 @@ import java.util.StringTokenizer;
 
 public class Choice implements Serializable{
 
+    protected List<String> params;
+    protected Type choice;
+    protected Player player;
+
     public enum Type{
         INSERT_NAME,
         LOGIN,
@@ -109,9 +113,6 @@ public class Choice implements Serializable{
         }
     }
 
-    protected List<String> params;
-    protected Type choice;
-    protected Player player;
 
     public Type getChoice() {
         return choice;
