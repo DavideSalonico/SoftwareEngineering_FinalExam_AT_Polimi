@@ -117,9 +117,9 @@ public class GUIModel  {
             firstRow.add(utils);
             firstRow.add(mainBookShelf);
 
-
-            for(BufferedImage otherPlayers : otherPlayers.values()){
-                secondRow.add(new ImagePanel(otherPlayers, "Giocatore x", 5));
+            // Dispatch every other player to his shelf and his nickname
+            for(Map.Entry<String, BufferedImage> entry : otherPlayers.entrySet()){
+                secondRow.add(new ImagePanel(entry.getValue(), entry.getKey(), 5));
             }
 
 
