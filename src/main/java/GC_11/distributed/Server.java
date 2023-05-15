@@ -3,6 +3,8 @@ package GC_11.distributed;
 import java.beans.PropertyChangeEvent;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+
+import GC_11.exceptions.*;
 import GC_11.util.Choice;
 
 public interface Server extends Remote {
@@ -18,7 +20,7 @@ public interface Server extends Remote {
      * @param client  the client that generated the event
      * @param arg     the choice made by the client
      */
-    void update (Client client, Choice arg) throws RemoteException;
+    void update (Client client, Choice arg) throws RemoteException, ColumnIndexOutOfBoundsException, ExceededNumberOfPlayersException, NotEnoughFreeSpacesException, NameAlreadyTakenException, IllegalMoveException;
 
 
 }
