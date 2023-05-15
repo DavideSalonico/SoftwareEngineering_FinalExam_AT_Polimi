@@ -13,6 +13,9 @@ public class CommonGoalCard11 extends CommonGoalCard{
             "There’s no restriction about the position of these tiles.";
     public int id = 11;
 
+    public int getId() {
+        return id;
+    }
 
     /**
      * This method check if the common goal of the card is has been achieved and in this case adds points to the player

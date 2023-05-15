@@ -8,6 +8,11 @@ public class CommonGoalCard5 extends CommonGoalCard{
 
     private final String text = "Four tiles of the same type in the four corners of the bookshelf.";
     public int id = 5;
+
+    public int getId() {
+        return id;
+    }
+
     @Override
     public void check(Player player) throws ColumnIndexOutOfBoundsException {
         TileColor color;

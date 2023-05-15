@@ -11,6 +11,9 @@ public class CommonGoalCard7 extends CommonGoalCard{
             "The tiles of one square can be different from those of the other square.";
     public int id = 7;
 
+    public int getId() {
+        return id;
+    }
     ControlMatrix matrix = new ControlMatrix();
 
     @Override

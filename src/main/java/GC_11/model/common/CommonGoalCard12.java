@@ -11,6 +11,9 @@ public class CommonGoalCard12 extends CommonGoalCard {
             "each next column must be made of exactly one more tile. Tiles can be of any type.";
     public int id = 12;
 
+    public int getId() {
+        return id;
+    }
 
     /**
      * This method check if the common goal of the card is has been achieved and in this case adds points to the player

@@ -13,8 +13,11 @@ public class CommonGoalCard1 extends CommonGoalCard{
             "The tiles of one group can be different from those of another group.";
     public int id = 1;
 
+    public int getId() {
+        return id;
+    }
 
-  ControlMatrix matrix = new ControlMatrix();
+    ControlMatrix matrix = new ControlMatrix();
     @Override
     public void check(Player player) throws ColumnIndexOutOfBoundsException {
 
