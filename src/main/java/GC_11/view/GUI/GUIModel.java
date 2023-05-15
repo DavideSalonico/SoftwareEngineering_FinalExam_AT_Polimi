@@ -76,8 +76,8 @@ public class GUIModel  {
         private final ImagePanel mainBookShelf = new ImagePanel(background[2], "YOUR SHELF",5);
         private final ImagePanel board = new ImagePanel(background[1], "BOARD",5);
 
-        private final ImagePanel commonGoalCard1Label =new ImagePanel(background[4], "1° COMMON GOAL CARD",5);
-        private final ImagePanel commonGoalCard2Label = new ImagePanel(background[5], "2° COMMON GOAL CARD",5);
+        private final ImagePanel commonGoalCard1 =new ImagePanel(background[4], "1° COMMON GOAL CARD",5);
+        private final ImagePanel commonGoalCard2 = new ImagePanel(background[5], "2° COMMON GOAL CARD",5);
         private final ImagePanel bagLabel = new ImagePanel(background[6], "BAG WITH TILES",5);
 
         //private final JLabel personalGoalCardLabel = new JLabel(new ImageIcon(background[7]));
@@ -87,7 +87,7 @@ public class GUIModel  {
             super("MY SHELFIE");
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setSize(1920, 1080);
-            setPreferredSize(new Dimension(950, 1080));
+            setPreferredSize(new Dimension(950, 1000));
             //it sets the background image
             setContentPane(new JPanel() {
                 @Override
@@ -104,9 +104,17 @@ public class GUIModel  {
             setLayout((new GridLayout(3,1)));
             JPanel firstRow = new JPanel(new GridLayout(1,2));
             JPanel secondRow = new JPanel(new GridLayout(1,3));
+            JPanel utils = new JPanel(new GridLayout(3,1));
+
             firstRow.setOpaque(false);
             secondRow.setOpaque(false);
+            utils.setOpaque(false);
+
             firstRow.add(board);
+            utils.add(commonGoalCard1);
+            utils.add(bagLabel);
+            utils.add(commonGoalCard2);
+            firstRow.add(utils);
             firstRow.add(mainBookShelf);
 
 
@@ -165,7 +173,7 @@ public class GUIModel  {
 
                 // Calculate text position and size
                 g.setColor(Color.BLACK);
-                g.setFont(new Font("Arial", Font.PLAIN, 12));
+                g.setFont(new Font("Serif Bold Italic", Font.BOLD, 15));
                 FontMetrics fm = g.getFontMetrics();
                 int textWidth = fm.stringWidth(labelText);
                 int textHeight = fm.getHeight();
