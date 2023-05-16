@@ -1,6 +1,6 @@
 package GC_11.distributed.socket;
 
-import GC_11.util.Choice;
+import GC_11.util.choices.Choice;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -30,7 +30,7 @@ public class ClientSkeleton {
         try{
             objectOutputStream.writeObject(choice);
         }catch(IOException e){
-            throw new RemoteException("Cannot send choice", e);
+            throw new RemoteException("Cannot send type", e);
         }
     }
 

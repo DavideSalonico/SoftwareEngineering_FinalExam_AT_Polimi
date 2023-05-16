@@ -2,8 +2,7 @@ package GC_11.distributed.socket;
 
 import GC_11.distributed.Client;
 import GC_11.distributed.Server;
-import GC_11.model.GameView;
-import GC_11.util.Choice;
+import GC_11.util.choices.Choice;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -58,9 +57,9 @@ public class ServerStub implements Server {
     }
 
     /**
-     * This method get from the client the new choice
+     * This method get from the client the new type
      * @param client  the client that generated the event
-     * @param arg     the choice made by the client
+     * @param arg     the type made by the client
      * @throws RemoteException
      */
     @Override

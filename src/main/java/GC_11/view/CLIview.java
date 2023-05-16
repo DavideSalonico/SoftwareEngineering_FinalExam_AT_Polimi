@@ -2,10 +2,11 @@
 package GC_11.view;
 
 import GC_11.model.GameView;
-import GC_11.model.Tile;
 import GC_11.model.common.CommonGoalCard;
-import GC_11.util.Choice;
+import GC_11.util.choices.Choice;
 import GC_11.model.Player;
+import GC_11.util.choices.ChoiceFactory;
+import GC_11.util.choices.ChoiceType;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -15,19 +16,12 @@ import static java.lang.Integer.parseInt;
 
 public class CLIview extends View /*implements Runnable*/{
 
-    // private final Choice controllerChoice;
-     private Choice playerChoice;
-    // private final Outcome outcome;
-
     /**
      * Every view is bound at only one player, it helps to manage every input that the controller receive
      */
 
     public CLIview(Player player) {
         this.player = player;
-    }
-    public void setPlayerChoice(Choice c){
-        this.playerChoice = c;
     }
 
     public void setModelView(GameView modelView){
@@ -69,16 +63,16 @@ public class CLIview extends View /*implements Runnable*/{
         Scanner s = new Scanner(System.in);
         System.out.println("Options available: ");
         System.out.println( "Signs: " +
-                Arrays.stream(Choice.Type.values())
-                        .map(Choice.Type::name)
+                Arrays.stream(ChoiceType.values())
+                        .map(ChoiceType::name)
                         .collect(
                                 Collectors.joining(",", "[", "]")));
         while (true){
             String input = s.nextLine();
             try {
-                return new Choice(this.player, input);
+                return ChoiceFactory.createChoice(player, input);
             } catch(IllegalArgumentException e){
-                System.err.println("Invalid choice: " + input +  " Please retake.");
+                System.err.println("Invalid type: " + input +  " Please retake.");
             }
         }
     }

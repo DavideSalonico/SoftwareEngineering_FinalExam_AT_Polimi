@@ -4,8 +4,7 @@ package GC_11.distributed;
 import GC_11.controller.Controller;
 import GC_11.exceptions.*;
 import GC_11.model.Game;
-import GC_11.model.GameView;
-import GC_11.util.Choice;
+import GC_11.util.choices.Choice;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

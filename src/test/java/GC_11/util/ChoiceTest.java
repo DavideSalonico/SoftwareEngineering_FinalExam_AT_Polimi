@@ -1,6 +1,7 @@
 package GC_11.util;
 
 import GC_11.model.Player;
+import GC_11.util.choices.Choice;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

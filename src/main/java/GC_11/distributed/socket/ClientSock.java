@@ -4,7 +4,6 @@ package GC_11.distributed.socket;
 import GC_11.distributed.Client;
 import GC_11.model.GameView;
 import GC_11.model.Player;
-import GC_11.util.Choice;
 import GC_11.view.View;
 
 import java.beans.PropertyChangeEvent;
@@ -14,8 +13,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Objects;
-import java.util.Scanner;
 
 public class ClientSock extends Client implements PropertyChangeListener {
 
@@ -52,7 +49,7 @@ public class ClientSock extends Client implements PropertyChangeListener {
                 }
                 else{
                     Choice choiceToSend = new Choice(player,command);
-                    System.out.println("Sending choice...");
+                    System.out.println("Sending type...");
                     outputStream.writeObject(choiceToSend);
                     outputStream.flush();
                     String response = (String) this.inputStream.readObject();

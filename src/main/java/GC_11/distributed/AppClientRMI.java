@@ -1,19 +1,5 @@
 package GC_11.distributed;
 
-import GC_11.distributed.socket.AppServer;
-import GC_11.model.Game;
-import GC_11.model.GameView;
-import GC_11.model.Player;
-import GC_11.util.Choice;
-import GC_11.view.CLIview;
-
-import java.beans.PropertyChangeEvent;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.util.Scanner;
-
 /*
 public class AppClientRMI {
 

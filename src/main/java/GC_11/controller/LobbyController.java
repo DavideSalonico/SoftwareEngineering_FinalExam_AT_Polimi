@@ -4,7 +4,7 @@ import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.model.Game;
 import GC_11.network.Lobby;
-import GC_11.util.Choice;
+import GC_11.util.choices.Choice;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

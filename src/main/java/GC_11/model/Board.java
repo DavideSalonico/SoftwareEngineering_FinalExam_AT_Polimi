@@ -12,7 +12,6 @@ import java.util.*;
 import static java.lang.Math.abs;
 
 public class Board implements PropertyChangeListener, Serializable {
-    //TODO: [Davide e Rei] Collegare al controller, gestire il cambio di ordine, l'inserimento nella shelf, la rimozione dalla board
 
     private Tile[][] chessBoard;
     private List<Coordinate> selectedTiles = new ArrayList<>();

@@ -2,7 +2,8 @@ package GC_11.distributed.socket;
 
 import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
-import GC_11.util.Choice;
+import GC_11.util.choices.Choice;
+import GC_11.util.choices.ChoiceType;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -47,14 +48,14 @@ public class ServerClientHandler implements Runnable {
         while(true){
             try {
                 clientChoice = (Choice) inputStream.readObject();
-                System.out.println("Received: "+ clientChoice.getChoice() + "from"+ clientChoice.getPlayer());
+                System.out.println("Received: "+ clientChoice.getType() + "from"+ clientChoice.getPlayer());
             } catch (IOException e) {
-                System.err.println("Unable to get choice from client");
+                System.err.println("Unable to get type from client");
                 this.closeConnection();
                 break;
 
             } catch (ClassNotFoundException e) {
-                System.err.println("Unable to deserialize choice from client");
+                System.err.println("Unable to deserialize type from client");
             }
 
 
@@ -65,13 +66,13 @@ public class ServerClientHandler implements Runnable {
             // Risposta
             if (clientChoice != null){
                 try{
-                    outputStream.writeObject("Risposta a" +clientChoice.getChoice() + "from" + clientChoice.getPlayer() );
+                    outputStream.writeObject("Risposta a" +clientChoice.getType() + "from" + clientChoice.getPlayer() );
                 }
                 catch(IOException e){
                     System.err.println("Unable to reply to client");
                     closeConnection();
                 }
-                if (clientChoice.getChoice().equals(Choice.Type.LOGIN)){
+                if (clientChoice.getType().equals(ChoiceType.LOGIN)){
                     break;
                 }
             }

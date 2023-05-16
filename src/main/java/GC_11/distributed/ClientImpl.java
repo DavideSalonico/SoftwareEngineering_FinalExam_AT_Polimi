@@ -1,18 +1,5 @@
 package GC_11.distributed;
 
-import GC_11.model.GameView;
-import GC_11.util.Choice;
-import GC_11.view.CLIview;
-import GC_11.model.Player;
-import GC_11.view.View;
-
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.rmi.RemoteException;
-import java.rmi.server.RMIClientSocketFactory;
-import java.rmi.server.RMIServerSocketFactory;
-import java.rmi.server.UnicastRemoteObject;
-
 /*
 public class ClientImpl extends UnicastRemoteObject implements Client, Runnable, PropertyChangeListener {
 

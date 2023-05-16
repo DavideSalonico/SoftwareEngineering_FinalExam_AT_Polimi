@@ -2,8 +2,9 @@ package GC_11.controller;
 
 import GC_11.exceptions.*;
 import GC_11.model.*;
-import GC_11.network.Lobby;
-import GC_11.util.Choice;
+import GC_11.util.choices.Choice;
+import GC_11.util.choices.ChoiceFactory;
+import GC_11.util.choices.ChoiceType;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -20,11 +21,12 @@ import static java.lang.Math.min;
  * Card read from JSON file
  */
 public class Controller implements PropertyChangeListener {
-    // Controller receive directly from Server an Object Choice which contains Player reference, choice and params
+    // Controller receive directly from Server an Object Choice which contains Player reference, type and params
     public Choice choice;
     public JsonReader reader;
     private Game model;
-    private Choice.Type lastChoice = Choice.Type.RESET_TURN;
+    private ChoiceType lastChoice = ChoiceType.RESET_TURN;
+    private ChoiceFactory choiceFactory;
 
     /**
      * Generic constructor of Controller with only the model
@@ -67,13 +69,13 @@ public class Controller implements PropertyChangeListener {
         return model.getCurrentPlayer().equals(choice.getPlayer());
     }
 
-    public void update(Choice arg)
+    public void update(Choice choice)
             throws IllegalMoveException,
             ColumnIndexOutOfBoundsException,
             NotEnoughFreeSpacesException,
             ExceededNumberOfPlayersException,
             NameAlreadyTakenException {
-        this.choice = arg;
+        this.choice = choice;
 
         if (!checkTurn()){
             throw new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer()+ "'s turn");
@@ -81,25 +83,18 @@ public class Controller implements PropertyChangeListener {
 
         checkExpectedMove();
 
-        List<String> params = arg.getParams();
+        List<String> params = choice.getParams();
 
         try{
-            switch (arg.getChoice()){
-                case SELECT_TILE -> selectTile(params);
-                case DESELECT_TILE -> deselectTile(params);
-                case CHOOSE_ORDER ->chooseOrder(params);
-                case PICK_COLUMN-> pickColumn(params);
-                case RESET_TURN -> resetTurn(params);
-            }
-
+            choice.executeOnServer(this);
         } catch (IllegalArgumentException e){
             this.model.triggerException(e);
         }
 
-        this.lastChoice = this.choice.getChoice();
+        this.lastChoice = this.choice.getType();
     }
 
-    private void resetTurn(List<String> params) {
+    public void resetTurn(List<String> params) {
         if(params.size() != 0) throw new IllegalArgumentException("There shouldn't be options for this command!");
 
         this.model.getBoard().getSelectedTiles().clear();
@@ -107,21 +102,21 @@ public class Controller implements PropertyChangeListener {
 
     //Sort of FSM to garantee the correct logic flow of moves
     private void checkExpectedMove() throws IllegalMoveException {
-        Choice.Type currentChoice = this.choice.getChoice();
+        ChoiceType currentChoice = this.choice.getType();
         switch(this.lastChoice){
             case SELECT_TILE, DESELECT_TILE, RESET_TURN-> {
-                if(currentChoice.equals(Choice.Type.DESELECT_TILE) && this.model.getBoard().getSelectedTiles().size() == 0){
+                if(currentChoice.equals(ChoiceType.DESELECT_TILE) && this.model.getBoard().getSelectedTiles().size() == 0){
                     throw new IllegalMoveException("You can't make this move!");
                 }
-                else if(currentChoice.equals(Choice.Type.SELECT_TILE)
+                else if(currentChoice.equals(ChoiceType.SELECT_TILE)
                         && this.model.getBoard().getSelectedTiles().size() == min(3, this.model.getCurrentPlayer().getShelf().maxFreeVerticalSpaces())){
                     throw new IllegalMoveException("You can't make this move!");
                 }
             }
             case CHOOSE_ORDER -> {
-                if(currentChoice.equals(Choice.Type.CHOOSE_ORDER)
-                        || currentChoice.equals(Choice.Type.PICK_COLUMN)
-                        || currentChoice.equals(Choice.Type.RESET_TURN))
+                if(currentChoice.equals(ChoiceType.CHOOSE_ORDER)
+                        || currentChoice.equals(ChoiceType.PICK_COLUMN)
+                        || currentChoice.equals(ChoiceType.RESET_TURN))
                     return;
                 else  throw new IllegalMoveException("You can't make this move!");
             }
@@ -131,13 +126,13 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    private void deselectTile(List<String> params) throws IllegalMoveException{
+    public void deselectTile(List<String> params) throws IllegalMoveException{
         if(params.size() != 0) throw new IllegalArgumentException("There shouldn't be options for this command!");
 
         this.model.getBoard().deselectTile();
     }
 
-    private void selectTile(List<String> parameters) throws IllegalMoveException {
+    public void selectTile(List<String> parameters) throws IllegalMoveException {
         if(parameters.size() != 2) throw new IllegalArgumentException("There shouldn't be options for this command!");
         Integer row, col;
         try{
@@ -160,7 +155,7 @@ public class Controller implements PropertyChangeListener {
 
     }
 
-    private void pickColumn(List<String> parameters) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+    public void pickColumn(List<String> parameters) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
         int column = paramsToColumnIndex(parameters);
         //TODO: Da rivedere, se possibile farlo senza creare una lista di appoggio
         List<Tile> tmp_tiles = new ArrayList<Tile>();
@@ -185,7 +180,7 @@ public class Controller implements PropertyChangeListener {
         return column_index;
     }
 
-    private void chooseOrder(List<String> parameters){
+    public void chooseOrder(List<String> parameters){
         //Integer parameters control
         Integer tilesSize = this.model.getBoard().getSelectedTiles().size();
         if(parameters.size() != tilesSize) throw new IllegalArgumentException("There shouldn't be options for this command!");
