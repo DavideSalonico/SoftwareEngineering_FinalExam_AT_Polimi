@@ -34,11 +34,15 @@ public class ClientSock extends Client implements PropertyChangeListener {
         this.view=view;
     }
 
+    public ClientSock(){
+        this.player=new Player();
+    }
+
 
     public void startClient() throws IOException, ClassNotFoundException {
         System.out.println("---Client---");
-        this.view.run();
         connectionSetup();
+
 
 
 
@@ -179,16 +183,11 @@ public class ClientSock extends Client implements PropertyChangeListener {
         }
     }
 
-    public void getInputMsg(){
-        Scanner inputScanner = new Scanner(System.in);
-        String msg = inputScanner.nextLine();
-        PropertyChangeEvent pce = new PropertyChangeEvent(this,"move",null,msg);
-        this.propertyChange(pce);
-    }
-
     public void setIp(String ip){
         this.ip = ip;
     }
+
+    public void setPort (int port){this.port=port;}
 
 }
 
