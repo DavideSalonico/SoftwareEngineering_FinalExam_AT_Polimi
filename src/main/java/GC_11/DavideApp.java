@@ -15,8 +15,8 @@ public class DavideApp {
         //Just a sample code to try if everything works fine
         List<String> tmpPlayerNames = new ArrayList<String>();
         tmpPlayerNames.add("Pippo");
-        tmpPlayerNames.add("Pluto");
-        tmpPlayerNames.add("Paperino");
+        //tmpPlayerNames.add("Pluto");
+        //tmpPlayerNames.add("Paperino");
         Game model = new Game(tmpPlayerNames);
         GameView modelView = new GameView(model, null);
         CLIview view = new CLIview(model.getCurrentPlayer());
@@ -25,6 +25,5 @@ public class DavideApp {
         model.setListener(view);
         view.setListener(controller);
         view.run();
-
     }
 }

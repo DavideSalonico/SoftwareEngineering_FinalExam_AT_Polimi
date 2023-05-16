@@ -7,10 +7,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Random;
+import java.util.*;
 
 import static java.lang.Math.abs;
 
@@ -194,25 +191,30 @@ public class Board implements PropertyChangeListener, Serializable {
         return counter;
     }
 
-    public void changeOrder(List<Integer> positions) throws Exception {
+    public void changeOrder(List<Integer> positions) throws IllegalArgumentException {
         if(positions.size() != this.selectedTiles.size())
             throw new InvalidParameterException("Position numbers are not the same of selected tiles!");
 
-        List<Coordinate> tmp_selected = new ArrayList<Coordinate>();
-
-        //Controlli fatti dal Controller?
+        Coordinate[] tmp_selected = new Coordinate[selectedTiles.size()];
 
         for(Coordinate c : selectedTiles){
-            tmp_selected.set(positions.get(selectedTiles.indexOf(c)), c);
+            tmp_selected[positions.get(selectedTiles.indexOf(c))] = c;
         }
 
         //Controlli finali, non dovrebbero mai essere sollevati
         for(Coordinate tmp_c : tmp_selected){
             if(tmp_c == null)
-                throw new Exception("Something went wrong!");
+                throw new IllegalArgumentException("Something went wrong!");
         }
 
-        selectedTiles = tmp_selected;
+        selectedTiles = Arrays.stream(tmp_selected).toList();
+
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "CHANGED_ORDER",
+                null,
+                this.chessBoard);
+        this.listener.propertyChange(evt);
     }
 
     /**
@@ -248,6 +250,13 @@ public class Board implements PropertyChangeListener, Serializable {
         if(l == 0)
             throw new IllegalMoveException("You haven't selected any tile!");
         this.selectedTiles.remove(l-1);
+
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "DESELECTED_TILE",
+                null,
+                this.chessBoard);
+        this.listener.propertyChange(evt);
     }
 
 
@@ -318,6 +327,6 @@ public class Board implements PropertyChangeListener, Serializable {
     }
 
     public void resetSelectedTiles() {
-        this.selectedTiles.removeAll(selectedTiles);
+        this.selectedTiles = new ArrayList<Coordinate>();
     }
 }
