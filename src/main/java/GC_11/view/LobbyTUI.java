@@ -45,7 +45,15 @@ public class LobbyTUI extends View implements Runnable {
     }
 
     public void run(){
-        printWelcome();
+
+        Scanner inputScanner = new Scanner(System.in);
+        String msg = null;
+        while (true){
+             msg = inputScanner.nextLine();
+            PropertyChangeEvent pce = new PropertyChangeEvent(this,"Move",null,msg);
+            this.client.propertyChange(pce);
+        }
+
     }
 
     @Override

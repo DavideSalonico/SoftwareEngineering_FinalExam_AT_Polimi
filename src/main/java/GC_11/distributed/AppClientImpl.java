@@ -11,12 +11,12 @@ import java.util.Scanner;
 
 public class AppClientImpl {
     public static void main( String[] args ) {
-        //Scanner input = new Scanner(System.in);
-        //System.out.println("---CLIENT---\nEnter ip address of the server");
-        //String ip = input.next();
+
         View view = new LobbyTUI();
         ClientSock client = new ClientSock(view);
         ((LobbyTUI) view).setClient(client);
+        client.setIp("127.0.0.1");
+        client.setPort(4321);
         try{
             client.startClient();
         }catch (IOException e){
