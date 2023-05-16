@@ -14,6 +14,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.EventObject;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -176,6 +177,13 @@ public class ClientSock extends Client implements PropertyChangeListener {
         } catch (IOException e) {
             System.out.println("Unable to send message.\n");
         }
+    }
+
+    public void getInputMsg(){
+        Scanner inputScanner = new Scanner(System.in);
+        String msg = inputScanner.nextLine();
+        PropertyChangeEvent pce = new PropertyChangeEvent(this,"move",null,msg);
+        this.propertyChange(pce);
     }
 
     public void setIp(String ip){
