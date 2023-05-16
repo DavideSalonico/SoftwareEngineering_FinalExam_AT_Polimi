@@ -219,13 +219,12 @@ public class Game implements PropertyChangeListener, Serializable {
         this.listener.propertyChange(move);
     }
 
-    public void triggerException() {
-        this.changed = true;
+    public void triggerException(Exception e) {
         PropertyChangeEvent exception = new PropertyChangeEvent(
                 this,
-                "GENERIC_EXCEPTION",
+                e.getMessage(),
                 null,
-                new GameView(null, new Exception("Generic Exception")));
+                new GameView(null, e));
         this.listener.propertyChange(exception);
     }
 }
