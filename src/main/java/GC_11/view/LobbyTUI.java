@@ -74,11 +74,12 @@ public class LobbyTUI extends View implements Runnable {
             String ip = inputLine.nextLine();
             System.out.println("Vuoi utilizzare RMI o socket?\n1 - Socket\n2 - RMI [Attualmente non disponibile]\n");
             String netMod = inputLine.nextLine();
-            switch(Integer.parseInt(netMod)){
-                case 1 :
+
+            switch(netMod){
+                case "1" :
                     //Crea client Socket
                     break;
-                case 2:
+                case "2":
                     //Crea client RMI
                     break;
                 default:
