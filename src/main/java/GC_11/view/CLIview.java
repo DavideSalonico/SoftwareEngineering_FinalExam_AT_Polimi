@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
 
-public class CLIview extends View /*implements Runnable*/{
+public class CLIview extends View {
 
     // private final Choice controllerChoice;
      private Choice playerChoice;

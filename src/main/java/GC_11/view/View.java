@@ -13,7 +13,7 @@ import static java.lang.Integer.parseInt;
  * Abstract class view, father of all the views,it defines the signature of all the method that the view require to print
  * all the necessary data during the Game
  */
-public abstract class View implements PropertyChangeListener, Runnable{
+public abstract class View implements PropertyChangeListener{
 
     protected Player player;
 

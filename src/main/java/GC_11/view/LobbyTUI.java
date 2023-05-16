@@ -8,7 +8,7 @@ import GC_11.util.Choice;
 import java.beans.PropertyChangeEvent;
 import java.util.Scanner;
 
-public class LobbyTUI extends View implements Runnable {
+public class LobbyTUI extends View {
 
     private LobbyView lobbyView;
     Scanner inputLine;
