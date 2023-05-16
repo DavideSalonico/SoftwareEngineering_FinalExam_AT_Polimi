@@ -6,7 +6,6 @@ import GC_11.exceptions.IllegalMoveException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
-import java.lang.invoke.VolatileCallSite;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
@@ -159,7 +158,9 @@ public class Board implements PropertyChangeListener, Serializable {
     }
 
     public boolean isPlayable(int l, int c){
-        return !chessBoard[l][c].getColor().equals(TileColor.EMPTY) && !chessBoard[l][c].getColor().equals(TileColor.PROHIBITED);
+        boolean empty = !chessBoard[l][c].getColor().equals(TileColor.EMPTY);
+        boolean prohibited = !chessBoard[l][c].getColor().equals(TileColor.PROHIBITED);
+        return  empty && prohibited;
     }
 
     /**
@@ -259,21 +260,52 @@ public class Board implements PropertyChangeListener, Serializable {
     }
 
     public void print(){
-        for(int i=0; i < 9; i++){
-            for(int j=0; j < 9; j++){
-                TileColor color = getTile(i,j).getColor();
-                if(color != TileColor.PROHIBITED)
-                    System.out.print("\t" + color.toString().charAt(0));
-                else
-                    System.out.print("\t" + "X");
+        char[][] tmpboard = buildBoardPrint();
+
+        for(int i=-1; i < 9; i++){
+            if(i ==-1){
+                System.out.print("\t");
+                for(int k = 0; k < 9; k++){
+                    System.out.print("\t" + k);
+                }
+                System.out.println();
+            } else{
+                for(int j=-1; j < 9; j++){
+                    if(j == -1){
+                        System.out.print("\t" + i);
+                    } else{
+                        System.out.print("\t" + tmpboard[i][j]);
+                    }
+                }
+                System.out.println();
             }
-            System.out.println();
         }
+
+
         System.out.println("Board selected tiles:");
         for(Coordinate c : selectedTiles){
             System.out.println(c.getRow() + ", " + c.getColumn() + ", " +
                     this.getTile(c.getRow(), c.getColumn()).getColor().toString().charAt(0));
         }
+    }
+
+    private char[][] buildBoardPrint(){
+        char[][] tmpboard = new char[9][9];
+        for(int i=0; i < 9; i++){
+            for(int j=0; j < 9; j++){
+                TileColor color = getTile(i,j).getColor();
+                if(color != TileColor.PROHIBITED){
+                    tmpboard[i][j] = color.toString().charAt(0);
+                }
+                    //System.out.print("\t" + color.toString().charAt(0));
+                else{
+                    tmpboard[i][j] = 'X';
+                    //System.out.print("\t" + "X");
+                }
+            }
+            //System.out.println();
+        }
+        return tmpboard;
     }
 
     public List<Coordinate> getSelectedTiles() {
@@ -289,5 +321,3 @@ public class Board implements PropertyChangeListener, Serializable {
         this.selectedTiles.removeAll(selectedTiles);
     }
 }
-
-

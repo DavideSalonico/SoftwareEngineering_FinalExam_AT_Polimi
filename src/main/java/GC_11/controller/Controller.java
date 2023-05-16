@@ -202,7 +202,7 @@ public class Controller implements PropertyChangeListener {
         }
         //Not out of bound index control
         for(int i = 0; i < tilesSize; i++){
-            if(ind.get(i) < 1 || ind.get(i) > tilesSize) throw new InvalidParameterException("Invalid order!");
+            if(ind.get(i) < 0 || ind.get(i) > tilesSize) throw new InvalidParameterException("Invalid order!");
         }
         //No duplicates control
         for(int i = 0; i < tilesSize; i++){

@@ -17,7 +17,6 @@ public class DavideApp {
         tmpPlayerNames.add("Pippo");
         tmpPlayerNames.add("Pluto");
         tmpPlayerNames.add("Paperino");
-        tmpPlayerNames.add("Giuseppe");
         Game model = new Game(tmpPlayerNames);
         GameView modelView = new GameView(model, null);
         CLIview view = new CLIview(model.getCurrentPlayer());
