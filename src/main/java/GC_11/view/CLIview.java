@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
 
-public class CLIview extends View {
+public class CLIview extends ViewGame {
 
     // private final Choice controllerChoice;
      private Choice playerChoice;
@@ -81,6 +81,11 @@ public class CLIview extends View {
                 System.err.println("Invalid choice: " + input +  " Please retake.");
             }
         }
+    }
+
+    @Override
+    public void run() {
+
     }
 
     // 0-BASED INDEXING !!!

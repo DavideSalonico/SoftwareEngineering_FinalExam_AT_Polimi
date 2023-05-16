@@ -16,9 +16,8 @@ import static java.lang.Integer.parseInt;
 public abstract class View implements PropertyChangeListener{
 
     protected Player player;
-
     protected GameView modelView;
-    private boolean inGame = true;
+    boolean inGame = true;
 
     //Controller must register
      PropertyChangeListener listener;
@@ -38,43 +37,10 @@ public abstract class View implements PropertyChangeListener{
 
     public abstract Choice getPlayerChoice();
 
-    public void run(){
-        boolean show_en = true;
-        while(inGame){
-            if(show_en) show();
-            Choice choice = getPlayerChoice();
-            switch (choice.getChoice()){
-                //Controls already made in the creation of choice client-side
-                case SEE_COMMONGOAL -> {
-                    seeCommonGoal(choice);
-                    show_en = false;
-                }
-                case SEE_PERSONALGOAL -> {
-                    seePersonalGoal(choice);
-                    show_en = false;
-                }
-                default -> {
-                    PropertyChangeEvent evt = new PropertyChangeEvent(
-                            this,
-                            "CHOICE",
-                            null,
-                            choice);
-                    this.listener.propertyChange(evt);
-                    show_en = true;
-                }
-            }
-        }
-    }
+    public abstract void run();
 
     public void setListener(PropertyChangeListener listener) {
         this.listener = listener;
     }
 
-    public void setInGame(boolean inGame) {
-        this.inGame = inGame;
-    }
-
-    protected abstract void seeCommonGoal(Choice choice);
-
-    protected abstract void seePersonalGoal(Choice choice);
 }

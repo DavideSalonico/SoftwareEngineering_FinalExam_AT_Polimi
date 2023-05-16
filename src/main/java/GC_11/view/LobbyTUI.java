@@ -49,15 +49,7 @@ public class LobbyTUI extends View {
         printWelcome();
     }
 
-    @Override
-    protected void seeCommonGoal(Choice choice) {
 
-    }
-
-    @Override
-    protected void seePersonalGoal(Choice choice) {
-
-    }
 
     public void printWelcome(){
 

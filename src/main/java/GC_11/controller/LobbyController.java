@@ -12,9 +12,14 @@ import java.security.InvalidParameterException;
 import java.util.List;
 
 public class LobbyController implements PropertyChangeListener {
+
     public Choice choice;
     private Game model;
     private Lobby lobbyModel;
+
+    public LobbyController(Lobby lobby) {
+        this.lobbyModel=lobby;
+    }
 
     private void findMatch(List<String> params) {
         //if(player.equals(lobbyModel.getBoss()))) We should check that only the main player can start the game

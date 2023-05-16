@@ -13,14 +13,13 @@ public class Lobby {
 
     private final int lobbyID;
     private static int lobbyNumber;
-    private int maxPlayers;
+    private final int maxPlayers = 3;
     String fisrtPlayer;
 
     private List<String> playersNames;
 
 
     public Lobby(){
-        this.maxPlayers=4;
         playersNames = new ArrayList<String>();
         this.lobbyID=lobbyNumber;
         lobbyNumber++;
@@ -33,8 +32,11 @@ public class Lobby {
     public synchronized void addPlayer(String playerName) throws ExceededNumberOfPlayersException, NameAlreadyTakenException{
         if (playersNames.size()< maxPlayers && !playersNames.contains(playerName)){
             playersNames.add(playerName);
+            if(playersNames.size() == maxPlayers){
+
+            }
         }
-        else if(playersNames.size() == 4){
+        else if(playersNames.size() == maxPlayers){
             throw new ExceededNumberOfPlayersException();
         }
         else if(this.nameAlreadyTaken(playerName))
@@ -77,9 +79,9 @@ public class Lobby {
 
     }
 
-    public void setMaxPlayers(int maxPlayers){
-        this.maxPlayers=maxPlayers;
-    }
+    //public void setMaxPlayers(int maxPlayers){
+    //    this.maxPlayers=maxPlayers;
+    //}
 
     public String getFisrtPlayer() {
         return fisrtPlayer;
