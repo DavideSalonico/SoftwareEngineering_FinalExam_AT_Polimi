@@ -14,7 +14,7 @@ import java.util.Random;
 /**
  * Game's class, it is the center of all the game model, it contains references with all the object and can also
  * interact with them to settle the changes sent by controller
- * it's a Serializable class, so the GameView can serialize a copy of its status every time something changes
+ * it's a Serializable class, so the GameViewMessage can serialize a copy of its status every time something changes
  */
 public class Game implements PropertyChangeListener, Serializable {
 
@@ -122,7 +122,7 @@ public class Game implements PropertyChangeListener, Serializable {
                 this,
                 "CHANGED_CURRENT_PLAYER",
                 null,
-                new GameView(this, null));
+                new GameViewMessage(this, null));
         this.listener.propertyChange(evt);
     }
 
@@ -133,7 +133,7 @@ public class Game implements PropertyChangeListener, Serializable {
                 this,
                 "CHANGED_CURRENT_PLAYER(NEXT)",
                 null,
-                new GameView(this, null));
+                new GameViewMessage(this, null));
         this.listener.propertyChange(evt);
     }
 
@@ -167,7 +167,7 @@ public class Game implements PropertyChangeListener, Serializable {
                 this,
                 "END_GAME_SET",
                 null,
-                new GameView(this, null));
+                new GameViewMessage(this, null));
         this.listener.propertyChange(evt);
     }
 
@@ -215,7 +215,7 @@ public class Game implements PropertyChangeListener, Serializable {
                 this,
                 evt.getPropertyName(),
                 null,
-                new GameView(this, null));
+                new GameViewMessage(this, null));
         this.listener.propertyChange(move);
     }
 
@@ -224,7 +224,7 @@ public class Game implements PropertyChangeListener, Serializable {
                 this,
                 e.getMessage(),
                 null,
-                new GameView(null, e));
+                new GameViewMessage(null, e));
         this.listener.propertyChange(exception);
     }
 }

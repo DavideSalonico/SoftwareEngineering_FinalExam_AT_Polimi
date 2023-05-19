@@ -7,6 +7,7 @@ import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.model.Game;
 import GC_11.model.Player;
 import GC_11.network.Lobby;
+import GC_11.network.LobbyViewMessage;
 import GC_11.util.Choice;
 
 import java.beans.PropertyChangeEvent;
@@ -15,24 +16,26 @@ import java.util.List;
 
 public class ServerImplRei implements ServerRei{
 
-    Controller controller;
+    private Controller controller;
 
     Game model;
-    LobbyController lobbyController;
+    private LobbyController lobbyController;
 
-    Lobby lobby;
-    int maxPlayer = 3;
+    private Lobby lobby;
+
+    int maxPlayer;
     List<ClientRei> clients = new ArrayList<>();
     @Override
     public void register(ClientImplRei client) throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
         if(clients.size()==0){
-            lobby = new Lobby();
+            maxPlayer = client.askMaxNumber();
+            lobby = new Lobby(maxPlayer);
             lobbyController = new LobbyController(lobby);
         }
         clients.add(client);
-        lobby.addPlayer(client.getNickname());
+        lobbyController.addPlayerName(client.getNickname());
         for( ClientRei c : clients){
-            //c.updateViewLobby();
+            c.updateViewLobby(new LobbyViewMessage(lobby));
         }
 
 

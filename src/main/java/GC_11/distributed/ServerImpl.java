@@ -4,7 +4,6 @@ package GC_11.distributed;
 import GC_11.controller.Controller;
 import GC_11.exceptions.*;
 import GC_11.model.Game;
-import GC_11.model.GameView;
 import GC_11.util.Choice;
 
 import java.beans.PropertyChangeEvent;
@@ -67,7 +66,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server, PropertyC
         try {
             currentClient.update(this,newEvent); // For debugging
             for(Client c : clients){
-                c.update((GameView) evt.getNewValue());
+                c.update((GameViewMessage) evt.getNewValue());
             }
 
         } catch (RemoteException e) {

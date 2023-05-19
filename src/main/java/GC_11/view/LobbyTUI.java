@@ -1,8 +1,7 @@
 package GC_11.view;
 
 import GC_11.distributed.Client;
-import GC_11.distributed.socket.ClientSock;
-import GC_11.network.LobbyView;
+import GC_11.network.LobbyViewMessage;
 import GC_11.util.Choice;
 
 import java.beans.PropertyChangeEvent;
@@ -10,7 +9,7 @@ import java.util.Scanner;
 
 public class LobbyTUI extends View {
 
-    private LobbyView lobbyView;
+    private LobbyViewMessage lobbyView;
     Scanner inputLine;
     Client client;
 
@@ -32,7 +31,7 @@ public class LobbyTUI extends View {
 
     }
 
-    @Override
+
     public Choice getPlayerChoice() {
         while(true){
             String msg = inputLine.nextLine();

@@ -2,7 +2,6 @@ package GC_11.distributed.socket;
 
 import GC_11.distributed.Client;
 import GC_11.distributed.Server;
-import GC_11.model.GameView;
 import GC_11.util.Choice;
 
 import java.io.IOException;

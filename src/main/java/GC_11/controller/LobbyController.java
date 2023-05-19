@@ -43,4 +43,8 @@ public class LobbyController implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         //TODO
     }
+
+    public void addPlayerName(String playerName) throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
+        this.lobbyModel.addPlayer(playerName);
+    }
 }

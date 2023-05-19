@@ -1,10 +1,23 @@
 package GC_11.view;
 
+import GC_11.model.GameViewMessage;
 import GC_11.util.Choice;
 
 import java.beans.PropertyChangeEvent;
 
 public abstract class ViewGame extends View {
+
+    public abstract Choice getPlayerChoice();
+
+    protected GameViewMessage modelView;
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        //System.out.println("evt" + evt);
+        System.out.println("Event Type: " + evt.getPropertyName());
+        this.modelView = (GameViewMessage) evt.getNewValue();
+    }
+
 
 
     public void run(){

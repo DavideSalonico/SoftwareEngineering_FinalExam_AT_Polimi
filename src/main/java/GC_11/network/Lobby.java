@@ -12,17 +12,18 @@ import java.util.List;
 public class Lobby {
 
     private final int lobbyID;
-    private static int lobbyNumber;
-    private final int maxPlayers = 3;
-    String fisrtPlayer;
+    //private static int lobbyNumber;
+    private final int maxPlayers;
+
+    //String fisrtPlayer;
 
     private List<String> playersNames;
 
 
-    public Lobby(){
+    public Lobby(int n){
+        maxPlayers=n;
         playersNames = new ArrayList<String>();
-        this.lobbyID=lobbyNumber;
-        lobbyNumber++;
+        this.lobbyID=1;
     }
 
     public synchronized boolean nameAlreadyTaken(String playerName){
@@ -82,7 +83,7 @@ public class Lobby {
     //public void setMaxPlayers(int maxPlayers){
     //    this.maxPlayers=maxPlayers;
     //}
-
+/*
     public String getFisrtPlayer() {
         return fisrtPlayer;
     }
@@ -90,7 +91,7 @@ public class Lobby {
     public void setFisrtPlayer(String player){
         this.fisrtPlayer=player;
     }
-
+*/
     // TODO LOBBY by Mattia
     // fatto - lanciare l'excpetion in addPlayer se eccede il numero massimo o non può inserire il player
     // Il primo giocatore è il capo del gruppo, e sarà l'unico a poter avviare il gioco, gestire la questione dei permessi

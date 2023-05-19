@@ -42,7 +42,7 @@ public class ServerSock {
             System.out.println(e.getMessage());
         }
         this.serverClientHandlerList= new ArrayList<>();
-        this.lobby=new Lobby();
+        //this.lobby=new Lobby();
 
         // Waiting for connection
         while(true){

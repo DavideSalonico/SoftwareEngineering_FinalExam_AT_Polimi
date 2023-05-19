@@ -1,8 +1,7 @@
 package GC_11.view;
 
-import GC_11.model.GameView;
 import GC_11.model.Player;
-import GC_11.util.Choice;
+import GC_11.network.MessageView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -16,8 +15,9 @@ import static java.lang.Integer.parseInt;
 public abstract class View implements PropertyChangeListener{
 
     protected Player player;
-    protected GameView modelView;
+    protected MessageView messageView;
     boolean inGame = true;
+
 
     //Controller must register
      PropertyChangeListener listener;
@@ -32,10 +32,10 @@ public abstract class View implements PropertyChangeListener{
     public void propertyChange(PropertyChangeEvent evt) {
         //System.out.println("evt" + evt);
         System.out.println("Event Type: " + evt.getPropertyName());
-        this.modelView = (GameView) evt.getNewValue();
+        this.messageView = (MessageView) evt.getNewValue();
     }
 
-    public abstract Choice getPlayerChoice();
+
 
     public abstract void run();
 

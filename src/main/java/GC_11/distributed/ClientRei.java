@@ -1,11 +1,11 @@
 package GC_11.distributed;
 
-import GC_11.model.GameView;
-import GC_11.network.LobbyView;
+import GC_11.model.GameViewMessage;
+import GC_11.network.LobbyViewMessage;
 
 public interface ClientRei {
 
-    void updateViewLobby (LobbyView newView);
+    void updateViewLobby (LobbyViewMessage newView);
 
-    void updateViewGame (GameView newView);
+    void updateViewGame (GameViewMessage newView);
 }

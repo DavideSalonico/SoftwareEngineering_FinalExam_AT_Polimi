@@ -10,8 +10,8 @@ public class LobbyController implements PropertyChangeListener {
 
     private Lobby lobbyModel;
 
-    public LobbyController(){
-        this.lobbyModel=new Lobby();
+    public LobbyController(Lobby lobby){
+        this.lobbyModel= lobby;
     }
 
     public void lobbySetup(){

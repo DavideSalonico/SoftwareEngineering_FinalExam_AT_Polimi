@@ -1,8 +1,7 @@
 
 package GC_11.view;
 
-import GC_11.model.GameView;
-import GC_11.model.Tile;
+import GC_11.model.GameViewMessage;
 import GC_11.model.common.CommonGoalCard;
 import GC_11.util.Choice;
 import GC_11.model.Player;
@@ -13,7 +12,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
 
-public class CLIview extends ViewGame {
+public class GameCLI extends ViewGame {
 
     // private final Choice controllerChoice;
      private Choice playerChoice;
@@ -23,14 +22,14 @@ public class CLIview extends ViewGame {
      * Every view is bound at only one player, it helps to manage every input that the controller receive
      */
 
-    public CLIview(Player player) {
+    public GameCLI(Player player) {
         this.player = player;
     }
     public void setPlayerChoice(Choice c){
         this.playerChoice = c;
     }
 
-    public void setModelView(GameView modelView){
+    public void setModelView(GameViewMessage modelView){
         this.modelView = modelView;
     }
 
@@ -85,7 +84,6 @@ public class CLIview extends ViewGame {
 
     @Override
     public void run() {
-
     }
 
     // 0-BASED INDEXING !!!

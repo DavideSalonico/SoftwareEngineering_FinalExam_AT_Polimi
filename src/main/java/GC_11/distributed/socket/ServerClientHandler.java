@@ -127,13 +127,13 @@ public class ServerClientHandler implements Runnable {
                 }
                 outputStream.writeObject("OK");
                 outputStream.flush();
-                this.server.getLobby().setMaxPlayers(maxPlayers);
+                //this.server.getLobby().setMaxPlayers(maxPlayers);
                 outputStream.writeObject("Inserisci il tuo nome");
                 outputStream.flush();
                 String playerName = (String) inputStream.readObject();
                 try{
                     this.server.getLobby().addPlayer(playerName);
-                    this.server.getLobby().setFisrtPlayer(playerName);
+                    //this.server.getLobby().setFisrtPlayer(playerName);
                     System.out.println("Aggiunto " + playerName + " alla lobby");
                     outputStream.writeObject("Sei stato aggiunto alla lobby!");
                     outputStream.flush();
