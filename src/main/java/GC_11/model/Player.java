@@ -104,9 +104,7 @@ public class Player implements PropertyChangeListener, Serializable {
      * @return The pointsAdjacency of the player
      */
     public int getPointsAdjacency(){
-
         return this.pointsAdjacency;
-
     }
 
     /**

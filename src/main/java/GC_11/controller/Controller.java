@@ -165,6 +165,11 @@ public class Controller implements PropertyChangeListener {
         }
         this.model.getCurrentPlayer().getShelf().addTiles(tmp_tiles, column);
         this.model.getBoard().resetSelectedTiles();
+
+        this.model.calculateCommonPoints();
+        this.model.getCurrentPlayer().calculateAndGiveAdjacencyPoint();
+        this.model.getCurrentPlayer().getPoints();
+
         this.model.setNextCurrent();
     }
 
