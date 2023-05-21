@@ -22,7 +22,7 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei{
 
     private Controller gameController;
 
-    Game model;
+    private Game model;
     private LobbyController lobbyController;
 
     private Lobby lobby;
@@ -33,7 +33,7 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei{
     public ServerImplRei() throws RemoteException {
         super();
     }
-
+/*
     protected ServerImplRei(int port) throws RemoteException {
         super(port);
     }
@@ -41,7 +41,7 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei{
     protected ServerImplRei(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
         super(port, csf, ssf);
     }
-
+*/
     @Override
     public void register(ClientRei client) throws ExceededNumberOfPlayersException, NameAlreadyTakenException, RemoteException {
         if(clients.size()==0){

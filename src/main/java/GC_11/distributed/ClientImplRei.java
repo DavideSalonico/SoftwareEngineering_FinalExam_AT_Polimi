@@ -68,7 +68,6 @@ public class ClientImplRei extends UnicastRemoteObject implements ClientRei{
     @Override
     public void updateViewLobby(LobbyViewMessage newView) {
         this.viewLobby.update(newView);
-        System.out.println("fatto!");
     }
 
     @Override
