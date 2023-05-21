@@ -18,10 +18,7 @@ public abstract class ViewLobby extends View {
         this.lobbyViewMessage = (LobbyViewMessage) evt.getNewValue();
     }
 
-    public void update (LobbyViewMessage lvm){
-        this.lobbyViewMessage=lvm;
-        this.show_en = true;
-    }
+    public abstract void update (LobbyViewMessage lvm);
 
 
 }

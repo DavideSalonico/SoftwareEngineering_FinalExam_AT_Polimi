@@ -27,7 +27,7 @@ public class AppClientRMI {
         ServerRei server = (ServerRei) registry.lookup("server");
         System.out.println("***** Creating a client rei implementation *****\n");
         ClientImplRei client = new ClientImplRei(server, nickname);
-        client.run();
+        //client.run();
 /*
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 "Client RMI",
