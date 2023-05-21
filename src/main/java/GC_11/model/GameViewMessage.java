@@ -11,7 +11,7 @@ import java.util.List;
  * This class give all the information about the Game specialized for a particular Player given by parameter
  * Use marker 'transiet' if we don't want to serialize the attribute
  */
-public class GameViewMessage extends MessageView implements Serializable {
+public class GameViewMessage extends MessageView {
 
     //The serialization process at runtime associates an id with each Serializable class which is known as SerialVersionUID.
     //The sender and receiver must have the same SerialVersionUID, otherwise, InvalidClassException will be thrown when you deserialize the object.

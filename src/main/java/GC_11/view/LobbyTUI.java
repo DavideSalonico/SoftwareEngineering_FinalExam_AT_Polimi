@@ -31,6 +31,11 @@ public class LobbyTUI extends View {
 
     }
 
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+
+    }
+
 
     public Choice getPlayerChoice() {
         while(true){

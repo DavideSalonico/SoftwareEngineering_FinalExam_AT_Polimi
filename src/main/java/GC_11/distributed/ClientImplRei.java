@@ -8,19 +8,44 @@ import GC_11.view.LobbyCLI;
 import GC_11.view.ViewGame;
 import GC_11.view.ViewLobby;
 
+import java.rmi.RemoteException;
+import java.rmi.server.RMIClientSocketFactory;
+import java.rmi.server.RMIServerSocketFactory;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
-public class ClientImplRei implements ClientRei{
+public class ClientImplRei extends UnicastRemoteObject implements ClientRei{
 
     private ViewLobby viewLobby;
     private ViewGame viewGame;
     private String nickname;
 
-    public ClientImplRei(ServerRei server, String nickname) throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
+    public ClientImplRei(ViewLobby viewLobby) throws RemoteException {
+        super();
+        this.viewLobby = viewLobby;
+    }
+/*
+    public ClientImplRei(int port, ViewLobby viewLobby) throws RemoteException {
+        super(port);
+        this.viewLobby = viewLobby;
+    }
+
+    public ClientImplRei(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf, ViewLobby viewLobby) throws RemoteException {
+        super(port, csf, ssf);
+        this.viewLobby = viewLobby;
+    }
+*/
+    public ClientImplRei(ServerRei server, String nickname) throws ExceededNumberOfPlayersException, NameAlreadyTakenException, RemoteException {
+        super();
         this.nickname = nickname;
         System.out.println("HELLO " + nickname + "!!!");
         viewLobby = new LobbyCLI();
-        server.register(this);
+        try {
+            System.out.println(server.toString());
+            server.register(this);
+        } catch (Exception e){
+            System.err.println("error in the registration: "+ e.toString() );
+        }
     }
 
     public int askMaxNumber() {

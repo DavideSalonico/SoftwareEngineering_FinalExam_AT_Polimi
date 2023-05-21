@@ -4,9 +4,13 @@ import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.util.Choice;
 
-public interface ServerRei {
-    void register (ClientImplRei client) throws ExceededNumberOfPlayersException, NameAlreadyTakenException;
-    void updateGame (ClientRei client, Choice choice);
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 
-    void updateLobby (ClientRei client, Choice choice);
+public interface ServerRei extends Remote {
+
+    void register (ClientRei client) throws ExceededNumberOfPlayersException, NameAlreadyTakenException, RemoteException;
+    void updateGame (ClientRei client, Choice choice)throws RemoteException;
+
+    void updateLobby (ClientRei client, Choice choice)throws RemoteException;
 }

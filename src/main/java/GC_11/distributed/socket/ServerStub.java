@@ -11,7 +11,7 @@ import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-
+/*
 public class ServerStub implements Server {
 
     String ip;
@@ -61,7 +61,7 @@ public class ServerStub implements Server {
      * @param client  the client that generated the event
      * @param arg     the choice made by the client
      * @throws RemoteException
-     */
+
     @Override
     public void update(Client client, Choice arg) throws RemoteException {
 
@@ -80,3 +80,4 @@ public class ServerStub implements Server {
 
 
 }
+*/

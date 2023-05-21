@@ -1,5 +1,7 @@
 package GC_11.network;
 
-public abstract class MessageView {
+import java.io.Serializable;
+
+public abstract class MessageView implements Serializable {
 
 }

@@ -29,12 +29,7 @@ public abstract class View implements PropertyChangeListener{
     public abstract void show();
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        //System.out.println("evt" + evt);
-        System.out.println("Event Type: " + evt.getPropertyName());
-        this.messageView = (MessageView) evt.getNewValue();
-    }
-
+    public abstract void propertyChange(PropertyChangeEvent evt);
 
 
     public abstract void run();

@@ -3,9 +3,19 @@ package GC_11.distributed;
 import GC_11.model.GameViewMessage;
 import GC_11.network.LobbyViewMessage;
 
-public interface ClientRei {
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 
-    void updateViewLobby (LobbyViewMessage newView);
+public interface ClientRei extends Remote {
 
-    void updateViewGame (GameViewMessage newView);
+    void updateViewLobby (LobbyViewMessage newView)throws RemoteException;
+
+    void updateViewGame (GameViewMessage newView)throws RemoteException;
+
+    int askMaxNumber()throws RemoteException;
+
+    String getNickname()throws RemoteException;
+
+    public void run() throws RemoteException;
+
 }
