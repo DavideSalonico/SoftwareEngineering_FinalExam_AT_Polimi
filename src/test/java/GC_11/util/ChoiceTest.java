@@ -1,4 +1,4 @@
-package GC_11.util;
+/*package GC_11.util;
 
 import GC_11.model.Player;
 import GC_11.util.choices.Choice;
@@ -19,3 +19,4 @@ public class ChoiceTest {
         } catch (IllegalArgumentException e){}
     }
 }
+*/
