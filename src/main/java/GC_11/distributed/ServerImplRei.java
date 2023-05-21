@@ -79,4 +79,11 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei{
         PropertyChangeEvent evt = new PropertyChangeEvent(client, "choice made", null, choice);
         this.lobbyController.propertyChange(evt);
     }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        Game game = (Game) evt.getNewValue();
+        this.gameController = new Controller(game);
+        //this.gameController.start();
+    }
 }

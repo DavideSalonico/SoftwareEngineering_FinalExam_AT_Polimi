@@ -1,5 +1,7 @@
 package GC_11.network;
 
+import GC_11.model.Game;
+
 import java.util.List;
 
 public class LobbyViewMessage extends MessageView{
@@ -8,17 +10,16 @@ public class LobbyViewMessage extends MessageView{
 
     //private String message;
     //private MSG_TYPE messageType;
-    private int lobbyId;
     private int maxPlayers;
-    //String fisrtPlayer;
     private List<String> playersNames;
+    private Game game;
 
     public LobbyViewMessage(Lobby lobby){
-        this.lobbyId=1;
         this.maxPlayers= lobby.getMaxPlayers();
         this.playersNames = lobby.getPlayers();
-
+        this.game = lobby.getGameModel();
     }
+
 /*
     public LobbyViewMessage(Lobby lobby, MSG_TYPE msgType){
         this.lobbyId=lobby.getLobbyID();
@@ -29,10 +30,6 @@ public class LobbyViewMessage extends MessageView{
         this.message=null;
     }
 */
-
-    public int getLobbyId() {
-        return lobbyId;
-    }
 
     public int getMaxPlayers() {
         return maxPlayers;
