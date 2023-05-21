@@ -11,7 +11,7 @@ public class AppServerRMI {
             System.out.println("***** Constructing server implementation *****\n");
             ServerImplRei server = new ServerImplRei();
             System.out.println("***** Getting the registry *****\n");
-            Registry registry = LocateRegistry.getRegistry();
+            Registry registry = LocateRegistry.createRegistry(1099);
             System.out.println("***** Binding server implementation to registry *****\n");
             registry.rebind("server", server);
             System.out.println("***** Waiting for clients *****\n");
