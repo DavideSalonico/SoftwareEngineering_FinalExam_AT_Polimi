@@ -31,9 +31,6 @@ public class Lobby {
     public synchronized Game addPlayer(String playerName) throws ExceededNumberOfPlayersException, NameAlreadyTakenException{
         if (playersNames.size() < maxPlayers && !playersNames.contains(playerName)){
             playersNames.add(playerName);
-            if(this.isFull()){
-                setGameModel(new Game(playersNames));
-            }
         }
         else if(this.isFull()){
             throw new ExceededNumberOfPlayersException();

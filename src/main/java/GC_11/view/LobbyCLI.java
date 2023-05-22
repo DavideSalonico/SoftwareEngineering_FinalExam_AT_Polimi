@@ -14,7 +14,7 @@ public class LobbyCLI extends ViewLobby{
     @Override
     public void show() {
         number=this.lobbyViewMessage.getMaxPlayers();
-        System.out.println("the game is about to start !!! \nthere will be " + number + " players!");
+        System.out.println("#############################\n\nthe game is about to start !!! \nthere will be " + number + " players!\n");
         int counter = 1;
         for( String s : this.lobbyViewMessage.getPlayersNames()){
             System.out.println(counter + ": " + s);

@@ -16,6 +16,7 @@ public abstract class ViewGame extends View {
         //System.out.println("evt" + evt);
         System.out.println("Event Type: " + evt.getPropertyName());
         this.modelView = (GameViewMessage) evt.getNewValue();
+        run();
     }
 
 

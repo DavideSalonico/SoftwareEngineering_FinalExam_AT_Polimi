@@ -4,10 +4,12 @@ import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.model.GameViewMessage;
 import GC_11.network.LobbyViewMessage;
+import GC_11.view.GameCLI;
 import GC_11.view.LobbyCLI;
 import GC_11.view.ViewGame;
 import GC_11.view.ViewLobby;
 
+import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
@@ -38,13 +40,14 @@ public class ClientImplRei extends UnicastRemoteObject implements ClientRei{
     public ClientImplRei(ServerRei server, String nickname) throws ExceededNumberOfPlayersException, NameAlreadyTakenException, RemoteException {
         super();
         this.nickname = nickname;
-        System.out.println("HELLO " + nickname + "!!!");
+        System.out.println("HELLO " + nickname + "!!!\n");
         viewLobby = new LobbyCLI();
+        viewGame = new GameCLI(null);
         try {
-            System.out.println(server.toString());
+            //System.out.println(server.toString());
             server.register(this);
         } catch (Exception e){
-            System.err.println("error in the registration: "+ e.toString() );
+            System.err.println("error in the registration: "+ e.getCause() + "\n" + e.getMessage() );
         }
     }
 
@@ -72,7 +75,12 @@ public class ClientImplRei extends UnicastRemoteObject implements ClientRei{
 
     @Override
     public void updateViewGame(GameViewMessage newView) {
-
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "UPDATE GAME",
+                null,
+                newView);
+        this.viewGame.propertyChange(evt);
     }
 
     public String getNickname() {

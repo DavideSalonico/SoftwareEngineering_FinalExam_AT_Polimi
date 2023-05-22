@@ -19,10 +19,10 @@ public class AppClientRMI {
         String nickname = inputLine.nextLine();
         System.out.println("***** Getting the registry *****\n");
         Registry registry = LocateRegistry.getRegistry();
-        String[] e = registry.list();
+        /*String[] e = registry.list();
         for (int i=0; i<e.length; i++){
             System.out.println(e[i]);
-        }
+        }*/
         System.out.println("***** looking up for the server *****\n");
         ServerRei server = (ServerRei) registry.lookup("server");
         System.out.println("***** Creating a client rei implementation *****\n");

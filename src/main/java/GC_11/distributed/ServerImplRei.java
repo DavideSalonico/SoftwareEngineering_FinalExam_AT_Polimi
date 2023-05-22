@@ -5,6 +5,7 @@ import GC_11.controller.LobbyController;
 import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.model.Game;
+import GC_11.model.GameViewMessage;
 import GC_11.model.Player;
 import GC_11.network.Lobby;
 import GC_11.network.LobbyViewMessage;
@@ -22,10 +23,10 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei{
 
     private Controller gameController;
 
-    private Game model;
+    private Game gameModel;
     private LobbyController lobbyController;
 
-    private Lobby lobby;
+    private Lobby lobbyModel;
 
     int maxPlayer;
     List<ClientRei> clients = new ArrayList<>();
@@ -46,26 +47,37 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei{
     public void register(ClientRei client) throws ExceededNumberOfPlayersException, NameAlreadyTakenException, RemoteException {
         if(clients.size()==0){
             maxPlayer = client.askMaxNumber();
-            lobby = new Lobby(maxPlayer);
-            lobbyController = new LobbyController(lobby);
+            lobbyModel = new Lobby(maxPlayer);
+            lobbyController = new LobbyController(lobbyModel);
         }
         clients.add(client);
+        System.out.println(client.getNickname() + " connected to the server");
         lobbyController.addPlayerName(client.getNickname());
+        System.out.println(client.getNickname() + " aggiunto alla lobby");
         for( ClientRei c : clients){
             try {
-                c.updateViewLobby(new LobbyViewMessage(lobby));
+                c.updateViewLobby(new LobbyViewMessage(lobbyModel));
+                System.out.println(c.getNickname() + " aggiornato");
             } catch (RemoteException e){
-                System.out.println("Errore whhile updating the client: " + e.getMessage() +  ". Skipping the update...");
+                System.out.println("Error while updating the client: " + e.getMessage() +  ". Skipping the update...");
+            }
+        }
+        if (clients.size() == maxPlayer) {
+            System.out.println("\n ##### Starting a game #####\n");
+            this.gameModel=new Game(lobbyModel.getPlayers());
+            this.gameController=new Controller(this.gameModel);
+            for (ClientRei c : clients) {
+                try {
+                    c.updateViewGame(new GameViewMessage(gameModel, null));
+                } catch (RemoteException e) {
+                    System.out.println("Error while notify the client " + e.getMessage());
+                }
             }
         }
 
 
         //if(clients.size()==maxPlayer){
 
-    }
-
-    public void ciao(){
-        System.out.println("ciao soco acceso");
     }
 
     @Override
@@ -80,10 +92,4 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei{
         this.lobbyController.propertyChange(evt);
     }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        Game game = (Game) evt.getNewValue();
-        this.gameController = new Controller(game);
-        //this.gameController.start();
-    }
 }
