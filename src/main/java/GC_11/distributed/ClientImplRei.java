@@ -26,17 +26,7 @@ public class ClientImplRei extends UnicastRemoteObject implements ClientRei{
         super();
         this.viewLobby = viewLobby;
     }
-/*
-    public ClientImplRei(int port, ViewLobby viewLobby) throws RemoteException {
-        super(port);
-        this.viewLobby = viewLobby;
-    }
 
-    public ClientImplRei(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf, ViewLobby viewLobby) throws RemoteException {
-        super(port, csf, ssf);
-        this.viewLobby = viewLobby;
-    }
-*/
     public ClientImplRei(ServerRei server, String nickname) throws ExceededNumberOfPlayersException, NameAlreadyTakenException, RemoteException {
         super();
         this.nickname = nickname;
