@@ -16,6 +16,8 @@ public interface Server extends Remote {
      */
     void register(Client client) throws RemoteException;
 
+    void register(GC_11.distributed.socket.Client client) throws RemoteException;
+
     /**
      * Notify the server that a client has made a choice
      * @param client  the client that generated the event

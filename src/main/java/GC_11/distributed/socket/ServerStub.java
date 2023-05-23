@@ -1,72 +1,72 @@
 package GC_11.distributed.socket;
 
-/*
-public class ServerStub implements Server {
+import GC_11.exceptions.*;
+import GC_11.util.Choice;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.rmi.RemoteException;
+
+public class ServerStub implements Server
+{
     String ip;
     int port;
 
-    private ObjectOutputStream objectOutputStream;
-    private ObjectInputStream objectInputStream;
+    private Socket clientSock;
 
-    private Socket socket;
+    private ObjectInputStream ois;
+    private ObjectOutputStream oos;
 
-    List<Client> clientList = new ArrayList<Client>();
+    public ServerStub(String ip, int port) {
+        this.ip = ip;
+        this.port = port;
+    }
 
-    public ServerStub(String ip, int port){
-        this.ip=ip;
-        this.port=port;
+
+    @Override
+    public void register(GC_11.distributed.Client client) throws RemoteException {
+        try {
+            this.clientSock = new Socket(ip, port);
+            try {
+                this.oos = new ObjectOutputStream(clientSock.getOutputStream());
+            } catch (Exception e) {
+                throw new RemoteException("Cannot create output stream", e);
+            }
+            try {
+                this.ois = new ObjectInputStream(clientSock.getInputStream());
+            } catch (Exception e) {
+                throw new RemoteException("Cannot create input stream", e);
+            }
+        } catch (Exception e) {
+            throw new RemoteException("Unable to connect to the server", e);
+        }
     }
 
     @Override
     public void register(Client client) throws RemoteException {
-        try{
-            this.socket=new Socket(ip,port); // Create new socket
-
-            // Trying to initialize outputStream from the socket
-            try{
-                this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-            }catch(IOException e){
-                throw new RemoteException("Cannot create output stream", e);
-            }
-
-            // Trying to initialize inputStream from the socket
-            try{
-                this.objectInputStream = new ObjectInputStream(socket.getInputStream());
-            } catch (IOException e) {
-                throw new RuntimeException("Cannot create input stream",e);
-            }
-        }catch(IOException e){
-            throw new RemoteException("Unable to connect to the server", e);
-        }
-        finally {
-            this.clientList.add(client);
-        }
-
+        this.register(client);
     }
-
-    /**
-     * This method get from the client the new choice
-     * @param client  the client that generated the event
-     * @param arg     the choice made by the client
-     * @throws RemoteException
 
     @Override
-    public void update(Client client, Choice arg) throws RemoteException {
-
-    }
-
-    public void receiveChoice(Client client) throws RemoteException {
-        Choice choice;
-        try{
-            choice = (Choice) objectInputStream.readObject();
-        } catch (IOException e) {
-            throw new RemoteException("Cannot receive model view from client", e);
-        } catch (ClassNotFoundException e) {
-            throw new RemoteException("Cannot deserialize model view from client", e);
+    public void update(GC_11.distributed.Client client, Choice arg) throws RemoteException, ColumnIndexOutOfBoundsException, ExceededNumberOfPlayersException, NotEnoughFreeSpacesException, NameAlreadyTakenException, IllegalMoveException {
+        try {
+            oos.writeObject(arg);
+        } catch (Exception e) {
+            throw new RemoteException("Cannot send event", e);
         }
     }
 
+    public void receive(Client client) throws RemoteException {
+        Choice c;
+        try {
+            c = (Choice) ois.readObject();
+        } catch (IOException e) {
+            throw new RemoteException("Cannot receive event", e);
+        } catch (ClassNotFoundException e) {
+            throw new RemoteException("Cannot deserialize model", e);
+        }
 
+    }
 }
-*/
