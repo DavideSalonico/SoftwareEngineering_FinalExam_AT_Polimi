@@ -1,9 +1,10 @@
-package GC_11.distributed;
+package GC_11.distributed.socket;
 
 import java.beans.PropertyChangeEvent;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+import GC_11.distributed.Client;
 import GC_11.exceptions.*;
 import GC_11.util.Choice;
 

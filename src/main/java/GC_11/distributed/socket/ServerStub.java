@@ -1,16 +1,5 @@
 package GC_11.distributed.socket;
 
-import GC_11.distributed.Client;
-import GC_11.distributed.Server;
-import GC_11.util.Choice;
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
 /*
 public class ServerStub implements Server {
 
