@@ -237,6 +237,10 @@ public class Player implements PropertyChangeListener, Serializable {
     public void setPersonalGoal(PersonalGoalCard p) {
         this.personalGoal = p;
     }
+
+    public int getPointsCommonGoals(){
+        return this.pointsCommonGoals;
+    }
 }
 
 

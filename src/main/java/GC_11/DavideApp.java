@@ -1,6 +1,4 @@
 package GC_11;
-//NON TOCCARE ASSOLUTAMENTE
-//App per provare il model in locale
 
 import GC_11.controller.Controller;
 import GC_11.model.Game;

@@ -166,9 +166,10 @@ public class Controller implements PropertyChangeListener {
         this.model.getCurrentPlayer().getShelf().addTiles(tmp_tiles, column);
         this.model.getBoard().resetSelectedTiles();
 
+        //Update points (all of them)
         this.model.calculateCommonPoints();
+        this.model.getCurrentPlayer().updatesPointsPersonalGoal();
         this.model.getCurrentPlayer().calculateAndGiveAdjacencyPoint();
-        this.model.getCurrentPlayer().getPoints();
 
         this.model.setNextCurrent();
     }
@@ -226,12 +227,5 @@ public class Controller implements PropertyChangeListener {
                  ExceededNumberOfPlayersException | NameAlreadyTakenException e) {
             this.model.triggerException(e);
         }
-    }
-
-    public void insertTiles(List<Tile> tilesOrder, int column, Player player) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
-        player.insertTiles(tilesOrder, column);
-        player.calculateAndGiveAdjacencyPoint();
-        player.updatesPointsPersonalGoal();
-        this.getGame().calculateCommonPoints();
     }
 }

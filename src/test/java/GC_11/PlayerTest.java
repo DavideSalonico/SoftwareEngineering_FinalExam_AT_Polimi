@@ -6,6 +6,7 @@ import GC_11.model.Player;
 import GC_11.model.Tile;
 import GC_11.model.TileColor;
 import GC_11.model.common.CommonGoalCard2;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -62,6 +63,4 @@ public class PlayerTest {
         System.out.println("fine test good");
 
     }
-
-
 }

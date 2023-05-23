@@ -16,7 +16,7 @@ public abstract class CommonGoalCard implements Serializable{
     private static String text = "sample common goal card text";
 
     private static int id = 3;
-    PropertyChangeListener listener;
+    private PropertyChangeListener listener;
     public abstract int getId() ;
 
 
