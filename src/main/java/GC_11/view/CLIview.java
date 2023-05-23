@@ -61,6 +61,12 @@ public class CLIview extends View /*implements Runnable*/{
                 else current.getPersonalGoal().print();
             }
         }
+
+        //Printing Main Chat
+        System.out.println("Main Chat: ");
+        for(String message : this.modelView.getChat().getMainChatMessages()){
+            System.out.println(message);
+        }
     }
 
     public Choice getPlayerChoice(){

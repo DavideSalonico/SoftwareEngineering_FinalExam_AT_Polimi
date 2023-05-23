@@ -24,6 +24,7 @@ public class Game implements PropertyChangeListener, Serializable {
     private boolean endGame;
     private Player endPlayer;
     private Board board;
+    private Chat chat;
     private boolean changed = false;
 
     //It's not necessary to serialize the listener (attribute transient)
@@ -53,6 +54,8 @@ public class Game implements PropertyChangeListener, Serializable {
         this.commonGoals = new ArrayList<CommonGoalCard>();
         this.board = new Board(players.size());
         this.board.setListener(this);
+        this.chat = new Chat();
+        this.chat.setListener(this);
         Random random = new Random();
         int tmp1 = random.nextInt(0, 11);
         int tmp2 = random.nextInt(0, 11);
@@ -226,5 +229,9 @@ public class Game implements PropertyChangeListener, Serializable {
                 null,
                 new GameView(null, e));
         this.listener.propertyChange(exception);
+    }
+
+    public Chat getChat() {
+        return chat;
     }
 }

@@ -40,6 +40,9 @@ public class ChoiceFactory {
             case CHOOSE_ORDER -> {
                 return new ChooseOrderChoice(player, params, type);
             }
+            case SEND_MESSAGE->{
+                return new SendMessageChoice(player, params, type);
+            }
         }
         return null;
     }

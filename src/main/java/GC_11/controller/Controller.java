@@ -228,4 +228,18 @@ public class Controller implements PropertyChangeListener {
             this.model.triggerException(e);
         }
     }
+
+    public void sendMessage(List<String> parameters) {
+        if(parameters.size() != 2) throw new IllegalArgumentException("There should be exactly two ooptions for this command!");
+        //TODO: Write length control on parameters.get(1)
+
+        if(parameters.get(0).equals("Everyone")){
+            this.model.getChat().sendMessageToMainChat(this.model.getCurrentPlayer(), parameters.get(1));
+        }
+        else {
+            if(this.model.getPlayer(parameters.get(0)) == null) throw new InvalidParameterException("Player not found!");
+            if(this.model.getPlayer(parameters.get(0)).equals(this.model.getCurrentPlayer())) throw new InvalidParameterException("You can't send a message to yourself!");
+            this.model.getChat().sendMessageToPrivateChat(this.model.getCurrentPlayer(), this.model.getPlayer(parameters.get(0)), parameters.get(1));
+        }
+    }
 }

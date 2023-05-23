@@ -42,6 +42,7 @@ public class GameView implements Serializable {
     }
 
     public Board getBoard() { return model.getBoard(); }
+    public Chat getChat() { return model.getChat(); }
 
     public List<Player> getPlayers(){ return model.getPlayers(); }
 

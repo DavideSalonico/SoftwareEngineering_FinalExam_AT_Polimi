@@ -10,5 +10,6 @@ public enum ChoiceType {
         DESELECT_TILE,
         PICK_COLUMN,
         CHOOSE_ORDER,
+        SEND_MESSAGE,
         RESET_TURN
 }
