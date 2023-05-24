@@ -17,8 +17,9 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.rmi.RemoteException;
+import java.util.Scanner;
 
-public class ClientSock implements PropertyChangeListener, ClientRei {
+public class ClientSock implements PropertyChangeListener{
 
     String ip;
     int port;
@@ -47,56 +48,63 @@ public class ClientSock implements PropertyChangeListener, ClientRei {
          finally {
                 System.out.println("Connection established");
          }
-
      }
 
-    @Override
-    public void updateViewLobby(LobbyViewMessage newView) throws RemoteException {
-        try{
-            LobbyViewMessage lobbyMessage = (LobbyViewMessage) in.readObject();
-        }
-        catch (IOException e) {
-            System.out.println("Unable to get message from server");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Class LobbyViewMessage not found");
-        }
-        finally {
-            System.out.println("LobbyViewMessage received");
-        }
-    }
+    public void sendMessageToServer(String s){
+            try {
+                out.writeObject(s);
+                out.flush();
+                out.reset();
+            } catch (IOException e) {
+                System.out.println("Error during sending message to server");
+            }
+     }
 
-    @Override
-    public void updateViewGame(GameViewMessage newView) throws RemoteException {
-        try{
-            GameViewMessage gameMessage = (GameViewMessage) in.readObject();
-        }
-        catch (IOException e) {
-            System.out.println("Unable to get message from server");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Class GameViewMessage not found");
-        }
-    }
+     public void receiveMessageFromServer(){
+         try {
+             String serverChoice = (String) in.readObject();
+             System.out.println("Received choice from server: "+ serverChoice);
+         } catch (IOException e) {
+             System.out.println("Error during receiving message from server");
+         } catch (ClassNotFoundException e) {
+             System.out.println("Error during deserialization of message from server");
+         }
+     }
 
+     Thread readThread = new Thread(new Runnable() {
 
+         @Override
+         public void run() {
+             System.out.println("Running read Thread");
+             receiveMessageFromServer();
+         }
+     });
 
-    @Override
-    public int askMaxNumber() throws RemoteException {
-        return 0;
-    }
+     Thread writeThread = new Thread(new Runnable() {
+         Scanner inputLine = new Scanner(System.in);
+         @Override
+         public void run() {
+             System.out.println("Running write Thread");
+             while (true){
+                 System.out.println("Insert message to send to server");
+                 String s = inputLine.nextLine();
+                 sendMessageToServer(s);
+             }
+         }
+     });
 
-    @Override
-    public String getNickname() throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public void run() throws RemoteException {
-
-    }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
          // Send message to server
+    }
+
+    public void startClient() {
+        System.out.println("ClientSocket running");
+        readThread.start();
+        writeThread.start();
+
+
     }
 }
 

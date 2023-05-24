@@ -44,6 +44,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server, PropertyC
         this.clients.add(client);
     }
 
+    @Override
+    public void register(GC_11.distributed.socket.Client client) throws RemoteException {
+
+    }
+
     // Got a problem with this, need to check parameters and Choice Class
 
     @Override

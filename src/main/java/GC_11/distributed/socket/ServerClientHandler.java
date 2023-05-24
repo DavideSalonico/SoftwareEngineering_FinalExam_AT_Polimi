@@ -2,7 +2,7 @@ package GC_11.distributed.socket;
 
 import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
-import GC_11.util.Choice;
+
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -22,6 +22,43 @@ public class ServerClientHandler implements Runnable {
         this.server=server;
     }
 
+    public void receiveMessageFromClient(){
+        try {
+            String clientChoice = (String) inputStream.readObject();
+            System.out.println("Received choice from client: "+ clientChoice);
+            server.notifyAllClients(clientChoice,this);
+            //sendMessageToClient("Risposta a" + clientChoice);
+        } catch (IOException e) {
+            System.out.println("Error during receiving message from client");
+            closeConnection();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Error during deserialization of message from client");
+            closeConnection();
+        }
+    }
+
+    public void sendMessageToClient(String s){
+        try {
+            outputStream.writeObject(s);
+            outputStream.flush();
+            outputStream.reset();
+        } catch (IOException e) {
+            System.out.println("Error during sending message to client");
+            closeConnection();
+
+        }
+    }
+
+    private Thread readThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            System.out.println("Thread read started");
+            while (true)
+                receiveMessageFromClient();
+        }
+    });
+
+
     @Override
     public void run() {
 
@@ -36,50 +73,7 @@ public class ServerClientHandler implements Runnable {
         } catch (IOException e) {
             System.err.println("Unable to get output stream");
         }
-        Choice clientChoice = null;
-
-        try {
-            lobbySetup();
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Errore nella creazione della lobby");
-        }
-
-        while(true){
-            try {
-                clientChoice = (Choice) inputStream.readObject();
-                System.out.println("Received: "+ clientChoice.getChoice() + "from"+ clientChoice.getPlayer());
-            } catch (IOException e) {
-                System.err.println("Unable to get choice from client");
-                this.closeConnection();
-                break;
-
-            } catch (ClassNotFoundException e) {
-                System.err.println("Unable to deserialize choice from client");
-            }
-
-
-            // Elaborazione del dato
-
-
-
-            // Risposta
-            if (clientChoice != null){
-                try{
-                    outputStream.writeObject("Risposta a" +clientChoice.getChoice() + "from" + clientChoice.getPlayer() );
-                }
-                catch(IOException e){
-                    System.err.println("Unable to reply to client");
-                    closeConnection();
-                }
-                if (clientChoice.getChoice().equals(Choice.Type.LOGIN)){
-                    break;
-                }
-            }
-        }
-
-        this.closeConnection();
-
-
+        readThread.start();
     }
     private void closeConnection(){
         System.out.println("Closing socket: "+ clientSocket.getInetAddress()+ ":" + clientSocket.getPort());
@@ -101,6 +95,7 @@ public class ServerClientHandler implements Runnable {
         this.server.notifyDisconnectionAllSockets(this.clientSocket,this);
     }
 
+    /*
     private void lobbySetup() throws IOException, ClassNotFoundException {
         System.out.println("Lobby setup...");
         if(this.server.getLobby().getPlayers().size()==0) {
@@ -127,13 +122,13 @@ public class ServerClientHandler implements Runnable {
                 }
                 outputStream.writeObject("OK");
                 outputStream.flush();
-                //this.server.getLobby().setMaxPlayers(maxPlayers);
+                this.server.getLobby().setMaxPlayers(maxPlayers);
                 outputStream.writeObject("Inserisci il tuo nome");
                 outputStream.flush();
                 String playerName = (String) inputStream.readObject();
                 try{
                     this.server.getLobby().addPlayer(playerName);
-                    //this.server.getLobby().setFisrtPlayer(playerName);
+                    this.server.getLobby().setFisrtPlayer(playerName);
                     System.out.println("Aggiunto " + playerName + " alla lobby");
                     outputStream.writeObject("Sei stato aggiunto alla lobby!");
                     outputStream.flush();
@@ -158,11 +153,12 @@ public class ServerClientHandler implements Runnable {
         }
 
     }
-
+*/
     public void notifyDisconnection(Socket socket){
         String alert = "Socket " + socket.getInetAddress() + ":" + socket.getPort() + " has disconnected";
         try{
             outputStream.writeObject(alert);
+            outputStream.reset();
             outputStream.flush();
         }catch(IOException e){
             System.err.println("Unable to notify socket disconnection");

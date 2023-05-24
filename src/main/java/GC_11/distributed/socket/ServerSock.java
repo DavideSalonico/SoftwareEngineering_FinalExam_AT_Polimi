@@ -41,7 +41,7 @@ public class ServerSock {
             System.out.println("Error during initialization phase...");
             System.out.println(e.getMessage());
         }
-        this.serverClientHandlerList= new ArrayList<>();
+        this.serverClientHandlerList = new ArrayList<>();
         //this.lobby=new Lobby();
 
         // Waiting for connection
@@ -56,6 +56,14 @@ public class ServerSock {
             }
             catch (IOException e){
                 System.err.println(e.getMessage());
+            }
+        }
+    }
+
+    public void notifyAllClients(String message, ServerClientHandler sourceHandler) {
+        for (ServerClientHandler sch : serverClientHandlerList) {
+            if (sch != sourceHandler) {
+                sch.sendMessageToClient(message);
             }
         }
     }

@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 public class AppClientImpl {
     public static void main( String[] args ) {
-
+        ClientSock client = new ClientSock("127.0.0.1",4321);
+        client.startClient();
     }
 }
