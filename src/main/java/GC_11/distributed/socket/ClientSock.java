@@ -28,6 +28,8 @@ public class ClientSock implements PropertyChangeListener{
     private ObjectOutputStream out;
     private ObjectInputStream in;
 
+
+
      public ClientSock(String ip, int port){
 
          this.port = port;
@@ -60,14 +62,17 @@ public class ClientSock implements PropertyChangeListener{
             }
      }
 
-     public void receiveMessageFromServer(){
+     public void receiveMessageFromServer() throws IOException, ClassNotFoundException {
+
          try {
              String serverChoice = (String) in.readObject();
              System.out.println("Received choice from server: "+ serverChoice);
          } catch (IOException e) {
-             System.out.println("Error during receiving message from server");
+             System.out.println("Error during receiving message from server. Check server connection");
+             throw new IOException();
          } catch (ClassNotFoundException e) {
-             System.out.println("Error during deserialization of message from server");
+             System.out.println("Error during deserialization of message from server. Check server connection");
+             throw new ClassNotFoundException();
          }
      }
 
@@ -76,7 +81,15 @@ public class ClientSock implements PropertyChangeListener{
          @Override
          public void run() {
              System.out.println("Running read Thread");
-             receiveMessageFromServer();
+             boolean connectionAvailable = true;
+             while (connectionAvailable)
+             {
+                 try {
+                     receiveMessageFromServer();
+                 } catch (IOException | ClassNotFoundException e) {
+                     connectionAvailable=false;
+                 }
+             }
          }
      });
 
@@ -103,8 +116,16 @@ public class ClientSock implements PropertyChangeListener{
         System.out.println("ClientSocket running");
         readThread.start();
         writeThread.start();
+    }
 
-
+    private void closeConnection(){
+        try {
+            in.close();
+            out.close();
+            socket.close();
+        } catch (IOException e) {
+            System.out.println("Error during closing connection");
+        }
     }
 }
 

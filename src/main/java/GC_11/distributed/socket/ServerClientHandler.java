@@ -22,18 +22,21 @@ public class ServerClientHandler implements Runnable {
         this.server=server;
     }
 
-    public void receiveMessageFromClient(){
+    public void receiveMessageFromClient() throws IOException, ClassNotFoundException {
         try {
             String clientChoice = (String) inputStream.readObject();
             System.out.println("Received choice from client: "+ clientChoice);
             server.notifyAllClients(clientChoice,this);
-            //sendMessageToClient("Risposta a" + clientChoice);
         } catch (IOException e) {
             System.out.println("Error during receiving message from client");
             closeConnection();
+            server.notifyDisconnectionAllSockets(this.clientSocket, this);
+            throw new IOException();
         } catch (ClassNotFoundException e) {
             System.out.println("Error during deserialization of message from client");
             closeConnection();
+            server.notifyDisconnectionAllSockets(this.clientSocket, this);
+            throw new ClassNotFoundException();
         }
     }
 
@@ -50,11 +53,21 @@ public class ServerClientHandler implements Runnable {
     }
 
     private Thread readThread = new Thread(new Runnable() {
+        boolean connected = true;
         @Override
         public void run() {
             System.out.println("Thread read started");
-            while (true)
-                receiveMessageFromClient();
+            while (connected)
+                try{
+                    receiveMessageFromClient();
+                } catch (IOException | ClassNotFoundException e) {
+                    connected = false;
+                    try {
+                        clientSocket.close();
+                    } catch (IOException ex) {
+                        System.err.println("Unable to close socket");
+                    }
+                }
         }
     });
 

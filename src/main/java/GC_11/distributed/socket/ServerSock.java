@@ -69,9 +69,10 @@ public class ServerSock {
     }
 
     public void notifyDisconnectionAllSockets(Socket socket, ServerClientHandler sourceHandler) {
+        Socket disconnectedSocket = socket;
         serverClientHandlerList.remove(sourceHandler);
         for (ServerClientHandler sch : serverClientHandlerList) {
-            sch.notifyDisconnection(socket);
+            sch.notifyDisconnection(disconnectedSocket);
         }
     }
 
