@@ -82,10 +82,6 @@ public class GameCLI extends ViewGame {
         }
     }
 
-    @Override
-    public void run() {
-    }
-
     // 0-BASED INDEXING !!!
     @Override
     protected void seeCommonGoal(Choice choice) {

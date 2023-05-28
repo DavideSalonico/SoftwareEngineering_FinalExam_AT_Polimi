@@ -6,20 +6,17 @@ import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.model.Game;
 import GC_11.model.GameViewMessage;
-import GC_11.model.Player;
 import GC_11.network.Lobby;
 import GC_11.network.LobbyViewMessage;
 import GC_11.util.Choice;
 
 import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
-import java.rmi.server.RMIClientSocketFactory;
-import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServerImplRei extends UnicastRemoteObject implements ServerRei{
+public class ServerImplRei extends UnicastRemoteObject implements ServerRei {
 
     private Controller gameController;
 
@@ -44,7 +41,7 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei{
     }
 */
     @Override
-    public void register(ClientRei client) throws ExceededNumberOfPlayersException, NameAlreadyTakenException, RemoteException {
+    public synchronized void register (ClientRei client) throws ExceededNumberOfPlayersException, NameAlreadyTakenException, RemoteException {
         if(clients.size()==0){
             maxPlayer = client.askMaxNumber();
             lobbyModel = new Lobby(maxPlayer);
@@ -68,7 +65,14 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei{
             this.gameController=new Controller(this.gameModel);
             for (ClientRei c : clients) {
                 try {
-                    c.updateViewGame(new GameViewMessage(gameModel, null));
+                    new Thread(() -> {
+                        try {
+                            c.updateViewGame(new GameViewMessage(gameModel, null));
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                    }).start();
+                    System.out.println(c.getNickname() + " aggiornato GAME");
                 } catch (RemoteException e) {
                     System.out.println("Error while notify the client " + e.getMessage());
                 }
