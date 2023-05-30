@@ -21,11 +21,11 @@ public class AppClientRMI {
         Scanner s = new Scanner(System.in);
         String serverIp = s.nextLine();
         System.out.println("***** Getting the registry *****\n");
-        Registry registry = LocateRegistry.getRegistry(serverIp,1099);
+        Registry registry = LocateRegistry.getRegistry(serverIp,4321);
         /*String[] e = registry.list();
         for (int i=0; i<e.length; i++){
             System.out.println(e[i]);
-        }*/
+        }*/ // 192.168.57.192 rei       192.168.57.131 tia
         System.out.println("***** looking up for the server *****\n");
         ServerRei server = (ServerRei) registry.lookup("server");
         System.out.println("***** Creating a client rei implementation *****\n");
