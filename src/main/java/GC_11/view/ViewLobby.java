@@ -11,12 +11,6 @@ public abstract class ViewLobby extends View {
 
     protected LobbyViewMessage lobbyViewMessage;
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        //System.out.println("evt" + evt);
-        System.out.println("Event Type: " + evt.getPropertyName());
-        this.lobbyViewMessage = (LobbyViewMessage) evt.getNewValue();
-    }
 
     public abstract void update (LobbyViewMessage lvm);
 

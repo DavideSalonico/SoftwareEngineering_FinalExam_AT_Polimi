@@ -23,10 +23,7 @@ public class LobbyCLI extends ViewLobby{
     }
 
     public void run(){
-        while(inGame) {
             if (show_en) show();
-            show_en = false;
-        }
     }
 
     public void update (LobbyViewMessage lvm){

@@ -29,8 +29,12 @@ public abstract class View implements PropertyChangeListener{
     public abstract void show();
 
     @Override
-    public abstract void propertyChange(PropertyChangeEvent evt);
+    public void propertyChange(PropertyChangeEvent evt){
+        //Questo metodo viene chiamato dal client ogni qualvolta riceve un messaggio dal server
+        this.messageView = (MessageView) evt.getNewValue();
+        //run(); --> Aggiorna la view vista dall'utente (la grafica)
 
+    }
 
     public abstract void run();
 

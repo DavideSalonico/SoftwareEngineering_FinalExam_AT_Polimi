@@ -12,15 +12,6 @@ public abstract class ViewGame extends View {
     protected GameViewMessage modelView;
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        //System.out.println("evt" + evt);
-        System.out.println("Event Type: " + evt.getPropertyName());
-        this.modelView = (GameViewMessage) evt.getNewValue();
-        run();
-    }
-
-
-
     public void run(){
         boolean show_en = true;
         while(inGame){
