@@ -10,24 +10,27 @@ import GC_11.view.ViewGame;
 import GC_11.view.ViewLobby;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
-public class ClientImplRei extends UnicastRemoteObject implements ClientRei{
+public class ClientImplRei extends UnicastRemoteObject implements ClientRei, PropertyChangeListener{
 
     private ViewLobby viewLobby;
     private ViewGame viewGame;
     private String nickname;
+
+    private PropertyChangeListener listener;
 
     public ClientImplRei(ViewLobby viewLobby) throws RemoteException {
         super();
         this.viewLobby = viewLobby;
     }
 
-    public ClientImplRei(ServerRei server, String nickname) throws ExceededNumberOfPlayersException, NameAlreadyTakenException, RemoteException {
+    public ClientImplRei(ServerRei server, String nickname) throws RemoteException {
         super();
         this.nickname = nickname;
         System.out.println("HELLO " + nickname + "!!!\n");
@@ -80,4 +83,11 @@ public class ClientImplRei extends UnicastRemoteObject implements ClientRei{
     public void run() {
         viewLobby.run();
     }
+
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+
+        }
+
 }
+

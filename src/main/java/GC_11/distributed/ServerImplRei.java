@@ -53,7 +53,13 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei {
         System.out.println(client.getNickname() + " aggiunto alla lobby");
         for( ClientRei c : clients){
             try {
-                c.updateViewLobby(new LobbyViewMessage(lobbyModel));
+                new Thread(() -> {
+                    try {
+                        c.updateViewLobby(new LobbyViewMessage(lobbyModel));
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
                 System.out.println(c.getNickname() + " aggiornato");
             } catch (RemoteException e){
                 System.out.println("Error while updating the client: " + e.getMessage() +  ". Skipping the update...");
@@ -96,4 +102,6 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei {
         this.lobbyController.propertyChange(evt);
     }
 
+
 }
+
