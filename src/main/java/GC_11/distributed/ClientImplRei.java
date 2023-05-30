@@ -35,7 +35,6 @@ public class ClientImplRei extends UnicastRemoteObject implements ClientRei, Pro
         this.nickname = nickname;
         System.out.println("HELLO " + nickname + "!!!\n");
         viewLobby = new LobbyCLI();
-        viewGame = new GameCLI(null);
         try {
             //System.out.println(server.toString());
             server.register(this);
@@ -61,6 +60,12 @@ public class ClientImplRei extends UnicastRemoteObject implements ClientRei, Pro
         }
         return number;
     }
+
+    public void updateStartGame(GameViewMessage newView) {
+        viewGame = new GameCLI(newView.getPlayer(this.nickname));
+        updateViewGame(newView);
+    }
+
     @Override
     public void updateViewLobby(LobbyViewMessage newView) {
         PropertyChangeEvent evt = new PropertyChangeEvent(

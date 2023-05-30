@@ -17,11 +17,11 @@ public class AppClientRMI {
 
         System.out.println("what's your nickname?");
         String nickname = inputLine.nextLine();
-        System.out.println("Inserire indirizzo ip del server: ");
+        /*System.out.println("Inserire indirizzo ip del server: ");
         Scanner s = new Scanner(System.in);
-        String serverIp = s.nextLine();
+        String serverIp = s.nextLine();*/
         System.out.println("***** Getting the registry *****\n");
-        Registry registry = LocateRegistry.getRegistry(serverIp,1099);
+        Registry registry = LocateRegistry.getRegistry(4321);
         /*String[] e = registry.list();
         for (int i=0; i<e.length; i++){
             System.out.println(e[i]);

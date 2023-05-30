@@ -19,4 +19,6 @@ public interface ClientRei extends Remote {
 
     public void run() throws RemoteException;
 
+    public void updateStartGame(GameViewMessage newView) throws RemoteException;
+
 }

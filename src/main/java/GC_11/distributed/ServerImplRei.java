@@ -73,7 +73,7 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei {
                 try {
                     new Thread(() -> {
                         try {
-                            c.updateViewGame(new GameViewMessage(gameModel, null));
+                            c.updateStartGame(new GameViewMessage(gameModel, null));
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }

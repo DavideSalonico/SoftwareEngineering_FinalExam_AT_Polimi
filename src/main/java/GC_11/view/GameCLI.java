@@ -1,4 +1,4 @@
-
+//TODO: 1) Implementare COME LA SCELTA DEL GIOCAGORE VA AL SERVER E QUINDI AL CONTROLLER E POI AL GAME
 package GC_11.view;
 
 import GC_11.model.GameViewMessage;
@@ -17,6 +17,7 @@ public class GameCLI extends ViewGame {
 
     // private final Choice controllerChoice;
      private Choice playerChoice;
+
     // private final Outcome outcome;
 
     /**
@@ -40,6 +41,7 @@ public class GameCLI extends ViewGame {
         while(inGame){
             if(show_en) show();
             Choice choice = getPlayerChoice();
+            System.out.println("scelta fatta");
             switch (choice.getChoice()){
                 //Controls already made in the creation of choice client-side
                 case SEE_COMMONGOAL -> {
