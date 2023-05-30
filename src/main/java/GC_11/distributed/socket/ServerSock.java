@@ -3,6 +3,8 @@ package GC_11.distributed.socket;
 
 import GC_11.network.Lobby;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -11,7 +13,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ServerSock {
+public class ServerSock implements PropertyChangeListener {
 
     Lobby lobby;
     private final int port;
@@ -78,6 +80,11 @@ public class ServerSock {
 
     public Lobby getLobby() {
         return lobby;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+
     }
 }
 

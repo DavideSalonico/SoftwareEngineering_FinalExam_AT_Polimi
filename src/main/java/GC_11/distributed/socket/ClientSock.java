@@ -6,6 +6,7 @@ import GC_11.distributed.ClientRei;
 import GC_11.model.GameViewMessage;
 import GC_11.model.Player;
 import GC_11.network.LobbyViewMessage;
+import GC_11.util.Choice;
 import GC_11.view.View;
 
 import java.beans.PropertyChangeEvent;
@@ -23,10 +24,10 @@ public class ClientSock implements PropertyChangeListener{
 
     String ip;
     int port;
-
     private Socket socket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
+    private View view;
 
 
 
@@ -62,6 +63,16 @@ public class ClientSock implements PropertyChangeListener{
             }
      }
 
+     public void sendChoiceToServer(Choice c){
+         try{
+             out.writeObject(c);
+             out.flush();
+             out.reset();
+         } catch (IOException e) {
+             System.out.println("Error during sending message to server");
+         }
+     }
+
      public void receiveMessageFromServer() throws IOException, ClassNotFoundException {
 
          try {
@@ -74,6 +85,18 @@ public class ClientSock implements PropertyChangeListener{
              System.out.println("Error during deserialization of message from server. Check server connection");
              throw new ClassNotFoundException();
          }
+     }
+
+     public void receiveGameViewFromServer(){
+            try {
+                GameViewMessage gameViewMessage = (GameViewMessage) in.readObject();
+                System.out.println("Received gameViewMessage from server: "+ gameViewMessage);
+                //this.view.propertyChange(new PropertyChangeEvent(this, "gameViewMessage", null, gameViewMessage));
+            } catch (IOException e) {
+                System.out.println("Error during receiving gameViewMessage from server. Check server connection");
+            } catch (ClassNotFoundException e) {
+                System.out.println("Error during deserialization of gameViewMessage from server. Check server connection");
+            }
      }
 
      Thread readThread = new Thread(new Runnable() {
@@ -107,9 +130,14 @@ public class ClientSock implements PropertyChangeListener{
      });
 
 
+    /**
+     *  Called whenever a view is sending a choice to the server
+     * @param evt A PropertyChangeEvent object describing the event source
+     *          and the property that has changed. Contains the choice
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-         // Send message to server
+         sendChoiceToServer((Choice) evt.getNewValue());
     }
 
     public void startClient() {
@@ -126,6 +154,14 @@ public class ClientSock implements PropertyChangeListener{
         } catch (IOException e) {
             System.out.println("Error during closing connection");
         }
+    }
+
+    public void setView(View view) {
+        this.view = view;
+    }
+
+    public View getView() {
+        return view;
     }
 }
 
