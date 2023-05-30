@@ -118,6 +118,23 @@ public class ClientSock implements PropertyChangeListener{
          }
      });
 
+     Thread readGameViewThread = new Thread(new Runnable() {
+
+         @Override
+         public void run() {
+             System.out.println("Running readGameViewThread Thread");
+             boolean connectionAvailable = true;
+             while (connectionAvailable)
+             {
+                 try {
+                     receiveGameViewFromServer();
+                 } catch (Exception e) {
+                     connectionAvailable=false;
+                 }
+             }
+         }
+     });
+
      Thread writeThread = new Thread(new Runnable() {
          Scanner inputLine = new Scanner(System.in);
          @Override

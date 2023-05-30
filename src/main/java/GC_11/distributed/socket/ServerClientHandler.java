@@ -3,6 +3,7 @@ package GC_11.distributed.socket;
 import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.model.GameViewMessage;
+import GC_11.network.MessageView;
 import GC_11.util.Choice;
 
 
@@ -70,9 +71,9 @@ public class ServerClientHandler implements Runnable {
         }
     }
 
-    public void sendGameViewToClient(GameViewMessage gameViewMessage){
+    public void sendMessageViewToClient(MessageView messageView){
         try {
-            outputStream.writeObject(gameViewMessage);
+            outputStream.writeObject(messageView);
             outputStream.flush();
             outputStream.reset();
         } catch (IOException e) {
