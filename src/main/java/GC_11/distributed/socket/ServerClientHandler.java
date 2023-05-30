@@ -2,6 +2,8 @@ package GC_11.distributed.socket;
 
 import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
+import GC_11.model.GameViewMessage;
+import GC_11.util.Choice;
 
 
 import java.io.IOException;
@@ -40,6 +42,22 @@ public class ServerClientHandler implements Runnable {
         }
     }
 
+    public void receiveChoiceFromClient(){
+        try {
+            Choice clientChoice = (Choice) inputStream.readObject();
+            System.out.println("Received choice from: " + clientChoice.getPlayer() + ":"+ clientChoice.getChoice() + clientChoice.getParams());
+            //this.controller.propertyChange(new PropertyChangeEvent(this, "choice", null, clientChoice));
+        } catch (IOException e) {
+            System.out.println("Error during receiving message from client");
+            closeConnection();
+            server.notifyDisconnectionAllSockets(this.clientSocket, this);
+        } catch (ClassNotFoundException e) {
+            System.out.println("Error during deserialization of message from client");
+            closeConnection();
+            server.notifyDisconnectionAllSockets(this.clientSocket, this);
+        }
+    }
+
     public void sendMessageToClient(String s){
         try {
             outputStream.writeObject(s);
@@ -49,6 +67,17 @@ public class ServerClientHandler implements Runnable {
             System.out.println("Error during sending message to client");
             closeConnection();
 
+        }
+    }
+
+    public void sendGameViewToClient(GameViewMessage gameViewMessage){
+        try {
+            outputStream.writeObject(gameViewMessage);
+            outputStream.flush();
+            outputStream.reset();
+        } catch (IOException e) {
+            System.out.println("Error during sending gameView to client");
+            closeConnection();
         }
     }
 

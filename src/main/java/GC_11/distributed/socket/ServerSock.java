@@ -1,6 +1,7 @@
 package GC_11.distributed.socket;
 
 
+import GC_11.model.GameViewMessage;
 import GC_11.network.Lobby;
 
 import java.beans.PropertyChangeEvent;
@@ -84,7 +85,9 @@ public class ServerSock implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        if(evt.getPropertyName()=="newGameView"){
 
+        }
     }
 }
 
