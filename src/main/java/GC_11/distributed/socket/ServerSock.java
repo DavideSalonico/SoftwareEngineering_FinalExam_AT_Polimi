@@ -3,6 +3,7 @@ package GC_11.distributed.socket;
 
 import GC_11.model.GameViewMessage;
 import GC_11.network.Lobby;
+import GC_11.network.MessageView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -71,6 +72,14 @@ public class ServerSock implements PropertyChangeListener {
         }
     }
 
+    public void notifyAllClients(MessageView message, ServerClientHandler sourceHandler) {
+        for (ServerClientHandler sch : serverClientHandlerList) {
+            if (sch != sourceHandler) {
+                sch.sendMessageViewToClient(message);
+            }
+        }
+    }
+
     public void notifyDisconnectionAllSockets(Socket socket, ServerClientHandler sourceHandler) {
         Socket disconnectedSocket = socket;
         serverClientHandlerList.remove(sourceHandler);
@@ -78,6 +87,8 @@ public class ServerSock implements PropertyChangeListener {
             sch.notifyDisconnection(disconnectedSocket);
         }
     }
+
+
 
     public Lobby getLobby() {
         return lobby;

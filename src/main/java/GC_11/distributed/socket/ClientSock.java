@@ -93,7 +93,7 @@ public class ClientSock implements PropertyChangeListener{
                 MessageView messageView = (MessageView) in.readObject();
                 System.out.println("Received gameViewMessage from server: "+ messageView.toString());
                 // Una volta ricevuto il messaggio notifico la view
-                // this.view.propertyChange(new PropertyChangeEvent(this,"gameViewMessage",null,messageView));
+                this.view.propertyChange(new PropertyChangeEvent(this,"gameViewMessage",null,messageView));
             } catch (IOException e) {
                 System.out.println("Error during receiving gameViewMessage from server. Check server connection");
             } catch (ClassNotFoundException e) {
@@ -112,6 +112,23 @@ public class ClientSock implements PropertyChangeListener{
                  try {
                      receiveMessageFromServer();
                  } catch (IOException | ClassNotFoundException e) {
+                     connectionAvailable=false;
+                 }
+             }
+         }
+     });
+
+     Thread readGameViewThread = new Thread(new Runnable() {
+
+         @Override
+         public void run() {
+             System.out.println("Running readGameViewThread Thread");
+             boolean connectionAvailable = true;
+             while (connectionAvailable)
+             {
+                 try {
+                     receiveGameViewFromServer();
+                 } catch (Exception e) {
                      connectionAvailable=false;
                  }
              }
