@@ -11,7 +11,10 @@ import java.util.Scanner;
 
 public class AppClientImpl {
     public static void main( String[] args ) {
-        ClientSock client = new ClientSock("127.0.0.1",4321);
+        System.out.println("Inserire indirizzo ip del server: ");
+        Scanner s = new Scanner(System.in);
+        String serverIp = s.nextLine();
+        ClientSock client = new ClientSock(serverIp,4321);
         client.startClient();
     }
 }
