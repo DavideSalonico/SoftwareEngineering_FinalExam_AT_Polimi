@@ -5,7 +5,7 @@ import GC_11.util.Choice;
 
 import java.beans.PropertyChangeEvent;
 
-public abstract class ViewGame extends View {
+public abstract class ViewGame extends View{
 
     public abstract Choice getPlayerChoice();
 
@@ -47,4 +47,10 @@ public abstract class ViewGame extends View {
     protected abstract void seeCommonGoal(Choice choice);
 
     protected abstract void seePersonalGoal(Choice choice);
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        this.modelView = (GameViewMessage) evt.getNewValue();
+        run();
+    }
 }

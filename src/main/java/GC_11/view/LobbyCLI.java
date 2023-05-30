@@ -23,12 +23,7 @@ public class LobbyCLI extends ViewLobby{
     }
 
     public void run(){
-            if (show_en) show();
-    }
-
-    public void update (LobbyViewMessage lvm){
-        this.lobbyViewMessage=lvm;
-        this.show();
+            show();
     }
 
 }

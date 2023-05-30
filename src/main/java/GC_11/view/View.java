@@ -20,7 +20,7 @@ public abstract class View implements PropertyChangeListener{
 
 
     //Controller must register
-     PropertyChangeListener listener;
+    PropertyChangeListener listener;
 
     public Player getPlayer(){
         return player;
@@ -29,12 +29,7 @@ public abstract class View implements PropertyChangeListener{
     public abstract void show();
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt){
-        //Questo metodo viene chiamato dal client ogni qualvolta riceve un messaggio dal server
-        this.messageView = (MessageView) evt.getNewValue();
-        //run(); --> Aggiorna la view vista dall'utente (la grafica)
-
-    }
+    public abstract void propertyChange(PropertyChangeEvent evt);
 
     public abstract void run();
 

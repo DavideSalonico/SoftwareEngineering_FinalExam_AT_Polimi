@@ -63,7 +63,12 @@ public class ClientImplRei extends UnicastRemoteObject implements ClientRei, Pro
     }
     @Override
     public void updateViewLobby(LobbyViewMessage newView) {
-        this.viewLobby.update(newView);
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "UPDATE LOBBY",
+                null,
+                newView);
+        this.viewLobby.propertyChange(evt);
     }
 
     @Override
