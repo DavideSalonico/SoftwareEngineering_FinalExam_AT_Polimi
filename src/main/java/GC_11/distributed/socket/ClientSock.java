@@ -6,6 +6,7 @@ import GC_11.distributed.ClientRei;
 import GC_11.model.GameViewMessage;
 import GC_11.model.Player;
 import GC_11.network.LobbyViewMessage;
+import GC_11.network.MessageView;
 import GC_11.util.Choice;
 import GC_11.view.View;
 
@@ -89,9 +90,10 @@ public class ClientSock implements PropertyChangeListener{
 
      public void receiveGameViewFromServer(){
             try {
-                GameViewMessage gameViewMessage = (GameViewMessage) in.readObject();
-                System.out.println("Received gameViewMessage from server: "+ gameViewMessage);
-                //this.view.propertyChange(new PropertyChangeEvent(this, "gameViewMessage", null, gameViewMessage));
+                MessageView messageView = (MessageView) in.readObject();
+                System.out.println("Received gameViewMessage from server: "+ messageView.toString());
+                // Una volta ricevuto il messaggio notifico la view
+                // this.view.propertyChange(new PropertyChangeEvent(this,"gameViewMessage",null,messageView));
             } catch (IOException e) {
                 System.out.println("Error during receiving gameViewMessage from server. Check server connection");
             } catch (ClassNotFoundException e) {
