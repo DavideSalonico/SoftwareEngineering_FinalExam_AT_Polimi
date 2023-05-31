@@ -171,6 +171,8 @@ public class Controller implements PropertyChangeListener {
         this.model.getCurrentPlayer().getShelf().addTiles(tmp_tiles, column);
         this.model.getBoard().resetSelectedTiles();
         this.model.setNextCurrent();
+
+        this.lastChoice = Choice.Type.RESET_TURN;
     }
 
     private int paramsToColumnIndex(List<String> parameters) {
