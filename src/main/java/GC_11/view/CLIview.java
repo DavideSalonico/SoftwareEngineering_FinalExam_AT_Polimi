@@ -87,8 +87,6 @@ public class CLIview extends View /*implements Runnable*/{
             }
         }
     }
-
-    // 0-BASED INDEXING !!!
     @Override
     protected void seeCommonGoal(Choice choice) {
         int index = parseInt(choice.getParams().get(0));
