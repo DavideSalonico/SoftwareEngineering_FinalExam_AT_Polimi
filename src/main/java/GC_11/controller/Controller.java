@@ -7,6 +7,7 @@ import GC_11.util.Choice;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.rmi.RemoteException;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,13 +73,12 @@ public class Controller implements PropertyChangeListener {
             ColumnIndexOutOfBoundsException,
             NotEnoughFreeSpacesException,
             ExceededNumberOfPlayersException,
-            NameAlreadyTakenException {
+            NameAlreadyTakenException, RemoteException {
         this.choice = arg;
 
         if (!checkTurn()){
             throw new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer()+ "'s turn");
         }
-
         checkExpectedMove();
 
         List<String> params = arg.getParams();
@@ -111,11 +111,11 @@ public class Controller implements PropertyChangeListener {
         switch(this.lastChoice){
             case SELECT_TILE, DESELECT_TILE, RESET_TURN-> {
                 if(currentChoice.equals(Choice.Type.DESELECT_TILE) && this.model.getBoard().getSelectedTiles().size() == 0){
-                    throw new IllegalMoveException("You can't make this move!");
+                    throw new IllegalMoveException("You can't make this move!1");
                 }
                 else if(currentChoice.equals(Choice.Type.SELECT_TILE)
                         && this.model.getBoard().getSelectedTiles().size() == min(3, this.model.getCurrentPlayer().getShelf().maxFreeVerticalSpaces())){
-                    throw new IllegalMoveException("You can't make this move!");
+                    throw new IllegalMoveException("You can't make this move!2");
                 }
             }
             case CHOOSE_ORDER -> {
@@ -123,10 +123,10 @@ public class Controller implements PropertyChangeListener {
                         || currentChoice.equals(Choice.Type.PICK_COLUMN)
                         || currentChoice.equals(Choice.Type.RESET_TURN))
                     return;
-                else  throw new IllegalMoveException("You can't make this move!");
+                else  throw new IllegalMoveException("You can't make this move!3");
             }
             case PICK_COLUMN -> {
-                throw new IllegalMoveException("You can't make this move!"); //Non deve mai essere l'ultima mossa scelta, se va a buon fine viene resettato
+                throw new IllegalMoveException("You can't make this move!4"); //Non deve mai essere l'ultima mossa scelta, se va a buon fine viene resettato
             }
         }
     }
@@ -160,7 +160,7 @@ public class Controller implements PropertyChangeListener {
 
     }
 
-    private void pickColumn(List<String> parameters) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+    private void pickColumn(List<String> parameters) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException, RemoteException {
         int column = paramsToColumnIndex(parameters);
         //TODO: Da rivedere, se possibile farlo senza creare una lista di appoggio
         List<Tile> tmp_tiles = new ArrayList<Tile>();
@@ -224,7 +224,13 @@ public class Controller implements PropertyChangeListener {
             update((Choice) evt.getNewValue());
         } catch (IllegalMoveException | ColumnIndexOutOfBoundsException | NotEnoughFreeSpacesException |
                  ExceededNumberOfPlayersException | NameAlreadyTakenException e) {
-            this.model.triggerException(e);
+            try {
+                this.model.triggerException(e);
+            } catch (RemoteException ex) {
+                throw new RuntimeException(ex);
+            }
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
         }
     }
 

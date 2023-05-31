@@ -10,7 +10,7 @@ import java.util.List;
 
 public class App
 {
-    public static void main( String[] args ){
+   /* public static void main( String[] args ){
         //Just a sample code to try if everything works fine
         List<String> tmpPlayerNames = new ArrayList<String>();
         tmpPlayerNames.add("Pippo");
@@ -29,5 +29,5 @@ public class App
 
 
         GUIModel guiModel = new GUIModel(modelView,"Pippo");
-    }
+    }*/
 }

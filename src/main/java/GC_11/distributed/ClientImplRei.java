@@ -4,6 +4,7 @@ import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.model.GameViewMessage;
 import GC_11.network.LobbyViewMessage;
+import GC_11.util.Choice;
 import GC_11.view.GameCLI;
 import GC_11.view.LobbyCLI;
 import GC_11.view.ViewGame;
@@ -17,7 +18,7 @@ import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
-public class ClientImplRei extends UnicastRemoteObject implements ClientRei, PropertyChangeListener{
+public class ClientImplRei extends UnicastRemoteObject implements ClientRei {
 
     private ViewLobby viewLobby;
     private ViewGame viewGame;
@@ -25,19 +26,20 @@ public class ClientImplRei extends UnicastRemoteObject implements ClientRei, Pro
 
     private PropertyChangeListener listener;
 
+    private ServerRei server;
+
     public ClientImplRei(ViewLobby viewLobby) throws RemoteException {
-        super();
         this.viewLobby = viewLobby;
     }
 
     public ClientImplRei(ServerRei server, String nickname) throws RemoteException {
-        super();
         this.nickname = nickname;
         System.out.println("HELLO " + nickname + "!!!\n");
         viewLobby = new LobbyCLI();
         try {
             //System.out.println(server.toString());
             server.register(this);
+            this.server = server;
         } catch (Exception e){
             System.err.println("error in the registration: "+ e.getCause() + "\n" + e.getMessage() );
         }
@@ -61,9 +63,23 @@ public class ClientImplRei extends UnicastRemoteObject implements ClientRei, Pro
         return number;
     }
 
-    public void updateStartGame(GameViewMessage newView) {
-        viewGame = new GameCLI(newView.getPlayer(this.nickname));
+    public void updateStartGame(GameViewMessage newView) throws RemoteException {
+        viewGame = new GameCLI(newView.getPlayer(this.nickname), this);
         updateViewGame(newView);
+    }
+
+    @Override
+    public void notifyServer(PropertyChangeEvent evt) throws RemoteException {
+        if (evt.getPropertyName().equals("UPDATE LOBBY")) {
+            //server.updateLobby();
+        }
+        if (evt.getPropertyName().equals("CHOICE")) {
+            try {
+                server.updateGame(this, (Choice) evt.getNewValue());
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @Override
@@ -84,20 +100,29 @@ public class ClientImplRei extends UnicastRemoteObject implements ClientRei, Pro
                 null,
                 newView);
         this.viewGame.propertyChange(evt);
+
     }
 
     public String getNickname() {
         return nickname;
     }
 
-    public void run() {
+    public void run() throws RemoteException {
         viewLobby.run();
     }
 
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-
+    /*public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("UPDATE LOBBY")) {
+            //server.updateLobby();
         }
+        if (evt.getPropertyName().equals("CHOICE")) {
+            try {
+                server.updateGame( this, (Choice) evt.getNewValue());
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }*/
 
 }
 

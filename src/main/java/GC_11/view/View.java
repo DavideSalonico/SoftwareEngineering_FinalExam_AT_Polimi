@@ -5,6 +5,7 @@ import GC_11.network.MessageView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.rmi.RemoteException;
 
 import static java.lang.Integer.parseInt;
 
@@ -31,7 +32,7 @@ public abstract class View implements PropertyChangeListener{
     @Override
     public abstract void propertyChange(PropertyChangeEvent evt);
 
-    public abstract void run();
+    public abstract void run() throws RemoteException;
 
     public void setListener(PropertyChangeListener listener) {
         this.listener = listener;

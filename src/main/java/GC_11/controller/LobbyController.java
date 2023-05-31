@@ -19,11 +19,11 @@ public class LobbyController implements PropertyChangeListener {
         this.lobbyModel=lobby;
     }
 
-    private void findMatch(List<String> params) {
+   /* private void findMatch(List<String> params) {
         //if(player.equals(lobbyModel.getBoss()))) We should check that only the main player can start the game
         lobbyModel.setGameModel(new Game(lobbyModel.getPlayers()));
         //lobbyModel.startGame(this.gameModel);
-    }
+    }*/
 
     private void login(List<String> params) {
         //TODO

@@ -4,6 +4,7 @@ import GC_11.model.GameViewMessage;
 import GC_11.util.Choice;
 
 import java.beans.PropertyChangeEvent;
+import java.rmi.RemoteException;
 
 public abstract class ViewGame extends View{
 
@@ -24,6 +25,10 @@ public abstract class ViewGame extends View{
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         this.modelView = (GameViewMessage) evt.getNewValue();
-        run();
+        try {
+            run();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

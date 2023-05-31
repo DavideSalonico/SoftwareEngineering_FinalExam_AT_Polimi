@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DavideApp {
-    public static void main( String[] args ){
+   /* public static void main( String[] args ){
         //Just a sample code to try if everything works fine
         List<String> tmpPlayerNames = new ArrayList<String>();
         tmpPlayerNames.add("Pippo");
@@ -27,5 +27,5 @@ public class DavideApp {
         view.setListener(controller);
         view.run();
 
-    }
+    }*/
 }

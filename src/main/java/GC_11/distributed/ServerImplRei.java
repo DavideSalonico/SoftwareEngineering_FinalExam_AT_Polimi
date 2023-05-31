@@ -31,15 +31,6 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei {
     public ServerImplRei() throws RemoteException {
         super();
     }
-/*
-    protected ServerImplRei(int port) throws RemoteException {
-        super(port);
-    }
-
-    protected ServerImplRei(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
-        super(port, csf, ssf);
-    }
-*/
     @Override
     public synchronized void register (ClientRei client) throws ExceededNumberOfPlayersException, NameAlreadyTakenException, RemoteException {
         if(clients.size()==0){
@@ -65,9 +56,10 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei {
                 System.out.println("Error while updating the client: " + e.getMessage() +  ". Skipping the update...");
             }
         }
+        System.out.println("\n");
         if (clients.size() == maxPlayer) {
             System.out.println("\n ##### Starting a game #####\n");
-            this.gameModel=new Game(lobbyModel.getPlayers());
+            this.gameModel=new Game(lobbyModel.getPlayers(), this);
             this.gameController=new Controller(this.gameModel);
             for (ClientRei c : clients) {
                 try {
@@ -83,6 +75,7 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei {
                     System.out.println("Error while notify the client " + e.getMessage());
                 }
             }
+            System.out.println("\n");
         }
 
 
@@ -93,6 +86,7 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei {
     @Override
     public void updateGame(ClientRei client, Choice choice) throws RemoteException {
         PropertyChangeEvent evt = new PropertyChangeEvent(client, "choice made", null, choice);
+        System.out.println(client.getNickname() + ": " + choice.getChoice());
         this.gameController.propertyChange(evt);
     }
 
@@ -100,6 +94,21 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei {
     public void updateLobby(ClientRei client, Choice choice) throws RemoteException {
         PropertyChangeEvent evt = new PropertyChangeEvent(client, "choice made", null, choice);
         this.lobbyController.propertyChange(evt);
+    }
+
+    public void notifyClients (){
+        for (ClientRei c : clients) {
+            new Thread(() -> {
+                try {
+                    c.updateViewGame(new GameViewMessage(gameModel, null));
+                    System.out.println(c.getNickname() + " aggiornato GAME correctly");
+                } catch (RemoteException e) {
+                    System.out.println(e.getMessage());
+                }
+            }).start();
+
+        }
+        System.out.println("\n");
     }
 
 

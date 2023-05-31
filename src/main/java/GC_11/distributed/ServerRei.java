@@ -37,4 +37,10 @@ public interface ServerRei extends Remote{
      */
     void updateLobby (ClientRei client, Choice choice)throws RemoteException;
 
+    /**
+     * notify the clients that the game is updated
+     * @throws RemoteException
+     */
+    public void notifyClients () throws RemoteException;
+
 }
