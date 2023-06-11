@@ -4,7 +4,7 @@ import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.model.GameViewMessage;
 import GC_11.network.LobbyViewMessage;
-import GC_11.util.Choice;
+import GC_11.util.choices.Choice;
 import GC_11.view.GameCLI;
 import GC_11.view.LobbyCLI;
 import GC_11.view.ViewGame;

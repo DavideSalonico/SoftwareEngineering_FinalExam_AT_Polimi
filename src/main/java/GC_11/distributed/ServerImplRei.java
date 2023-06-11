@@ -8,7 +8,7 @@ import GC_11.model.Game;
 import GC_11.model.GameViewMessage;
 import GC_11.network.Lobby;
 import GC_11.network.LobbyViewMessage;
-import GC_11.util.Choice;
+import GC_11.util.choices.Choice;
 
 import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
@@ -86,7 +86,7 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei {
     @Override
     public void updateGame(ClientRei client, Choice choice) throws RemoteException {
         PropertyChangeEvent evt = new PropertyChangeEvent(client, "choice made", null, choice);
-        System.out.println(client.getNickname() + ": " + choice.getChoice());
+        System.out.println(client.getNickname() + ": " + choice.getType());
         this.gameController.propertyChange(evt);
     }
 

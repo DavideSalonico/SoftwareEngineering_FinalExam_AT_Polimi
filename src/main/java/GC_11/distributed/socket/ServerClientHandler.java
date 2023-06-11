@@ -4,7 +4,7 @@ import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.model.GameViewMessage;
 import GC_11.network.MessageView;
-import GC_11.util.Choice;
+import GC_11.util.choices.Choice;
 
 
 import java.io.IOException;
@@ -46,7 +46,7 @@ public class ServerClientHandler implements Runnable {
     public void receiveChoiceFromClient(){
         try {
             Choice clientChoice = (Choice) inputStream.readObject();
-            System.out.println("Received choice from: " + clientChoice.getPlayer() + ":"+ clientChoice.getChoice() + clientChoice.getParams());
+            System.out.println("Received choice from: " + clientChoice.getPlayer() + ":"+ clientChoice.getType() + clientChoice.getParams());
             //this.controller.propertyChange(new PropertyChangeEvent(this, "choice", null, clientChoice));
         } catch (IOException e) {
             System.out.println("Error during receiving message from client");

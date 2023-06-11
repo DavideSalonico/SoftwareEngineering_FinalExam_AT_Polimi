@@ -9,6 +9,7 @@ import GC_11.view.View;
 
 import java.beans.PropertyChangeEvent;
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public abstract class Choice implements Serializable{
         this.params = params;
     }
     public abstract void executeOnServer(Controller controller)
-            throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException;
+            throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException, RemoteException;
 
     public void executeOnClient(View view)
             throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException{

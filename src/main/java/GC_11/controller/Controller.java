@@ -156,7 +156,7 @@ public class Controller implements PropertyChangeListener {
 
     }
 
-    private void pickColumn(List<String> parameters) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException, RemoteException {
+    public void pickColumn(List<String> parameters) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException, RemoteException {
         int column = paramsToColumnIndex(parameters);
         //TODO: Da rivedere, se possibile farlo senza creare una lista di appoggio
         List<Tile> tmp_tiles = new ArrayList<Tile>();

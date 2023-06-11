@@ -1,7 +1,7 @@
 package GC_11.distributed.socket;
 
 import GC_11.model.GameViewMessage;
-import GC_11.util.Choice;
+import GC_11.util.choices.Choice;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

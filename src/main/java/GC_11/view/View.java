@@ -3,7 +3,7 @@ package GC_11.view;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.IllegalMoveException;
 import GC_11.exceptions.NotEnoughFreeSpacesException;
-import GC_11.model.GameView;
+import GC_11.model.GameViewMessage;
 import GC_11.model.Player;
 import GC_11.network.MessageView;
 import GC_11.util.choices.Choice;
@@ -21,14 +21,12 @@ public abstract class View implements PropertyChangeListener{
     protected Player player;
     protected MessageView messageView;
 
-    protected GameView modelView;
-    private boolean inGame = true;
-    private boolean show_en = true;
+    protected GameViewMessage modelView;
+    protected boolean inGame = true;
+    protected boolean show_en = true;
 
     //Controller must register
     private PropertyChangeListener listener;
-     private PropertyChangeListener listener;
-
     public Player getPlayer(){
         return player;
     }
@@ -52,27 +50,6 @@ public abstract class View implements PropertyChangeListener{
                 System.out.println("Errore");
             }
 
-
-            //switch (choice.getType()){
-            //    //Controls already made in the creation of type client-side
-            //    case SEE_COMMONGOAL -> {
-            //        seeCommonGoal(choice);
-            //        show_en = false;
-            //    }
-            //    case SEE_PERSONALGOAL -> {
-            //        seePersonalGoal(choice);
-            //        show_en = false;
-            //    }
-            //    default -> {
-            //        PropertyChangeEvent evt = new PropertyChangeEvent(
-            //                this,
-            //                "CHOICE",
-            //                null,
-            //                choice);
-            //        this.listener.propertyChange(evt);
-            //        show_en = true;
-            //    }
-            //}
         }
     }
 

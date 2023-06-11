@@ -2,7 +2,7 @@ package GC_11.view;
 
 import GC_11.distributed.ClientRei;
 import GC_11.network.LobbyViewMessage;
-import GC_11.util.Choice;
+import GC_11.util.choices.Choice;
 
 import java.util.Scanner;
 
@@ -22,8 +22,23 @@ public class LobbyCLI extends ViewLobby{
         }
     }
 
+    @Override
+    public Choice getPlayerChoice() {
+        return null;
+    }
+
     public void run(){
             show();
+    }
+
+    @Override
+    protected void seeCommonGoal(Choice choice) {
+
+    }
+
+    @Override
+    protected void seePersonalGoal(Choice choice) {
+
     }
 
 }

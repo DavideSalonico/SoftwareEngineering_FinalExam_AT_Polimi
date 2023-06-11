@@ -12,7 +12,7 @@ import java.util.List;
 
 public class DavideApp {
     public static void main( String[] args ){
-        //Just a sample code to try if everything works fine
+        /*//Just a sample code to try if everything works fine
         List<String> tmpPlayerNames = new ArrayList<String>();
         tmpPlayerNames.add("Pippo");
         tmpPlayerNames.add("Pluto");
@@ -25,7 +25,7 @@ public class DavideApp {
         Controller controller = new Controller(model);
         model.setListener(view);
         view.setListener(controller);
-        view.run();
+        view.run();*/
 
     }
 }

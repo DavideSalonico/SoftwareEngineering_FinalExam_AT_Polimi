@@ -7,7 +7,7 @@ import GC_11.model.GameViewMessage;
 import GC_11.model.Player;
 import GC_11.network.LobbyViewMessage;
 import GC_11.network.MessageView;
-import GC_11.util.Choice;
+import GC_11.util.choices.Choice;
 import GC_11.view.View;
 
 import java.beans.PropertyChangeEvent;
