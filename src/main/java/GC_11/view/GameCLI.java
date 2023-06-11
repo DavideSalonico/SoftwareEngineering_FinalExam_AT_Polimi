@@ -130,8 +130,6 @@ public class GameCLI extends ViewGame {
             }
         }
     }
-
-    // 0-BASED INDEXING !!!
     @Override
     protected void seeCommonGoal(Choice choice) {
         int index = parseInt(choice.getParams().get(0));
