@@ -2,8 +2,10 @@ package GC_11.distributed.socket;
 
 import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
-import GC_11.util.choices.Choice;
-import GC_11.util.choices.ChoiceType;
+import GC_11.model.GameViewMessage;
+import GC_11.network.MessageView;
+import GC_11.util.Choice;
+
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -23,6 +25,83 @@ public class ServerClientHandler implements Runnable {
         this.server=server;
     }
 
+    public void receiveMessageFromClient() throws IOException, ClassNotFoundException {
+        try {
+            String clientChoice = (String) inputStream.readObject();
+            System.out.println("Received choice from client: "+ clientChoice);
+            server.notifyAllClients(clientChoice,this);
+        } catch (IOException e) {
+            System.out.println("Error during receiving message from client");
+            closeConnection();
+            server.notifyDisconnectionAllSockets(this.clientSocket, this);
+            throw new IOException();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Error during deserialization of message from client");
+            closeConnection();
+            server.notifyDisconnectionAllSockets(this.clientSocket, this);
+            throw new ClassNotFoundException();
+        }
+    }
+
+    public void receiveChoiceFromClient(){
+        try {
+            Choice clientChoice = (Choice) inputStream.readObject();
+            System.out.println("Received choice from: " + clientChoice.getPlayer() + ":"+ clientChoice.getChoice() + clientChoice.getParams());
+            //this.controller.propertyChange(new PropertyChangeEvent(this, "choice", null, clientChoice));
+        } catch (IOException e) {
+            System.out.println("Error during receiving message from client");
+            closeConnection();
+            server.notifyDisconnectionAllSockets(this.clientSocket, this);
+        } catch (ClassNotFoundException e) {
+            System.out.println("Error during deserialization of message from client");
+            closeConnection();
+            server.notifyDisconnectionAllSockets(this.clientSocket, this);
+        }
+    }
+
+    public void sendMessageToClient(String s){
+        try {
+            outputStream.writeObject(s);
+            outputStream.flush();
+            outputStream.reset();
+        } catch (IOException e) {
+            System.out.println("Error during sending message to client");
+            closeConnection();
+
+        }
+    }
+
+    public void sendMessageViewToClient(MessageView messageView){
+        try {
+            outputStream.writeObject(messageView);
+            outputStream.flush();
+            outputStream.reset();
+        } catch (IOException e) {
+            System.out.println("Error during sending gameView to client");
+            closeConnection();
+        }
+    }
+
+    private Thread readThread = new Thread(new Runnable() {
+        boolean connected = true;
+        @Override
+        public void run() {
+            System.out.println("Thread read started");
+            while (connected)
+                try{
+                    receiveMessageFromClient();
+                } catch (IOException | ClassNotFoundException e) {
+                    connected = false;
+                    try {
+                        clientSocket.close();
+                    } catch (IOException ex) {
+                        System.err.println("Unable to close socket");
+                    }
+                }
+        }
+    });
+
+
     @Override
     public void run() {
 
@@ -37,50 +116,7 @@ public class ServerClientHandler implements Runnable {
         } catch (IOException e) {
             System.err.println("Unable to get output stream");
         }
-        Choice clientChoice = null;
-
-        try {
-            lobbySetup();
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Errore nella creazione della lobby");
-        }
-
-        while(true){
-            try {
-                clientChoice = (Choice) inputStream.readObject();
-                System.out.println("Received: "+ clientChoice.getType() + "from"+ clientChoice.getPlayer());
-            } catch (IOException e) {
-                System.err.println("Unable to get type from client");
-                this.closeConnection();
-                break;
-
-            } catch (ClassNotFoundException e) {
-                System.err.println("Unable to deserialize type from client");
-            }
-
-
-            // Elaborazione del dato
-
-
-
-            // Risposta
-            if (clientChoice != null){
-                try{
-                    outputStream.writeObject("Risposta a" +clientChoice.getType() + "from" + clientChoice.getPlayer() );
-                }
-                catch(IOException e){
-                    System.err.println("Unable to reply to client");
-                    closeConnection();
-                }
-                if (clientChoice.getType().equals(ChoiceType.LOGIN)){
-                    break;
-                }
-            }
-        }
-
-        this.closeConnection();
-
-
+        readThread.start();
     }
     private void closeConnection(){
         System.out.println("Closing socket: "+ clientSocket.getInetAddress()+ ":" + clientSocket.getPort());
@@ -102,6 +138,7 @@ public class ServerClientHandler implements Runnable {
         this.server.notifyDisconnectionAllSockets(this.clientSocket,this);
     }
 
+    /*
     private void lobbySetup() throws IOException, ClassNotFoundException {
         System.out.println("Lobby setup...");
         if(this.server.getLobby().getPlayers().size()==0) {
@@ -159,11 +196,12 @@ public class ServerClientHandler implements Runnable {
         }
 
     }
-
+*/
     public void notifyDisconnection(Socket socket){
         String alert = "Socket " + socket.getInetAddress() + ":" + socket.getPort() + " has disconnected";
         try{
             outputStream.writeObject(alert);
+            outputStream.reset();
             outputStream.flush();
         }catch(IOException e){
             System.err.println("Unable to notify socket disconnection");

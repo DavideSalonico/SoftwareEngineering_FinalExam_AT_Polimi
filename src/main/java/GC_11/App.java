@@ -2,7 +2,7 @@ package GC_11;
 
 import GC_11.controller.Controller;
 import GC_11.model.Game;
-import GC_11.model.GameView;
+import GC_11.model.GameViewMessage;
 import GC_11.view.GUI.GUIModel;
 
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class App
 {
-    public static void main( String[] args ){
+   /* public static void main( String[] args ){
         //Just a sample code to try if everything works fine
         List<String> tmpPlayerNames = new ArrayList<String>();
         tmpPlayerNames.add("Pippo");
@@ -18,8 +18,8 @@ public class App
         tmpPlayerNames.add("Paperino");
         tmpPlayerNames.add("Giuseppe");
         Game model = new Game(tmpPlayerNames);
-        GameView modelView = new GameView(model, null);
-        //CLIview view = new CLIview(model.getCurrentPlayer());
+        GameViewMessage modelView = new GameViewMessage(model, null);
+        //GameCLI view = new GameCLI(model.getCurrentPlayer());
         //view.setModelView(modelView);
         Controller controller = new Controller(model);
         //model.setListener(view);
@@ -29,5 +29,5 @@ public class App
 
 
         GUIModel guiModel = new GUIModel(modelView,"Pippo");
-    }
+    }*/
 }

@@ -64,7 +64,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable,
 
 /*
     @Override
-    public void update(GameView gameView) throws RemoteException {
+    public void update(GameViewMessage gameView) throws RemoteException {
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "NewGameView",

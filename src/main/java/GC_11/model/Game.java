@@ -1,5 +1,6 @@
 package GC_11.model;
 
+import GC_11.distributed.ServerRei;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.model.common.*;
 import GC_11.util.CircularList;
@@ -7,6 +8,7 @@ import GC_11.util.CircularList;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -14,7 +16,7 @@ import java.util.Random;
 /**
  * Game's class, it is the center of all the game model, it contains references with all the object and can also
  * interact with them to settle the changes sent by controller
- * it's a Serializable class, so the GameView can serialize a copy of its status every time something changes
+ * it's a Serializable class, so the GameViewMessage can serialize a copy of its status every time something changes
  */
 public class Game implements PropertyChangeListener, Serializable {
 
@@ -26,6 +28,7 @@ public class Game implements PropertyChangeListener, Serializable {
     private Board board;
     private Chat chat;
     private boolean changed = false;
+    private ServerRei server;
 
     //It's not necessary to serialize the listener (attribute transient)
     public transient PropertyChangeListener  listener;
@@ -42,7 +45,7 @@ public class Game implements PropertyChangeListener, Serializable {
     //}
 
 
-    public Game(List<String> playerNames){
+    public Game(List<String> playerNames, ServerRei server){
 
         this.players = new CircularList<>();
         for(int i=0; i<playerNames.size(); i++){
@@ -66,6 +69,7 @@ public class Game implements PropertyChangeListener, Serializable {
         this.commonGoals.add(loadCommon(tmp2));
         this.commonGoals.get(0).setListener(this);
         this.commonGoals.get(1).setListener(this);
+        this.server = server;
     }
 
     private CommonGoalCard loadCommon(int i){
@@ -118,26 +122,29 @@ public class Game implements PropertyChangeListener, Serializable {
     /**
      * @param currentPlayer the player that is wanted to be set as current
      */
-    public void setCurrentPlayer(Player currentPlayer) {
+    public void setCurrentPlayer(Player currentPlayer) throws RemoteException {
         this.currentPlayer = currentPlayer;
         this.changed = true;
-        PropertyChangeEvent evt = new PropertyChangeEvent(
+        /*PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "CHANGED_CURRENT_PLAYER",
                 null,
-                new GameView(this, null));
-        this.listener.propertyChange(evt);
+                new GameViewMessage(this, null));
+        this.listener.propertyChange(evt);*/
+        server.notifyClients();
     }
 
-    public void setNextCurrent(){
+    public void setNextCurrent() throws RemoteException {
         this.currentPlayer = this.players.get(this.players.indexOf(this.currentPlayer) + 1);
         this.changed = true;
-        PropertyChangeEvent evt = new PropertyChangeEvent(
+        /*PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "CHANGED_CURRENT_PLAYER(NEXT)",
                 null,
-                new GameView(this, null));
-        this.listener.propertyChange(evt);
+                new GameViewMessage(this, null));
+        this.listener.propertyChange(evt);*/
+        server.notifyClients();
+        System.out.println("Set next current player: " + this.currentPlayer.getNickname());
     }
 
     public boolean isEndGame() {
@@ -148,30 +155,34 @@ public class Game implements PropertyChangeListener, Serializable {
      * Notify a property change in 'Game' to Game Listener
      * @param endGame
      */
-    public void setEndGame(boolean endGame) {
-        PropertyChangeEvent evt = new PropertyChangeEvent(
+    public void setEndGame(boolean endGame) throws RemoteException {
+        this.endGame = endGame;
+        /*PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "END_GAME_SET",
                 this.endGame,
                 endGame);
-        this.endGame = endGame;
+        this.listener.propertyChange(evt);*/
+        //server.notifyClients();
+        System.out.println("Set end game");
 
-        this.listener.propertyChange(evt);
     }
 
     public Player getEndPlayer() {
         return endPlayer;
     }
 
-    public void setEndPlayer(Player endPlayer) {
+    public void setEndPlayer(Player endPlayer) throws RemoteException {
         this.endPlayer = endPlayer;
         this.changed = true;
-        PropertyChangeEvent evt = new PropertyChangeEvent(
+        /*PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "END_GAME_SET",
                 null,
-                new GameView(this, null));
-        this.listener.propertyChange(evt);
+                new GameViewMessage(this, null));
+        this.listener.propertyChange(evt);*/
+        //server.notifyClients();
+        System.out.println("Set end player");
     }
 
     public Player getPlayer(String nickname){
@@ -214,21 +225,27 @@ public class Game implements PropertyChangeListener, Serializable {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         this.changed = true;
-        PropertyChangeEvent move = new PropertyChangeEvent(
+        /*PropertyChangeEvent move = new PropertyChangeEvent(
                 this,
                 evt.getPropertyName(),
                 null,
-                new GameView(this, null));
-        this.listener.propertyChange(move);
+                new GameViewMessage(this, null));*/
+        /*try {
+            server.notifyClients();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }*/
     }
 
-    public void triggerException(Exception e) {
-        PropertyChangeEvent exception = new PropertyChangeEvent(
+    public void triggerException(Exception e) throws RemoteException {
+        /*PropertyChangeEvent exception = new PropertyChangeEvent(
                 this,
                 e.getMessage(),
                 null,
-                new GameView(null, e));
-        this.listener.propertyChange(exception);
+                new GameViewMessage(null, e));
+        this.listener.propertyChange(exception);*/
+        server.notifyClients();
+        System.out.println("Trigger exception\n" + e.getMessage());
     }
 
     public Chat getChat() {

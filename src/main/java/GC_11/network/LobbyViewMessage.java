@@ -1,29 +1,27 @@
 package GC_11.network;
 
+import GC_11.model.Game;
+
 import java.util.List;
-import java.util.Scanner;
 
-public class LobbyView{
+public class LobbyViewMessage extends MessageView{
 
-    private enum MSG_TYPE  { ERROR, NOTIFICATION, INPUT_STRING, INPUT_INT, UPDATE};
+    //private enum MSG_TYPE  { ERROR, NOTIFICATION, INPUT_STRING, INPUT_INT, UPDATE};
 
-    private String message;
-    private MSG_TYPE messageType;
-    private int lobbyId;
+    //private String message;
+    //private MSG_TYPE messageType;
     private int maxPlayers;
-    String fisrtPlayer;
     private List<String> playersNames;
+    private Game game;
 
-    public LobbyView(String msg, MSG_TYPE msgType){
-        this.message=msg;
-        this.messageType=msgType;
-        this.lobbyId=-1;
-        this.maxPlayers=-1;
-        this.fisrtPlayer=null;
-        this.playersNames=null;
+    public LobbyViewMessage(Lobby lobby){
+        this.maxPlayers= lobby.getMaxPlayers();
+        this.playersNames = lobby.getPlayers();
+        this.game = lobby.getGameModel();
     }
 
-    public LobbyView(Lobby lobby, MSG_TYPE msgType){
+/*
+    public LobbyViewMessage(Lobby lobby, MSG_TYPE msgType){
         this.lobbyId=lobby.getLobbyID();
         this.maxPlayers=lobby.getMaxPlayers();
         this.fisrtPlayer=lobby.getFisrtPlayer();
@@ -31,11 +29,7 @@ public class LobbyView{
         this.messageType=msgType;
         this.message=null;
     }
-
-
-    public int getLobbyId() {
-        return lobbyId;
-    }
+*/
 
     public int getMaxPlayers() {
         return maxPlayers;
@@ -45,6 +39,9 @@ public class LobbyView{
         return playersNames;
     }
 
+
+}
+/*
     public MSG_TYPE getMessageType() {
         return messageType;
     }
@@ -56,5 +53,5 @@ public class LobbyView{
     public String getMessage() {
         return message;
     }
+*/
 
-}

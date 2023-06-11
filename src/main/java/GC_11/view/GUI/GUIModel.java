@@ -1,6 +1,6 @@
 package GC_11.view.GUI;
 
-import GC_11.model.GameView;
+import GC_11.model.GameViewMessage;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -18,7 +18,7 @@ public class GUIModel  {
         WaitingForAction,
         YourTurn
     }
-    static GameView model;
+    static GameViewMessage model;
     private static String clientNickName;
     private final MainFrame mainFrame;
 
@@ -197,7 +197,7 @@ public class GUIModel  {
     }
 
 
-    public GUIModel(GameView model, String clientNickName) {
+    public GUIModel(GameViewMessage model, String clientNickName) {
 
         this.model = model;
         this.clientNickName = clientNickName;

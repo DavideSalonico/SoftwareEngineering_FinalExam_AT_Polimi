@@ -1,15 +1,15 @@
 package GC_11.view;
 
 import GC_11.distributed.Client;
-import GC_11.network.LobbyView;
+import GC_11.network.LobbyViewMessage;
 import GC_11.util.choices.Choice;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Scanner;
 
-public class LobbyTUI extends View implements Runnable {
+public class LobbyTUI extends View {
 
-    private LobbyView lobbyView;
+    private LobbyViewMessage lobbyView;
     Scanner inputLine;
     Client client;
 
@@ -32,6 +32,11 @@ public class LobbyTUI extends View implements Runnable {
     }
 
     @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+
+    }
+
+
     public Choice getPlayerChoice() {
         while(true){
             String msg = inputLine.nextLine();
@@ -56,15 +61,7 @@ public class LobbyTUI extends View implements Runnable {
 
     }
 
-    @Override
-    protected void seeCommonGoal(Choice choice) {
 
-    }
-
-    @Override
-    protected void seePersonalGoal(Choice choice) {
-
-    }
 
     public void printWelcome(){
 

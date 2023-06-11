@@ -6,41 +6,40 @@ import GC_11.exceptions.PlayerNotInListException;
 import GC_11.model.Game;
 
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Lobby {
-
-    private final int lobbyID;
-    private static int lobbyNumber;
-    private int maxPlayers;
-    String fisrtPlayer;
-
+    private final int maxPlayers;
     private List<String> playersNames;
+    private Game gameModel = null;
+    private PropertyChangeListener listener;
 
 
-    public Lobby(){
-        this.maxPlayers=4;
+    public Lobby(int n){
+        maxPlayers=n;
         playersNames = new ArrayList<String>();
-        this.lobbyID=lobbyNumber;
-        lobbyNumber++;
     }
 
     public synchronized boolean nameAlreadyTaken(String playerName){
         return playersNames.contains(playerName);
     }
 
-    public synchronized void addPlayer(String playerName) throws ExceededNumberOfPlayersException, NameAlreadyTakenException{
-        if (playersNames.size()< maxPlayers && !playersNames.contains(playerName)){
+    public synchronized Game addPlayer(String playerName) throws ExceededNumberOfPlayersException, NameAlreadyTakenException{
+        if (playersNames.size() < maxPlayers && !playersNames.contains(playerName)){
             playersNames.add(playerName);
         }
-        else if(playersNames.size() == 4){
+        else if(this.isFull()){
             throw new ExceededNumberOfPlayersException();
         }
         else if(this.nameAlreadyTaken(playerName))
         {
             throw new NameAlreadyTakenException(playerName);
         }
+        return null;
     }
 
     public synchronized void removePlayer(String playerName) throws PlayerNotInListException{
@@ -56,7 +55,7 @@ public class Lobby {
         return (playersNames.size()==maxPlayers);
     }
 
-    public synchronized boolean hasPlayer(String playerName){
+    private synchronized boolean hasPlayer(String playerName){
         return (playersNames.contains(playerName));
     }
 
@@ -64,29 +63,8 @@ public class Lobby {
         return playersNames;
     }
 
-    public int getLobbyID() {
-        return lobbyID;
-    }
-
     public int getMaxPlayers() {
         return maxPlayers;
-    }
-
-    public void startGame(Game game){
-            // Notifica al controller di lanciare creare game e lanciare il gioco
-
-    }
-
-    public void setMaxPlayers(int maxPlayers){
-        this.maxPlayers=maxPlayers;
-    }
-
-    public String getFisrtPlayer() {
-        return fisrtPlayer;
-    }
-
-    public void setFisrtPlayer(String player){
-        this.fisrtPlayer=player;
     }
 
     // TODO LOBBY by Mattia
@@ -101,4 +79,21 @@ public class Lobby {
     // gestire aspetti di rete e client
 
 
+    public Game getGameModel() {
+        return gameModel;
+    }
+
+    public void setGameModel(Game gameModel) {
+        this.gameModel = gameModel;
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "GAME CREATED",
+                null,
+                this.gameModel);
+        this.listener.propertyChange(evt);
+    }
+
+    public void setListener(PropertyChangeListener listener) {
+        this.listener = listener;
+    }
 }

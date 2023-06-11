@@ -12,15 +12,18 @@ import java.security.InvalidParameterException;
 import java.util.List;
 
 public class LobbyController implements PropertyChangeListener {
-    public Choice choice;
-    private Game model;
-    private Lobby lobbyModel;
 
-    private void findMatch(List<String> params) {
-        //if(player.equals(lobbyModel.getBoss()))) We should check that only the main player can start the game
-        this.model = new Game(lobbyModel.getPlayers());
-        lobbyModel.startGame(this.model);
+    public Choice choice;
+    private Lobby lobbyModel;
+    public LobbyController(Lobby lobby) {
+        this.lobbyModel=lobby;
     }
+
+   /* private void findMatch(List<String> params) {
+        //if(player.equals(lobbyModel.getBoss()))) We should check that only the main player can start the game
+        lobbyModel.setGameModel(new Game(lobbyModel.getPlayers()));
+        //lobbyModel.startGame(this.gameModel);
+    }*/
 
     private void login(List<String> params) {
         //TODO
@@ -37,5 +40,9 @@ public class LobbyController implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         //TODO
+    }
+
+    public void addPlayerName(String playerName) throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
+        this.lobbyModel.addPlayer(playerName);
     }
 }

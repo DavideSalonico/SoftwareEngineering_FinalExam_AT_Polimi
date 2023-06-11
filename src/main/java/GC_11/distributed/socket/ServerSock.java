@@ -1,8 +1,12 @@
 package GC_11.distributed.socket;
 
 
+import GC_11.model.GameViewMessage;
 import GC_11.network.Lobby;
+import GC_11.network.MessageView;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -11,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ServerSock {
+public class ServerSock implements PropertyChangeListener {
 
     Lobby lobby;
     private final int port;
@@ -41,8 +45,8 @@ public class ServerSock {
             System.out.println("Error during initialization phase...");
             System.out.println(e.getMessage());
         }
-        this.serverClientHandlerList= new ArrayList<>();
-        this.lobby=new Lobby();
+        this.serverClientHandlerList = new ArrayList<>();
+        //this.lobby=new Lobby();
 
         // Waiting for connection
         while(true){
@@ -60,15 +64,41 @@ public class ServerSock {
         }
     }
 
-    public void notifyDisconnectionAllSockets(Socket socket, ServerClientHandler sourceHandler) {
-        serverClientHandlerList.remove(sourceHandler);
+    public void notifyAllClients(String message, ServerClientHandler sourceHandler) {
         for (ServerClientHandler sch : serverClientHandlerList) {
-            sch.notifyDisconnection(socket);
+            if (sch != sourceHandler) {
+                sch.sendMessageToClient(message);
+            }
         }
     }
 
+    public void notifyAllClients(MessageView message, ServerClientHandler sourceHandler) {
+        for (ServerClientHandler sch : serverClientHandlerList) {
+            if (sch != sourceHandler) {
+                sch.sendMessageViewToClient(message);
+            }
+        }
+    }
+
+    public void notifyDisconnectionAllSockets(Socket socket, ServerClientHandler sourceHandler) {
+        Socket disconnectedSocket = socket;
+        serverClientHandlerList.remove(sourceHandler);
+        for (ServerClientHandler sch : serverClientHandlerList) {
+            sch.notifyDisconnection(disconnectedSocket);
+        }
+    }
+
+
+
     public Lobby getLobby() {
         return lobby;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if(evt.getPropertyName()=="newGameView"){
+
+        }
     }
 }
 

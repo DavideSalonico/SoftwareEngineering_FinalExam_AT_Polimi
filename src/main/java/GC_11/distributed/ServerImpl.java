@@ -2,9 +2,10 @@ package GC_11.distributed;
 
 
 import GC_11.controller.Controller;
+import GC_11.distributed.socket.Server;
 import GC_11.exceptions.*;
 import GC_11.model.Game;
-import GC_11.util.choices.Choice;
+import GC_11.util.Choice;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -43,6 +44,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server, PropertyC
         this.clients.add(client);
     }
 
+    @Override
+    public void register(GC_11.distributed.socket.Client client) throws RemoteException {
+
+    }
+
     // Got a problem with this, need to check parameters and Choice Class
 
     @Override
@@ -66,7 +72,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server, PropertyC
         try {
             currentClient.update(this,newEvent); // For debugging
             for(Client c : clients){
-                c.update((GameView) evt.getNewValue());
+                c.update((GameViewMessage) evt.getNewValue());
             }
 
         } catch (RemoteException e) {

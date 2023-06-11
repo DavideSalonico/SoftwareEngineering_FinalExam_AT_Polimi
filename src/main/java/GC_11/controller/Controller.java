@@ -8,6 +8,7 @@ import GC_11.util.choices.ChoiceType;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.rmi.RemoteException;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +75,7 @@ public class Controller implements PropertyChangeListener {
             ColumnIndexOutOfBoundsException,
             NotEnoughFreeSpacesException,
             ExceededNumberOfPlayersException,
-            NameAlreadyTakenException {
+            NameAlreadyTakenException, RemoteException {
         this.choice = choice;
 
         if (!checkTurn()){
@@ -155,7 +156,7 @@ public class Controller implements PropertyChangeListener {
 
     }
 
-    public void pickColumn(List<String> parameters) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+    private void pickColumn(List<String> parameters) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException, RemoteException {
         int column = paramsToColumnIndex(parameters);
         //TODO: Da rivedere, se possibile farlo senza creare una lista di appoggio
         List<Tile> tmp_tiles = new ArrayList<Tile>();
@@ -172,6 +173,8 @@ public class Controller implements PropertyChangeListener {
         this.model.getCurrentPlayer().calculateAndGiveAdjacencyPoint();
 
         this.model.setNextCurrent();
+
+        this.lastChoice = ChoiceType.RESET_TURN;
     }
 
     private int paramsToColumnIndex(List<String> parameters) {
@@ -225,7 +228,13 @@ public class Controller implements PropertyChangeListener {
             update((Choice) evt.getNewValue());
         } catch (IllegalMoveException | ColumnIndexOutOfBoundsException | NotEnoughFreeSpacesException |
                  ExceededNumberOfPlayersException | NameAlreadyTakenException e) {
-            this.model.triggerException(e);
+            try {
+                this.model.triggerException(e);
+            } catch (RemoteException ex) {
+                throw new RuntimeException(ex);
+            }
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
         }
     }
 

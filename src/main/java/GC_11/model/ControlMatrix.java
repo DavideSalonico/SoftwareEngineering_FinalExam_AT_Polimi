@@ -1,6 +1,8 @@
 package GC_11.model;
 
-public class ControlMatrix {
+import java.io.Serializable;
+
+public class ControlMatrix implements Serializable {
 
     private boolean[][] controlMatrix = new boolean[6][5];
 

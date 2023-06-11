@@ -1,8 +1,9 @@
-package GC_11.distributed;
+package GC_11.distributed.socket;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+import GC_11.distributed.Client;
 import GC_11.exceptions.*;
 import GC_11.util.choices.Choice;
 
@@ -13,6 +14,8 @@ public interface Server extends Remote {
      * @param client the client to register
      */
     void register(Client client) throws RemoteException;
+
+    void register(GC_11.distributed.socket.Client client) throws RemoteException;
 
     /**
      * Notify the server that a client has made a type

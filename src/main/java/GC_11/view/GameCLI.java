@@ -1,31 +1,76 @@
-
 package GC_11.view;
-
-import GC_11.model.GameView;
+//TODO: 1) Implementare COME LA SCELTA DEL GIOCAGORE VA AL SERVER E QUINDI AL CONTROLLER E POI AL GAME
+//TODO: 2) cambiare il metodo run con quello aggiornato di dave
+import GC_11.distributed.ClientRei;
+import GC_11.model.GameViewMessage;
 import GC_11.model.common.CommonGoalCard;
 import GC_11.util.choices.Choice;
 import GC_11.model.Player;
 import GC_11.util.choices.ChoiceFactory;
 import GC_11.util.choices.ChoiceType;
 
+import java.beans.PropertyChangeEvent;
+import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
 
-public class CLIview extends View /*implements Runnable*/{
+public class GameCLI extends ViewGame {
+
+    // private final Choice controllerChoice;
+     private Choice playerChoice;
+     private ClientRei client;
+
+    // private final Outcome outcome;
 
     /**
      * Every view is bound at only one player, it helps to manage every input that the controller receive
      */
 
-    public CLIview(Player player) {
+    public GameCLI(Player player, ClientRei client) {
+        super();
         this.player = player;
+        this.client = client;
+    }
+    public void setPlayerChoice(Choice c){
+        this.playerChoice = c;
     }
 
-    public void setModelView(GameView modelView){
+    public void setModelView(GameViewMessage modelView){
         this.modelView = modelView;
+    }
+
+    @Override
+    public void run() throws RemoteException {
+        boolean show_en = true;
+        while(inGame){
+            if(show_en) show();
+            System.out.println("IT IS THE TURN OF: " + this.modelView.getCurrentPlayer().getNickname());
+            Choice choice = getPlayerChoice();
+            System.out.println("scelta fatta");
+            switch (choice.getChoice()){
+                //Controls already made in the creation of choice client-side
+                case SEE_COMMONGOAL -> {
+                    seeCommonGoal(choice);
+                    show_en = false;
+                }
+                case SEE_PERSONALGOAL -> {
+                    seePersonalGoal(choice);
+                    show_en = false;
+                }
+                default -> {
+                    PropertyChangeEvent evt = new PropertyChangeEvent(
+                            this,
+                            "CHOICE",
+                            null,
+                            choice);
+                    this.client.notifyServer(evt);
+                    show_en = true;
+                }
+            }
+        }
     }
 
     @Override

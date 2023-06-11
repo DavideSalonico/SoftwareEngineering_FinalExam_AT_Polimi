@@ -2,8 +2,12 @@ package GC_11.distributed.socket;
 
 
 import GC_11.distributed.Client;
-import GC_11.model.GameView;
+import GC_11.distributed.ClientRei;
+import GC_11.model.GameViewMessage;
 import GC_11.model.Player;
+import GC_11.network.LobbyViewMessage;
+import GC_11.network.MessageView;
+import GC_11.util.Choice;
 import GC_11.view.View;
 
 import java.beans.PropertyChangeEvent;
@@ -11,180 +15,172 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.rmi.RemoteException;
+import java.util.Scanner;
 
-public class ClientSock extends Client implements PropertyChangeListener {
+public class ClientSock implements PropertyChangeListener{
 
-    private View view;
-    private String ip;
-    private int port;
-    private final Player player;
+    String ip;
+    int port;
     private Socket socket;
-
-    private ObjectInputStream inputStream;
-    private ObjectOutputStream outputStream;
-
-    public ClientSock(View view){
-        this.player=new Player();
-        this.view=view;
-    }
-
-    public ClientSock(){
-        this.player=new Player();
-    }
-
-
-    public void startClient() throws IOException, ClassNotFoundException {
-        System.out.println("---Client---");
-        this.view.run();
-        connectionSetup();
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
+    private View view;
 
 
 
+     public ClientSock(String ip, int port){
 
-        /*lobbySubscribe();
+         this.port = port;
+         this.ip = ip;
 
-        Scanner commandInput = new Scanner(System.in);
-        while(true){
-            String command = commandInput.nextLine();
-            try{
-                if (command.equals("quit")){
-                    break;
-                }
-                else{
-                    Choice choiceToSend = new Choice(player,command);
-                    System.out.println("Sending choice...");
-                    outputStream.writeObject(choiceToSend);
-                    outputStream.flush();
-                    String response = (String) this.inputStream.readObject();
-                    System.out.println("Received " + response);
-                }
-            }catch (IllegalArgumentException e){
-                System.out.println("Errore nel comando");
+         try {
+             System.out.println("Connecting to server on port " + port);
+             socket = new Socket(ip, port);
+             out = new ObjectOutputStream(socket.getOutputStream());
+             in = new ObjectInputStream(socket.getInputStream());
+         } catch (UnknownHostException e) {
+             System.out.println("Unknown host");
+             e.printStackTrace();
+         } catch (IOException e) {
+             System.out.println("Error in loading streams");
+             e.printStackTrace();
+         }
+         finally {
+                System.out.println("Connection established");
+         }
+     }
+
+    public void sendMessageToServer(String s){
+            try {
+                out.writeObject(s);
+                out.flush();
+                out.reset();
+            } catch (IOException e) {
+                System.out.println("Error during sending message to server");
             }
-        }*/
+     }
 
-        outputStream.close();
-        inputStream.close();
-        socket.close();
-    }
+     public void sendChoiceToServer(Choice c){
+         try{
+             out.writeObject(c);
+             out.flush();
+             out.reset();
+         } catch (IOException e) {
+             System.out.println("Error during sending message to server");
+         }
+     }
 
-    /*
-    private void lobbySubscribe() {
-        try{
-            String msg = getServerMessage();
-            System.out.println(msg);
-            Scanner input = new Scanner(System.in);
-            String reply = input.nextLine();
-            outputStream.writeObject(reply);
-            outputStream.flush();
-            msg=getServerMessage();
-            System.out.println(msg);
-            while(!msg.equals("OK")){
-                reply = input.nextLine();
-                outputStream.writeObject(reply);
-                outputStream.flush();
-                msg =(String) inputStream.readObject();
-                System.out.println(msg);
-                msg =(String) inputStream.readObject();
-                System.out.println(msg);
+     public void receiveMessageFromServer() throws IOException, ClassNotFoundException {
+
+         try {
+             String serverChoice = (String) in.readObject();
+             System.out.println("Received choice from server: "+ serverChoice);
+         } catch (IOException e) {
+             System.out.println("Error during receiving message from server. Check server connection");
+             throw new IOException();
+         } catch (ClassNotFoundException e) {
+             System.out.println("Error during deserialization of message from server. Check server connection");
+             throw new ClassNotFoundException();
+         }
+     }
+
+     public void receiveGameViewFromServer(){
+            try {
+                MessageView messageView = (MessageView) in.readObject();
+                System.out.println("Received gameViewMessage from server: "+ messageView.toString());
+                // Una volta ricevuto il messaggio notifico la view
+                this.view.propertyChange(new PropertyChangeEvent(this,"gameViewMessage",null,messageView));
+            } catch (IOException e) {
+                System.out.println("Error during receiving gameViewMessage from server. Check server connection");
+            } catch (ClassNotFoundException e) {
+                System.out.println("Error during deserialization of gameViewMessage from server. Check server connection");
             }
-            msg=(String) inputStream.readObject();
-            System.out.println(msg);
-            reply=input.nextLine();
-            outputStream.writeObject(reply);
-            outputStream.flush();
-            msg=(String) inputStream.readObject();
-            System.out.println(msg);
+     }
 
-        }
-        catch(IOException e){
-            System.out.println("Impossibile contattare il server.");
-        }
-        catch(ClassNotFoundException e){
-            System.out.println("Errore nella deserializzazione");
-        }
-    }
-*/
-    private Object getServerMessage() throws IOException, ClassNotFoundException {
-        return inputStream.readObject();
-    }
+     Thread readThread = new Thread(new Runnable() {
+
+         @Override
+         public void run() {
+             System.out.println("Running read Thread");
+             boolean connectionAvailable = true;
+             while (connectionAvailable)
+             {
+                 try {
+                     receiveMessageFromServer();
+                 } catch (IOException | ClassNotFoundException e) {
+                     connectionAvailable=false;
+                 }
+             }
+         }
+     });
+
+     Thread readGameViewThread = new Thread(new Runnable() {
+
+         @Override
+         public void run() {
+             System.out.println("Running readGameViewThread Thread");
+             boolean connectionAvailable = true;
+             while (connectionAvailable)
+             {
+                 try {
+                     receiveGameViewFromServer();
+                 } catch (Exception e) {
+                     connectionAvailable=false;
+                 }
+             }
+         }
+     });
+
+     Thread writeThread = new Thread(new Runnable() {
+         Scanner inputLine = new Scanner(System.in);
+         @Override
+         public void run() {
+             System.out.println("Running write Thread");
+             while (true){
+                 System.out.println("Insert message to send to server");
+                 String s = inputLine.nextLine();
+                 sendMessageToServer(s);
+             }
+         }
+     });
+
 
     /**
-     * This method is called by the view. Whenever the view get an input,
-     * notify the client with this method. This method, once called, try to send a message to the server
+     *  Called whenever a view is sending a choice to the server
      * @param evt A PropertyChangeEvent object describing the event source
-     *          and the property that has changed.
+     *          and the property that has changed. Contains the choice
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        this.sendMessage(evt.getNewValue());
+         sendChoiceToServer((Choice) evt.getNewValue());
     }
 
-    @Override
-    public void update(GameView newView) {
-       // this.view.;
+    public void startClient() {
+        System.out.println("ClientSocket running");
+        readThread.start();
+        writeThread.start();
     }
 
-    @Override
-    protected void connectionSetup() {
+    private void closeConnection(){
         try {
-            this.socket = new Socket(this.ip, this.port);
-        } catch (UnknownHostException e) {
-            System.out.println("Unable to reach the server.\n");
+            in.close();
+            out.close();
+            socket.close();
         } catch (IOException e) {
-            System.out.println("Error during setup phase.\n");
-        }
-        finally {
-            System.out.println("Connection established");
-        }
-
-        System.out.println("Initializing output stream...");
-        try {
-            this.outputStream=new ObjectOutputStream(socket.getOutputStream());
-            System.out.println("Got output stream");
-        }
-        catch (IOException e){
-            System.err.println("Cannot get output stream");
-            System.err.println(e.getMessage());
-        }
-        System.out.println("Initializing input stream...");
-        try{
-            this.inputStream=new ObjectInputStream(socket.getInputStream());
-            System.out.println("Got input stream");
-        }
-        catch (IOException e){
-            System.err.println("Cannot get input stream");
-            System.err.println(e.getMessage());
+            System.out.println("Error during closing connection");
         }
     }
 
-    @Override
-    protected void lobbySetup() {
-        try{
-            String msg = (String) inputStream.readObject();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+    public void setView(View view) {
+        this.view = view;
     }
 
-    @Override
-    protected void sendMessage(Object o) {
-        try{
-            this.outputStream.writeObject(o);
-        } catch (IOException e) {
-            System.out.println("Unable to send message.\n");
-        }
+    public View getView() {
+        return view;
     }
-
-    public void setIp(String ip){
-        this.ip = ip;
-    }
-
-    public void setPort (int port){this.port=port;}
-
 }
 
