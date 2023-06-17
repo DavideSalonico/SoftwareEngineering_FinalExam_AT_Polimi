@@ -10,15 +10,21 @@ public class LobbyCLI extends ViewLobby{
 
 
 
-    int number = 0;
+    int maxPlayer = 0;
+    boolean flag = true;
     @Override
     public void show() {
-        number=this.lobbyViewMessage.getMaxPlayers();
-        System.out.println("#############################\n\nthe game is about to start !!! \nthere will be " + number + " players!\n");
-        int counter = 1;
-        for( String s : this.lobbyViewMessage.getPlayersNames()){
-            System.out.println(counter + ": " + s);
-            counter++;
+        maxPlayer=this.lobbyViewMessage.getMaxPlayers();
+        if (flag){
+            int count = 1;
+            System.out.println("#############################\n\nthe game is about to start !!! \nthere will be " + maxPlayer + " players!\n");
+            for(String p : this.lobbyViewMessage.getPlayersNames()){
+                System.out.println(count + ": " + p);
+                count ++;
+            }
+            flag = false;
+        }else{
+            System.out.println( this.lobbyViewMessage.getPlayersNames().size() + ": " + this.lobbyViewMessage.getPlayersNames().get(this.lobbyViewMessage.getPlayersNames().size()-1));
         }
     }
 

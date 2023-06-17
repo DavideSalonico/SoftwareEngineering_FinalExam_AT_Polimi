@@ -2,12 +2,13 @@ package GC_11.model;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Chat {
+public class Chat implements Serializable {
     private Map<Player, List<String>> mainChat;
     private Map<Player, Map<Player, List<String>>> privateChats;
     private PropertyChangeListener listener;
