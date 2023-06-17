@@ -46,18 +46,27 @@ public class GameCLI extends ViewGame {
     }
 
     @Override
-    public void run() {
+    public void run() throws RemoteException {
         boolean show_en = true;
         while(inGame){
             if(show_en) show();
+            System.out.println("IT IS THE TURN OF: " + this.modelView.getCurrentPlayer().getNickname());
             Choice choice = getPlayerChoice();
+            System.out.println("scelta fatta");
+            PropertyChangeEvent evt = new PropertyChangeEvent(
+                    this,
+                    "CHOICE",
+                    null,
+                    choice);
+            this.client.notifyServer(evt);
+            show_en = true;
 
-            try {
+            /*try {
                 choice.executeOnClient(this);
             }
             catch (IllegalMoveException | ColumnIndexOutOfBoundsException | NotEnoughFreeSpacesException e) {
                 System.out.println("Errore");
-            }
+            }*/
 
         }
 

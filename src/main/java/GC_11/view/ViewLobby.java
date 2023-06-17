@@ -20,6 +20,10 @@ public abstract class ViewLobby extends View {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         this.lobbyViewMessage= (LobbyViewMessage) evt.getNewValue();
-        run();
+        try {
+            run();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

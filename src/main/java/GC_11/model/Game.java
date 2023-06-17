@@ -5,12 +5,14 @@ import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.model.common.*;
 import GC_11.util.CircularList;
 import org.jetbrains.annotations.NotNull;
+import GC_11.controller.JsonReader;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -48,10 +50,14 @@ public class Game implements PropertyChangeListener, Serializable {
 
     public Game(@NotNull List<String> playerNames, ServerRei server){
 
-        this.players = new CircularList<>();
-        for(int i=0; i<playerNames.size(); i++){
 
-            this.players.add(new Player(playerNames.get(i), null));
+        Random random = new Random();
+        this.players = new CircularList<>();
+        PersonalGoalCard personalGoalCard = new PersonalGoalCard();
+        int[] idArray = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+        int[] idsCard = Arrays.stream(idArray).boxed().sorted((a, b) -> random.nextInt(3) - 1).limit(playerNames.size()).mapToInt(Integer::intValue).toArray();
+        for(int i=0; i<playerNames.size(); i++){
+            this.players.add(new Player(playerNames.get(i), JsonReader.readPersonalGoalCard(idsCard[i])));
             players.get(i).setListener(this);
         }
         this.currentPlayer = this.players.get(0);
@@ -61,7 +67,6 @@ public class Game implements PropertyChangeListener, Serializable {
         this.board.setListener(this);
         this.chat = new Chat();
         this.chat.setListener(this);
-        Random random = new Random();
         int tmp1 = random.nextInt(0, 11);
         int tmp2 = random.nextInt(0, 11);
         while(tmp1 == tmp2) {

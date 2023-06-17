@@ -38,7 +38,7 @@ public abstract class View implements PropertyChangeListener{
 
     public abstract Choice getPlayerChoice();
 
-    public void run(){
+    public void run() throws RemoteException {
         while(inGame){
             if(show_en) show();
             Choice choice = getPlayerChoice();

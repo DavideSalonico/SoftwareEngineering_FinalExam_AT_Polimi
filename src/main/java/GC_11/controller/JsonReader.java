@@ -9,7 +9,6 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-
 public class JsonReader {
     private List<Triplet> read;
     private List<Player> players;
