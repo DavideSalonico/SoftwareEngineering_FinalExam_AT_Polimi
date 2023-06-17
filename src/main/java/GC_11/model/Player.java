@@ -44,6 +44,9 @@ public class Player implements PropertyChangeListener, Serializable {
         this.shelf = new Shelf();
         this.shelf.setListener(this);
         this.personalGoal = personalCard;
+        this.pointsCommonGoals = 0;
+        this.pointsPersonalGoal = 0;
+        this.pointsAdjacency = 0;
     }
 
     //Solo per test, da cancellare
@@ -240,6 +243,10 @@ public class Player implements PropertyChangeListener, Serializable {
 
     public int getPointsCommonGoals(){
         return this.pointsCommonGoals;
+    }
+
+    public int getPointsPersonalGoal(){
+        return this.pointsPersonalGoal;
     }
 }
 

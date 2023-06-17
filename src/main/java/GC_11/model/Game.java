@@ -4,6 +4,7 @@ import GC_11.distributed.ServerRei;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.model.common.*;
 import GC_11.util.CircularList;
+import org.jetbrains.annotations.NotNull;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -45,11 +46,12 @@ public class Game implements PropertyChangeListener, Serializable {
     //}
 
 
-    public Game(List<String> playerNames, ServerRei server){
+    public Game(@NotNull List<String> playerNames, ServerRei server){
 
         this.players = new CircularList<>();
         for(int i=0; i<playerNames.size(); i++){
-            this.players.add(new Player(playerNames.get(i)));
+
+            this.players.add(new Player(playerNames.get(i), null));
             players.get(i).setListener(this);
         }
         this.currentPlayer = this.players.get(0);

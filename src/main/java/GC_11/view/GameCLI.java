@@ -93,7 +93,7 @@ public class GameCLI extends ViewGame {
         for(Player p : this.modelView.getPlayers()){
             System.out.println("Player : " + p.getNickname());
             System.out.println("Points from CommonGoalCards: " + p.getPointsCommonGoals());
-            System.out.println("Points from PersonalGoalCard: " + p.getPersonalGoal());
+            System.out.println("Points from PersonalGoalCard: " + p.getPointsPersonalGoal());
             System.out.println("Points from Adjacency: " + p.getPointsAdjacency());
             System.out.println("-----------------------------");
             System.out.println("Total Points: " + p.getPoints());
