@@ -14,12 +14,8 @@ public class AppRei {
 
 
     public static void main( String[] args ) throws ExceededNumberOfPlayersException, NameAlreadyTakenException, RemoteException {
-        Scanner inputLine = new Scanner(System.in);
+        String string = "\u001B[103m\033[4;30m  \u001B[0m";
+        System.out.println(string);
 
-        System.out.println("what's your nickname?");
-        String nickname = inputLine.nextLine();
-        ServerImplRei server = new ServerImplRei();
-        ClientImplRei client = new ClientImplRei(server, nickname);
-        //client.run();
     }
 }

@@ -268,7 +268,7 @@ public class Board implements PropertyChangeListener, Serializable {
     }
 
     public void print(){
-        char[][] tmpboard = buildBoardPrint();
+        String[][] tmpboard = buildBoardPrint();
 
         for(int i=-1; i < 9; i++){
             if(i ==-1){
@@ -285,7 +285,7 @@ public class Board implements PropertyChangeListener, Serializable {
                         System.out.print("\t" + tmpboard[i][j]);
                     }
                 }
-                System.out.println();
+                System.out.println("\n");
             }
         }
 
@@ -297,17 +297,17 @@ public class Board implements PropertyChangeListener, Serializable {
         }
     }
 
-    private char[][] buildBoardPrint(){
-        char[][] tmpboard = new char[9][9];
+    private String[][] buildBoardPrint(){
+        String [][] tmpboard = new String[9][9];
         for(int i=0; i < 9; i++){
             for(int j=0; j < 9; j++){
                 TileColor color = getTile(i,j).getColor();
                 if(color != TileColor.PROHIBITED){
-                    tmpboard[i][j] = color.toString().charAt(0);
+                    tmpboard[i][j] = TileColor.ColorToString(color);
                 }
                     //System.out.print("\t" + color.toString().charAt(0));
                 else{
-                    tmpboard[i][j] = 'X';
+                    tmpboard[i][j] = "▧";
                     //System.out.print("\t" + "X");
                 }
             }

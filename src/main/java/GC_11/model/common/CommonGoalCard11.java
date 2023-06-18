@@ -35,7 +35,7 @@ public class CommonGoalCard11 extends CommonGoalCard{
 
         if (colors.stream().filter(TileColor.BLUE::equals).count() >= 8 ||
             colors.stream().filter(TileColor.GREEN::equals).count() >= 8 ||
-            colors.stream().filter(TileColor.ORANGE::equals).count() >= 8 ||
+            colors.stream().filter(TileColor.YELLOW::equals).count() >= 8 ||
             colors.stream().filter(TileColor.WHITE::equals).count() >= 8 ||
             colors.stream().filter(TileColor.PURPLE::equals).count() >= 8 ||
             colors.stream().filter(TileColor.CYAN::equals).count() >= 8){

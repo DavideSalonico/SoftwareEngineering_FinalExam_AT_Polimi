@@ -38,7 +38,7 @@ public class Bag implements Serializable {
             tiles.add(new Tile(TileColor.GREEN, i%3));
             tiles.add(new Tile(TileColor.CYAN, i%3));
             tiles.add(new Tile(TileColor.PURPLE,i%3));
-            tiles.add(new Tile(TileColor.ORANGE, i%3));
+            tiles.add(new Tile(TileColor.YELLOW, i%3));
         }
     }
 

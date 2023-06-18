@@ -12,7 +12,7 @@ public enum TileColor implements Serializable {
     WHITE,
     BLUE,
     PURPLE,
-    ORANGE,
+    YELLOW,
     CYAN,
     GREEN,
     EMPTY,
@@ -64,12 +64,33 @@ public enum TileColor implements Serializable {
             case "CYAN":
                 return CYAN;
             case "YELLOW":
-                return ORANGE;
+                return YELLOW;
             default:
                 return null;
         }
     }
 
-
+    public static String ColorToString(TileColor tc){
+        switch (tc){
+            case WHITE:
+                return "\u001B[107m  \u001B[0m";
+            case PURPLE:
+                return "\u001B[105m  \u001B[0m";
+            case GREEN:
+                return "\u001B[102m  \u001B[0m";
+            case BLUE:
+                return "\u001B[44m  \u001B[0m";
+            case CYAN:
+                return "\u001B[106m  \u001B[0m";
+            case YELLOW:
+                return "\u001B[103m  \u001B[0m";
+            case EMPTY:
+                return "□";
+            case PROHIBITED:
+                return "▧";
+            default:
+                return "ERROR";
+        }
+    }
 
 }
