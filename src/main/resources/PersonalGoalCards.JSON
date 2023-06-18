@@ -2,28 +2,28 @@
   {
     "id":1,
     "tiles" : [{
-      "row": 0,
+      "row": 5,
       "column": 2,
       "color": "CYAN" },
     {
-      "row": 2,
+      "row": 3,
       "column": 1,
       "color": "YELLOW"},
     {
-      "row": 3,
+      "row": 2,
       "column": 3,
       "color": "WHITE"
     },
     {
-      "row": 4,
+      "row": 1,
       "column": 4,
       "color": "GREEN"},
     {
-      "row": 5,
+      "row": 0,
       "column": 0,
-      "color": "RED"},
+      "color": "PURPLE"},
     {
-      "row": 5,
+      "row": 0,
       "column": 2,
       "color": "BLUE"
     }
@@ -33,30 +33,30 @@
     "id":2,
     "tiles" : [
     {
-      "row": 0,
+      "row": 5,
       "column": 4,
       "color": "BLUE" },
     {
-      "row": 1,
+      "row": 4,
       "column": 3,
       "color": "CYAN"},
     {
-      "row": 2,
+      "row": 3,
       "column": 4,
       "color": "WHITE"
     },
     {
-      "row": 3,
+      "row": 2,
       "column": 0,
       "color": "GREEN"},
     {
-      "row": 3,
+      "row": 2,
       "column": 2,
       "color": "YELLOW"},
     {
-      "row": 4,
+      "row": 1,
       "column": 1,
-      "color": "RED"
+      "color": "PURPLE"
     }
       ]
   },
@@ -65,28 +65,28 @@
     "id":3,
     "tiles" : [
     {
-      "row": 0,
+      "row": 5,
       "column": 0,
       "color": "WHITE" },
     {
-      "row": 2,
+      "row": 3,
       "column": 1,
       "color": "GREEN"},
     {
-      "row": 2,
+      "row": 3,
       "column": 4,
       "color": "CYAN"
     },
     {
-      "row": 3,
+      "row": 2,
       "column": 2,
-      "color": "PINK"},
+      "color": "PURPLE"},
     {
-      "row": 4,
+      "row": 1,
       "column": 0,
       "color": "BLUE"},
     {
-      "row": 4,
+      "row": 1,
       "column": 3,
       "color": "YELLOW"
     }
@@ -97,28 +97,28 @@
     "id":4,
     "tiles" : [
     {
-      "row": 1,
+      "row": 4,
       "column": 1,
       "color": "WHITE" },
     {
-      "row": 1,
+      "row": 4,
       "column": 2,
       "color": "GREEN"},
     {
-      "row": 2,
+      "row": 3,
       "column": 3,
-      "color": "PINK"
+      "color": "PURPLE"
     },
     {
-      "row": 3,
+      "row": 2,
       "column": 0,
       "color": "CYAN"},
     {
-      "row": 3,
+      "row": 2,
       "column": 2,
       "color": "BLUE"},
     {
-      "row": 5,
+      "row": 0,
       "column": 4,
       "color": "YELLOW"
     }
@@ -128,28 +128,28 @@
     "id":5,
     "tiles" : [
     {
-      "row": 0,
+      "row": 5,
       "column": 0,
       "color": "YELLOW" },
     {
-      "row": 0,
+      "row": 5,
       "column": 3,
       "color": "GREEN"},
     {
-      "row": 1,
+      "row": 4,
       "column": 4,
-      "color": "RED"
+      "color": "PURPLE"
     },
     {
-      "row": 2,
+      "row": 3,
       "column": 2,
       "color": "BLUE"},
     {
-      "row": 2,
+      "row": 3,
       "column": 2,
       "color": "WHITE"},
     {
-      "row": 4,
+      "row": 1,
       "column": 1,
       "color": "CYAN"
     }
@@ -160,28 +160,28 @@
     "id":6,
     "tiles" : [
       {
-      "row": 0,
+      "row": 5,
       "column": 0,
-      "color": "PINK" },
+      "color": "PURPLE" },
     {
-      "row": 1,
+      "row": 4,
       "column": 1,
       "color": "YELLOW"},
     {
-      "row": 1,
+      "row": 4,
       "column": 3,
       "color": "BLUE"
     },
     {
-      "row": 3,
+      "row": 2,
       "column": 3,
       "color": "WHITE"},
     {
-      "row": 5,
+      "row": 0,
       "column": 2,
       "color": "CYAN"},
     {
-      "row": 5,
+      "row": 0,
       "column": 4,
       "color": "GREEN"
     }
@@ -192,28 +192,28 @@
     "id":7,
     "tiles" : [
     {
-      "row": 0,
+      "row": 5,
       "column": 2,
       "color": "WHITE" },
     {
-      "row": 1,
+      "row": 4,
       "column": 4,
       "color": "YELLOW"},
     {
-      "row": 2,
+      "row": 3,
       "column": 0,
       "color": "CYAN"
     },
     {
-      "row": 3,
+      "row": 2,
       "column": 1,
-      "color": "RED"},
+      "color": "PURPLE"},
     {
-      "row": 4,
+      "row": 1,
       "column": 3,
       "color": "BLUE"},
     {
-      "row": 5,
+      "row": 0,
       "column": 0,
       "color": "GREEN"
     }
@@ -224,28 +224,28 @@
     "id":8,
     "tiles" : [
       {
-      "row": 0,
+      "row": 5,
       "column": 3,
       "color": "YELLOW" },
     {
-      "row": 1,
+      "row": 4,
       "column": 3,
       "color": "WHITE"},
     {
-      "row": 2,
+      "row": 3,
       "column": 0,
-      "color": "RED"
+      "color": "PURPLE"
     },
     {
-      "row": 3,
+      "row": 2,
       "column": 2,
       "color": "CYAN"},
     {
-      "row": 4,
+      "row": 1,
       "column": 1,
       "color": "GREEN"},
     {
-      "row": 5,
+      "row": 0,
       "column": 4,
       "color": "BLUE"
     }
@@ -255,28 +255,28 @@
     "id":9,
     "tiles" : [
     {
-      "row": 0,
+      "row": 5,
       "column": 0,
       "color": "BLUE" },
     {
-      "row": 1,
+      "row": 4,
       "column": 1,
       "color": "CYAN"},
     {
-      "row": 1,
+      "row": 4,
       "column": 4,
-      "color": "RED"
+      "color": "PURPLE"
     },
     {
-      "row": 2,
+      "row": 3,
       "column": 4,
       "color": "WHITE"},
     {
-      "row": 3,
+      "row": 2,
       "column": 2,
       "color": "GREEN"},
     {
-      "row": 5,
+      "row": 0,
       "column": 2,
       "color": "YELLOW"
     }
@@ -287,28 +287,28 @@
     "id":10,
     "tiles" : [
     {
-      "row": 0,
+      "row": 5,
       "column":3,
-      "color": "RED" },
+      "color": "PURPLE" },
     {
-      "row": 1,
+      "row": 4,
       "column": 1,
       "color": "BLUE"},
     {
-      "row": 2,
+      "row": 3,
       "column": 3,
       "color": "GREEN"
     },
     {
-      "row": 3,
+      "row": 2,
       "column": 0,
       "color": "WHITE"},
     {
-      "row": 4,
+      "row": 1,
       "column": 1,
       "color": "YELLOW"},
     {
-      "row": 5,
+      "row": 0,
       "column": 4,
       "color": "CYAN"
     }
@@ -318,30 +318,30 @@
     "id":11,
     "tiles" : [
     {
-      "row": 0,
+      "row": 5,
       "column": 3,
       "color": "CYAN" },
     {
-      "row": 1,
+      "row": 4,
       "column": 4,
       "color": "GREEN"},
     {
-      "row": 2,
+      "row": 3,
       "column": 2,
       "color": "BLUE"
     },
     {
-      "row": 3,
+      "row": 2,
       "column": 0,
       "color": "YELLOW"},
     {
-      "row": 4,
+      "row": 1,
       "column": 1,
       "color": "WHITE"},
     {
-      "row": 5,
+      "row": 0,
       "column": 2,
-      "color": "RED"
+      "color": "PURPLE"
     }
       ]
   },
@@ -350,28 +350,28 @@
     "id":12,
     "tiles" : [
     {
-      "row": 0,
+      "row": 5,
       "column": 0,
       "color": "GREEN" },
     {
-      "row": 1,
+      "row": 4,
       "column": 4,
       "color": "YELLOW"},
     {
-      "row": 2,
+      "row": 3,
       "column": 3,
       "color": "CYAN"
     },
     {
-      "row": 3,
+      "row": 2,
       "column": 2,
       "color": "BLUE"},
     {
-      "row": 4,
+      "row": 1,
       "column": 1,
-      "color": "RED"},
+      "color": "PURPLE"},
     {
-      "row": 5,
+      "row": 0,
       "column": 2,
       "color": "WHITE"
     }

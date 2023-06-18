@@ -7,6 +7,7 @@ import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
 
 import java.rmi.RemoteException;
+import java.util.Random;
 import java.util.Scanner;
 
 public class AppRei {
@@ -14,8 +15,11 @@ public class AppRei {
 
 
     public static void main( String[] args ) throws ExceededNumberOfPlayersException, NameAlreadyTakenException, RemoteException {
-        String string = "\u001B[103m\033[4;30m  \u001B[0m";
-        System.out.println(string);
+        Random random = new Random();
+        int[] idArray = random.ints(6, 44, 32).distinct().toArray();
+        for(int i : idArray){
+            System.out.println(i);
+        }
 
     }
 }

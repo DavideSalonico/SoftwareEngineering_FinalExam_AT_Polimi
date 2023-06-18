@@ -41,7 +41,7 @@ public class ClientImplRei extends UnicastRemoteObject implements ClientRei {
             server.register(this);
             this.server = server;
         } catch (Exception e){
-            System.err.println("error in the registration: "+ e.getCause() + "\n" + e.getMessage() );
+            System.err.println("error in the registration: "+ e.getCause() + "\n" + e.getMessage() + "\n" + e.getStackTrace() + "\n\n\n" + e.toString());
         }
     }
 

@@ -15,6 +15,7 @@ import GC_11.util.choices.ChoiceType;
 import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -107,10 +108,10 @@ public class GameCLI extends ViewGame {
             System.out.println("-----------------------------");
             System.out.println("Total Points: " + p.getPoints());
             p.getShelf().print();
-            if(p.equals(current)){
+            if(this.player.getNickname().equals(p.getNickname())){
                 //Printing Personal Goal Card
-                if(current.getPersonalGoal() == null) System.out.println("Null personal goal card");
-                else current.getPersonalGoal().print();
+                System.out.println("Null personal goal card");
+                p.getPersonalGoal().print();
             }
         }
 

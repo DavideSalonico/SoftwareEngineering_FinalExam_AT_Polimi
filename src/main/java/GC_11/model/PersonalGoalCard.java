@@ -36,9 +36,20 @@ public class PersonalGoalCard implements Serializable {
     }
 
     public void print() {
-        System.out.println("Personal Goal Card:");
+        String[][] matrix = new String[6][5];
         for(Triplet goal : this.getGoalList()){
-            System.out.println(goal.getRow() + goal.getCol() + goal.getCol());
+            matrix[goal.getRow()][goal.getCol()] = TileColor.ColorToString(goal.getColor());
+        }
+        for(int row = 0; row < 6; row++){
+            for(int col = 0; col < 5; col++){
+                System.out.print("|");
+                if(matrix[row][col] == null){
+                    System.out.print("  |");
+                } else {
+                    System.out.print(matrix[row][col] + "|");
+                }
+            }
+            System.out.println();
         }
     }
 

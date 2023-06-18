@@ -55,7 +55,7 @@ public enum TileColor implements Serializable {
         switch (s){
             case "WHITE":
                 return WHITE;
-            case "RED":
+            case "PURPLE":
                 return PURPLE;
             case "GREEN":
                 return GREEN;

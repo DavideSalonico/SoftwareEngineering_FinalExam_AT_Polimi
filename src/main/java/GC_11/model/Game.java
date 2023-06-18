@@ -54,10 +54,13 @@ public class Game implements PropertyChangeListener, Serializable {
         Random random = new Random();
         this.players = new CircularList<>();
         PersonalGoalCard personalGoalCard = new PersonalGoalCard();
-        int[] idArray = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-        int[] idsCard = Arrays.stream(idArray).boxed().sorted((a, b) -> random.nextInt(3) - 1).limit(playerNames.size()).mapToInt(Integer::intValue).toArray();
+        int[] idArray = random.ints(playerNames.size(), 1, 12).distinct().toArray();
         for(int i=0; i<playerNames.size(); i++){
-            this.players.add(new Player(playerNames.get(i), JsonReader.readPersonalGoalCard(idsCard[i])));
+            PersonalGoalCard card = JsonReader.readPersonalGoalCard(idArray[i]);
+            this.players.add(new Player(playerNames.get(i), card));
+            System.out.println("Crta data al giocatore " + playerNames.get(i));
+            card.print();
+            System.out.println();
             players.get(i).setListener(this);
         }
         this.currentPlayer = this.players.get(0);
