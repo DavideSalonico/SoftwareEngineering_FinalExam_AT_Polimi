@@ -41,8 +41,8 @@ public class PersonalGoalCard implements Serializable {
             matrix[goal.getRow()][goal.getCol()] = TileColor.ColorToString(goal.getColor());
         }
         for(int row = 0; row < 6; row++){
+            System.out.print("|");
             for(int col = 0; col < 5; col++){
-                System.out.print("|");
                 if(matrix[row][col] == null){
                     System.out.print("  |");
                 } else {

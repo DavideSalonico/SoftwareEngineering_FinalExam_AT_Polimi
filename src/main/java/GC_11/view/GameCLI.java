@@ -51,7 +51,7 @@ public class GameCLI extends ViewGame {
         boolean show_en = true;
         while(inGame){
             if(show_en) show();
-            System.out.println("IT IS THE TURN OF: " + this.modelView.getCurrentPlayer().getNickname());
+            System.out.println("\n\nIT IS THE TURN OF: " + this.modelView.getCurrentPlayer().getNickname());
             Choice choice = getPlayerChoice();
             System.out.println("scelta fatta");
             PropertyChangeEvent evt = new PropertyChangeEvent(
@@ -95,27 +95,30 @@ public class GameCLI extends ViewGame {
         this.modelView.getBoard().print();
 
         //Printing CommonGoalCards
+        int i=1;
         for(CommonGoalCard common : this.modelView.getCommonGoalCards()){
-            System.out.println(common.getText());
+            System.out.println("Common goal " + i + ": " +common.getText());
         }
 
         //Printing Players with relative objects
         for(Player p : this.modelView.getPlayers()){
+            System.out.println("\n\n----------------------------------");
             System.out.println("Player : " + p.getNickname());
             System.out.println("Points from CommonGoalCards: " + p.getPointsCommonGoals());
             System.out.println("Points from PersonalGoalCard: " + p.getPointsPersonalGoal());
             System.out.println("Points from Adjacency: " + p.getPointsAdjacency());
-            System.out.println("-----------------------------");
-            System.out.println("Total Points: " + p.getPoints());
+            System.out.println("Total Points: " + p.getPoints() + "\n");
+            System.out.println("this is " + p.getNickname() + "'s shelf:");
             p.getShelf().print();
             if(this.player.getNickname().equals(p.getNickname())){
                 //Printing Personal Goal Card
-                System.out.println("Null personal goal card");
+                System.out.println("\nPersonal Goal: ");
                 p.getPersonalGoal().print();
             }
         }
 
         //Printing Main Chat
+        System.out.println("\n\n----------------------------------");
         System.out.println("Main Chat: ");
         for(String message : this.modelView.getChat().getMainChatMessages()){
             System.out.println(message);
@@ -125,7 +128,7 @@ public class GameCLI extends ViewGame {
     public Choice getPlayerChoice(){
 
         Scanner s = new Scanner(System.in);
-        System.out.println("Options available: ");
+        System.out.println("\nOptions available: ");
         System.out.println( "Signs: " +
                 Arrays.stream(ChoiceType.values())
                         .map(ChoiceType::name)

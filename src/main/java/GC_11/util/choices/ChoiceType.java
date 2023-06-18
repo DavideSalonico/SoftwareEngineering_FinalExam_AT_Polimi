@@ -1,9 +1,6 @@
 package GC_11.util.choices;
 
 public enum ChoiceType {
-        INSERT_NAME,
-        LOGIN,
-        FIND_MATCH,
         SEE_COMMONGOAL,
         SEE_PERSONALGOAL,
         SELECT_TILE,

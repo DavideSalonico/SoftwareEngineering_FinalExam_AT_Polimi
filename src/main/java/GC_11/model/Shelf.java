@@ -130,6 +130,7 @@ public class Shelf implements Serializable {
             }
             System.out.println();
         }
+        System.out.println(" 0  1  2  3  4 ");
     }
 
     public void setListener(PropertyChangeListener listener){
