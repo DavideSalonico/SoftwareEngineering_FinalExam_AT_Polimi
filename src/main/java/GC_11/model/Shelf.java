@@ -121,8 +121,12 @@ public class Shelf implements Serializable {
 
     public void print() {
         for (int i = 0; i < 6; i++) {
+            System.out.print("|");
             for (int j = 0; j < 5; j++) {
-                System.out.print(myShelf[i][j].getColor() + "\t");
+                if(myShelf[i][j].getColor().equals(TileColor.EMPTY))
+                    System.out.print("  |");
+                else
+                    System.out.print(TileColor.ColorToString(myShelf[i][j].getColor()) + "|");
             }
             System.out.println();
         }

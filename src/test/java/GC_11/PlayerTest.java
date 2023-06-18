@@ -22,21 +22,18 @@ public class PlayerTest {
     Tile blue = new Tile(TileColor.BLUE);
     Tile cyan = new Tile(TileColor.CYAN);
     Tile green = new Tile(TileColor.GREEN);
-    Tile orange = new Tile(TileColor.ORANGE);
     Tile purple = new Tile(TileColor.PURPLE);
     Tile white = new Tile(TileColor.WHITE);
 
     List<Tile> blues = Arrays.asList(blue,blue,blue);
     List<Tile> cyans = Arrays.asList(cyan,cyan,cyan);
     List<Tile> greens = Arrays.asList(green,green,green);
-    List<Tile> oranges = Arrays.asList(orange,orange,orange);
     List<Tile> purples = Arrays.asList(purple,purple,purple);
     List<Tile> whites = Arrays.asList(white,white,white);
 
     List<Tile> blues2 = Arrays.asList(blue,blue);
     List<Tile> cyans2 = Arrays.asList(cyan,cyan);
     List<Tile> greens2 = Arrays.asList(green,green);
-    List<Tile> oranges2 = Arrays.asList(orange,orange);
     List<Tile> purples2 = Arrays.asList(purple,purple);
     List<Tile> whites2 = Arrays.asList(white,white);
 
@@ -48,8 +45,6 @@ public class PlayerTest {
         player.getShelf().addTiles(whites,0);
         player.getShelf().addTiles(blues2,1);
         player.getShelf().addTiles(whites,1);
-        player.getShelf().addTiles(oranges2,3);
-        player.getShelf().addTiles(oranges2,4);
 
 
 
