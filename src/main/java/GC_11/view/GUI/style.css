@@ -1,0 +1,21 @@
+
+/* Rimuove spazio tra i bottoni */
+.button-bar > .container > .button {
+    -fx-padding: 0;
+    -fx-margin: 0;
+}
+
+/* Mostro l'ombra solo quando la "TILE" è selezionata */
+.selected-image {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 255, 0.5), 10, 0, 0, 0);
+}
+
+/* Rimuove l'ombra predefinita */
+.image-view {
+    -fx-effect: none;
+}
+
+/* Da effetto clickabile a tutto ciò su cui passa il mouse */
+*:hover {
+    -fx-cursor: hand;
+}

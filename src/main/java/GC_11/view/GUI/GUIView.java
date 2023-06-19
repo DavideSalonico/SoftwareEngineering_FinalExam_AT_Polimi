@@ -7,7 +7,7 @@ import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -32,8 +32,8 @@ public class GUIView extends Application {
     public ImageView ICommonGoalCard;
     @FXML
     public ImageView IICommonGoalCard;
-    Label textCommonI;
-    Label textCommonII;
+    Tooltip textCommonI;
+    Tooltip textCommonII;
     @FXML
     public GridPane boardGridPane;
     @FXML
@@ -41,6 +41,8 @@ public class GUIView extends Application {
     @FXML
     public GridPane otherShelfGridPane;
 
+    @FXML
+    public ImageView firstPlayerToken;
 
     /**
      * Initializes the GUIView automatically when the game starts, all the basic images are loaded and the game is created using
@@ -62,6 +64,10 @@ public class GUIView extends Application {
         //Background contains the images of the scene that will be used to create the GUI ( PROBABILMENTE CI PENSA GIA' SceneBuilder in maniera statica)
         Image[] background = new Image[8];
 
+        // Put current Player's nickname into the chair on GUI
+        Tooltip firstPlayer = new Tooltip("CURRENT PLAYER : " + model.getCurrentPlayer().getNickname());
+        Tooltip.install(firstPlayerToken, firstPlayer);
+
         //Get common goal cards from the model
         String pathCommonI = "src/resources/GraphicalResources/common goal cards/" + model.getCommonGoal(0).getId() + ".jpg";
         String pathCommonII = "src/resources/GraphicalResources/common goal cards/" + model.getCommonGoal(1).getId() + ".jpg";
@@ -70,15 +76,16 @@ public class GUIView extends Application {
         // Set common goal cards images on existing javafx objects
         ICommonGoalCard.setImage(commonI);
         IICommonGoalCard.setImage(commonII);
-
+        ICommonGoalCard.setDisable(false);
+        IICommonGoalCard.setDisable(false);
         //Get the Common Goal text and show only when user go with the mouse over the card
-        textCommonI = new Label(model.getCommonGoal(0).getText());
-        textCommonII = new Label(model.getCommonGoal(1).getText());
-        textCommonI.setVisible(false);
-        textCommonII.setVisible(false);
+        textCommonI = new Tooltip(model.getCommonGoal(0).getText());
+        textCommonII = new Tooltip(model.getCommonGoal(1).getText());
+        Tooltip.install(ICommonGoalCard, textCommonI);
+        Tooltip.install(IICommonGoalCard, textCommonII);
 
         // Config event handler for common goal cards
-        setupCommonGoalCardEvents();
+        //setupCommonGoalCardEvents();
         
         //The following maps contain the images of the tiles that will be used to create the GUI
         // Percorsi dei file immagine
@@ -156,29 +163,6 @@ public class GUIView extends Application {
 
     }
 
-    @FXML
-    private void setupCommonGoalCardEvents() {
-        // Mostra il testo quando il cursore entra nell'ImageView ICommonGoalCard
-        ICommonGoalCard.setOnMouseEntered(event -> {
-            textCommonI.setVisible(true);
-        });
-
-        // Nasconde il testo quando il cursore esce dall'ImageView ICommonGoalCard
-        ICommonGoalCard.setOnMouseExited(event -> {
-            textCommonI.setVisible(false);
-        });
-
-        // Mostra il testo quando il cursore entra nell'ImageView IICommonGoalCard
-        IICommonGoalCard.setOnMouseEntered(event -> {
-            textCommonII.setVisible(true);
-        });
-
-        // Nasconde il testo quando il cursore esce dall'ImageView IICommonGoalCard
-        IICommonGoalCard.setOnMouseExited(event -> {
-            textCommonII.setVisible(false);
-        });
-    }
-
 
     //Method that will be called when the game starts
     @Override
@@ -197,6 +181,8 @@ public class GUIView extends Application {
         }
 
         Scene scene = new Scene(pane);
+        // SISTEMARE AGGIUNTA CSS
+        //scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
     }
