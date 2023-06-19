@@ -120,9 +120,9 @@ public class Board implements PropertyChangeListener, Serializable {
                     new Coordinate(l, c));
             this.listener.propertyChange(evt);
         }
-        else if (this.selectedTiles.size()==1){
-            if((l==this.selectedTiles.get(0).getRow() && abs(c-this.selectedTiles.get(0).getColumn())==1)||
-                    (c==this.selectedTiles.get(0).getColumn() && abs(l-this.selectedTiles.get(0).getRow())==1)) {
+        else if (this.selectedTiles.size()==1) {
+            if ((l == this.selectedTiles.get(0).getRow() && abs(c - this.selectedTiles.get(0).getColumn()) == 1) ||
+                    (c == this.selectedTiles.get(0).getColumn() && abs(l - this.selectedTiles.get(0).getRow()) == 1)) {
                 this.selectedTiles.add(new Coordinate(l, c));
                 PropertyChangeEvent evt = new PropertyChangeEvent(
                         this,
@@ -130,7 +130,10 @@ public class Board implements PropertyChangeListener, Serializable {
                         null,
                         new Coordinate(l, c));
                 this.listener.propertyChange(evt);
+            } else {
+                throw new IllegalMoveException("You can't pick this Tile!");
             }
+        }
             else {
                 if(this.selectedTiles.get(0).getRow()==this.selectedTiles.get(1).getRow()){
                     int max = this.selectedTiles.stream().mapToInt(Coordinate::getColumn).max().orElseThrow(NoSuchElementException::new);
@@ -166,7 +169,6 @@ public class Board implements PropertyChangeListener, Serializable {
 
             }
         }
-    }
 
     private int freeSides(int l, int c){
         int counter = 0;
