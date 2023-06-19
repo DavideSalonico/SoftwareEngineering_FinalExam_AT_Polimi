@@ -111,28 +111,54 @@ public class Board implements PropertyChangeListener, Serializable {
     public void selectTile(int l, int c)throws IllegalMoveException{
         if(!this.isPlayable(l,c) || this.freeSides(l,c)==0 || this.selectedTiles.size()==3)
             throw new IllegalMoveException("You can't pick this Tile!");
-
-
-        if(this.selectedTiles.size()==0)
-            this.selectedTiles.add(new Coordinate(l,c));
+        if(this.selectedTiles.size()==0) {
+            this.selectedTiles.add(new Coordinate(l, c));
+            PropertyChangeEvent evt = new PropertyChangeEvent(
+                    this,
+                    "TILE_SELECTED",
+                    null,
+                    new Coordinate(l, c));
+            this.listener.propertyChange(evt);
+        }
         else if (this.selectedTiles.size()==1){
             if((l==this.selectedTiles.get(0).getRow() && abs(c-this.selectedTiles.get(0).getColumn())==1)||
-                    (c==this.selectedTiles.get(0).getColumn() && abs(l-this.selectedTiles.get(0).getRow())==1))
-                this.selectedTiles.add(new Coordinate(l,c));
+                    (c==this.selectedTiles.get(0).getColumn() && abs(l-this.selectedTiles.get(0).getRow())==1)) {
+                this.selectedTiles.add(new Coordinate(l, c));
+                PropertyChangeEvent evt = new PropertyChangeEvent(
+                        this,
+                        "TILE_SELECTED",
+                        null,
+                        new Coordinate(l, c));
+                this.listener.propertyChange(evt);
+            }
             else {
                 if(this.selectedTiles.get(0).getRow()==this.selectedTiles.get(1).getRow()){
                     int max = this.selectedTiles.stream().mapToInt(Coordinate::getColumn).max().orElseThrow(NoSuchElementException::new);
                     int min = this.selectedTiles.stream().mapToInt(Coordinate::getColumn).min().orElseThrow(NoSuchElementException::new);
-                    if(l == min-1 || l==max+1)
-                        this.selectedTiles.add(new Coordinate(l,c));
+                    if(l == min-1 || l==max+1) {
+                        this.selectedTiles.add(new Coordinate(l, c));
+                        PropertyChangeEvent evt = new PropertyChangeEvent(
+                                this,
+                                "TILE_SELECTED",
+                                null,
+                                new Coordinate(l, c));
+                        this.listener.propertyChange(evt);
+                    }
                     else
                         throw new IllegalMoveException("You can't pick this Tile!");
                 }
                 else{
                     int max = this.selectedTiles.stream().mapToInt(Coordinate::getRow).max().orElseThrow(NoSuchElementException::new);
                     int min = this.selectedTiles.stream().mapToInt(Coordinate::getRow).min().orElseThrow(NoSuchElementException::new);
-                    if(c == min-1 || c==max+1)
-                        this.selectedTiles.add(new Coordinate(l,c));
+                    if(c == min-1 || c==max+1) {
+                        this.selectedTiles.add(new Coordinate(l, c));
+                        PropertyChangeEvent evt = new PropertyChangeEvent(
+                                this,
+                                "TILE_SELECTED",
+                                null,
+                                new Coordinate(l, c));
+                        this.listener.propertyChange(evt);
+                    }
                     else
                         throw new IllegalMoveException("You can't pick this Tile!");
 
@@ -140,8 +166,6 @@ public class Board implements PropertyChangeListener, Serializable {
 
             }
         }
-
-
     }
 
     private int freeSides(int l, int c){
@@ -293,7 +317,7 @@ public class Board implements PropertyChangeListener, Serializable {
         System.out.println("Board selected tiles:");
         for(Coordinate c : selectedTiles){
             System.out.println(c.getRow() + ", " + c.getColumn() + ", " +
-                    this.getTile(c.getRow(), c.getColumn()).getColor().toString().charAt(0));
+                    TileColor.ColorToString(this.getTile(c.getRow(), c.getColumn()).getColor()));
         }
     }
 

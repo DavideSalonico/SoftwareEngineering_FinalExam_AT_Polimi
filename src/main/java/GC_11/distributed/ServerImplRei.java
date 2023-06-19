@@ -96,7 +96,7 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei {
         this.lobbyController.propertyChange(evt);
     }
 
-    public void notifyClients (){
+    public synchronized void notifyClients (){
         for (ClientRei c : clients) {
             new Thread(() -> {
                 try {

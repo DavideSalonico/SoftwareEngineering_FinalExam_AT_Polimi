@@ -49,7 +49,6 @@ public class GameCLI extends ViewGame {
     @Override
     public void run() throws RemoteException {
         boolean show_en = true;
-        while(inGame){
             if(show_en) show();
             System.out.println("\n\nIT IS THE TURN OF: " + this.modelView.getCurrentPlayer().getNickname());
             Choice choice = getPlayerChoice();
@@ -69,7 +68,7 @@ public class GameCLI extends ViewGame {
                 System.out.println("Errore");
             }*/
 
-        }
+        //end while
 
         /*PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,

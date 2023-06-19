@@ -56,6 +56,7 @@ public class Game implements PropertyChangeListener, Serializable {
         PersonalGoalCard personalGoalCard = new PersonalGoalCard();
         int[] idArray = random.ints(playerNames.size(), 1, 12).distinct().toArray();
         for(int i=0; i<playerNames.size(); i++){
+            System.out.println("ID della carta personale del giocatore: " + idArray[i]);
             PersonalGoalCard card = JsonReader.readPersonalGoalCard(idArray[i]);
             this.players.add(new Player(playerNames.get(i), card));
             System.out.println("Crta data al giocatore " + playerNames.get(i));
@@ -240,11 +241,11 @@ public class Game implements PropertyChangeListener, Serializable {
                 evt.getPropertyName(),
                 null,
                 new GameViewMessage(this, null));*/
-        /*try {
+        try {
             server.notifyClients();
         } catch (RemoteException e) {
             throw new RuntimeException(e);
-        }*/
+        }
     }
 
     public void triggerException(Exception e) throws RemoteException {

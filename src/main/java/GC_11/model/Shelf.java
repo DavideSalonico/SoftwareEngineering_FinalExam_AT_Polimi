@@ -73,12 +73,12 @@ public class Shelf implements Serializable {
                 }
             }
         }
-        PropertyChangeEvent evt = new PropertyChangeEvent(
+        /*PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "SHELF_MODIFIED",
                 oldShelf,
                 this.myShelf);
-        this.listener.propertyChange(evt);
+        this.listener.propertyChange(evt);*/
     }
 
     /**
