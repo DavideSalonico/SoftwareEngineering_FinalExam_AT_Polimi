@@ -8,15 +8,21 @@ import java.beans.PropertyChangeListener;
 
 public class LobbyController implements PropertyChangeListener {
 
-    private Lobby lobbyModel;
+    private Lobby lobby;
+
 
     public LobbyController(Lobby lobby){
-        this.lobbyModel= lobby;
+        this.lobby= lobby;
     }
 
     public void lobbySetup(){
-        if(this.lobbyModel.getPlayers().size()==0){
+        String messageFromClient;
+        String messageToClient;
+        LobbyViewMessage lvm = new LobbyViewMessage();
+        if(this.lobby==null){
             // Lobby setup
+            lvm.setMessage("Non c'è ancora nessun giocatore nella lobby. Vuoi crearne una?\n[S] Sì\n[N] no");
+
         }
         else {
             // Lobby add player
@@ -28,7 +34,7 @@ public class LobbyController implements PropertyChangeListener {
     }
 
     public void addPlayerName(String playerName) throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
-        this.lobbyModel.addPlayer(playerName);
+        this.lobby.addPlayer(playerName);
     }
 
     @Override

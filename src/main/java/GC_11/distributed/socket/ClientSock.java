@@ -141,7 +141,7 @@ public class ClientSock implements PropertyChangeListener{
          public void run() {
              System.out.println("Running write Thread");
              while (true){
-                 System.out.println("Insert message to send to server");
+                 //System.out.println("Insert message to send to server");
                  String s = inputLine.nextLine();
                  sendMessageToServer(s);
              }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.control.BottomNavigationButton?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="424.0" prefWidth="412.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="433.0" fitWidth="422.0" pickOnBounds="true">
+         <image>
+            <Image url="@../../../../../resources/GraphicalResources/misc/sfondo%20parquet.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="108.0" fitWidth="439.0" layoutX="31.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../resources/GraphicalResources/Publisher%20material/Title%202000x618px.png" />
+         </image>
+      </ImageView>
+      <ListView layoutX="95.0" layoutY="161.0" prefHeight="138.0" prefWidth="200.0" />
+      <TextField editable="false" layoutX="31.0" layoutY="316.0" opacity="0.2" prefHeight="25.0" prefWidth="77.0" text="Your name:" />
+      <TextField editable="false" layoutX="119.0" layoutY="316.0" opacity="0.2" prefHeight="25.0" prefWidth="176.0" />
+      <BottomNavigationButton layoutX="322.0" layoutY="316.0" prefHeight="25.0" prefWidth="59.0" text="Enter" textAlignment="CENTER" />
+      <TextArea editable="false" layoutX="31.0" layoutY="361.0" opacity="0.5" prefHeight="51.0" prefWidth="350.0" text="Errors or messages shown here" />
+      <Text layoutX="149.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lobby" textAlignment="CENTER" wrappingWidth="92.31683349609375" />
+   </children>
+</Pane>
