@@ -1,18 +1,17 @@
 package GC_11.model;
 
+import GC_11.controller.JsonReader;
 import GC_11.distributed.ServerRei;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.model.common.*;
 import GC_11.util.CircularList;
 import org.jetbrains.annotations.NotNull;
-import GC_11.controller.JsonReader;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -50,7 +49,6 @@ public class Game implements PropertyChangeListener, Serializable {
 
     public Game(@NotNull List<String> playerNames, ServerRei server){
 
-
         Random random = new Random();
         this.players = new CircularList<>();
         PersonalGoalCard personalGoalCard = new PersonalGoalCard();
@@ -59,7 +57,7 @@ public class Game implements PropertyChangeListener, Serializable {
             System.out.println("ID della carta personale del giocatore: " + idArray[i]);
             PersonalGoalCard card = JsonReader.readPersonalGoalCard(idArray[i]);
             this.players.add(new Player(playerNames.get(i), card));
-            System.out.println("Crta data al giocatore " + playerNames.get(i));
+            System.out.println("Carta data al giocatore " + playerNames.get(i));
             card.print();
             System.out.println();
             players.get(i).setListener(this);
