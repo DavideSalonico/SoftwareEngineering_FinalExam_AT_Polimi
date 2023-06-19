@@ -124,7 +124,7 @@
                               <Image url="@../../../../../resources/GraphicalResources/misc/Sacchetto Chiuso.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="firstPlayerTokern" fitHeight="77.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                        <ImageView fx:id="firstPlayerToken" fitHeight="77.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                            <image>
                               <Image url="@../../../../../resources/GraphicalResources/misc/firstplayertoken.png" />
                            </image>

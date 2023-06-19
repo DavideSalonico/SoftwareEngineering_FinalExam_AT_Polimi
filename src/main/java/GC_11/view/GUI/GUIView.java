@@ -42,7 +42,7 @@ public class GUIView extends Application {
     public GridPane otherShelfGridPane;
 
     @FXML
-    public ImageView firstPlayerTokern;
+    public ImageView firstPlayerToken;
 
     /**
      * Initializes the GUIView automatically when the game starts, all the basic images are loaded and the game is created using
@@ -63,6 +63,10 @@ public class GUIView extends Application {
 
         //Background contains the images of the scene that will be used to create the GUI ( PROBABILMENTE CI PENSA GIA' SceneBuilder in maniera statica)
         Image[] background = new Image[8];
+
+        // Put current Player's nickname into the chair on GUI
+        Tooltip firstPlayer = new Tooltip("CURRENT PLAYER : " + model.getCurrentPlayer().getNickname());
+        Tooltip.install(firstPlayerToken, firstPlayer);
 
         //Get common goal cards from the model
         String pathCommonI = "src/resources/GraphicalResources/common goal cards/" + model.getCommonGoal(0).getId() + ".jpg";
@@ -178,7 +182,7 @@ public class GUIView extends Application {
 
         Scene scene = new Scene(pane);
         // SISTEMARE AGGIUNTA CSS
-        scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+        //scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
     }
