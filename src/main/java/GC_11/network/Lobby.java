@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Lobby {
+public class Lobby implements PropertyChangeListener{
     private final int maxPlayers;
     private List<String> playersNames;
     private Game gameModel = null;
@@ -68,7 +68,6 @@ public class Lobby {
     }
 
     // TODO LOBBY by Mattia
-    // fatto - lanciare l'excpetion in addPlayer se eccede il numero massimo o non può inserire il player
     // Il primo giocatore è il capo del gruppo, e sarà l'unico a poter avviare il gioco, gestire la questione dei permessi
     // Rendere la classe observable, fare anche una view generale condivisa per tutti i player (observer), capire come
     // sarà la view, che dovrà far vedere le stesse cose a tutti ma solo il primo giocatore ha i permessi (ricorda che i giocatori
@@ -95,5 +94,13 @@ public class Lobby {
 
     public void setListener(PropertyChangeListener listener) {
         this.listener = listener;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        this.listener.propertyChange(new PropertyChangeEvent(this,
+                "lobbyModel",
+                null,
+                this));
     }
 }

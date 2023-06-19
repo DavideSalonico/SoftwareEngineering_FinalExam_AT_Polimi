@@ -22,14 +22,38 @@ public class ServerClientHandler implements Runnable {
 
     public ServerClientHandler(Socket socket, ServerSock server) {
         this.clientSocket = socket;
-        this.server=server;
+        this.server = server;
     }
 
-    public void receiveMessageFromClient() throws IOException, ClassNotFoundException {
+    public String receiveLobbyMessageFromClient() throws IOException, ClassNotFoundException{
+        String clientMessage=null;
+        try{
+            clientMessage = (String) inputStream.readObject();
+            System.out.println("Received message from client: " + clientMessage);
+        }
+        catch(IOException e){
+            System.out.println("Error during receiving message from client");
+            closeConnection();
+            server.notifyDisconnectionAllSockets(this.clientSocket, this);
+            throw new IOException();
+        }
+        catch(ClassNotFoundException e){
+            System.out.println("Error during deserialization of message from client");
+            closeConnection();
+            server.notifyDisconnectionAllSockets(this.clientSocket, this);
+            throw new ClassNotFoundException();
+        }
+        finally {
+            return clientMessage;
+        }
+    }
+
+    public String receiveMessageFromClient() throws IOException, ClassNotFoundException {
+        String clientChoice = null;
         try {
-            String clientChoice = (String) inputStream.readObject();
-            System.out.println("Received choice from client: "+ clientChoice);
-            server.notifyAllClients(clientChoice,this);
+            clientChoice = (String) inputStream.readObject();
+            System.out.println("Received choice from client: " + clientChoice);
+            server.notifyAllClients(clientChoice, this);
         } catch (IOException e) {
             System.out.println("Error during receiving message from client");
             closeConnection();
@@ -41,12 +65,15 @@ public class ServerClientHandler implements Runnable {
             server.notifyDisconnectionAllSockets(this.clientSocket, this);
             throw new ClassNotFoundException();
         }
+        finally {
+            return clientChoice;
+        }
     }
 
-    public void receiveChoiceFromClient(){
+    public void receiveChoiceFromClient() {
         try {
             Choice clientChoice = (Choice) inputStream.readObject();
-            System.out.println("Received choice from: " + clientChoice.getPlayer() + ":"+ clientChoice.getType() + clientChoice.getParams());
+            System.out.println("Received choice from: " + clientChoice.getPlayer() + ":" + clientChoice.getType() + clientChoice.getParams());
             //this.controller.propertyChange(new PropertyChangeEvent(this, "choice", null, clientChoice));
         } catch (IOException e) {
             System.out.println("Error during receiving message from client");
@@ -59,7 +86,7 @@ public class ServerClientHandler implements Runnable {
         }
     }
 
-    public void sendMessageToClient(String s){
+    public void sendMessageToClient(String s) {
         try {
             outputStream.writeObject(s);
             outputStream.flush();
@@ -71,7 +98,7 @@ public class ServerClientHandler implements Runnable {
         }
     }
 
-    public void sendMessageViewToClient(MessageView messageView){
+    public void sendMessageViewToClient(MessageView messageView) {
         try {
             outputStream.writeObject(messageView);
             outputStream.flush();
@@ -84,11 +111,12 @@ public class ServerClientHandler implements Runnable {
 
     private Thread readThread = new Thread(new Runnable() {
         boolean connected = true;
+
         @Override
         public void run() {
             System.out.println("Thread read started");
             while (connected)
-                try{
+                try {
                     receiveMessageFromClient();
                 } catch (IOException | ClassNotFoundException e) {
                     connected = false;
@@ -116,10 +144,19 @@ public class ServerClientHandler implements Runnable {
         } catch (IOException e) {
             System.err.println("Unable to get output stream");
         }
+        try {
+            lobbySetup();
+        } catch (IOException e) {
+            System.err.println("Unable to setup lobby");
+        } catch (ClassNotFoundException e) {
+            System.err.println("Unable to setup lobby");
+        }
         readThread.start();
+
     }
-    private void closeConnection(){
-        System.out.println("Closing socket: "+ clientSocket.getInetAddress()+ ":" + clientSocket.getPort());
+
+    private void closeConnection() {
+        System.out.println("Closing socket: " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
         try {
             inputStream.close();
         } catch (IOException e) {
@@ -135,7 +172,7 @@ public class ServerClientHandler implements Runnable {
         } catch (IOException e) {
             System.err.println("Unable to close socket");
         }
-        this.server.notifyDisconnectionAllSockets(this.clientSocket,this);
+        this.server.notifyDisconnectionAllSockets(this.clientSocket, this);
     }
 
     /*
@@ -197,14 +234,73 @@ public class ServerClientHandler implements Runnable {
 
     }
 */
-    public void notifyDisconnection(Socket socket){
+    public void notifyDisconnection(Socket socket) {
         String alert = "Socket " + socket.getInetAddress() + ":" + socket.getPort() + " has disconnected";
-        try{
+        try {
             outputStream.writeObject(alert);
             outputStream.reset();
             outputStream.flush();
-        }catch(IOException e){
+        } catch (IOException e) {
             System.err.println("Unable to notify socket disconnection");
         }
     }
+
+    public void lobbySetup() throws IOException, ClassNotFoundException {
+        if (this.server.getLobby()==null || this.server.getLobby().getPlayers().size()==0) {
+            sendMessageToClient("Non c'è ancora nessun giocatore nella lobby. Vuoi crearne una?\n[S] Sì\n[N] no");
+            String reply = receiveLobbyMessageFromClient();
+            reply=reply.toUpperCase();
+            if(reply.equals("S") || reply.equals("Y") || reply.equals("SI") || reply.equals("YES")){
+                sendMessageToClient("Inserire il numero massimo di giocatori");
+                int maxPlayers = Integer.parseInt(receiveLobbyMessageFromClient());
+                while (maxPlayers <= 1 || maxPlayers >= 5){
+                    sendMessageToClient("Il numero di giocatori deve essere compreso tra 2 e 4");
+                    maxPlayers = Integer.parseInt(receiveLobbyMessageFromClient());
+                }
+                this.server.lobbySetup(maxPlayers);
+                sendMessageToClient("Inserisci il tuo nome");
+                String playerName = receiveLobbyMessageFromClient();
+                boolean setName = false;
+                while(!setName){
+                    try {
+                        this.server.getLobby().addPlayer(playerName);
+                        setName = true;
+                    } catch (ExceededNumberOfPlayersException e) {
+                        sendMessageToClient("Raggiunto il numero massimo di giocatori");
+                    } catch (NameAlreadyTakenException e) {
+                        sendMessageToClient("Nome già in uso. Sceglierne un altro");
+                    }
+                }
+            }
+            else {
+                sendMessageToClient("Sei sicuro?");
+            }
+        }
+        else {
+            sendMessageToClient("Esiste già una lobby. Vuoi entrare?\n[S] Sì\n[N] no");
+            String reply = receiveMessageFromClient();
+            reply=reply.toUpperCase();
+            if(reply.equals("S") || reply.equals("Y") || reply.equals("SI") || reply.equals("YES")){
+                sendMessageToClient("Inserisci il tuo nome");
+                String playerName = receiveMessageFromClient();
+                boolean setName = false;
+                while(!setName){
+                    try {
+                        this.server.getLobby().addPlayer(playerName);
+                        setName = true;
+                    } catch (ExceededNumberOfPlayersException e) {
+                        sendMessageToClient("Raggiunto il numero massimo di giocatori");
+                    } catch (NameAlreadyTakenException e) {
+                        sendMessageToClient("Nome già in uso. Sceglierne un altro");
+                    }
+                }
+            }
+            else {
+                sendMessageToClient("Sei sicuro?");
+            }
+        }
+        sendMessageToClient("Pronto per giocare");
+    }
+
 }
+

@@ -3,6 +3,7 @@ package GC_11.distributed.socket;
 
 import GC_11.model.GameViewMessage;
 import GC_11.network.Lobby;
+import GC_11.network.LobbyController;
 import GC_11.network.MessageView;
 
 import java.beans.PropertyChangeEvent;
@@ -18,6 +19,7 @@ import java.util.concurrent.Executors;
 public class ServerSock implements PropertyChangeListener {
 
     Lobby lobby;
+    LobbyController lobbyController;
     private final int port;
     private ServerSocket serverSocket;
     private final ExecutorService executor = Executors.newCachedThreadPool();
@@ -30,6 +32,10 @@ public class ServerSock implements PropertyChangeListener {
         // Opening TCP port
         this.port=port;
 
+    }
+
+    public void lobbySetup(int maxPlayers){
+        this.lobby=new Lobby(maxPlayers);
     }
 
     public void startServer() throws IOException, ClassNotFoundException {
@@ -87,8 +93,6 @@ public class ServerSock implements PropertyChangeListener {
             sch.notifyDisconnection(disconnectedSocket);
         }
     }
-
-
 
     public Lobby getLobby() {
         return lobby;
