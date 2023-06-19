@@ -22,7 +22,9 @@ public class JsonWriter {
         // Creazione file JSON
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try(FileWriter writer = new FileWriter("src//main//resources//GameView.JSON")) {
-            gson.toJson(gameView, writer);
+            gson.toJson(gameView.getBoard(), writer);
+            gson.toJson(gameView.getPlayers(), writer);
+            //gson.toJson(gameView.getCommonGoalCards().get(0).getId(),writer);
             System.out.println("File JSON creato correttamente");
         } catch (IOException e) {
             System.out.println("Errore nella scrittura del file JSON del salvataggio della partita");
