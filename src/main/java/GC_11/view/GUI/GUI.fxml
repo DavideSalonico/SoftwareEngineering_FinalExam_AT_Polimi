@@ -15,12 +15,12 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="989.0" prefWidth="1057.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GC_11.view.GUI.GUIView">
    <children>
-      <ImageView fitHeight="1058.0" fitWidth="1057.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="1062.0" fitWidth="1083.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../../resources/GraphicalResources/misc/sfondo parquet.jpg" />
          </image>
       </ImageView>
-      <GridPane layoutX="25.0" layoutY="121.0" prefHeight="869.0" prefWidth="1022.0">
+      <GridPane layoutX="25.0" layoutY="121.0" prefHeight="837.0" prefWidth="1022.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="540.0" minWidth="10.0" prefWidth="465.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="624.0" minWidth="10.0" prefWidth="127.0" />
