@@ -6,10 +6,10 @@ import java.util.List;
 
 public class LobbyViewMessage extends MessageView{
 
-    //private enum MSG_TYPE  { ERROR, NOTIFICATION, INPUT_STRING, INPUT_INT, UPDATE};
+    private enum MSG_TYPE  { INSERT_PLAYER, SET_NUMBER_OF_PLAYER, INITIALIZE, GET_LOBBY_VIEW, UPDATE, START};
 
-    //private String message;
-    //private MSG_TYPE messageType;
+    private String message;
+    private MSG_TYPE messageType;
     private int maxPlayers;
     private List<String> playersNames;
     private Game game;
@@ -20,16 +20,11 @@ public class LobbyViewMessage extends MessageView{
         this.game = lobby.getGameModel();
     }
 
-/*
-    public LobbyViewMessage(Lobby lobby, MSG_TYPE msgType){
-        this.lobbyId=lobby.getLobbyID();
-        this.maxPlayers=lobby.getMaxPlayers();
-        this.fisrtPlayer=lobby.getFisrtPlayer();
-        this.playersNames=lobby.getPlayers();
-        this.messageType=msgType;
+    public LobbyViewMessage(){
         this.message=null;
+        this.messageType=null;
+        this.game=null;
     }
-*/
 
     public int getMaxPlayers() {
         return maxPlayers;
@@ -39,19 +34,32 @@ public class LobbyViewMessage extends MessageView{
         return playersNames;
     }
 
-
-}
-/*
     public MSG_TYPE getMessageType() {
         return messageType;
     }
 
     public String getFisrtPlayer() {
-        return fisrtPlayer;
+        return playersNames.get(0);
     }
 
     public String getMessage() {
         return message;
     }
-*/
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setMessageType(MSG_TYPE messageType) {
+        this.messageType = messageType;
+    }
+
+    public void setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
+
+    public void setPlayersNames(List<String> playersNames) {
+        this.playersNames = playersNames;
+    }
+}
 

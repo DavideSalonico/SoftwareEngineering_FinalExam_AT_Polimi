@@ -18,8 +18,10 @@ public class LobbyController implements PropertyChangeListener {
     public void lobbySetup(){
         String messageFromClient;
         String messageToClient;
+        LobbyViewMessage lvm = new LobbyViewMessage();
         if(this.lobby==null){
-            messageToClient="Non c'è ancora nessun giocatore nella lobby. Vuoi crearne una?\n[S] Sì\n[N] no";
+            // Lobby setup
+            lvm.setMessage("Non c'è ancora nessun giocatore nella lobby. Vuoi crearne una?\n[S] Sì\n[N] no");
 
         }
         else {
