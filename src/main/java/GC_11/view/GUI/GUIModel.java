@@ -22,7 +22,7 @@ public class GUIModel  {
     private static String clientNickName;
     private final MainFrame mainFrame;
 
-
+    //VERSIONE JAVA SWING, DA CANCELLARE E REFACTORARE con GUIView che è la versione JavaFX
     private static class MainFrame extends JFrame{
 
         private static final BufferedImage[] background = new BufferedImage[8];
