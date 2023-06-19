@@ -141,7 +141,7 @@ public class Player implements PropertyChangeListener, Serializable {
         int totalRight = 0;
         // For every goal in the personal goal card check if matches with the personal shelf
         for (Triplet t : personalGoal.getGoalList()){
-            if (shelf.getTile(t.getCol(),t.getRow()).getColor() == t.getColor()){
+            if (shelf.getTile(t.getRow(),t.getCol()).getColor() == t.getColor()){
                 totalRight++;
             }
         }
