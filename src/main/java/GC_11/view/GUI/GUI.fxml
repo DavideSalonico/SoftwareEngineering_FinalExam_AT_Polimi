@@ -19,31 +19,32 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane prefHeight="885.0" prefWidth="1483.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GC_11.view.GUI.GUIView">
+<Pane prefHeight="881.0" prefWidth="1483.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GC_11.view.GUI.GUIView">
    <children>
-      <ImageView fitHeight="996.0" fitWidth="1015.0" layoutX="242.0" layoutY="-58.0" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="0.9">
+      <ImageView fitHeight="990.0" fitWidth="983.0" layoutX="243.0" layoutY="-53.0" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="0.9">
          <image>
             <Image url="@../../../../../resources/GraphicalResources/misc/sfondo parquet.jpg" />
          </image>
       </ImageView>
-      <GridPane fx:id="mainGrid" layoutX="25.0" layoutY="121.0" prefHeight="721.0" prefWidth="1092.0">
+      <GridPane fx:id="mainGrid" layoutX="25.0" layoutY="121.0" prefHeight="767.0" prefWidth="1092.0">
         <columnConstraints>
+          <ColumnConstraints />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="540.0" minWidth="10.0" prefWidth="465.6" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="624.0" minWidth="10.0" prefWidth="220.0" />
+            <ColumnConstraints hgrow="NEVER" maxWidth="624.0" minWidth="10.0" prefWidth="220.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="624.0" minWidth="10.0" prefWidth="406.4000122070313" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="474.0" minHeight="10.0" prefHeight="436.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="524.0" minHeight="10.0" prefHeight="266.4" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="435.0" minHeight="10.0" prefHeight="18.600012207031227" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="524.0" minHeight="10.0" prefHeight="254.19998779296873" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="435.0" minHeight="10.0" prefHeight="61.400012207031295" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ImageView fitHeight="439.0" fitWidth="491.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="439.0" fitWidth="491.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
                <image>
                   <Image url="@../../../../../resources/GraphicalResources/boards/livingroom.png" />
                </image>
             </ImageView>
-            <GridPane fx:id="boardGridPane" prefWidth="439.0">
+            <GridPane fx:id="boardGridPane" prefWidth="439.0" GridPane.columnIndex="1">
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="17.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="0.0" prefWidth="46.0" />
@@ -71,7 +72,7 @@
                   <RowConstraints maxHeight="86.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
               </rowConstraints>
             </GridPane>
-            <GridPane GridPane.columnIndex="1">
+            <GridPane GridPane.columnIndex="2">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
@@ -137,7 +138,7 @@
                   </GridPane>
                </children>
             </GridPane>
-            <GridPane GridPane.columnIndex="2">
+            <GridPane GridPane.columnIndex="3">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
@@ -147,7 +148,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Text fill="WHITE" strokeLineCap="BUTT" strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR SHELF" underline="true" GridPane.rowIndex="2">
+                  <Text fill="WHITE" strokeLineCap="BUTT" strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR SHELF" translateX="1.0" underline="true" wrappingWidth="408.8660202026367" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <stroke>
                         <LinearGradient endX="1.0" endY="1.0">
                            <stops>
@@ -168,7 +169,7 @@
                         <Font name="System Italic" size="17.0" />
                      </font>
                   </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR POINT : " textAlignment="RIGHT" wrappingWidth="428.82678985595703" GridPane.rowIndex="2">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR POINT : " textAlignment="RIGHT" wrappingWidth="428.82678985595703" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <font>
                         <Font name="System Bold Italic" size="13.0" />
                      </font>
@@ -181,12 +182,12 @@
                   <GridPane fx:id="mainShelfGridPane" GridPane.rowIndex="1">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="139.0" minWidth="10.0" prefWidth="67.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="181.0" minWidth="10.0" prefWidth="65.19998016357421" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="142.0" minWidth="10.0" prefWidth="52.4000198364258" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" prefWidth="74.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="10.0" prefWidth="67.00004882812499" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="82.0" minWidth="10.0" prefWidth="38.199951171875" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="81.0" minWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="181.0" minWidth="10.0" prefWidth="63.99998016357422" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="142.0" minWidth="10.0" prefWidth="68.00001983642576" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" prefWidth="61.60003662109375" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="10.0" prefWidth="69.39997558593745" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="82.0" minWidth="10.0" prefWidth="49.5999755859375" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="81.0" minWidth="10.0" prefWidth="31.800024414062477" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
@@ -194,12 +195,12 @@
                         <RowConstraints maxHeight="99.0" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="104.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="109.0" minHeight="10.0" prefHeight="59.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="102.0" minHeight="7.0" prefHeight="58.399993896484375" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="71.0" minHeight="0.0" prefHeight="43.20000610351565" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="102.0" minHeight="7.0" prefHeight="54.60001220703123" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="71.0" minHeight="0.0" prefHeight="49.79998779296875" vgrow="SOMETIMES" />
                       <RowConstraints maxHeight="46.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <ImageView fitHeight="48.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true" translateX="6.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                        <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" translateX="6.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
                            <image>
                               <Image url="@../../../../../resources/GraphicalResources/item tiles/Piante1.3.png" />
                            </image>
@@ -223,7 +224,12 @@
                   </GridPane>
                </children>
             </GridPane>
-            <ImageView fitHeight="219.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" translateX="240.0" GridPane.rowIndex="1">
+            <ImageView fitHeight="219.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../../../../../resources/GraphicalResources/boards/bookshelf_orth.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="219.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <image>
                   <Image url="@../../../../../resources/GraphicalResources/boards/bookshelf_orth.png" />
                </image>
@@ -233,19 +239,85 @@
                   <Image url="@../../../../../resources/GraphicalResources/boards/bookshelf_orth.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="219.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <image>
-                  <Image url="@../../../../../resources/GraphicalResources/boards/bookshelf_orth.png" />
-               </image>
-            </ImageView>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Points :" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player :" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+            <Text layoutX="224.0" layoutY="724.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player :" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+            <Text layoutX="224.0" layoutY="749.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Points :" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Text layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Points :" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player :" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+            <GridPane fx:id="playerShelf1" GridPane.columnIndex="1" GridPane.rowIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="146.40001220703124" minWidth="10.0" prefWidth="145.3999816894531" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="128.2" minWidth="0.0" prefWidth="34.19999389648436" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="126.19998168945312" minWidth="10.0" prefWidth="36.600006103515625" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.79998779296875" minWidth="10.0" prefWidth="33.40001220703124" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="71.20001220703122" minWidth="10.0" prefWidth="39.99995117187498" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="64.20001220703125" minWidth="10.0" prefWidth="28.800048828125" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.4000244140625" minWidth="8.399999999999977" prefWidth="49.5999755859375" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="146.0" minWidth="10.0" prefWidth="102.00003662109378" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints maxHeight="36.7999755859375" minHeight="10.0" prefHeight="36.7999755859375" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="54.79995956420899" minHeight="8.600003814697274" prefHeight="25.600024414062496" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="65.00003662109376" minHeight="10.0" prefHeight="28.800048828124993" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="72.00003662109376" minHeight="10.0" prefHeight="31.000024414062494" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="74.80001220703126" minHeight="10.0" prefHeight="31.99997558593749" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="88.599951171875" minHeight="10.0" prefHeight="28.79998779296875" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="88.599951171875" minHeight="10.0" prefHeight="31.20001220703125" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="88.599951171875" minHeight="10.0" prefHeight="26.400000000000006" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="88.599951171875" minHeight="10.0" prefHeight="20.800012207031244" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+            <GridPane fx:id="playerShelf2" GridPane.columnIndex="2" GridPane.rowIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="220.0" minWidth="21.0" prefWidth="25.199949264526367" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.40002632141113" minWidth="35.0" prefWidth="0.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.40002632141113" minWidth="35.0" prefWidth="66.39999999999998" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.40002632141113" minWidth="35.0" prefWidth="35.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.40002632141113" minWidth="35.0" prefWidth="194.80005073547363" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.40002632141113" minWidth="32.0" prefWidth="194.80005073547363" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.40002632141113" minWidth="10.0" prefWidth="194.80005073547363" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="27.600012207031256" minHeight="10.0" prefHeight="25.200048828125006" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="41.199987792968756" minHeight="10.0" prefHeight="30.5999755859375" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="41.800024414062506" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="41.199987792968756" minHeight="10.0" prefHeight="25.599999999999994" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="57.80002441406248" minHeight="10.0" prefHeight="47.39999999999998" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+            <GridPane fx:id="playerShelf3" GridPane.columnIndex="3" GridPane.rowIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="10.0" prefWidth="110.20001220703125" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="34.199987792968756" minWidth="29.400000000000006" prefWidth="34.199987792968756" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="30.0" prefWidth="32.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="30.0" prefWidth="32.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="32.0" prefWidth="32.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="36.39995117187499" minWidth="30.00004882812499" prefWidth="30.00004882812499" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.199951171875" minWidth="10.0" prefWidth="117.199951171875" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="31.999987792968753" minHeight="10.0" prefHeight="31.999987792968753" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="37.999975585937506" minHeight="10.0" prefHeight="30.400012207031253" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="40.400000000000006" minHeight="10.0" prefHeight="28.000012207031233" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="48.400000000000006" minHeight="10.0" prefHeight="28.999975585937506" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="48.400000000000006" minHeight="10.0" prefHeight="32.99998779296877" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="46.60001220703123" minHeight="10.0" prefHeight="46.60001220703123" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
          </children>
       </GridPane>
-      <ImageView fitHeight="209.0" fitWidth="307.0" layoutX="23.0" layoutY="-43.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="135.0" fitWidth="126.0" layoutX="1351.0" layoutY="792.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../../resources/GraphicalResources/Publisher material/Title 2000x2000px.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="50.0" fitWidth="218.0" layoutX="1270.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="50.0" fitWidth="218.0" layoutX="1151.0" layoutY="767.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../../resources/GraphicalResources/Logo_Politecnico_Milano .png" />
          </image>
@@ -257,7 +329,7 @@
                   <Shadow />
                </effect>
                <children>
-                  <TextArea layoutY="6.0" prefHeight="357.0" prefWidth="230.0" />
+                  <TextArea layoutX="7.0" layoutY="10.0" prefHeight="357.0" prefWidth="230.0" AnchorPane.bottomAnchor="10.799999999999955" />
                </children></AnchorPane>
         </content>
       </ScrollPane>
