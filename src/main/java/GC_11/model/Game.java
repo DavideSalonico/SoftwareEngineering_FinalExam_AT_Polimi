@@ -11,9 +11,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Game's class, it is the center of all the game model, it contains references with all the object and can also
@@ -52,7 +50,8 @@ public class Game implements PropertyChangeListener, Serializable {
         Random random = new Random();
         this.players = new CircularList<>();
         PersonalGoalCard personalGoalCard = new PersonalGoalCard();
-        int[] idArray = random.ints(playerNames.size(), 1, 12).distinct().toArray();
+        //int[] idArray = random.ints(playerNames.size(), 1, 12).distinct().toArray(); // TODO RISOLVERE IL PROBLEMA DELLE CARTE PERSONALI
+        int [] idArray = generateSetOfRandomNumber(playerNames.size(), 1, 12);
         for(int i=0; i<playerNames.size(); i++){
             System.out.println("int i = "+i);
             System.out.println("ID della carta personale del giocatore: " + idArray[i]);
@@ -257,6 +256,22 @@ public class Game implements PropertyChangeListener, Serializable {
         this.listener.propertyChange(exception);*/
         server.notifyClients();
         System.out.println("Trigger exception\n" + e.getMessage());
+    }
+
+    private int[] generateSetOfRandomNumber(int size, int min, int max){
+        Random random = new Random();
+        Set<Integer> generatedNumbers = new HashSet<>();
+
+        while (generatedNumbers.size() < size) {
+            int randomNumber = random.nextInt(max - min ) + min;
+            generatedNumbers.add(randomNumber);
+        }
+
+        for (int number : generatedNumbers) {
+            System.out.println(number);
+        }
+
+        return generatedNumbers.stream().mapToInt(Integer::intValue).toArray();
     }
 
     public Chat getChat() {
