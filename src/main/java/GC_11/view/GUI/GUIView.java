@@ -31,6 +31,7 @@ public class GUIView extends Application {
     public Game model;
     @FXML
     public String clientNickName = "Pippo";  // TEMPORANEAMENTE FISSO A PIPPO
+    public Text clientPoints;
     @FXML
     public ImageView ICommonGoalCard;
     @FXML
@@ -48,6 +49,21 @@ public class GUIView extends Application {
     public GridPane mainGrid;
     @FXML
     public ImageView firstPlayerToken;
+
+    @FXML
+    public GridPane playerShelf1;
+    @FXML
+    public GridPane playerShelf2;
+    @FXML
+    public GridPane playerShelf3;
+
+    public Text player1Name;
+    public Text player2Name;
+    public Text player3Name;
+
+    public Text player1Points;
+    public Text player2Points;
+    public Text player3Points;
 
     /**
      * Initializes the GUIView automatically when the game starts, all the basic images are loaded and the game is created using
@@ -129,13 +145,55 @@ public class GUIView extends Application {
             }
         }
 
+        int clientPosition = 0;
+        for(int i = 0; i<model.getPlayers().size();i++){
+            if(model.getPlayers().get(i).getNickname().equals(clientNickName)){
+                clientPosition = i;
+            }
+        }
+        if (model.getPlayers().size() == 4){
+
+
+        }
+
         for(int i = 0; i<otherPlayers.size(); i++){
             mainGrid.add(otherPlayers.get(i).getClientNickName(), i, 2);
             mainGrid.add(otherPlayers.get(i).getPoints(), i, 2);
             GridPane.setHalignment(otherPlayers.get(i).getPoints(), HPos.RIGHT);
             mainGrid.add(otherPlayers.get(i).getShelf(), i, 1);
-            //DISEGNA UNA GRIGLIA SOPRA LE SHELF E COMPILALE CON UN CICLO FOR
+            //DISEGNA UNA GRIGLIA SOPRA LE SHELF E COMPILARE CON UN CICLO FOR
         }
+
+        // TEST : Fill the shelf with the tiles randomly
+        for(int i = 1; i < 6; i++){
+            for(int j = 1; j<7; j++){
+                ImageView imageView1 = new ImageView(purpleTiles.get(1));
+                ImageView imageView2 = new ImageView(orangeTiles.get(1));
+                ImageView imageView3 = new ImageView(whiteTiles.get(1));
+                ImageView imageView4 = new ImageView(blueTiles.get(1));
+
+                imageView1.setFitHeight(29);
+                imageView1.setFitWidth(29);
+
+                imageView2.setFitHeight(29);
+                imageView2.setFitWidth(29);
+
+                imageView3.setFitHeight(29);
+                imageView3.setFitWidth(29);
+
+                imageView4.setFitHeight(50);
+                imageView4.setFitWidth(50);
+
+                playerShelf1.add(imageView1, i, j);
+                playerShelf2.add(imageView2, i, j);
+                playerShelf3.add(imageView3, i, j);
+                mainShelfGridPane.add(imageView4, i, j);
+            }
+        }
+
+        // Set all the points of Players
+        clientPoints.setText("YOUR POINTS: " + model.getPlayer(clientNickName).getPoints());
+        player1Points.setText("POINTS: " + model.getPlayer(otherPlayers.get(0).getClientNickName().getText()).getPoints());
 
         // Fill the board dynamically using the model
         for(int i = 1; i<10; i++){
