@@ -34,7 +34,7 @@ public class JsonReader {
         try (Reader inputFile = new FileReader("src//main//resources//PersonalGoalCards.JSON"))
         {
             JSONArray cards = (JSONArray) parser.parse(inputFile);
-            if (index > 0 && index <= 12)
+            if (index >= 0 && index < 12)
             {
                 JSONObject card = (JSONObject) cards.get(index);
 
