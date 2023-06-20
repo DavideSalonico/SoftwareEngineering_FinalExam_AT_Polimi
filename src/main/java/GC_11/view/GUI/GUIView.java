@@ -162,6 +162,8 @@ public class GUIView extends Application {
                 others.add(model.getPlayers().get(i));
             }else {
                 clientPoints.setText("YOUR POINTS : " + model.getPlayers().get(i).getPoints());
+
+                // NON FUNZIONA ANCORA BENE CAPISCI PERCHE' (riga sotto)
                 personalGoal.setImage(new Image("file:src/resources/GraphicalResources/personal goal cards/Personal_Goals" + model.getPlayers().get(i).getPersonalGoal().getId() + ".png"));
             }
         }
