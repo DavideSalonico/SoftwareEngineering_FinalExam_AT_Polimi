@@ -195,8 +195,7 @@ public class GUIView extends Application {
         }
 
         Scene scene = new Scene(pane);
-        // SISTEMARE AGGIUNTA CSS
-        //scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
     }
