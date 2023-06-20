@@ -26,6 +26,11 @@ public class PersonalGoalCard implements Serializable {
         // Read from a file one of the 12 personalGoalCards
     }
 
+    public PersonalGoalCard(int id, List<Triplet> goalList) {
+        this.id = id;
+        this.goalList = goalList;
+    }
+
     public PersonalGoalCard() {
         this.id = -1;
         this.goalList = null;

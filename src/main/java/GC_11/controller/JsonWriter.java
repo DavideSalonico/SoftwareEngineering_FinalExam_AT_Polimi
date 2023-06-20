@@ -2,8 +2,7 @@ package GC_11.controller;
 
 import GC_11.model.*;
 import GC_11.model.common.CommonGoalCard;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -13,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JsonWriter {
@@ -47,10 +47,50 @@ public class JsonWriter {
 
         try(FileWriter writer = new FileWriter("src//main//resources//GameView.JSON")) {
 
-            String json = gson.toJson(gameView.getBoard());
-            writer.write(json);
+            JsonObject json = new JsonObject();   // Oggetto principale
+
+            // Board
+
+            String jsonBoard = gson.toJson(gameView.getBoard());
+            JsonObject board= JsonParser.parseString(jsonBoard).getAsJsonObject();
+            json.add("board", board);
+
+
+            // Players
+            String jsonPlayers = gson.toJson(gameView.getPlayers());
+            JsonArray jsonArrayPlayers = JsonParser.parseString(jsonPlayers).getAsJsonArray();
+            json.add("players", jsonArrayPlayers);
+
+            // Common goal cards
+
+            int[] commonGoalCards = new int[2];
+            List<String> WinngingPlayers = new ArrayList<String>();
+            for (CommonGoalCard commonGoalCard : gameView.getCommonGoalCards()) {
+                for (Player player : commonGoalCard.getWinningPlayers()) {
+                    WinngingPlayers.add(player.getNickname());
+                }
+            }
+
+            JsonObject commonGoalCard1 = new JsonObject();
+            commonGoalCard1.addProperty("id", gameView.getCommonGoalCards().get(0).getId());
+            commonGoalCard1.addProperty("winningPlayers", WinngingPlayers.toString());
+            JsonObject commonGoalCard2 = new JsonObject();
+            commonGoalCard2.addProperty("id", gameView.getCommonGoalCards().get(1).getId());
+            commonGoalCard2.addProperty("winningPlayers", WinngingPlayers.toString());
+
+
+            JsonArray jsonArrayCommonGoalCards = new JsonArray();
+            jsonArrayCommonGoalCards.add(commonGoalCard1);
+            jsonArrayCommonGoalCards.add(commonGoalCard2);
+
+            json.add("commonGoalCards", jsonArrayCommonGoalCards);
+
+
+
+            // Write JSON file
+            gson.toJson(json, writer);
             writer.flush();
-            //gson.toJson(gameView.getBoard(), writer);
+
 
             System.out.println("File JSON creato correttamente");
         } catch (IOException e) {

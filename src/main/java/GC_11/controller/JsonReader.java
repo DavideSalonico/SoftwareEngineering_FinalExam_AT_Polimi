@@ -55,7 +55,7 @@ public class JsonReader {
 
                     listOfCoordinates.add(new Triplet(row,column,tc));
                 }
-                return new PersonalGoalCard(listOfCoordinates);
+                return new PersonalGoalCard(index,listOfCoordinates);
             }
             else
                 return null;

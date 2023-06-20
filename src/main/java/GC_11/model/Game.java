@@ -56,6 +56,7 @@ public class Game implements PropertyChangeListener, Serializable {
             System.out.println("int i = "+i);
             System.out.println("ID della carta personale del giocatore: " + idArray[i]);
             PersonalGoalCard card = JsonReader.readPersonalGoalCard(idArray[i]);
+
             this.players.add(new Player(playerNames.get(i), card));
             System.out.println("Carta data al giocatore " + playerNames.get(i));
             card.print();
