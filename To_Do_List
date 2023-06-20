@@ -1,6 +1,42 @@
 TO DO LIST:
 
+1) rendere Resizable tutti i componenti della view senza che si sballino le griglie, scegliere una formato predefinito per la riduzione
+    di finestra sotto-multiplo della finestra a schermo intero
 
+2) Leggere correttamente il file CSS relativo alla GUI con il suo percorso (fare in modo che sia compatibile anche su MAC)
+
+3) Generare in maniera dinamica il numero delle Shelf relative agli altri player e decidere come disporle a schermo
+
+4) Far vedere tutti i nickname dei giocatori e i loro punteggi posizionandoli affiancati alle rispettive Shelf
+
+5) Capire come eseguire una corretta astrazione della GUI suddividendola correttamente tra file FXML (sceneBuilder), CSS,
+    Controller e Classe per lanciare la GUI (al momento tutto concentrata in GUIView)
+
+6) Gestire gli eventi relativi al click da parte di un utente
+
+7) Gestire i turni di gioco e le relative azioni che un utente può compiere ( probabiblmente con un enum che indica lo stato del player)
+
+8) Effettuare i controlli su azioni possibili e non possibili da parte di un utente (es. non posso pescare se ho gia 7 carte in mano)
+
+9) Capire come ricevere dinamicamente le istanze di GameView e fare in modo che si aggiorni tutta la view di conseguenza (scrivere il
+    metodo risvegliato dal propertyChange)
+
+10) Capire quando e come un utente che esegue un azione può devo comunicare al server che ha finito il suo turno e compiuto le sue azioni
+
+11) Gestire il fatto che un utente si scolleghi e poi eventualmente riprenda inizializzando la view dall'utlimo stato di gioco (sfruttando la persistenza)
+
+12) Capire come gestire la chat ( da posizionare sul lato dx della view), come strutturla e farla funzionare correttamente
+
+13) Gestire TUTTI gli eventi correttamente con le INVOKELATER in modo che la GUI rimanga responsive e non si blocchi
+
+14) Pingare con una certa frequenza tutti i giocatori per verificare che siano ancora connessi al gioco (se non rispondono entro un certo
+    tempo li si disconnette)
+
+15) Gestire la transizione da Lobby alla view di gioco
+
+16) Gestire la terminazione di una partita e la conseguente visualizzazione della classifica
+
+17) Implementare tutto il controller della LobbyView
 
 Appunti sulla GUI:
 
