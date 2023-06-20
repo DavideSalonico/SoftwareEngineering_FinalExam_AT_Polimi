@@ -3,15 +3,18 @@ package GC_11.view.GUI;
 import GC_11.model.Game;
 import GC_11.model.Tile;
 import GC_11.model.TileColor;
+import GC_11.util.PlayerView;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -41,6 +44,8 @@ public class GUIView extends Application {
     @FXML
     public GridPane otherShelfGridPane;
 
+    @FXML
+    public GridPane mainGrid;
     @FXML
     public ImageView firstPlayerToken;
 
@@ -113,17 +118,26 @@ public class GUIView extends Application {
             cyanTiles.put(i, new Image("file:" + cyanTilePath + i + ".png"));
         }
 
-        // Initialize otherPlayers map using their nickname as key and their shelf as value
-        Map<String, Image> otherPlayers = new HashMap<>();
+        // Initialize otherPlayers using PlayerView class as a container for the player's nickname, points and shelf (related to javafx objects)
+        List<PlayerView> otherPlayers = new ArrayList<>();
 
+        Image playerShelf = new Image("file: src/resources/GraphicalResources/boards/bookshelf.png");
         for (int i = 0; i<  model.getPlayers().size(); i++){
             if(!model.getPlayers().get(i).getNickname().equals(clientNickName)) {
-                otherPlayers.put(model.getPlayers().get(i).getNickname(),new Image("file: src/resources/GraphicalResources/boards/bookshelf.png"));
-
+                PlayerView temp = new PlayerView(new Text("Player : " + model.getPlayers().get(i).getNickname()),new Text("Points : " + model.getPlayers().get(i).getPoints()) ,new ImageView(playerShelf));
+                otherPlayers.add(temp);
             }
-            //i punti
         }
 
+        for(int i = 0; i<otherPlayers.size(); i++){
+            mainGrid.add(otherPlayers.get(i).getClientNickName(), i, 2);
+            mainGrid.add(otherPlayers.get(i).getPoints(), i, 2);
+            GridPane.setHalignment(otherPlayers.get(i).getPoints(), HPos.RIGHT);
+            mainGrid.add(otherPlayers.get(i).getShelf(), i, 1);
+            //DISEGNA UNA GRIGLIA SOPRA LE SHELF E COMPILALE CON UN CICLO FOR
+        }
+
+        // Fill the board dynamically using the model
         for(int i = 1; i<10; i++){
             for(int j = 1; j<10; j++){
                 Tile t = model.getBoard().getTile(i-1,j-1);
