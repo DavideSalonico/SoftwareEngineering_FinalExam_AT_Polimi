@@ -92,7 +92,10 @@ public class Controller implements PropertyChangeListener {
             this.model.triggerException(e);
         }
 
-        this.lastChoice = this.choice.getType();
+        if(!choice.getType().equals(ChoiceType.PICK_COLUMN))
+            this.lastChoice = this.choice.getType();
+        else
+            this.lastChoice = ChoiceType.RESET_TURN;
     }
 
     public void resetTurn(List<String> params) {
@@ -107,11 +110,11 @@ public class Controller implements PropertyChangeListener {
         switch(this.lastChoice){
             case SELECT_TILE, DESELECT_TILE, RESET_TURN-> {
                 if(currentChoice.equals(ChoiceType.DESELECT_TILE) && this.model.getBoard().getSelectedTiles().size() == 0){
-                    throw new IllegalMoveException("You can't make this move!");
+                    throw new IllegalMoveException("You can't make this move! there are no tiles selected");
                 }
                 else if(currentChoice.equals(ChoiceType.SELECT_TILE)
                         && this.model.getBoard().getSelectedTiles().size() == min(3, this.model.getCurrentPlayer().getShelf().maxFreeVerticalSpaces())){
-                    throw new IllegalMoveException("You can't make this move!");
+                    throw new IllegalMoveException("You can't make this move! there isn't enough space in your shelf");
                 }
             }
             case CHOOSE_ORDER -> {
@@ -122,7 +125,7 @@ public class Controller implements PropertyChangeListener {
                 else  throw new IllegalMoveException("You can't make this move!");
             }
             case PICK_COLUMN -> {
-                throw new IllegalMoveException("You can't make this move!"); //Non deve mai essere l'ultima mossa scelta, se va a buon fine viene resettato
+                throw new IllegalMoveException("You can't make this move! you have already picked a column"); //Non deve mai essere l'ultima mossa scelta, se va a buon fine viene resettato
             }
         }
     }
@@ -174,7 +177,7 @@ public class Controller implements PropertyChangeListener {
 
         this.model.setNextCurrent();
 
-        this.lastChoice = ChoiceType.RESET_TURN;
+        //this.lastChoice = ChoiceType.RESET_TURN;
     }
 
     private int paramsToColumnIndex(List<String> parameters) {

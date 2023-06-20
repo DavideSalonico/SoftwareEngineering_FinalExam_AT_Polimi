@@ -51,15 +51,20 @@ public class GameCLI extends ViewGame {
         boolean show_en = true;
             if(show_en) show();
             System.out.println("\n\nIT IS THE TURN OF: " + this.modelView.getCurrentPlayer().getNickname());
-            Choice choice = getPlayerChoice();
-            System.out.println("scelta fatta");
-            PropertyChangeEvent evt = new PropertyChangeEvent(
-                    this,
-                    "CHOICE",
-                    null,
-                    choice);
-            this.client.notifyServer(evt);
-            show_en = true;
+            if(this.modelView.getCurrentPlayer().equals(this.player)){
+                Choice choice = getPlayerChoice();
+                System.out.println("scelta fatta");
+                PropertyChangeEvent evt = new PropertyChangeEvent(
+                        this,
+                        "CHOICE",
+                        null,
+                        choice);
+                this.client.notifyServer(evt);
+            }else{
+                //permettergli di scrivere in chat
+            }
+
+            //show_en = true;
 
             /*try {
                 choice.executeOnClient(this);
@@ -67,8 +72,6 @@ public class GameCLI extends ViewGame {
             catch (IllegalMoveException | ColumnIndexOutOfBoundsException | NotEnoughFreeSpacesException e) {
                 System.out.println("Errore");
             }*/
-
-        //end while
 
         /*PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
