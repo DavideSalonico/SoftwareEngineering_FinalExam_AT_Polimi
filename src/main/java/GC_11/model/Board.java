@@ -30,6 +30,11 @@ public class Board implements PropertyChangeListener, Serializable {
         return chessBoard;
     }
 
+    public Board(){
+
+    }
+
+
     /**
      * Builder
      * @param num is the number of players

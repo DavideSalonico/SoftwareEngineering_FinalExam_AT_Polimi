@@ -99,6 +99,63 @@ public class JsonWriter {
         }
     }
 
+    public static void loadGame(){
+        try(FileReader reader = new FileReader("src//main//resources//GameView.JSON")) {
+            JsonObject game = JsonParser.parseReader(reader).getAsJsonObject();
+
+            // Retrieving board
+
+            String board = game.get("board").toString();
+            JsonObject jsonBoard = JsonParser.parseString(board).getAsJsonObject();
+            JsonArray boardTiles = jsonBoard.get("chessBoard").getAsJsonArray();
+            Board board1 = new Board();
+
+
+
+            for(int i=0; i<boardTiles.size();i++){
+                JsonArray jsonTiles = boardTiles.get(i).getAsJsonArray();
+                int j=0;
+                for(JsonElement je : jsonTiles){
+                    JsonObject jsonTile = je.getAsJsonObject();
+                    //System.out.print(jsonTile.get("color").toString() + " " + jsonTile.get("id").getAsInt() + " ");
+                    TileColor tc = TileColor.valueOf(jsonTile.get("color").toString());
+                    Tile t = new Tile(tc, jsonTile.get("id").getAsInt());
+                    board1.setTile(i,j,t);
+                    j++;
+                }
+                //System.out.println();
+            }
+
+            for (int i=0; i<9;i++){
+                for (int j=0; j<9;j++){
+                    System.out.print(board1.getTile(i,j).getColor() + " " + board1.getTile(i,j).getId() + " ");
+                }
+            }
+
+            // Retrieving players and their personal goal cards
+            String players = game.get("players").toString();
+            JsonArray playersArray = JsonParser.parseString(players).getAsJsonArray();
+
+            for(int i =0; i< playersArray.size();i++){
+
+                JsonObject jsonPlayer = playersArray.get(i).getAsJsonObject();
+                JsonObject jsonPersonalGoal = jsonPlayer.get("personalGoal").getAsJsonObject();
+                String nickname = jsonPlayer.get("nickname").toString();
+                int personalGoalCardId = jsonPersonalGoal.get("id").getAsInt();
+                PersonalGoalCard personalGoalCard = JsonReader.readPersonalGoalCard(personalGoalCardId);
+
+                Player player = new Player(nickname, personalGoalCard);
+                //System.out.println(player.getNickname());
+
+            }
+
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Errore nell'apertura del file JSON del salvataggio della partita");
+        } catch (IOException e) {
+            System.out.println("Errore nell'apertura del file JSON del salvataggio della partita");
+        }
+    }
 
     public GameViewMessage readGame() {
         // Leggi file JSON nel path
