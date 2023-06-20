@@ -184,10 +184,10 @@ public class GUIView extends Application {
                 imageView4.setFitHeight(50);
                 imageView4.setFitWidth(50);
 
-                playerShelf1.add(imageView1, i, j);
-                playerShelf2.add(imageView2, i, j);
-                playerShelf3.add(imageView3, i, j);
-                mainShelfGridPane.add(imageView4, i, j);
+                //playerShelf1.add(imageView1, i, j);
+                //playerShelf2.add(imageView2, i, j);
+                //playerShelf3.add(imageView3, i, j);
+                //mainShelfGridPane.add(imageView4, i, j);
             }
         }
 
