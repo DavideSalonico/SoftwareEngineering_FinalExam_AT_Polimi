@@ -20,4 +20,8 @@ public class Coordinate implements Serializable {
         return column;
     }
 
+    public boolean isEquals(Coordinate coordinate){
+        return this.row == coordinate.getRow() && this.column == coordinate.getColumn();
+    }
+
 }

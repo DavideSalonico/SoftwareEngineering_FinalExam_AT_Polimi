@@ -119,21 +119,23 @@ public class Board implements PropertyChangeListener, Serializable {
                     null,
                     new Coordinate(l, c));
             this.listener.propertyChange(evt);
-        }
-        else if (this.selectedTiles.size()==1) {
-            if ((l == this.selectedTiles.get(0).getRow() && abs(c - this.selectedTiles.get(0).getColumn()) == 1) ||
-                    (c == this.selectedTiles.get(0).getColumn() && abs(l - this.selectedTiles.get(0).getRow()) == 1)) {
-                this.selectedTiles.add(new Coordinate(l, c));
-                PropertyChangeEvent evt = new PropertyChangeEvent(
-                        this,
-                        "TILE_SELECTED",
-                        null,
-                        new Coordinate(l, c));
-                this.listener.propertyChange(evt);
-            } else {
-                throw new IllegalMoveException("You can't pick this Tile!");
+        }else {
+            if(isSelected(new Coordinate(l, c)))
+                throw new IllegalMoveException("You have already selected this Tile!");
+            if (this.selectedTiles.size()==1) {
+                if ((l == this.selectedTiles.get(0).getRow() && abs(c - this.selectedTiles.get(0).getColumn()) == 1) ||
+                        (c == this.selectedTiles.get(0).getColumn() && abs(l - this.selectedTiles.get(0).getRow()) == 1)) {
+                    this.selectedTiles.add(new Coordinate(l, c));
+                    PropertyChangeEvent evt = new PropertyChangeEvent(
+                            this,
+                            "TILE_SELECTED",
+                            null,
+                            new Coordinate(l, c));
+                    this.listener.propertyChange(evt);
+                } else {
+                    throw new IllegalMoveException("You can't pick this Tile!");
+                }
             }
-        }
             else {
                 if(this.selectedTiles.get(0).getRow()==this.selectedTiles.get(1).getRow()){
                     int max = this.selectedTiles.stream().mapToInt(Coordinate::getColumn).max().orElseThrow(NoSuchElementException::new);
@@ -168,6 +170,7 @@ public class Board implements PropertyChangeListener, Serializable {
                 }
 
             }
+        }
         }
 
     private int freeSides(int l, int c){
@@ -353,5 +356,13 @@ public class Board implements PropertyChangeListener, Serializable {
 
     public void resetSelectedTiles() {
         this.selectedTiles = new ArrayList<Coordinate>();
+    }
+
+    private boolean isSelected(Coordinate c){
+        for(Coordinate tmp_c : selectedTiles){
+            if(tmp_c.isEquals(c))
+                return true;
+        }
+        return false;
     }
 }
