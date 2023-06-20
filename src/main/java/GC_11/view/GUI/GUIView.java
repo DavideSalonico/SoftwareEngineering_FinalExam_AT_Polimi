@@ -184,16 +184,16 @@ public class GUIView extends Application {
                 imageView4.setFitHeight(50);
                 imageView4.setFitWidth(50);
 
-                //playerShelf1.add(imageView1, i, j);
-                //playerShelf2.add(imageView2, i, j);
-                //playerShelf3.add(imageView3, i, j);
-                //mainShelfGridPane.add(imageView4, i, j);
+                playerShelf1.add(imageView1, i, j);
+                playerShelf2.add(imageView2, i, j);
+                playerShelf3.add(imageView3, i, j);
+                mainShelfGridPane.add(imageView4, i, j);
             }
         }
 
         // Set all the points of Players
-        clientPoints.setText("YOUR POINTS: " + model.getPlayer(clientNickName).getPoints());
-        player1Points.setText("POINTS: " + model.getPlayer(otherPlayers.get(0).getClientNickName().getText()).getPoints());
+        //clientPoints.setText("YOUR POINTS: " + model.getPlayer(clientNickName).getPoints());
+       // player1Points.setText("POINTS: " + model.getPlayer(otherPlayers.get(0).getClientNickName().getText()).getPoints());
 
         // Fill the board dynamically using the model
         for(int i = 1; i<10; i++){
