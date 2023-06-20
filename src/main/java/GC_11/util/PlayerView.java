@@ -1,19 +1,25 @@
 package GC_11.util;
 
-import javafx.scene.image.ImageView;
+import GC_11.model.Player;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
 public class PlayerView {
     Text clientNickName;
     Text points;
-    ImageView shelf;
+    GridPane shelf;
 
-    public PlayerView(Text clientNickName, Text points, ImageView shelf) {
+    public PlayerView(Text clientNickName, Text points, GridPane shelf) {
         this.clientNickName = clientNickName;
         this.points = points;
         this.shelf = shelf;
     }
 
+    public void initialize(Player player){
+        clientNickName.setText("Player : " + player.getNickname());
+        points.setText("Points : " + player.getPoints());
+
+    }
     public Text getClientNickName() {
         return clientNickName;
     }
@@ -22,7 +28,7 @@ public class PlayerView {
         return points;
     }
 
-    public ImageView getShelf() {
+    public GridPane getShelf() {
         return shelf;
     }
 }

@@ -1,14 +1,17 @@
 package GC_11.view.GUI;
 
 import GC_11.model.Game;
+import GC_11.model.Player;
 import GC_11.model.Tile;
 import GC_11.model.TileColor;
 import GC_11.util.PlayerView;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.HPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,11 +30,17 @@ import java.util.Map;
 public class GUIView extends Application {
 
     // ISTANZA MODEL CONTENUTA TEMPORANEAMENTE, POI CAPIRE COME RICEVERLA IN MANIERA DINAMICA
-    @FXML
+
+
     public Game model;
+
     @FXML
-    public String clientNickName = "Pippo";  // TEMPORANEAMENTE FISSO A PIPPO
+    public Pane root;
+
+    public GridPane mainGrid;
+    public String clientNickName = "Pippo";  // TEMPORANEAMENTE FISSO A PIPPO DA RIMUOVERE (deve essere ricevuto dal server)
     public Text clientPoints;
+    public ImageView personalGoal;
     @FXML
     public ImageView ICommonGoalCard;
     @FXML
@@ -45,8 +54,6 @@ public class GUIView extends Application {
     @FXML
     public GridPane otherShelfGridPane;
 
-    @FXML
-    public GridPane mainGrid;
     @FXML
     public ImageView firstPlayerToken;
 
@@ -65,6 +72,11 @@ public class GUIView extends Application {
     public Text player2Points;
     public Text player3Points;
 
+    public ButtonBar columnSelector;
+
+    double desiredWidth;
+    double desiredHeight;
+
     /**
      * Initializes the GUIView automatically when the game starts, all the basic images are loaded and the game is created using
      * the instance of the GameView that we receive from the server.
@@ -72,6 +84,10 @@ public class GUIView extends Application {
     @FXML
     public void initialize() {
         //TODO: Metti in memoria tutte le tile, associa ogni cella ad un immagine, crea la costruzione dinamica delle restanti Shelf (copiandole da quella principale)
+
+        // Imposta le dimensioni della finestra in base alla dimensione dello schermo e alle dimensioni specificate nel file FXML
+        desiredWidth = root.getPrefWidth();
+        desiredHeight = root.getPrefHeight();
 
         // Mi creo temporaneamente un modello di gioco per inizializzare bene la view
         List<String> tmpPlayerNames = new ArrayList<String>();
@@ -104,6 +120,8 @@ public class GUIView extends Application {
         textCommonII = new Tooltip(model.getCommonGoal(1).getText());
         Tooltip.install(ICommonGoalCard, textCommonI);
         Tooltip.install(IICommonGoalCard, textCommonII);
+        ICommonGoalCard.getStyleClass().add("selected-image");
+        IICommonGoalCard.getStyleClass().add("selected-image");
 
         // Config event handler for common goal cards
         //setupCommonGoalCardEvents();
@@ -135,35 +153,54 @@ public class GUIView extends Application {
         }
 
         // Initialize otherPlayers using PlayerView class as a container for the player's nickname, points and shelf (related to javafx objects)
+
         List<PlayerView> otherPlayers = new ArrayList<>();
+        List<Player> others = new ArrayList<>();
 
-        Image playerShelf = new Image("file: src/resources/GraphicalResources/boards/bookshelf.png");
-        for (int i = 0; i<  model.getPlayers().size(); i++){
-            if(!model.getPlayers().get(i).getNickname().equals(clientNickName)) {
-                PlayerView temp = new PlayerView(new Text("Player : " + model.getPlayers().get(i).getNickname()),new Text("Points : " + model.getPlayers().get(i).getPoints()) ,new ImageView(playerShelf));
-                otherPlayers.add(temp);
-            }
-        }
-
-        int clientPosition = 0;
         for(int i = 0; i<model.getPlayers().size();i++){
-            if(model.getPlayers().get(i).getNickname().equals(clientNickName)){
-                clientPosition = i;
+            if(!model.getPlayers().get(i).getNickname().equals(clientNickName)){
+                others.add(model.getPlayers().get(i));
+            }else {
+                clientPoints.setText("YOUR POINTS : " + model.getPlayers().get(i).getPoints());
+                personalGoal.setImage(new Image("file:src/resources/GraphicalResources/personal goal cards/Personal_Goals" + model.getPlayers().get(i).getPersonalGoal().getId() + ".png"));
             }
         }
-        if (model.getPlayers().size() == 4){
 
+        // Versione con 4 giocatori
+        if (others.size() == 3){
+           otherPlayers.add(new PlayerView(player1Name, player1Points, playerShelf1));
+           otherPlayers.add(new PlayerView(player2Name, player2Points, playerShelf2));
+           otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
+        }
+        // Versione con 3 giocatori
+        else if (others.size() == 2){
+            otherPlayers.add(new PlayerView(player1Name, player1Points, playerShelf1));
+            otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
 
+            // rimuovo la shelf del giocatore al centro (posta staticamente dall'FXML)
+            Node cell = getNodeByRowColumnIndex(1, 2, mainGrid);
+            if (cell != null && cell instanceof Pane) {
+                ((Pane) cell).getChildren().clear();
+            }
+            //rimuovo i riferimenti al nome e al punteggio
+            cell = getNodeByRowColumnIndex(2, 2, mainGrid);
+            if (cell != null && cell instanceof Pane) {
+                ((Pane) cell).getChildren().clear();
+            }
+        }
+        for(int i =0; i<others.size(); i++){
+            otherPlayers.get(i).initialize(others.get(i));
         }
 
-        for(int i = 0; i<otherPlayers.size(); i++){
+
+       /* for(int i = 0; i<otherPlayers.size(); i++){
             mainGrid.add(otherPlayers.get(i).getClientNickName(), i, 2);
             mainGrid.add(otherPlayers.get(i).getPoints(), i, 2);
             GridPane.setHalignment(otherPlayers.get(i).getPoints(), HPos.RIGHT);
             mainGrid.add(otherPlayers.get(i).getShelf(), i, 1);
             //DISEGNA UNA GRIGLIA SOPRA LE SHELF E COMPILARE CON UN CICLO FOR
         }
-
+    */
         // TEST : Fill the shelf with the tiles randomly
         for(int i = 1; i < 6; i++){
             for(int j = 1; j<7; j++){
@@ -174,15 +211,19 @@ public class GUIView extends Application {
 
                 imageView1.setFitHeight(29);
                 imageView1.setFitWidth(29);
+                imageView1.getStyleClass().add("selected-image");  // This css style is used to highlight the selected tile
 
                 imageView2.setFitHeight(29);
                 imageView2.setFitWidth(29);
+                imageView2.getStyleClass().add("selected-image");
 
                 imageView3.setFitHeight(29);
                 imageView3.setFitWidth(29);
+                imageView3.getStyleClass().add("selected-image");
 
                 imageView4.setFitHeight(50);
                 imageView4.setFitWidth(50);
+                imageView4.getStyleClass().add("selected-image");
 
                 playerShelf1.add(imageView1, i, j);
                 playerShelf2.add(imageView2, i, j);
@@ -236,6 +277,25 @@ public class GUIView extends Application {
     }
 
 
+    // Metodo ausiliario per ottenere il nodo della cella dalla riga e colonna
+    private Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
+        Node result = null;
+        ObservableList<Node> children = gridPane.getChildren();
+
+        for (Node node : children) {
+            Integer rowIndex = GridPane.getRowIndex(node);
+            Integer columnIndex = GridPane.getColumnIndex(node);
+
+            if (rowIndex != null && columnIndex != null && rowIndex == row && columnIndex == column) {
+                result = node;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+
     //Method that will be called when the game starts
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -251,7 +311,21 @@ public class GUIView extends Application {
             throw new RuntimeException(e);
 
         }
+        /* QUESTE RIGHE DI CODICE PERMETTONO DI FARE UNA RESIZE DELLA FINESTRA IN BASE ALLE DIMENSIONI DELLO SCHERMO DEL PC!!!!
+        Screen screen = Screen.getPrimary();
+        double screenWidth = screen.getBounds().getWidth();
+        double screenHeight = screen.getBounds().getHeight();
 
+
+        // Calcola le nuove dimensioni mantenendo le proporzioni originali
+        double scaleFactor = Math.min(screenWidth / desiredWidth, screenHeight / desiredHeight);
+        double newWidth = desiredWidth * scaleFactor;
+        double newHeight = desiredHeight * scaleFactor;
+
+        // Imposta le nuove dimensioni della finestra
+        primaryStage.setWidth(newWidth);
+        primaryStage.setHeight(newHeight);
+        */
         Scene scene = new Scene(pane);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.setScene(scene);

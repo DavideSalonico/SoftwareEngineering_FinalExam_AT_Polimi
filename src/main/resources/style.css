@@ -5,9 +5,25 @@
     -fx-margin: 0;
 }
 
+#columnSelector .button {
+    -fx-shape: "M 0 0 L 20 0 L 10 20 Z"; /* Definisce una forma triangolare con la punta rivolta verso il basso */
+    -fx-background-color: #333333; /* Colore di sfondo scuro del triangolo */
+    -fx-background-radius: 0; /* Rimuove il bordo arrotondato */
+    -fx-padding: 0 0; /* Riduce lo spazio intorno al triangolo */
+    -fx-border-color: #ffffff; /* Colore del bordo */
+    -fx-border-width: 2px; /* Spessore del bordo */
+    -fx-text-fill: #ffffff; /* Colore del testo all'interno del triangolo */
+}
+
+
+#columnSelector .button:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 255, 0.8), 20, 0, 0, 0);
+}
+
+
 /* Mostro l'ombra solo quando la "TILE" è selezionata */
-.selected-image {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 255, 0.5), 10, 0, 0, 0);
+.selected-image:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 255, 0.8), 20, 0, 0, 0);
 }
 
 /* Rimuove l'ombra predefinita */
