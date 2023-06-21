@@ -2,8 +2,6 @@ package GC_11.distributed;
 
 import GC_11.controller.Controller;
 import GC_11.controller.LobbyController;
-import GC_11.distributed.ServerImplRMI;
-import GC_11.distributed.socket.Client;
 import GC_11.distributed.socket.ServerSock;
 import GC_11.model.Game;
 import GC_11.network.Lobby;
@@ -20,14 +18,14 @@ public class ServerMain {
     private Lobby lobbyModel;
     private Controller gameController;
     private LobbyController lobbyController;
-    private Map<String, String> clientMap = new HashMap<String,String>(); // <nickname, connectionType>
+    private Map<String, String> clientMap = new HashMap<String, String>(); // <nickname, connectionType>
 
     private int maxPlayers;
 
     public ServerMain(int port) {
         try {
             this.serverRMI = new ServerImplRMI(this);
-            this.serverSocket = new ServerSock(port,this);
+            this.serverSocket = new ServerSock(port, this);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
