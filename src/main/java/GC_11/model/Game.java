@@ -80,6 +80,7 @@ public class Game implements PropertyChangeListener, Serializable {
         this.commonGoals.add(loadCommon(tmp2));
         this.commonGoals.get(0).getWinningPlayers().add(players.get(0));  // Solo per prova
         this.commonGoals.get(0).getWinningPlayers().add(players.get(1));  // Solo per prova
+        this.commonGoals.get(1).getWinningPlayers().add(players.get(2));  // Solo per prova
         this.commonGoals.get(0).setListener(this);
         this.commonGoals.get(1).setListener(this);
         this.server = server;
