@@ -1,10 +1,12 @@
 package GC_11.controller;
 
+import GC_11.distributed.ServerMain;
 import GC_11.exceptions.*;
 import GC_11.model.Coordinate;
 import GC_11.model.Game;
 import GC_11.model.Tile;
 import GC_11.model.TileColor;
+import GC_11.model.Lobby;
 import GC_11.util.choices.Choice;
 import GC_11.util.choices.ChoiceFactory;
 import GC_11.util.choices.ChoiceType;
@@ -29,6 +31,8 @@ public class Controller implements PropertyChangeListener {
     public Choice choice;
     public JsonReader reader;
     private Game model;
+    private Lobby lobby;
+    private ServerMain server;
     private ChoiceType lastChoice = ChoiceType.RESET_TURN;
     private ChoiceFactory choiceFactory;
 
@@ -55,6 +59,10 @@ public class Controller implements PropertyChangeListener {
 
     public Game getGame() {
         return this.model;
+    }
+
+    public Lobby getLobby() {
+        return this.lobby;
     }
 
 
@@ -266,6 +274,14 @@ public class Controller implements PropertyChangeListener {
             if (this.model.getPlayer(parameters.get(0)).equals(this.model.getCurrentPlayer()))
                 throw new InvalidParameterException("You can't send a message to yourself!");
             this.model.getChat().sendMessageToPrivateChat(this.model.getCurrentPlayer(), this.model.getPlayer(parameters.get(0)), parameters.get(1));
+        }
+    }
+
+    public void insertName(String name){
+        try{
+            lobby.addPlayer(name);
+        } catch (NameAlreadyTakenException | ExceededNumberOfPlayersException e) {
+            lobby.triggerException(e);
         }
     }
 }

@@ -35,3 +35,39 @@
 *:hover {
     -fx-cursor: hand;
 }
+
+/* Define styles for the mainGrid */
+#mainGrid {
+    -fx-alignment: center;
+    -fx-padding: 10;
+}
+
+/* Define styles for the boardGridPane */
+#boardGridPane {
+    -fx-alignment: center;
+}
+
+/* Define styles for the infoGridPane */
+#infoGridPane {
+    -fx-alignment: center;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+}
+
+/* Define styles for the buttons in the ButtonBar */
+.button-bar .button {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 3, 3, 3, 0);
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, #000000, #56f2b6, #6effe5);
+}
+
+/* Define styles for the title text */
+.title-text {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 3, 3, 3, 0);
+}
+

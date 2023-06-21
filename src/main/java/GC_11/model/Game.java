@@ -27,25 +27,12 @@ public class Game implements PropertyChangeListener, Serializable {
     private Player endPlayer;
     private Board board;
     private Chat chat;
-    private boolean changed = false;
     private ServerRMI server;
 
     //It's not necessary to serialize the listener (attribute transient)
     public transient PropertyChangeListener listener;
 
-    //Need a constructor which allows the deserialization of the class
-    //public Game(Game game){
-    //    this.players = game.getPlayers();
-    //    this.commonGoals = game.getCommonGoal();
-    //    this.currentPlayer = game.getCurrentPlayer();
-    //    this.endGame = game.getEndGame();
-    //    this.endPlayer = game.getEndPlayer();
-    //    this.board = game.getBoard();
-    //    this.changed = game.getChanged();
-    //}
-
-
-    public Game(@NotNull List<String> playerNames, ServerRMI server) {
+    public Game(@NotNull List<String> playerNames) {
 
         Random random = new Random();
         this.players = new CircularList<>();
@@ -83,9 +70,11 @@ public class Game implements PropertyChangeListener, Serializable {
         this.commonGoals.get(1).getWinningPlayers().add(players.get(2));  // Solo per prova
         this.commonGoals.get(0).setListener(this);
         this.commonGoals.get(1).setListener(this);
-        this.server = server;
     }
 
+    public void setServer(ServerRMI server){
+        this.server = server;
+    }
 
     /**
      * THIS BUILDER IS USED ONLY TO CREATE A GAME WITH ATTRIBUTES READ FROM THE JSON FILE
@@ -170,31 +159,15 @@ public class Game implements PropertyChangeListener, Serializable {
         return players.get(i);
     }
 
-    /**
-     * @param currentPlayer the player that is wanted to be set as current
-     */
-    public void setCurrentPlayer(Player currentPlayer) throws RemoteException {
-        this.currentPlayer = currentPlayer;
-        this.changed = true;
-        /*PropertyChangeEvent evt = new PropertyChangeEvent(
+    public void setNextCurrent() {
+        this.currentPlayer = this.players.get(this.players.indexOf(this.currentPlayer) + 1);
+        PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "CHANGED_CURRENT_PLAYER",
                 null,
                 new GameViewMessage(this, null));
-        this.listener.propertyChange(evt);*/
-        server.notifyClients();
-    }
-
-    public void setNextCurrent() throws RemoteException {
-        this.currentPlayer = this.players.get(this.players.indexOf(this.currentPlayer) + 1);
-        this.changed = true;
-        /*PropertyChangeEvent evt = new PropertyChangeEvent(
-                this,
-                "CHANGED_CURRENT_PLAYER(NEXT)",
-                null,
-                new GameViewMessage(this, null));
-        this.listener.propertyChange(evt);*/
-        server.notifyClients();
+        this.listener.propertyChange(evt);
+        listener.propertyChange(evt);
         System.out.println("Set next current player: " + this.currentPlayer.getNickname());
     }
 
@@ -209,13 +182,14 @@ public class Game implements PropertyChangeListener, Serializable {
      */
     public void setEndGame(boolean endGame) throws RemoteException {
         this.endGame = endGame;
-        /*PropertyChangeEvent evt = new PropertyChangeEvent(
+        PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "END_GAME_SET",
                 this.endGame,
                 endGame);
-        this.listener.propertyChange(evt);*/
+        this.listener.propertyChange(evt);
         //server.notifyClients();
+        listener.propertyChange(evt);
         System.out.println("Set end game");
 
     }
@@ -224,16 +198,15 @@ public class Game implements PropertyChangeListener, Serializable {
         return endPlayer;
     }
 
-    public void setEndPlayer(Player endPlayer) throws RemoteException {
+    public void setEndPlayer(Player endPlayer){
         this.endPlayer = endPlayer;
-        this.changed = true;
-        /*PropertyChangeEvent evt = new PropertyChangeEvent(
+        PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "END_GAME_SET",
                 null,
                 new GameViewMessage(this, null));
-        this.listener.propertyChange(evt);*/
-        //server.notifyClients();
+        this.listener.propertyChange(evt);
+        listener.propertyChange(evt);
         System.out.println("Set end player");
     }
 
@@ -247,10 +220,6 @@ public class Game implements PropertyChangeListener, Serializable {
 
     public Board getBoard() {
         return board;
-    }
-
-    public boolean getChanged() {
-        return this.changed;
     }
 
     /**
@@ -278,28 +247,18 @@ public class Game implements PropertyChangeListener, Serializable {
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        this.changed = true;
-        /*PropertyChangeEvent move = new PropertyChangeEvent(
-                this,
-                evt.getPropertyName(),
-                null,
-                new GameViewMessage(this, null));*/
-        try {
-            server.notifyClients();
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+        listener.propertyChange(evt);
     }
 
     public void triggerException(Exception e) throws RemoteException {
-        /*PropertyChangeEvent exception = new PropertyChangeEvent(
+        PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 e.getMessage(),
                 null,
                 new GameViewMessage(null, e));
-        this.listener.propertyChange(exception);*/
-        server.notifyClients();
-        System.out.println("Trigger exception\n" + e.getMessage());
+        this.listener.propertyChange(evt);
+        listener.propertyChange(evt);
+        System.out.println("Triggered exception\n" + e.getMessage());
     }
 
     private int[] generateSetOfRandomNumber(int size, int min, int max) {

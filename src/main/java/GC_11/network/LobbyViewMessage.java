@@ -1,14 +1,13 @@
 package GC_11.network;
 
 import GC_11.model.Game;
+import GC_11.model.Lobby;
 
 import java.util.List;
 
 public class LobbyViewMessage extends MessageView {
 
     private enum MSG_TYPE {INSERT_PLAYER, SET_NUMBER_OF_PLAYER, INITIALIZE, GET_LOBBY_VIEW, UPDATE, START}
-
-    ;
 
     private String message;
     private MSG_TYPE messageType;

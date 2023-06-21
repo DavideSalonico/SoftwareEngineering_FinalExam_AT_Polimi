@@ -95,7 +95,7 @@ public class GUIView extends Application {
         tmpPlayerNames.add("Pluto");
         tmpPlayerNames.add("Paperino");
         tmpPlayerNames.add("Giuseppe");
-        model = new Game(tmpPlayerNames, null);
+        model = new Game(tmpPlayerNames);
 
 
         //Background contains the images of the scene that will be used to create the GUI ( PROBABILMENTE CI PENSA GIA' SceneBuilder in maniera statica)
@@ -131,7 +131,7 @@ public class GUIView extends Application {
         String blueTilePath = "src/resources/GraphicalResources/item tiles/Cornici1.";
         String whiteTilePath = "src/resources/GraphicalResources/item tiles/Libri1.";
         String greenTilePath = "src/resources/GraphicalResources/item tiles/Gatti1.";
-        String orangeTilePath = "src/resources/GraphicalResources/item tiles/Giochi1.";
+        String yellowTilePath = "src/resources/GraphicalResources/item tiles/Giochi1.";
         String purpleTilePath = "src/resources/GraphicalResources/item tiles/Piante1.";
         String cyanTilePath = "src/resources/GraphicalResources/item tiles/Trofei1.";
 
@@ -139,7 +139,7 @@ public class GUIView extends Application {
         Map<Integer, Image> blueTiles = new HashMap<>();
         Map<Integer, Image> whiteTiles = new HashMap<>();
         Map<Integer, Image> greenTiles = new HashMap<>();
-        Map<Integer, Image> orangeTiles = new HashMap<>();
+        Map<Integer, Image> yellowTiles = new HashMap<>();
         Map<Integer, Image> purpleTiles = new HashMap<>();
         Map<Integer, Image> cyanTiles = new HashMap<>();
 
@@ -147,7 +147,7 @@ public class GUIView extends Application {
             blueTiles.put(i, new Image("file:" + blueTilePath + i + ".png"));
             whiteTiles.put(i, new Image("file:" + whiteTilePath + i + ".png"));
             greenTiles.put(i, new Image("file:" + greenTilePath + i + ".png"));
-            orangeTiles.put(i, new Image("file:" + orangeTilePath + i + ".png"));
+            yellowTiles.put(i, new Image("file:" + yellowTilePath + i + ".png"));
             purpleTiles.put(i, new Image("file:" + purpleTilePath + i + ".png"));
             cyanTiles.put(i, new Image("file:" + cyanTilePath + i + ".png"));
         }
@@ -207,7 +207,7 @@ public class GUIView extends Application {
         for (int i = 1; i < 6; i++) {
             for (int j = 1; j < 7; j++) {
                 ImageView imageView1 = new ImageView(purpleTiles.get(1));
-                ImageView imageView2 = new ImageView(orangeTiles.get(1));
+                ImageView imageView2 = new ImageView(yellowTiles.get(1));
                 ImageView imageView3 = new ImageView(whiteTiles.get(1));
                 ImageView imageView4 = new ImageView(blueTiles.get(1));
 
@@ -262,7 +262,7 @@ public class GUIView extends Application {
                         image = new ImageView(cyanTiles.get(id));
                         break;
                     case YELLOW:
-                        image = new ImageView(orangeTiles.get(id));
+                        image = new ImageView(yellowTiles.get(id));
                         break;
                     default:
                         image = null;
@@ -318,9 +318,8 @@ public class GUIView extends Application {
         double screenWidth = screen.getBounds().getWidth();
         double screenHeight = screen.getBounds().getHeight();
 
-
         // Calcola le nuove dimensioni mantenendo le proporzioni originali
-        double scaleFactor = Math.min(screenWidth / desiredWidth, screenHeight / desiredHeight);
+        double scaleFactor = Math.min(screenWidth / desiredWidth, screenHeight / desiredHeight); //desiredWidth e Height non sono inizializzate
         double newWidth = desiredWidth * scaleFactor;
         double newHeight = desiredHeight * scaleFactor;
 

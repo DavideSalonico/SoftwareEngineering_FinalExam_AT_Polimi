@@ -2,7 +2,7 @@ package GC_11.controller;
 
 import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
-import GC_11.network.Lobby;
+import GC_11.model.Lobby;
 import GC_11.util.choices.Choice;
 
 import java.beans.PropertyChangeEvent;
