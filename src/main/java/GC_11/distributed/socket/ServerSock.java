@@ -11,7 +11,10 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -26,7 +29,7 @@ public class ServerSock implements PropertyChangeListener {
 
     private List<ServerClientHandler> serverClientHandlerList;
 
-    private Map<Socket, String> socketMap = new LinkedHashMap<Socket,String>(); // <socket, nickname>
+    private LinkedHashMap<String, ServerClientHandler> socketMap = new LinkedHashMap<String, ServerClientHandler>(); // <socket, nickname>
 
 
     public ServerSock(int port, ServerMain serverMain) {
@@ -43,6 +46,7 @@ public class ServerSock implements PropertyChangeListener {
     public void startServer() throws IOException, ClassNotFoundException {
 
         // Init phase
+
 
         try {
             this.serverSocket = new ServerSocket(this.port);
@@ -106,12 +110,16 @@ public class ServerSock implements PropertyChangeListener {
         }
     }
 
-    public Map<Socket, String> getSocketMap() {
+    public Map<String, ServerClientHandler> getSocketMap() {
         return socketMap;
     }
 
     public ServerMain getServerMain() {
         return serverMain;
+    }
+
+    public void notifyClient(String clientNickname, MessageView messageView){
+        socketMap.get(clientNickname).sendMessageViewToClient(messageView);
     }
 }
 

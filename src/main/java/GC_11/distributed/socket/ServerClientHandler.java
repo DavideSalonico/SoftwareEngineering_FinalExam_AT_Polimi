@@ -151,7 +151,7 @@ public class ServerClientHandler implements Runnable {
 
     }
 
-    private void connectionSetup(){
+    private void connectionSetup() {
         sendMessageToClient("Hi! Welcome to the game! Please, insert your nickname:");
         String reply = null;
         try {
@@ -162,8 +162,8 @@ public class ServerClientHandler implements Runnable {
             System.err.println("Unable to read nickname");
         }
         this.nickname = reply;
-        this.server.getSocketMap().put(this.clientSocket, this.nickname);
-        this.server.getServerMain().addConnection(this.nickname,"SOCKET");
+        this.server.getSocketMap().put(this.nickname, this);
+        this.server.getServerMain().addConnection(this.nickname, "SOCKET");
     }
 
     private void closeConnection() {
@@ -184,6 +184,7 @@ public class ServerClientHandler implements Runnable {
             System.err.println("Unable to close socket");
         }
         this.server.notifyDisconnectionAllSockets(this.clientSocket, this);
+
     }
 
     /*
