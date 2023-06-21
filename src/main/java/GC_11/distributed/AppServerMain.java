@@ -1,4 +1,4 @@
-package GC_11.distributed.socket;
+package GC_11.distributed;
 
 import GC_11.distributed.ServerMain;
 
