@@ -132,6 +132,22 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
         System.out.println("\n");
     }
 
+    public synchronized void notifyClint(String nickname, GameViewMessage gameViewMessage) throws RemoteException {
+        for (ClientRMI c : clients) {
+            if (c.getNickname().equals(nickname)) {
+                new Thread(() -> {
+                    try {
+                        c.updateViewGame(gameViewMessage);
+                        System.out.println(c.getNickname() + " aggiornato GAME correctly");
+                    } catch (RemoteException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }).start();
+                System.out.println("\n");
+            }
+        }
+    }
+
 
 }
 
