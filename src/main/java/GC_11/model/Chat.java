@@ -3,73 +3,71 @@ package GC_11.model;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Chat implements Serializable {
-    private Map<Player, List<String>> mainChat;
-    private Map<Player, Map<Player, List<String>>> privateChats;
+    private List<Message> mainChat;
+    private Map<Set<String>, List<Message>> pvtChats;
     private PropertyChangeListener listener;
 
     public Chat() {
-        mainChat = new HashMap<>();
-        privateChats = new HashMap<>();
+        mainChat = new ArrayList<>();
+        pvtChats = new HashMap<>();
     }
 
-    public void sendMessageToMainChat(Player user, String message) {
-        List<String> messages = mainChat.getOrDefault(user, new ArrayList<String>());
-        messages.add(message);
-        mainChat.put(user, messages);
+    public void sendMessageToMainChat(Player user, String text) {
+        List<Message> oldMainChat = this.mainChat;
+        this.mainChat.add(new Message(user.getNickname(), text));
 
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "CHANGED_MAIN_CHAT",
-                null,
-                null);
+                oldMainChat,
+                this.mainChat);
         this.listener.propertyChange(evt);
     }
 
     public void sendMessageToPrivateChat(Player sender, Player receiver, String message) {
-        Map<Player, List<String>> senderChats = privateChats.getOrDefault(sender, new HashMap<>());
-        List<String> messages = senderChats.getOrDefault(receiver, new ArrayList<>());
-        messages.add(message);
-        senderChats.put(receiver, messages);
-        privateChats.put(sender, senderChats);
+        Map<Set<String>, List<Message>> oldPvtChats = this.pvtChats;
 
-        // Also add the message to the receiver's private chat
-        Map<Player, List<String>> receiverChats = privateChats.getOrDefault(receiver, new HashMap<>());
-        List<String> receiverMessages = receiverChats.getOrDefault(sender, new ArrayList<>());
-        receiverMessages.add(message);
-        receiverChats.put(sender, receiverMessages);
-        privateChats.put(receiver, receiverChats);
+        boolean inserted = false;
+        for(Set<String> key : this.pvtChats.keySet()) {
+            if(key.contains(sender.getNickname()) && key.contains(receiver.getNickname())) {
+                this.pvtChats.get(key).add(new Message(sender.getNickname(), message));
+                inserted = true;
+            }
+        }
+        if(!inserted)
+            this.pvtChats.put(new HashSet<>(Arrays.asList(sender.getNickname(), receiver.getNickname())), Arrays.asList(new Message(sender.getNickname(), message)));
 
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "CHANGED_PRIVATE_CHAT",
-                null,
-                null);
+                oldPvtChats,
+                this.pvtChats);
         this.listener.propertyChange(evt);
     }
 
-    public List<String> getMainChatMessages() {
-        List<String> allMessages = new ArrayList<>();
-        for (List<String> messages : mainChat.values()) {
-            allMessages.addAll(messages);
-        }
-        return allMessages;
+    public List<Message> getMainChat() {
+        return this.mainChat;
     }
 
-    public List<String> getPrivateChatMessages(Player sender, Player receiver) {
-        Map<Player, List<String>> senderChats = privateChats.get(sender);
-        if (senderChats != null) {
-            List<String> messages = senderChats.get(receiver);
-            if (messages != null) {
-                return messages;
+    public List<Message> getPrivateChatMessages(Player sender, Player receiver) {
+        return this.pvtChats.get(new HashSet<>(Arrays.asList(sender.getNickname(), receiver.getNickname())));
+    }
+
+    public Map<String, List<Message>> getPrivateChats(Player sender) {
+        Map<String, List<Message>> pvtChats = new HashMap<>();
+        for(Set<String> key : this.pvtChats.keySet()) {
+            if(key.contains(sender.getNickname())) {
+                for(String nickname : key) {
+                    if(!nickname.equals(sender.getNickname())) {
+                        pvtChats.put(nickname, this.pvtChats.get(key));
+                    }
+                }
             }
         }
-        return new ArrayList<>(); // Return an empty list if no messages found
+        return pvtChats;
     }
 
     public void setListener(PropertyChangeListener listener) {

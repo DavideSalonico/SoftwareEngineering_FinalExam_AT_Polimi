@@ -4,6 +4,7 @@ package GC_11.view;
 
 import GC_11.distributed.ClientRMI;
 import GC_11.model.GameViewMessage;
+import GC_11.model.Message;
 import GC_11.model.Player;
 import GC_11.model.common.CommonGoalCard;
 import GC_11.util.choices.Choice;
@@ -120,8 +121,17 @@ public class GameCLI extends ViewGame {
         //Printing Main Chat
         System.out.println("\n\n----------------------------------");
         System.out.println("Main Chat: ");
-        for (String message : this.modelView.getChat().getMainChatMessages()) {
-            System.out.println(message);
+        for (Message message : this.modelView.getChat().getMainChat()) {
+            System.out.println(message.getSender() + ": " + message.getText());
+        }
+
+        System.out.print("Private Chats: ");
+        for(String nickname : this.modelView.getChat().getPrivateChats(this.player).keySet()) {
+            System.out.print("--- " + nickname + " ---");
+            for(Message message : this.modelView.getChat().getPrivateChats(this.player).get(nickname)) {
+                System.out.println(message.getSender() + ": " + message.getText());
+            }
+            System.out.println("");
         }
     }
 

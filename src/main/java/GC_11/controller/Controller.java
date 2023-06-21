@@ -157,8 +157,6 @@ public class Controller implements PropertyChangeListener {
         }
         if (row < 0 || row >= 9 || col < 0 || col >= 9)
             throw new InvalidParameterException("Row or column out of bound!");
-        //It could be possible to make a control about prohibited positions in the board based on the number of players
-        //Maybe not necessary if we check Tile.Type?
         if (this.model.getBoard().getSelectedTiles().size() >= min(3, this.model.getCurrentPlayer().getShelf().maxFreeVerticalSpaces()))
             throw new IllegalMoveException("Unable to select one more tile. You've already selected 3 or you don't have enough space in your shelf");
 
@@ -170,7 +168,7 @@ public class Controller implements PropertyChangeListener {
 
     }
 
-    public void pickColumn(List<String> parameters) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException, RemoteException {
+    public void pickColumn(List<String> parameters) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException, RemoteException, IllegalMoveException {
         int column = paramsToColumnIndex(parameters);
         //TODO: Da rivedere, se possibile farlo senza creare una lista di appoggio
         List<Tile> tmp_tiles = new ArrayList<Tile>();
@@ -191,7 +189,7 @@ public class Controller implements PropertyChangeListener {
         //this.lastChoice = ChoiceType.RESET_TURN;
     }
 
-    private int paramsToColumnIndex(List<String> parameters) {
+    private int paramsToColumnIndex(List<String> parameters) throws IllegalMoveException {
         if (parameters.size() != 1) throw new IllegalArgumentException("There shouldn't be options for this command!");
         Integer column_index;
         try {
@@ -200,7 +198,9 @@ public class Controller implements PropertyChangeListener {
             throw new InvalidParameterException("Invalid format. Column number must be an integer!");
         }
         if (column_index < 0 || column_index >= 5) throw new InvalidParameterException("Column index out of bound!");
+        if(this.model.getBoard().getSelectedTiles().size() == 0) throw new IllegalMoveException("You can't make this move! there are no tiles selected");
         return column_index;
+
     }
 
     public void chooseOrder(List<String> parameters) {
@@ -256,18 +256,18 @@ public class Controller implements PropertyChangeListener {
 
     public void sendMessage(List<String> parameters) {
         if (parameters.size() != 2)
-            throw new IllegalArgumentException("There should be exactly two ooptions for this command!");
-        //TODO: Write length control on parameters.get(1)
+            throw new IllegalArgumentException("There should be exactly two options for this command!");
+        if (parameters.get(0).length() >= 64 || parameters.get(1).length() >= 64)
+            throw new InvalidParameterException("Message too long");
+        if(!this.model.getPlayers().stream().map(i -> i.getNickname()).toList().contains(parameters.get(0)) || !parameters.get(0).equals("Everyone"))
+            throw new InvalidParameterException("Player not found!");
+        if (parameters.get(0).equals(this.model.getCurrentPlayer().getNickname()))
+            throw new InvalidParameterException("You can't send a message to yourself!");
 
-        if (parameters.get(0).equals("Everyone")) {
+        if (parameters.get(0).equals("Everyone"))
             this.model.getChat().sendMessageToMainChat(this.model.getCurrentPlayer(), parameters.get(1));
-        } else {
-            if (this.model.getPlayer(parameters.get(0)) == null)
-                throw new InvalidParameterException("Player not found!");
-            if (this.model.getPlayer(parameters.get(0)).equals(this.model.getCurrentPlayer()))
-                throw new InvalidParameterException("You can't send a message to yourself!");
+        else
             this.model.getChat().sendMessageToPrivateChat(this.model.getCurrentPlayer(), this.model.getPlayer(parameters.get(0)), parameters.get(1));
-        }
     }
 
     public void insertName(String name){
