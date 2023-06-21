@@ -4,6 +4,7 @@ import GC_11.controller.Controller;
 import GC_11.controller.LobbyController;
 import GC_11.distributed.socket.ServerSock;
 import GC_11.model.Game;
+import GC_11.model.GameViewMessage;
 import GC_11.network.Lobby;
 
 import java.rmi.RemoteException;
@@ -64,8 +65,9 @@ public class ServerMain {
     }
 
 
+
     public void notifyClients() {
-        //serverSocket.notifyAllClients();
+        //serverSocket.notifyAllClients(messsage,null);
         //serverRMI.notifyClients();
 
         /*

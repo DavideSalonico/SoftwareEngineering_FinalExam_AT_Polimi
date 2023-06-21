@@ -132,7 +132,7 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
         System.out.println("\n");
     }
 
-    public synchronized void notifyClint(String nickname, GameViewMessage gameViewMessage) throws RemoteException {
+    public synchronized void notifyClient(String nickname, GameViewMessage gameViewMessage) throws RemoteException {
         for (ClientRMI c : clients) {
             if (c.getNickname().equals(nickname)) {
                 new Thread(() -> {
@@ -147,7 +147,5 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
             }
         }
     }
-
-
 }
 

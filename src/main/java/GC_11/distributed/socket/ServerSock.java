@@ -81,6 +81,7 @@ public class ServerSock implements PropertyChangeListener {
                 sch.sendMessageToClient(message);
             }
         }
+
     }
 
     public void notifyAllClients(MessageView message, ServerClientHandler sourceHandler) {
