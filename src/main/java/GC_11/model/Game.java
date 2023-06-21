@@ -78,9 +78,34 @@ public class Game implements PropertyChangeListener, Serializable {
         }
         this.commonGoals.add(loadCommon(tmp1));
         this.commonGoals.add(loadCommon(tmp2));
+        this.commonGoals.get(0).getWinningPlayers().add(players.get(0));  // Solo per prova
+        this.commonGoals.get(0).getWinningPlayers().add(players.get(1));  // Solo per prova
         this.commonGoals.get(0).setListener(this);
         this.commonGoals.get(1).setListener(this);
         this.server = server;
+    }
+
+
+    /**
+     * THIS BUILDER IS USED ONLY TO CREATE A GAME WITH ATTRIBUTES READ FROM THE JSON FILE
+     * @param players is the list of players loaded from the json file
+     * @param board is the board loaded from the json file
+     */
+    public Game(List<Player> players, Board board, int[] commonGoals, List<Player> winningPlayers1, List<Player> winningPlayers2){
+        this.players= new CircularList<>();
+        for(Player p : players){
+            this.players.add(p);
+            p.setListener(this);
+        }
+        this.board = board;
+        this.commonGoals=new ArrayList<CommonGoalCard>();
+        this.commonGoals.add(loadCommon(commonGoals[0]));
+        this.commonGoals.add(loadCommon(commonGoals[1]));
+        this.commonGoals.get(0).getWinningPlayers().addAll(winningPlayers1);
+        this.commonGoals.get(1).getWinningPlayers().addAll(winningPlayers2);
+        this.commonGoals.get(0).setListener(this);
+        this.commonGoals.get(1).setListener(this);
+
     }
 
     private CommonGoalCard loadCommon(int i){

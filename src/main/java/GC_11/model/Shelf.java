@@ -133,6 +133,14 @@ public class Shelf implements Serializable {
         System.out.println(" 0  1  2  3  4 ");
     }
 
+    public void setTile(int line, int column, Tile tile) throws ColumnIndexOutOfBoundsException {
+        if (line < 0 || line >= 6 || column < 0 || column >= 5) {
+            throw new ColumnIndexOutOfBoundsException(-1);
+        } else {
+            myShelf[line][column] = tile;
+        }
+    }
+
     public void setListener(PropertyChangeListener listener){
         this.listener = listener;
     }

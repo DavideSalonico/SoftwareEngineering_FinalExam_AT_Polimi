@@ -1,5 +1,6 @@
 package GC_11.controller;
 
+import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.model.*;
 import GC_11.model.common.CommonGoalCard;
 import com.google.gson.*;
@@ -65,23 +66,19 @@ public class JsonWriter {
 
             int[] commonGoalCards = new int[2];
             List<String> WinngingPlayers = new ArrayList<String>();
+            JsonArray jsonArrayCommonGoalCards = new JsonArray();
+
             for (CommonGoalCard commonGoalCard : gameView.getCommonGoalCards()) {
                 for (Player player : commonGoalCard.getWinningPlayers()) {
                     WinngingPlayers.add(player.getNickname());
                 }
+                JsonObject commonGoalCardJson = new JsonObject();
+                commonGoalCardJson.addProperty("id", commonGoalCard.getId());
+                commonGoalCardJson.addProperty("winningPlayers", WinngingPlayers.toString());
+                jsonArrayCommonGoalCards.add(commonGoalCardJson);
+                WinngingPlayers.clear();
             }
 
-            JsonObject commonGoalCard1 = new JsonObject();
-            commonGoalCard1.addProperty("id", gameView.getCommonGoalCards().get(0).getId());
-            commonGoalCard1.addProperty("winningPlayers", WinngingPlayers.toString());
-            JsonObject commonGoalCard2 = new JsonObject();
-            commonGoalCard2.addProperty("id", gameView.getCommonGoalCards().get(1).getId());
-            commonGoalCard2.addProperty("winningPlayers", WinngingPlayers.toString());
-
-
-            JsonArray jsonArrayCommonGoalCards = new JsonArray();
-            jsonArrayCommonGoalCards.add(commonGoalCard1);
-            jsonArrayCommonGoalCards.add(commonGoalCard2);
 
             json.add("commonGoalCards", jsonArrayCommonGoalCards);
 
@@ -103,7 +100,7 @@ public class JsonWriter {
         try(FileReader reader = new FileReader("src//main//resources//GameView.JSON")) {
             JsonObject game = JsonParser.parseReader(reader).getAsJsonObject();
 
-            // Retrieving board
+            // Retrieving and building the board
 
             String board = game.get("board").toString();
             JsonObject jsonBoard = JsonParser.parseString(board).getAsJsonObject();
@@ -111,14 +108,13 @@ public class JsonWriter {
             Board board1 = new Board();
 
 
-
+            // Loading the board
             for(int i=0; i<boardTiles.size();i++){
                 JsonArray jsonTiles = boardTiles.get(i).getAsJsonArray();
                 int j=0;
                 for(JsonElement je : jsonTiles){
                     JsonObject jsonTile = je.getAsJsonObject();
-                    //System.out.print(jsonTile.get("color").toString() + " " + jsonTile.get("id").getAsInt() + " ");
-                    TileColor tc = TileColor.valueOf(jsonTile.get("color").toString());
+                    TileColor tc = TileColor.valueOf(jsonTile.get("color").toString().replace("\"",""));
                     Tile t = new Tile(tc, jsonTile.get("id").getAsInt());
                     board1.setTile(i,j,t);
                     j++;
@@ -126,34 +122,83 @@ public class JsonWriter {
                 //System.out.println();
             }
 
-            for (int i=0; i<9;i++){
-                for (int j=0; j<9;j++){
-                    System.out.print(board1.getTile(i,j).getColor() + " " + board1.getTile(i,j).getId() + " ");
-                }
-            }
-
             // Retrieving players and their personal goal cards
+            List <Player> playersList = new ArrayList<Player>();
+
             String players = game.get("players").toString();
             JsonArray playersArray = JsonParser.parseString(players).getAsJsonArray();
+
 
             for(int i =0; i< playersArray.size();i++){
 
                 JsonObject jsonPlayer = playersArray.get(i).getAsJsonObject();
                 JsonObject jsonPersonalGoal = jsonPlayer.get("personalGoal").getAsJsonObject();
+
                 String nickname = jsonPlayer.get("nickname").toString();
+                nickname = nickname.replace("\"","");
+
+
                 int personalGoalCardId = jsonPersonalGoal.get("id").getAsInt();
+
                 PersonalGoalCard personalGoalCard = JsonReader.readPersonalGoalCard(personalGoalCardId);
 
                 Player player = new Player(nickname, personalGoalCard);
-                //System.out.println(player.getNickname());
+                JsonObject jsonShelf = jsonPlayer.get("shelf").getAsJsonObject();
+                JsonArray jsonShelfTiles = jsonShelf.getAsJsonArray("myShelf");
 
+                // Building the shelf of the player
+                int r = 0;
+                for(JsonElement column : jsonShelfTiles){
+                    JsonArray listOfTilesInColumn = column.getAsJsonArray();
+                    int c =0;
+                    for(JsonElement tile : listOfTilesInColumn){
+                        JsonObject jsonTile = tile.getAsJsonObject();
+                        TileColor tc = TileColor.valueOf(jsonTile.get("color").toString().replace("\"",""));
+                        Tile t = new Tile(tc, jsonTile.get("id").getAsInt());
+                        player.getShelf().setTile(r,c,t);
+                        c++;
+                    }
+                    r++;
+                }
+                playersList.add(player);
             }
 
+            // Recupera le commonGoalCards
+            JsonArray commonGoalCards = game.get("commonGoalCards").getAsJsonArray();
+            int[] commonGoalCardsIds = new int[2];
+            ArrayList<ArrayList<Player>> winningPlayersList = new ArrayList<ArrayList<Player>>();
+
+            for(int i=0; i<2;i++){
+                JsonObject commonGoalCard = commonGoalCards.get(i).getAsJsonObject();
+                commonGoalCardsIds[i] = commonGoalCard.get("id").getAsInt();
+                String winningPlayers = commonGoalCard.get("winningPlayers").getAsString();
+                winningPlayers=winningPlayers.replace("[","");
+                winningPlayers=winningPlayers.replace("]","");
+                String[] winningPlayersArray = winningPlayers.split(", ");
+                ArrayList<Player> list = new ArrayList<Player>();
+                winningPlayersList.add(list);
+                for(String player : winningPlayersArray){
+                    for(Player p : playersList){
+                        if(p.getNickname().equals(player)){
+                            winningPlayersList.get(i).add(p);
+                        }
+                    }
+                }
+            }
+
+            System.out.println("Partita caricata correttamente");
+            //Game loadedGame = new Game(playersList, board1, commonGoalCardsIds);
+
+
+            //System.out.println(loadedGame.getBoard());
 
         } catch (FileNotFoundException e) {
             System.out.println("Errore nell'apertura del file JSON del salvataggio della partita");
         } catch (IOException e) {
             System.out.println("Errore nell'apertura del file JSON del salvataggio della partita");
+        } catch (ColumnIndexOutOfBoundsException e) {
+            System.out.println("Errore nell'apertura del file JSON del salvataggio della partita");
+            throw new RuntimeException(e);
         }
     }
 

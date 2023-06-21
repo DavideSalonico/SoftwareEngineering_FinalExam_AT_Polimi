@@ -40,6 +40,7 @@ public abstract class CommonGoalCard implements Serializable{
         return winningPlayers;
     }
 
+
     public abstract String getText();
 
     public void setListener(PropertyChangeListener listener){
