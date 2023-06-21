@@ -7,7 +7,7 @@ import java.rmi.registry.Registry;
 
 public class AppServerRMI {
     public static void main(String[] args) throws RemoteException {
-        try {
+        /*try {
             //System.setProperty("java.rmi.server.hostname", "indirizzo ip corretto");
             System.out.println("***** Constructing server implementation *****\n");
             ServerImplRMI server = new ServerImplRMI();
@@ -22,5 +22,8 @@ public class AppServerRMI {
         } catch (Exception e) {
             System.err.println("server error: " + e.getMessage());
         }
+
+             */
     }
+
 }

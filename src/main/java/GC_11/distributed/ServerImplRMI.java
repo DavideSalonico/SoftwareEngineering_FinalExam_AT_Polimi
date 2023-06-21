@@ -7,7 +7,6 @@ import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.model.Game;
 import GC_11.model.GameViewMessage;
 import GC_11.network.Lobby;
-import GC_11.network.LobbyViewMessage;
 import GC_11.util.choices.Choice;
 
 import java.beans.PropertyChangeEvent;
@@ -27,24 +26,26 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
 
     private Lobby lobbyModel;
 
-    int maxPlayer;
-    List<ClientRMI> clients = new ArrayList<>();
+    private int maxPlayer;
+    private List<ClientRMI> clients = new ArrayList<>();
 
-    public ServerImplRMI() throws RemoteException {
+    private ServerMain serverMain;
+
+    public ServerImplRMI(ServerMain serverMain) throws RemoteException {
         super();
+        this.serverMain = serverMain;
     }
 
     public void setup() {
         try {
-            System.out.println("***** Constructing server implementation *****\n");
-            System.out.println("***** Getting the registry *****\n");
+
+            //System.out.println("***** Constructing server implementation *****\n");
+            //System.out.println("***** Getting the registry *****\n");
             Registry registry = LocateRegistry.createRegistry(4321);
-            System.out.println("***** Binding server implementation to registry *****\n");
+            //System.out.println("***** Binding server implementation to registry *****\n");
             registry.rebind("server", this);
-            System.out.println("***** Waiting for clients *****\n");
-            System.out.println(this);
-            System.out.println(this.getRef());
-            System.out.println(registry.list());
+            //System.out.println("***** Waiting for clients *****\n");
+            System.out.println("SERVER RMI RUNNING");
         } catch (Exception e) {
             System.err.println("server error: " + e.getMessage());
         }
@@ -52,7 +53,8 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
 
     @Override
     public synchronized void register(ClientRMI client) throws ExceededNumberOfPlayersException, NameAlreadyTakenException, RemoteException {
-        if (clients.size() == 0) {
+        serverMain.addConnection(client.getNickname(), "RMI");
+        /*if (clients.size() == 0) {
             maxPlayer = client.askMaxNumber();
             lobbyModel = new Lobby(maxPlayer);
             lobbyController = new LobbyController(lobbyModel);
@@ -99,7 +101,7 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
 
 
         //if(clients.size()==maxPlayer){
-
+*/
     }
 
     @Override

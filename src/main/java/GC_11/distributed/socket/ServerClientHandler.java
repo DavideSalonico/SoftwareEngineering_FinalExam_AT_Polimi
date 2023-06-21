@@ -14,9 +14,10 @@ public class ServerClientHandler implements Runnable {
 
     private final ServerSock server;
     private final Socket clientSocket;
-
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
+
+    private String nickname;
 
     public ServerClientHandler(Socket socket, ServerSock server) {
         this.clientSocket = socket;
@@ -138,15 +139,31 @@ public class ServerClientHandler implements Runnable {
         } catch (IOException e) {
             System.err.println("Unable to get output stream");
         }
-        try {
+        connectionSetup();
+        /*try {
             lobbySetup();
         } catch (IOException e) {
             System.err.println("Unable to setup lobby");
         } catch (ClassNotFoundException e) {
             System.err.println("Unable to setup lobby");
-        }
+        }*/
         readThread.start();
 
+    }
+
+    private void connectionSetup(){
+        sendMessageToClient("Hi! Welcome to the game! Please, insert your nickname:");
+        String reply = null;
+        try {
+            reply = (String) inputStream.readObject();
+        } catch (IOException e) {
+            System.err.println("Unable to read nickname");
+        } catch (ClassNotFoundException e) {
+            System.err.println("Unable to read nickname");
+        }
+        this.nickname = reply;
+        this.server.getSocketMap().put(this.clientSocket, this.nickname);
+        this.server.getServerMain().addConnection(this.nickname,"SOCKET");
     }
 
     private void closeConnection() {
@@ -293,5 +310,12 @@ public class ServerClientHandler implements Runnable {
         sendMessageToClient("Pronto per giocare");
     }
 
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getNickname() {
+        return this.nickname;
+    }
 }
 

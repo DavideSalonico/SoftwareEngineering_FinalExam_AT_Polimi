@@ -1,6 +1,7 @@
 package GC_11.distributed.socket;
 
 
+import GC_11.distributed.ServerMain;
 import GC_11.network.Lobby;
 import GC_11.network.LobbyController;
 import GC_11.network.MessageView;
@@ -10,8 +11,7 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -21,16 +21,19 @@ public class ServerSock implements PropertyChangeListener {
     LobbyController lobbyController;
     private final int port;
     private ServerSocket serverSocket;
+    private ServerMain serverMain;
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
     private List<ServerClientHandler> serverClientHandlerList;
 
+    private Map<Socket, String> socketMap = new LinkedHashMap<Socket,String>(); // <socket, nickname>
 
-    public ServerSock(int port) {
+
+    public ServerSock(int port, ServerMain serverMain) {
 
         // Opening TCP port
         this.port = port;
-
+        this.serverMain = serverMain;
     }
 
     public void lobbySetup(int maxPlayers) {
@@ -40,10 +43,11 @@ public class ServerSock implements PropertyChangeListener {
     public void startServer() throws IOException, ClassNotFoundException {
 
         // Init phase
+
         try {
             this.serverSocket = new ServerSocket(this.port);
-            System.out.println("---Server---");
-            System.out.println("Server ready on port: " + port);
+            //System.out.println("---Server---");
+            //System.out.println("Server ready on port: " + port);
 
         } catch (IOException e) {
             System.out.println("Error during initialization phase...");
@@ -52,12 +56,12 @@ public class ServerSock implements PropertyChangeListener {
         this.serverClientHandlerList = new ArrayList<>();
         //this.lobby=new Lobby();
 
+        System.out.println("SERVER SOCKET RUNNING");
         // Waiting for connection
         while (true) {
             try {
                 Socket socket = serverSocket.accept();
-                System.out.println("Received client connection");
-                System.out.println("CLIENT INFO:\nIP: " + socket.getInetAddress() + "\nPORT:" + socket.getPort());
+                //System.out.println("Received client connection");
                 ServerClientHandler sch = new ServerClientHandler(socket, this);
                 this.serverClientHandlerList.add(sch);
                 executor.submit(sch);
@@ -100,6 +104,14 @@ public class ServerSock implements PropertyChangeListener {
         if (evt.getPropertyName() == "newGameView") {
 
         }
+    }
+
+    public Map<Socket, String> getSocketMap() {
+        return socketMap;
+    }
+
+    public ServerMain getServerMain() {
+        return serverMain;
     }
 }
 

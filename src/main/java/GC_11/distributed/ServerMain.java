@@ -1,12 +1,15 @@
-package GC_11.distributed.socket;
+package GC_11.distributed;
 
 import GC_11.controller.Controller;
 import GC_11.controller.LobbyController;
 import GC_11.distributed.ServerImplRMI;
+import GC_11.distributed.socket.Client;
+import GC_11.distributed.socket.ServerSock;
 import GC_11.model.Game;
 import GC_11.network.Lobby;
 
 import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ServerMain {
@@ -17,14 +20,14 @@ public class ServerMain {
     private Lobby lobbyModel;
     private Controller gameController;
     private LobbyController lobbyController;
-    private Map<Client, String> clientMap;
+    private Map<String, String> clientMap = new HashMap<String,String>(); // <nickname, connectionType>
 
     private int maxPlayers;
 
     public ServerMain(int port) {
         try {
-            this.serverRMI = new ServerImplRMI();
-            this.serverSocket = new ServerSock(port);
+            this.serverRMI = new ServerImplRMI(this);
+            this.serverSocket = new ServerSock(port,this);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -56,6 +59,12 @@ public class ServerMain {
         serverRMIThread.start();
 
     }
+
+    public synchronized void addConnection(String clientNickname, String connectionType) {
+        clientMap.put(clientNickname, connectionType);
+        System.out.println("ADDED CONNECTION: " + clientNickname + " " + connectionType);
+    }
+
 
     public void notifyClients() {
         //serverSocket.notifyAllClients();
