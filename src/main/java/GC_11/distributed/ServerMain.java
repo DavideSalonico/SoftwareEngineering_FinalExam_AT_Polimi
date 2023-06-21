@@ -67,8 +67,6 @@ public class ServerMain {
 
 
     public void notifyClients() {
-        //serverSocket.notifyAllClients(messsage,null);
-        //serverRMI.notifyClients();
 
         /*
 

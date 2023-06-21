@@ -47,7 +47,6 @@ public class ServerSock implements PropertyChangeListener {
 
         // Init phase
 
-
         try {
             this.serverSocket = new ServerSocket(this.port);
             //System.out.println("---Server---");
@@ -81,7 +80,6 @@ public class ServerSock implements PropertyChangeListener {
                 sch.sendMessageToClient(message);
             }
         }
-
     }
 
     public void notifyAllClients(MessageView message, ServerClientHandler sourceHandler) {
@@ -90,6 +88,10 @@ public class ServerSock implements PropertyChangeListener {
                 sch.sendMessageViewToClient(message);
             }
         }
+    }
+
+    public void notifyClient(MessageView messageView, String client){
+        socketMap.get(client).sendMessageViewToClient(messageView);
     }
 
     public void notifyDisconnectionAllSockets(Socket socket, ServerClientHandler sourceHandler) {
