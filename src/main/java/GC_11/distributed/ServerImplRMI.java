@@ -41,7 +41,7 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
 
             //System.out.println("***** Constructing server implementation *****\n");
             //System.out.println("***** Getting the registry *****\n");
-            Registry registry = LocateRegistry.createRegistry(4321);
+            Registry registry = LocateRegistry.createRegistry(1099);
             //System.out.println("***** Binding server implementation to registry *****\n");
             registry.rebind("server", this);
             //System.out.println("***** Waiting for clients *****\n");
