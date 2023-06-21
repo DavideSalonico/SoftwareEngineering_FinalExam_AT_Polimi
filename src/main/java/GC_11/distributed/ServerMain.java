@@ -6,6 +6,7 @@ import GC_11.distributed.socket.ServerSock;
 import GC_11.model.Game;
 import GC_11.model.GameViewMessage;
 import GC_11.network.Lobby;
+import GC_11.network.MessageView;
 
 import java.rmi.RemoteException;
 import java.util.HashMap;
@@ -66,22 +67,23 @@ public class ServerMain {
 
 
 
-    public void notifyClients() {
+    public void notifyClients(GameViewMessage messageView) {
 
-        /*
-
-        for (client : clientMap){
-            // Filtraggio personal Goal card e chat
-            if client.connection.equals("RMI"){
-                serverRMI.notifyClient(messageView, client);
+        for (Map.Entry<String, String> client : clientMap.entrySet()) {
+            if (client.getValue().equals("RMI")){
+                try{
+                    serverRMI.notifyClient(client.getKey(), messageView);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
             }
-            else if (client.connection.equals("SOCKET")){
-                serverSocket.notifyClient(messageView, client);
+            else if (client.getValue().equals("SOCKET")){
+                serverSocket.notifyClient(client.getKey(), messageView);
             }
             else{
                 throw new RuntimeException("Connection type not supported");
             }
         }
-         */
+
     }
 }
