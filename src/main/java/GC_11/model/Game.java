@@ -1,7 +1,7 @@
 package GC_11.model;
 
 import GC_11.controller.JsonReader;
-import GC_11.distributed.ServerRei;
+import GC_11.distributed.ServerRMI;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.model.common.*;
 import GC_11.util.CircularList;
@@ -28,10 +28,10 @@ public class Game implements PropertyChangeListener, Serializable {
     private Board board;
     private Chat chat;
     private boolean changed = false;
-    private ServerRei server;
+    private ServerRMI server;
 
     //It's not necessary to serialize the listener (attribute transient)
-    public transient PropertyChangeListener  listener;
+    public transient PropertyChangeListener listener;
 
     //Need a constructor which allows the deserialization of the class
     //public Game(Game game){
@@ -45,15 +45,15 @@ public class Game implements PropertyChangeListener, Serializable {
     //}
 
 
-    public Game(@NotNull List<String> playerNames, ServerRei server){
+    public Game(@NotNull List<String> playerNames, ServerRMI server) {
 
         Random random = new Random();
         this.players = new CircularList<>();
         PersonalGoalCard personalGoalCard = new PersonalGoalCard();
         //int[] idArray = random.ints(playerNames.size(), 1, 12).distinct().toArray(); // TODO RISOLVERE IL PROBLEMA DELLE CARTE PERSONALI
-        int [] idArray = generateSetOfRandomNumber(playerNames.size(), 0, 11);
-        for(int i=0; i<playerNames.size(); i++){
-            System.out.println("int i = "+i);
+        int[] idArray = generateSetOfRandomNumber(playerNames.size(), 0, 11);
+        for (int i = 0; i < playerNames.size(); i++) {
+            System.out.println("int i = " + i);
             System.out.println("ID della carta personale del giocatore: " + idArray[i]);
             PersonalGoalCard card = JsonReader.readPersonalGoalCard(idArray[i]);
 
@@ -73,7 +73,7 @@ public class Game implements PropertyChangeListener, Serializable {
         this.chat.setListener(this);
         int tmp1 = random.nextInt(0, 11);
         int tmp2 = random.nextInt(0, 11);
-        while(tmp1 == tmp2) {
+        while (tmp1 == tmp2) {
             tmp2 = random.nextInt(0, 11);
         }
         this.commonGoals.add(loadCommon(tmp1));
@@ -89,17 +89,18 @@ public class Game implements PropertyChangeListener, Serializable {
 
     /**
      * THIS BUILDER IS USED ONLY TO CREATE A GAME WITH ATTRIBUTES READ FROM THE JSON FILE
+     *
      * @param players is the list of players loaded from the json file
-     * @param board is the board loaded from the json file
+     * @param board   is the board loaded from the json file
      */
-    public Game(List<Player> players, Board board, int[] commonGoals, List<Player> winningPlayers1, List<Player> winningPlayers2){
-        this.players= new CircularList<>();
-        for(Player p : players){
+    public Game(List<Player> players, Board board, int[] commonGoals, List<Player> winningPlayers1, List<Player> winningPlayers2) {
+        this.players = new CircularList<>();
+        for (Player p : players) {
             this.players.add(p);
             p.setListener(this);
         }
         this.board = board;
-        this.commonGoals=new ArrayList<CommonGoalCard>();
+        this.commonGoals = new ArrayList<CommonGoalCard>();
         this.commonGoals.add(loadCommon(commonGoals[0]));
         this.commonGoals.add(loadCommon(commonGoals[1]));
         this.commonGoals.get(0).getWinningPlayers().addAll(winningPlayers1);
@@ -109,21 +110,34 @@ public class Game implements PropertyChangeListener, Serializable {
 
     }
 
-    private CommonGoalCard loadCommon(int i){
-        switch (i){
-            case 0: return new CommonGoalCard1();
-            case 1: return new CommonGoalCard2();
-            case 2: return new CommonGoalCard3();
-            case 3: return new CommonGoalCard4();
-            case 4: return new CommonGoalCard5();
-            case 5: return new CommonGoalCard6();
-            case 6: return new CommonGoalCard7();
-            case 7: return new CommonGoalCard8();
-            case 8: return new CommonGoalCard9();
-            case 9: return new CommonGoalCard10();
-            case 10: return new CommonGoalCard11();
-            case 11: return new CommonGoalCard12();
-            default : throw new RuntimeException("Common goal non selezionata correttamente");
+    private CommonGoalCard loadCommon(int i) {
+        switch (i) {
+            case 0:
+                return new CommonGoalCard1();
+            case 1:
+                return new CommonGoalCard2();
+            case 2:
+                return new CommonGoalCard3();
+            case 3:
+                return new CommonGoalCard4();
+            case 4:
+                return new CommonGoalCard5();
+            case 5:
+                return new CommonGoalCard6();
+            case 6:
+                return new CommonGoalCard7();
+            case 7:
+                return new CommonGoalCard8();
+            case 8:
+                return new CommonGoalCard9();
+            case 9:
+                return new CommonGoalCard10();
+            case 10:
+                return new CommonGoalCard11();
+            case 11:
+                return new CommonGoalCard12();
+            default:
+                throw new RuntimeException("Common goal non selezionata correttamente");
         }
 
     }
@@ -133,26 +147,26 @@ public class Game implements PropertyChangeListener, Serializable {
     }
 
     /**
-     *
      * @param i is an integer equals to 0 or 1
      * @return the corresponding CommonGoalCard
      */
-    public CommonGoalCard getCommonGoal(int i){
+    public CommonGoalCard getCommonGoal(int i) {
         return commonGoals.get(i);
     }
 
-    public List<CommonGoalCard> getCommonGoal(){
+    public List<CommonGoalCard> getCommonGoal() {
         return commonGoals;
     }
 
-    public void setCommonGoal(int index, CommonGoalCard c){
+    public void setCommonGoal(int index, CommonGoalCard c) {
         commonGoals.set(index, c);
     }
+
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
 
-    public Player getPlayers(int i){
+    public Player getPlayers(int i) {
         return players.get(i);
     }
 
@@ -190,6 +204,7 @@ public class Game implements PropertyChangeListener, Serializable {
 
     /**
      * Notify a property change in 'Game' to Game Listener
+     *
      * @param endGame
      */
     public void setEndGame(boolean endGame) throws RemoteException {
@@ -222,13 +237,14 @@ public class Game implements PropertyChangeListener, Serializable {
         System.out.println("Set end player");
     }
 
-    public Player getPlayer(String nickname){
-        for(Player p : players){
-            if(p.getNickname().equals(nickname))
+    public Player getPlayer(String nickname) {
+        for (Player p : players) {
+            if (p.getNickname().equals(nickname))
                 return p;
         }
         return null;
     }
+
     public Board getBoard() {
         return board;
     }
@@ -242,10 +258,10 @@ public class Game implements PropertyChangeListener, Serializable {
      * completed the Common Goal it invokes commonGoalCard.givePoints() method
      */
     public void calculateCommonPoints() throws ColumnIndexOutOfBoundsException {
-        if(!commonGoals.get(0).getWinningPlayers().contains(currentPlayer))
+        if (!commonGoals.get(0).getWinningPlayers().contains(currentPlayer))
             commonGoals.get(0).check(currentPlayer);
 
-        if(!commonGoals.get(1).getWinningPlayers().contains(currentPlayer))
+        if (!commonGoals.get(1).getWinningPlayers().contains(currentPlayer))
             commonGoals.get(1).check(currentPlayer);
     }
 
@@ -256,8 +272,9 @@ public class Game implements PropertyChangeListener, Serializable {
 
     /**
      * Notify a property change in one of object connected to 'Game' to Game Listener
+     *
      * @param evt A PropertyChangeEvent object describing the event source
-     *          and the property that has changed.
+     *            and the property that has changed.
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -285,12 +302,12 @@ public class Game implements PropertyChangeListener, Serializable {
         System.out.println("Trigger exception\n" + e.getMessage());
     }
 
-    private int[] generateSetOfRandomNumber(int size, int min, int max){
+    private int[] generateSetOfRandomNumber(int size, int min, int max) {
         Random random = new Random();
         Set<Integer> generatedNumbers = new HashSet<>();
 
         while (generatedNumbers.size() < size) {
-            int randomNumber = random.nextInt(max - min+1 ) + min ;
+            int randomNumber = random.nextInt(max - min + 1) + min;
             generatedNumbers.add(randomNumber);
         }
 

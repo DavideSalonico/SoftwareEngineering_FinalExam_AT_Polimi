@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class AppClientRMI {
 
-    public static void main( String[] args ) throws RemoteException, NotBoundException, ExceededNumberOfPlayersException, NameAlreadyTakenException {
+    public static void main(String[] args) throws RemoteException, NotBoundException, ExceededNumberOfPlayersException, NameAlreadyTakenException {
         Scanner inputLine = new Scanner(System.in);
         System.out.println("███╗   ███╗██╗   ██╗    ███████╗██╗  ██╗███████╗██╗     ███████╗██╗███████╗\n" +
                 "████╗ ████║╚██╗ ██╔╝    ██╔════╝██║  ██║██╔════╝██║     ██╔════╝██║██╔════╝\n" +
@@ -33,9 +33,9 @@ public class AppClientRMI {
             System.out.println(e[i]);
         }*/
         System.out.println("***** looking up for the server *****\n");
-        ServerRei server = (ServerRei) registry.lookup("server");
+        ServerRMI server = (ServerRMI) registry.lookup("server");
         System.out.println("***** Creating a client rei implementation *****\n");
-        ClientImplRei client = new ClientImplRei(server, nickname);
+        ClientImplRMI client = new ClientImplRMI(server, nickname);
         //client.run();
 /*
         PropertyChangeEvent evt = new PropertyChangeEvent(

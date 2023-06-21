@@ -125,7 +125,7 @@ public class GUIView extends Application {
 
         // Config event handler for common goal cards
         //setupCommonGoalCardEvents();
-        
+
         //The following maps contain the images of the tiles that will be used to create the GUI
         // Percorsi dei file immagine
         String blueTilePath = "src/resources/GraphicalResources/item tiles/Cornici1.";
@@ -157,10 +157,10 @@ public class GUIView extends Application {
         List<PlayerView> otherPlayers = new ArrayList<>();
         List<Player> others = new ArrayList<>();
 
-        for(int i = 0; i<model.getPlayers().size();i++){
-            if(!model.getPlayers().get(i).getNickname().equals(clientNickName)){
+        for (int i = 0; i < model.getPlayers().size(); i++) {
+            if (!model.getPlayers().get(i).getNickname().equals(clientNickName)) {
                 others.add(model.getPlayers().get(i));
-            }else {
+            } else {
                 clientPoints.setText("YOUR POINTS : " + model.getPlayers().get(i).getPoints());
 
                 // NON FUNZIONA ANCORA BENE CAPISCI PERCHE' (riga sotto)
@@ -169,13 +169,13 @@ public class GUIView extends Application {
         }
 
         // Versione con 4 giocatori
-        if (others.size() == 3){
-           otherPlayers.add(new PlayerView(player1Name, player1Points, playerShelf1));
-           otherPlayers.add(new PlayerView(player2Name, player2Points, playerShelf2));
-           otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
+        if (others.size() == 3) {
+            otherPlayers.add(new PlayerView(player1Name, player1Points, playerShelf1));
+            otherPlayers.add(new PlayerView(player2Name, player2Points, playerShelf2));
+            otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
         }
         // Versione con 3 giocatori
-        else if (others.size() == 2){
+        else if (others.size() == 2) {
             otherPlayers.add(new PlayerView(player1Name, player1Points, playerShelf1));
             otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
 
@@ -190,7 +190,7 @@ public class GUIView extends Application {
                 ((Pane) cell).getChildren().clear();
             }
         }
-        for(int i =0; i<others.size(); i++){
+        for (int i = 0; i < others.size(); i++) {
             otherPlayers.get(i).initialize(others.get(i));
         }
 
@@ -204,8 +204,8 @@ public class GUIView extends Application {
         }
     */
         // TEST : Fill the shelf with the tiles randomly
-        for(int i = 1; i < 6; i++){
-            for(int j = 1; j<7; j++){
+        for (int i = 1; i < 6; i++) {
+            for (int j = 1; j < 7; j++) {
                 ImageView imageView1 = new ImageView(purpleTiles.get(1));
                 ImageView imageView2 = new ImageView(orangeTiles.get(1));
                 ImageView imageView3 = new ImageView(whiteTiles.get(1));
@@ -236,13 +236,13 @@ public class GUIView extends Application {
 
         // Set all the points of Players
         //clientPoints.setText("YOUR POINTS: " + model.getPlayer(clientNickName).getPoints());
-       // player1Points.setText("POINTS: " + model.getPlayer(otherPlayers.get(0).getClientNickName().getText()).getPoints());
+        // player1Points.setText("POINTS: " + model.getPlayer(otherPlayers.get(0).getClientNickName().getText()).getPoints());
 
         // Fill the board dynamically using the model
-        for(int i = 1; i<10; i++){
-            for(int j = 1; j<10; j++){
-                Tile t = model.getBoard().getTile(i-1,j-1);
-                int id = t.getId()+1;
+        for (int i = 1; i < 10; i++) {
+            for (int j = 1; j < 10; j++) {
+                Tile t = model.getBoard().getTile(i - 1, j - 1);
+                int id = t.getId() + 1;
                 TileColor tileColor = t.getColor();
                 ImageView image;
                 switch (tileColor) {
@@ -268,7 +268,7 @@ public class GUIView extends Application {
                         image = null;
                         break;
                 }
-                if(image != null){
+                if (image != null) {
                     image.setFitHeight(41);
                     image.setFitWidth(41);
                     boardGridPane.add(image, i, j);
@@ -338,7 +338,6 @@ public class GUIView extends Application {
     public void launchApp() {
         launch();
     }
-
 
 
 }

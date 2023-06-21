@@ -5,57 +5,51 @@ import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.exceptions.PlayerNotInListException;
 import GC_11.model.Game;
 
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-public class Lobby implements PropertyChangeListener{
+public class Lobby implements PropertyChangeListener {
     private final int maxPlayers;
     private List<String> playersNames;
     private Game gameModel = null;
     private PropertyChangeListener listener;
 
 
-    public Lobby(int n){
-        maxPlayers=n;
+    public Lobby(int n) {
+        maxPlayers = n;
         playersNames = new ArrayList<String>();
     }
 
-    public synchronized boolean nameAlreadyTaken(String playerName){
+    public synchronized boolean nameAlreadyTaken(String playerName) {
         return playersNames.contains(playerName);
     }
 
-    public synchronized Game addPlayer(String playerName) throws ExceededNumberOfPlayersException, NameAlreadyTakenException{
-        if (playersNames.size() < maxPlayers && !playersNames.contains(playerName)){
+    public synchronized Game addPlayer(String playerName) throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
+        if (playersNames.size() < maxPlayers && !playersNames.contains(playerName)) {
             playersNames.add(playerName);
-        }
-        else if(this.isFull()){
+        } else if (this.isFull()) {
             throw new ExceededNumberOfPlayersException();
-        }
-        else if(this.nameAlreadyTaken(playerName))
-        {
+        } else if (this.nameAlreadyTaken(playerName)) {
             throw new NameAlreadyTakenException(playerName);
         }
         return null;
     }
 
-    public synchronized void removePlayer(String playerName) throws PlayerNotInListException{
-        if (playersNames.contains(playerName)){
+    public synchronized void removePlayer(String playerName) throws PlayerNotInListException {
+        if (playersNames.contains(playerName)) {
             playersNames.remove(playerName);
-        }
-        else {
+        } else {
             throw new PlayerNotInListException(playerName);
         }
     }
 
-    public synchronized boolean isFull(){
-        return (playersNames.size()==maxPlayers);
+    public synchronized boolean isFull() {
+        return (playersNames.size() == maxPlayers);
     }
 
-    private synchronized boolean hasPlayer(String playerName){
+    private synchronized boolean hasPlayer(String playerName) {
         return (playersNames.contains(playerName));
     }
 

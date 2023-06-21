@@ -27,7 +27,8 @@ public abstract class View implements PropertyChangeListener {
 
     //Controller must register
     private PropertyChangeListener listener;
-    public Player getPlayer(){
+
+    public Player getPlayer() {
         return player;
     }
 
@@ -39,14 +40,13 @@ public abstract class View implements PropertyChangeListener {
     public abstract Choice getPlayerChoice();
 
     public void run() throws RemoteException {
-        while(inGame){
-            if(show_en) show();
+        while (inGame) {
+            if (show_en) show();
             Choice choice = getPlayerChoice();
 
             try {
                 choice.executeOnClient(this);
-            }
-            catch (IllegalMoveException | ColumnIndexOutOfBoundsException | NotEnoughFreeSpacesException e) {
+            } catch (IllegalMoveException | ColumnIndexOutOfBoundsException | NotEnoughFreeSpacesException e) {
                 System.out.println("Errore");
             }
 

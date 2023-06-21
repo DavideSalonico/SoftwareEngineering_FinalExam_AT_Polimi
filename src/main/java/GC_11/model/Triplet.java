@@ -11,18 +11,19 @@ public class Triplet implements Serializable {
     private int col;
     private TileColor color;
 
-    public Triplet (int r, int c, TileColor color)
-    {
+    public Triplet(int r, int c, TileColor color) {
         this.row = r;
-        this.col=c;
-        this.color=color;
+        this.col = c;
+        this.color = color;
     }
 
     public int getCol() {
         return col;
     }
 
-    public int getRow() { return row; }
+    public int getRow() {
+        return row;
+    }
 
     public TileColor getColor() {
         return color;

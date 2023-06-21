@@ -7,7 +7,7 @@ public class Coordinate implements Serializable {
     private int row;
     private int column;
 
-    public Coordinate(int row, int col){
+    public Coordinate(int row, int col) {
         this.row = row;
         this.column = col;
     }
@@ -20,7 +20,7 @@ public class Coordinate implements Serializable {
         return column;
     }
 
-    public boolean isEquals(Coordinate coordinate){
+    public boolean isEquals(Coordinate coordinate) {
         return this.row == coordinate.getRow() && this.column == coordinate.getColumn();
     }
 

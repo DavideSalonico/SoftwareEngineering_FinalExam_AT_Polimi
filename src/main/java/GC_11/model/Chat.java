@@ -13,7 +13,7 @@ public class Chat implements Serializable {
     private Map<Player, Map<Player, List<String>>> privateChats;
     private PropertyChangeListener listener;
 
-    public Chat(){
+    public Chat() {
         mainChat = new HashMap<>();
         privateChats = new HashMap<>();
     }
@@ -72,7 +72,7 @@ public class Chat implements Serializable {
         return new ArrayList<>(); // Return an empty list if no messages found
     }
 
-    public void setListener(PropertyChangeListener listener){
+    public void setListener(PropertyChangeListener listener) {
         this.listener = listener;
     }
 }

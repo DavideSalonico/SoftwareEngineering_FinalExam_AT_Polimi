@@ -1,13 +1,11 @@
 package GC_11.model;
 
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
-import GC_11.exceptions.FullTilesException;
 import GC_11.exceptions.NotEnoughFreeSpacesException;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,10 +34,11 @@ public class Player implements PropertyChangeListener, Serializable {
 
     /**
      * Main constructor of Player
-     * @param nickname of the Player, received by Controller
+     *
+     * @param nickname     of the Player, received by Controller
      * @param personalCard generated in random way and given by JsonReader
      */
-    public Player(String nickname, PersonalGoalCard personalCard){
+    public Player(String nickname, PersonalGoalCard personalCard) {
         this.nickname = nickname;
         this.shelf = new Shelf();
         this.shelf.setListener(this);
@@ -50,14 +49,14 @@ public class Player implements PropertyChangeListener, Serializable {
     }
 
     //Solo per test, da cancellare
-    public Player(String nickname){
+    public Player(String nickname) {
         this.nickname = nickname;
-        this.shelf=new Shelf();
+        this.shelf = new Shelf();
         this.shelf.setListener(this);
     }
 
     //Solo per test, da cancellare
-    public Player(){
+    public Player() {
         this.nickname = "nickname";
         this.shelf = new Shelf();
         this.shelf.setListener(this);
@@ -66,9 +65,10 @@ public class Player implements PropertyChangeListener, Serializable {
 
     /**
      * Duplicate instance of Player
+     *
      * @param p original player
      */
-    public Player(Player p){
+    public Player(Player p) {
         this.nickname = p.getNickname();
         // this.points = p.getPoints(); da modificare aggiungendo i nuovi punti
         this.shelf = p.getShelf();
@@ -87,65 +87,73 @@ public class Player implements PropertyChangeListener, Serializable {
 
     /**
      * Get 'nickname' method
+     *
      * @return The nickname of the player
      */
 
-    public String getNickname(){
+    public String getNickname() {
         return nickname;
     }
 
     /**
      * Get 'point' method
+     *
      * @return The points of the player
      */
-    public int getPoints(){
+    public int getPoints() {
         return this.pointsAdjacency + this.pointsPersonalGoal + this.pointsCommonGoals;
     }
 
     /**
      * Get 'pointsAdjacency' method
+     *
      * @return The pointsAdjacency of the player
      */
-    public int getPointsAdjacency(){
+    public int getPointsAdjacency() {
         return this.pointsAdjacency;
     }
 
     /**
      * This method add Points to a specif Player
+     *
      * @param n is the number of points that is summed to the current number of points
      */
 
 
-    public void addPointsCommonGoals (int n){this.pointsCommonGoals += n;}
+    public void addPointsCommonGoals(int n) {
+        this.pointsCommonGoals += n;
+    }
 
     /**
-     *  This method insert the tiles in the column and by the order chosen by the player
+     * This method insert the tiles in the column and by the order chosen by the player
+     *
      * @param tilesOrder is the list of the tiles in the order that the player want to insert them into the shelf
-     * @param column is the columns in which the player want to insert the insert
+     * @param column     is the columns in which the player want to insert the insert
      */
     public void insertTiles(List<Tile> tilesOrder, int column) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
-        if (column <0 || column > 5){
+        if (column < 0 || column > 5) {
             throw new IndexOutOfBoundsException("Wrong column index received");
         }
-        shelf.addTiles(tilesOrder,column);
+        shelf.addTiles(tilesOrder, column);
     }
 
     /**
      * This method calculate the personal point checking how many personal goal are right
+     *
      * @return the number of points according to the right number of tiles
      * @throws ColumnIndexOutOfBoundsException
      */
 
     public void updatesPointsPersonalGoal() throws ColumnIndexOutOfBoundsException {
-        this.pointsPersonalGoal=0;
+        this.pointsPersonalGoal = 0;
         int totalRight = 0;
         // For every goal in the personal goal card check if matches with the personal shelf
-        for (Triplet t : personalGoal.getGoalList()){
-            if (shelf.getTile(t.getRow(),t.getCol()).getColor() == t.getColor()){
+        for (Triplet t : personalGoal.getGoalList()) {
+            if (shelf.getTile(t.getRow(), t.getCol()).getColor() == t.getColor()) {
                 totalRight++;
             }
         }
-        switch (totalRight){
+        switch (totalRight) {
             case 1:
                 this.pointsPersonalGoal = 1;
                 break;
@@ -171,6 +179,7 @@ public class Player implements PropertyChangeListener, Serializable {
 
     /**
      * Get 'Shelf' method
+     *
      * @return the shelf of the player
      */
     public Shelf getShelf() {
@@ -220,32 +229,34 @@ public class Player implements PropertyChangeListener, Serializable {
         }
     }
 
-    private int verify (int l, int c, TileColor color) throws ColumnIndexOutOfBoundsException {
+    private int verify(int l, int c, TileColor color) throws ColumnIndexOutOfBoundsException {
 
-        if(l>5 || c>4 || l<0 || c<0){
+        if (l > 5 || c > 4 || l < 0 || c < 0) {
+            return 0;
+        } else if (!matrix.get(l, c)) {
+            if (this.getShelf().getTile(l, c).getColor() == color) {
+                matrix.setTrue(l, c);
+                return 1 + verify(l, c + 1, this.getShelf().getTile(l, c).getColor()) +
+                        verify(l + 1, c, this.getShelf().getTile(l, c).getColor()) +
+                        verify(l, c - 1, this.getShelf().getTile(l, c).getColor()) +
+                        verify(l - 1, c, this.getShelf().getTile(l, c).getColor());
+            } else {
+                return 0;
+            }
+        } else {
             return 0;
         }
-        else if(!matrix.get(l,c)){
-            if(this.getShelf().getTile(l,c).getColor()==color){
-                matrix.setTrue(l,c);
-                return  1 + verify(l, c+1, this.getShelf().getTile(l, c).getColor())+
-                        verify(l+1,c,this.getShelf().getTile(l,c).getColor())+
-                        verify(l,c-1,this.getShelf().getTile(l,c).getColor())+
-                        verify(l-1,c,this.getShelf().getTile(l,c).getColor());
-            }else {return 0;}
-        }
-        else {return 0;}
     }
 
     public void setPersonalGoal(PersonalGoalCard p) {
         this.personalGoal = p;
     }
 
-    public int getPointsCommonGoals(){
+    public int getPointsCommonGoals() {
         return this.pointsCommonGoals;
     }
 
-    public int getPointsPersonalGoal(){
+    public int getPointsPersonalGoal() {
         return this.pointsPersonalGoal;
     }
 }

@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CommonGoalCard implements Serializable{
+public abstract class CommonGoalCard implements Serializable {
 
     private List<Player> winningPlayers = new ArrayList<>();
     //TODO: to change based on CommonGoalCard number
@@ -17,13 +17,14 @@ public abstract class CommonGoalCard implements Serializable{
 
     private static int id = 3;
     private PropertyChangeListener listener;
-    public abstract int getId() ;
+
+    public abstract int getId();
 
 
-    protected void givePoints(Player player){
+    protected void givePoints(Player player) {
         List<Player> oldWinning = this.winningPlayers;
         winningPlayers.add(player);
-        int point = 10 - 2*winningPlayers.size();
+        int point = 10 - 2 * winningPlayers.size();
         player.addPointsCommonGoals(point);
 
         PropertyChangeEvent evt = new PropertyChangeEvent(
@@ -43,7 +44,7 @@ public abstract class CommonGoalCard implements Serializable{
 
     public abstract String getText();
 
-    public void setListener(PropertyChangeListener listener){
+    public void setListener(PropertyChangeListener listener) {
         this.listener = listener;
     }
 }

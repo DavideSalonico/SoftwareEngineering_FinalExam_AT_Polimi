@@ -2,10 +2,8 @@ package GC_11.distributed.socket;
 
 import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
-import GC_11.model.GameViewMessage;
 import GC_11.network.MessageView;
 import GC_11.util.choices.Choice;
-
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -25,25 +23,22 @@ public class ServerClientHandler implements Runnable {
         this.server = server;
     }
 
-    public String receiveLobbyMessageFromClient() throws IOException, ClassNotFoundException{
-        String clientMessage=null;
-        try{
+    public String receiveLobbyMessageFromClient() throws IOException, ClassNotFoundException {
+        String clientMessage = null;
+        try {
             clientMessage = (String) inputStream.readObject();
             System.out.println("Received message from client: " + clientMessage);
-        }
-        catch(IOException e){
+        } catch (IOException e) {
             System.out.println("Error during receiving message from client");
             closeConnection();
             server.notifyDisconnectionAllSockets(this.clientSocket, this);
             throw new IOException();
-        }
-        catch(ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             System.out.println("Error during deserialization of message from client");
             closeConnection();
             server.notifyDisconnectionAllSockets(this.clientSocket, this);
             throw new ClassNotFoundException();
-        }
-        finally {
+        } finally {
             return clientMessage;
         }
     }
@@ -64,8 +59,7 @@ public class ServerClientHandler implements Runnable {
             closeConnection();
             server.notifyDisconnectionAllSockets(this.clientSocket, this);
             throw new ClassNotFoundException();
-        }
-        finally {
+        } finally {
             return clientChoice;
         }
     }
@@ -246,14 +240,14 @@ public class ServerClientHandler implements Runnable {
     }
 
     public void lobbySetup() throws IOException, ClassNotFoundException {
-        if (this.server.getLobby()==null || this.server.getLobby().getPlayers().size()==0) {
+        if (this.server.getLobby() == null || this.server.getLobby().getPlayers().size() == 0) {
             sendMessageToClient("Non c'è ancora nessun giocatore nella lobby. Vuoi crearne una?\n[S] Sì\n[N] no");
             String reply = receiveLobbyMessageFromClient();
-            reply=reply.toUpperCase();
-            if(reply.equals("S") || reply.equals("Y") || reply.equals("SI") || reply.equals("YES")){
+            reply = reply.toUpperCase();
+            if (reply.equals("S") || reply.equals("Y") || reply.equals("SI") || reply.equals("YES")) {
                 sendMessageToClient("Inserire il numero massimo di giocatori");
                 int maxPlayers = Integer.parseInt(receiveLobbyMessageFromClient());
-                while (maxPlayers <= 1 || maxPlayers >= 5){
+                while (maxPlayers <= 1 || maxPlayers >= 5) {
                     sendMessageToClient("Il numero di giocatori deve essere compreso tra 2 e 4");
                     maxPlayers = Integer.parseInt(receiveLobbyMessageFromClient());
                 }
@@ -261,7 +255,7 @@ public class ServerClientHandler implements Runnable {
                 sendMessageToClient("Inserisci il tuo nome");
                 String playerName = receiveLobbyMessageFromClient();
                 boolean setName = false;
-                while(!setName){
+                while (!setName) {
                     try {
                         this.server.getLobby().addPlayer(playerName);
                         setName = true;
@@ -271,20 +265,18 @@ public class ServerClientHandler implements Runnable {
                         sendMessageToClient("Nome già in uso. Sceglierne un altro");
                     }
                 }
-            }
-            else {
+            } else {
                 sendMessageToClient("Sei sicuro?");
             }
-        }
-        else {
+        } else {
             sendMessageToClient("Esiste già una lobby. Vuoi entrare?\n[S] Sì\n[N] no");
             String reply = receiveMessageFromClient();
-            reply=reply.toUpperCase();
-            if(reply.equals("S") || reply.equals("Y") || reply.equals("SI") || reply.equals("YES")){
+            reply = reply.toUpperCase();
+            if (reply.equals("S") || reply.equals("Y") || reply.equals("SI") || reply.equals("YES")) {
                 sendMessageToClient("Inserisci il tuo nome");
                 String playerName = receiveMessageFromClient();
                 boolean setName = false;
-                while(!setName){
+                while (!setName) {
                     try {
                         this.server.getLobby().addPlayer(playerName);
                         setName = true;
@@ -294,8 +286,7 @@ public class ServerClientHandler implements Runnable {
                         sendMessageToClient("Nome già in uso. Sceglierne un altro");
                     }
                 }
-            }
-            else {
+            } else {
                 sendMessageToClient("Sei sicuro?");
             }
         }

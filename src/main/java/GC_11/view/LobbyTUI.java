@@ -13,17 +13,17 @@ public class LobbyTUI extends View {
     Scanner inputLine;
     Client client;
 
-    public LobbyTUI(Client c){
+    public LobbyTUI(Client c) {
         this.inputLine = new Scanner(System.in);
-        this.client=c;
+        this.client = c;
     }
 
-    public LobbyTUI(){
-        this.inputLine=new Scanner(System.in);
+    public LobbyTUI() {
+        this.inputLine = new Scanner(System.in);
     }
 
-    public void setClient (Client c){
-        this.client=c;
+    public void setClient(Client c) {
+        this.client = c;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class LobbyTUI extends View {
 
 
     public Choice getPlayerChoice() {
-        while(true){
+        while (true) {
             String msg = inputLine.nextLine();
             PropertyChangeEvent evt = new PropertyChangeEvent(
                     this,
@@ -49,13 +49,13 @@ public class LobbyTUI extends View {
         }
     }
 
-    public void run(){
+    public void run() {
 
         Scanner inputScanner = new Scanner(System.in);
         String msg = null;
-        while (true){
-             msg = inputScanner.nextLine();
-            PropertyChangeEvent pce = new PropertyChangeEvent(this,"Move",null,msg);
+        while (true) {
+            msg = inputScanner.nextLine();
+            PropertyChangeEvent pce = new PropertyChangeEvent(this, "Move", null, msg);
             this.client.propertyChange(pce);
         }
 
@@ -72,7 +72,7 @@ public class LobbyTUI extends View {
     }
 
 
-    public void printWelcome(){
+    public void printWelcome() {
 
         System.out.println("Benvenuto su MyShelf. Come desideri proseguire?\n1 - Connettiti al server");
         String userCommand = inputLine.nextLine();
@@ -81,15 +81,15 @@ public class LobbyTUI extends View {
     }
 
 
-    private void evaluateUserCommand(String command){
-        if(command.equals("1")){
+    private void evaluateUserCommand(String command) {
+        if (command.equals("1")) {
             System.out.println("Inserire indirizzo ip del server:\n");
             String ip = inputLine.nextLine();
             System.out.println("Vuoi utilizzare RMI o socket?\n1 - Socket\n2 - RMI [Attualmente non disponibile]\n");
             String netMod = inputLine.nextLine();
 
-            switch(netMod){
-                case "1" :
+            switch (netMod) {
+                case "1":
                     //Crea client Socket
                     break;
                 case "2":

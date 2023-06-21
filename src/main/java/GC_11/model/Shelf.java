@@ -1,11 +1,11 @@
 package GC_11.model;
 
-import java.beans.PropertyChangeEvent;
+import GC_11.exceptions.ColumnIndexOutOfBoundsException;
+import GC_11.exceptions.NotEnoughFreeSpacesException;
+
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.util.List;
-import GC_11.exceptions.ColumnIndexOutOfBoundsException;
-import GC_11.exceptions.NotEnoughFreeSpacesException;
 
 /**
  * Shelf's class, it is composed by a matrix
@@ -16,10 +16,10 @@ public class Shelf implements Serializable {
     //Player must register
     public transient PropertyChangeListener listener;
 
-    public Shelf(){
-        myShelf= new Tile[6][5];
-        for (int r=0; r<6;r++){
-            for (int c=0; c<5; c++){
+    public Shelf() {
+        myShelf = new Tile[6][5];
+        for (int r = 0; r < 6; r++) {
+            for (int c = 0; c < 5; c++) {
                 myShelf[r][c] = new Tile(TileColor.EMPTY);
             }
         }
@@ -27,9 +27,10 @@ public class Shelf implements Serializable {
 
     /**
      * Duplicate method
+     *
      * @param shelf is the original instance
      */
-    public Shelf(Shelf shelf){
+    public Shelf(Shelf shelf) {
         this.myShelf = shelf.getMyShelf();
     }
 
@@ -53,6 +54,7 @@ public class Shelf implements Serializable {
 
     /**
      * This method permit to insert a list of Tiles in the desired column
+     *
      * @param tileList is the list of Tiles to be inserted
      * @param column   is the number of the column (starting from 0)
      * @throws NotEnoughFreeSpacesException    when there is not enough space in the selected column to insert the tiles
@@ -60,7 +62,7 @@ public class Shelf implements Serializable {
      */
     public void addTiles(List<Tile> tileList, int column) throws NotEnoughFreeSpacesException, ColumnIndexOutOfBoundsException {
         Tile[][] oldShelf = myShelf;
-        if(column <0 || column >=5){
+        if (column < 0 || column >= 5) {
             throw new ColumnIndexOutOfBoundsException(column);
         } else {
             if (freeSpaces(column) < tileList.size()) {
@@ -98,6 +100,7 @@ public class Shelf implements Serializable {
 
     /**
      * this method is used to check if a shelf is complete
+     *
      * @return a boolean which indicates if all the Tiles in the Shelf are occupied
      */
     public boolean isFull() {
@@ -107,12 +110,12 @@ public class Shelf implements Serializable {
         return true;
     }
 
-    public int maxFreeVerticalSpaces(){
+    public int maxFreeVerticalSpaces() {
         int max = 0;
-        for(int j = 0; j < 5; j++){
+        for (int j = 0; j < 5; j++) {
             int column_max = 0;
-            for(int i = 5; i >= 0; i--){
-                if(myShelf[i][j].getColor().equals(TileColor.EMPTY)) column_max++;
+            for (int i = 5; i >= 0; i--) {
+                if (myShelf[i][j].getColor().equals(TileColor.EMPTY)) column_max++;
             }
             max = Math.max(max, column_max);
         }
@@ -123,7 +126,7 @@ public class Shelf implements Serializable {
         for (int i = 0; i < 6; i++) {
             System.out.print("|");
             for (int j = 0; j < 5; j++) {
-                if(myShelf[i][j].getColor().equals(TileColor.EMPTY))
+                if (myShelf[i][j].getColor().equals(TileColor.EMPTY))
                     System.out.print("  |");
                 else
                     System.out.print(TileColor.ColorToString(myShelf[i][j].getColor()) + "|");
@@ -141,7 +144,7 @@ public class Shelf implements Serializable {
         }
     }
 
-    public void setListener(PropertyChangeListener listener){
+    public void setListener(PropertyChangeListener listener) {
         this.listener = listener;
     }
 

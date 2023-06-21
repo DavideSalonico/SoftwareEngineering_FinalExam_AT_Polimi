@@ -15,31 +15,35 @@ public class Tile implements Serializable {
     private int id;
 
     private static Random RANDOM = new Random();
-    public Tile(){
+
+    public Tile() {
         this.color = TileColor.randomColor();
     }
 
     /**
      * Duplicate Tile constructor
+     *
      * @param t is the original Tile
      */
-    public Tile(Tile t){
+    public Tile(Tile t) {
         this.color = t.color;
         this.id = RANDOM.nextInt(3);
     }
-    public Tile(TileColor color, int id){
-        this.color=color;
-        this.id=id;
+
+    public Tile(TileColor color, int id) {
+        this.color = color;
+        this.id = id;
     }
-    public Tile(TileColor color){
-        this.color=color;
+
+    public Tile(TileColor color) {
+        this.color = color;
     }
 
     public TileColor getColor() {
         return color;
     }
 
-    public int getId(){
+    public int getId() {
         return this.id;
     }
 
@@ -47,7 +51,9 @@ public class Tile implements Serializable {
         return (t.getColor() == this.color);
     }
 
-    public boolean equals(TileColor tc){
+    public boolean equals(TileColor tc) {
         return this.color == tc;
-    };
+    }
+
+    ;
 }

@@ -24,7 +24,7 @@ public class ChoiceFactory {
                 params.add(p);
             }
         }
-        switch (type){
+        switch (type) {
             case RESET_TURN -> {
                 return new ResetTurnChoice(player, params, type);
             }
@@ -40,7 +40,7 @@ public class ChoiceFactory {
             case CHOOSE_ORDER -> {
                 return new ChooseOrderChoice(player, params, type);
             }
-            case SEND_MESSAGE->{
+            case SEND_MESSAGE -> {
                 return new SendMessageChoice(player, params, type);
             }
         }

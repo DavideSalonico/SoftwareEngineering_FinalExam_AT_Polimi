@@ -18,7 +18,7 @@ public class Bag implements Serializable {
     transient PropertyChangeListener listener;
 
 
-    public Bag(Bag bag){
+    public Bag(Bag bag) {
         this.tiles = bag.getTiles();
         this.listener = bag.listener;
     }
@@ -30,30 +30,31 @@ public class Bag implements Serializable {
     /**
      * Initialization of the Bag (new Game)
      */
-    public Bag(){
+    public Bag() {
         this.tiles = new ArrayList<Tile>();
-        for (int i=0; i< 22;i++){
-            tiles.add(new Tile(TileColor.WHITE, i%3));
-            tiles.add(new Tile(TileColor.BLUE, i%3));
-            tiles.add(new Tile(TileColor.GREEN, i%3));
-            tiles.add(new Tile(TileColor.CYAN, i%3));
-            tiles.add(new Tile(TileColor.PURPLE,i%3));
-            tiles.add(new Tile(TileColor.YELLOW, i%3));
+        for (int i = 0; i < 22; i++) {
+            tiles.add(new Tile(TileColor.WHITE, i % 3));
+            tiles.add(new Tile(TileColor.BLUE, i % 3));
+            tiles.add(new Tile(TileColor.GREEN, i % 3));
+            tiles.add(new Tile(TileColor.CYAN, i % 3));
+            tiles.add(new Tile(TileColor.PURPLE, i % 3));
+            tiles.add(new Tile(TileColor.YELLOW, i % 3));
         }
     }
 
     /**
      * Used to insert tiles, one by one
      */
-    public void insertTile(Tile t){
+    public void insertTile(Tile t) {
         tiles.add(t);
     }
 
     /**
      * Appends all the tiles, which was previously in the board before the refill, in the array-List at the end of "tiles"
+     *
      * @param t
      */
-    public void insertAllTile(List<Tile>t){
+    public void insertAllTile(List<Tile> t) {
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "INSERTED_TILES",
@@ -65,16 +66,17 @@ public class Bag implements Serializable {
 
     /**
      * Check if the bag is empty
+     *
      * @return true if this list contains no elements.
      */
-    public boolean isBagEmpty(){
+    public boolean isBagEmpty() {
         return tiles.isEmpty();
     }
 
     // DA SISTEMARE : Si può fare semplicemente con il metodo remove(tile)
-    public void removeTile(Tile tile){
+    public void removeTile(Tile tile) {
         boolean removed = false;
-        for (int i = 0; i<tiles.size() && !removed; i++)
+        for (int i = 0; i < tiles.size() && !removed; i++)
             if (tiles.get(i).getColor() == tile.getColor()) {
                 tiles.remove(i);
                 removed = true;
@@ -83,9 +85,10 @@ public class Bag implements Serializable {
 
     /**
      * Remove all tiles contained in t from tiles
+     *
      * @param t
      */
-    public void removeListOfTile(List <Tile> t){
+    public void removeListOfTile(List<Tile> t) {
 
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
@@ -98,10 +101,11 @@ public class Bag implements Serializable {
 
     /**
      * Counter Method
+     *
      * @param tc
      * @return Number of tiles in 'tc' coloration
      */
-    private int countTiles(TileColor tc){
+    private int countTiles(TileColor tc) {
         int count = 0;
         for (Tile t : tiles)
             if (t.getColor() == tc)
@@ -111,9 +115,10 @@ public class Bag implements Serializable {
 
     /**
      * Counter method
+     *
      * @return size of "tiles"
      */
-    public int countNumOfTiles(){
+    public int countNumOfTiles() {
         return tiles.size();
     }
 
@@ -122,18 +127,20 @@ public class Bag implements Serializable {
      * by the Board, it will use the method updateBag(list) (use retainAll(Collection x), an ArrayList method) which Retains
      * only the elements in this list that are contained in the specified collection.
      * The random selection of Tiles is NOT managed here
+     *
      * @return tiles Array-List
      */
-    public List<Tile> drawOutTiles(){
+    public List<Tile> drawOutTiles() {
         return tiles;
     }
 
     /**
      * After EVERY Draw-Out, the controller keep in the bag only the remaining Tiles,
      * contained in 'list', and it deletes all the used ones from "tiles"
+     *
      * @param list
      */
-    public void updateBag(List<Tile> list){
+    public void updateBag(List<Tile> list) {
         tiles.retainAll(list);
     }
     //Duplicate of removeListOfTiles???

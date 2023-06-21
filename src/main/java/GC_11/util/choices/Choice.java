@@ -10,12 +10,9 @@ import GC_11.view.View;
 import java.beans.PropertyChangeEvent;
 import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.security.InvalidParameterException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
-public abstract class Choice implements Serializable{
+public abstract class Choice implements Serializable {
     protected ChoiceType type;
     protected List<String> params;
     protected Player player;
@@ -25,11 +22,12 @@ public abstract class Choice implements Serializable{
         this.player = player;
         this.params = params;
     }
+
     public abstract void executeOnServer(Controller controller)
             throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException, RemoteException;
 
     public void executeOnClient(View view)
-            throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException{
+            throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "CHOICE",

@@ -5,5 +5,4 @@ import java.rmi.Remote;
 public interface RmiClientConnection extends Remote {
 
 
-
 }

@@ -10,24 +10,24 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChooseOrderChoice extends Choice{
+public class ChooseOrderChoice extends Choice {
 
     public ChooseOrderChoice(Player player, List<String> params, ChoiceType type) throws IllegalArgumentException {
         super(player, params, type);
 
-        if(params.size() > 3) throw new IllegalArgumentException();
+        if (params.size() > 3) throw new IllegalArgumentException();
         List<Integer> checkers = new ArrayList<Integer>(params.size());
-        for(int i = 0; i < params.size(); i++)
+        for (int i = 0; i < params.size(); i++)
             checkers.add(-1);
-        try{
-            for(String p : params){
+        try {
+            for (String p : params) {
                 checkers.set(params.indexOf(p), Integer.parseInt(p));
             }
-        } catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             throw new InvalidParameterException();
         }
-        for(Integer checker : checkers)
-            if(checker < 0 || checker > 2) throw new InvalidParameterException();
+        for (Integer checker : checkers)
+            if (checker < 0 || checker > 2) throw new InvalidParameterException();
     }
 
     @Override

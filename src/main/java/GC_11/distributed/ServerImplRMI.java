@@ -12,11 +12,13 @@ import GC_11.util.choices.Choice;
 
 import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServerImplRei extends UnicastRemoteObject implements ServerRei {
+public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
 
     private Controller gameController;
 
@@ -26,14 +28,31 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei {
     private Lobby lobbyModel;
 
     int maxPlayer;
-    List<ClientRei> clients = new ArrayList<>();
+    List<ClientRMI> clients = new ArrayList<>();
 
-    public ServerImplRei() throws RemoteException {
+    public ServerImplRMI() throws RemoteException {
         super();
     }
+
+    public void setup() {
+        try {
+            System.out.println("***** Constructing server implementation *****\n");
+            System.out.println("***** Getting the registry *****\n");
+            Registry registry = LocateRegistry.createRegistry(4321);
+            System.out.println("***** Binding server implementation to registry *****\n");
+            registry.rebind("server", this);
+            System.out.println("***** Waiting for clients *****\n");
+            System.out.println(this);
+            System.out.println(this.getRef());
+            System.out.println(registry.list());
+        } catch (Exception e) {
+            System.err.println("server error: " + e.getMessage());
+        }
+    }
+
     @Override
-    public synchronized void register (ClientRei client) throws ExceededNumberOfPlayersException, NameAlreadyTakenException, RemoteException {
-        if(clients.size()==0){
+    public synchronized void register(ClientRMI client) throws ExceededNumberOfPlayersException, NameAlreadyTakenException, RemoteException {
+        if (clients.size() == 0) {
             maxPlayer = client.askMaxNumber();
             lobbyModel = new Lobby(maxPlayer);
             lobbyController = new LobbyController(lobbyModel);
@@ -42,7 +61,7 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei {
         System.out.println(client.getNickname() + " connected to the server");
         lobbyController.addPlayerName(client.getNickname());
         System.out.println(client.getNickname() + " aggiunto alla lobby");
-        for( ClientRei c : clients){
+        for (ClientRMI c : clients) {
             try {
                 new Thread(() -> {
                     try {
@@ -52,16 +71,16 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei {
                     }
                 }).start();
                 System.out.println(c.getNickname() + " aggiornato");
-            } catch (RemoteException e){
-                System.out.println("Error while updating the client: " + e.getMessage() +  ". Skipping the update...");
+            } catch (RemoteException e) {
+                System.out.println("Error while updating the client: " + e.getMessage() + ". Skipping the update...");
             }
         }
         System.out.println("\n");
         if (clients.size() == maxPlayer) {
             System.out.println("\n ##### Starting a game #####\n");
-            this.gameModel=new Game(lobbyModel.getPlayers(), this);
-            this.gameController=new Controller(this.gameModel);
-            for (ClientRei c : clients) {
+            this.gameModel = new Game(lobbyModel.getPlayers(), this);
+            this.gameController = new Controller(this.gameModel);
+            for (ClientRMI c : clients) {
                 try {
                     new Thread(() -> {
                         try {
@@ -84,20 +103,20 @@ public class ServerImplRei extends UnicastRemoteObject implements ServerRei {
     }
 
     @Override
-    public void updateGame(ClientRei client, Choice choice) throws RemoteException {
+    public void updateGame(ClientRMI client, Choice choice) throws RemoteException {
         PropertyChangeEvent evt = new PropertyChangeEvent(client, "choice made", null, choice);
         System.out.println(client.getNickname() + ": " + choice.getType());
         this.gameController.propertyChange(evt);
     }
 
     @Override
-    public void updateLobby(ClientRei client, Choice choice) throws RemoteException {
+    public void updateLobby(ClientRMI client, Choice choice) throws RemoteException {
         PropertyChangeEvent evt = new PropertyChangeEvent(client, "choice made", null, choice);
         this.lobbyController.propertyChange(evt);
     }
 
-    public synchronized void notifyClients (){
-        for (ClientRei c : clients) {
+    public synchronized void notifyClients() {
+        for (ClientRMI c : clients) {
             new Thread(() -> {
                 try {
                     c.updateViewGame(new GameViewMessage(gameModel, null));

@@ -15,11 +15,12 @@ public class PlayerView {
         this.shelf = shelf;
     }
 
-    public void initialize(Player player){
+    public void initialize(Player player) {
         clientNickName.setText("Player : " + player.getNickname());
         points.setText("Points : " + player.getPoints());
 
     }
+
     public Text getClientNickName() {
         return clientNickName;
     }

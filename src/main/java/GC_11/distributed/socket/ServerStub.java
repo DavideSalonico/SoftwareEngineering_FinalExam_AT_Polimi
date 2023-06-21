@@ -9,8 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
 
-public class ServerStub implements Server
-{
+public class ServerStub implements Server {
     String ip;
     int port;
 

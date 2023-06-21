@@ -10,18 +10,18 @@ import java.rmi.RemoteException;
 import java.security.InvalidParameterException;
 import java.util.List;
 
-public class PickColumnChoice extends Choice{
+public class PickColumnChoice extends Choice {
     public PickColumnChoice(Player player, List<String> params, ChoiceType type) throws IllegalArgumentException {
         super(player, params, type);
 
-        if(params.size() != 1) throw new IllegalArgumentException();
+        if (params.size() != 1) throw new IllegalArgumentException();
         Integer column_checker;
-        try{
+        try {
             column_checker = Integer.parseInt(params.get(0));
-        } catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             throw new InvalidParameterException();
         }
-        if(column_checker < 0 || column_checker >= 5) throw new InvalidParameterException();
+        if (column_checker < 0 || column_checker >= 5) throw new InvalidParameterException();
     }
 
     @Override

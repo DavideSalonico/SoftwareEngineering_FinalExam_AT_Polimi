@@ -4,9 +4,11 @@ import GC_11.model.Game;
 
 import java.util.List;
 
-public class LobbyViewMessage extends MessageView{
+public class LobbyViewMessage extends MessageView {
 
-    private enum MSG_TYPE  { INSERT_PLAYER, SET_NUMBER_OF_PLAYER, INITIALIZE, GET_LOBBY_VIEW, UPDATE, START};
+    private enum MSG_TYPE {INSERT_PLAYER, SET_NUMBER_OF_PLAYER, INITIALIZE, GET_LOBBY_VIEW, UPDATE, START}
+
+    ;
 
     private String message;
     private MSG_TYPE messageType;
@@ -14,16 +16,16 @@ public class LobbyViewMessage extends MessageView{
     private List<String> playersNames;
     private Game game;
 
-    public LobbyViewMessage(Lobby lobby){
-        this.maxPlayers= lobby.getMaxPlayers();
+    public LobbyViewMessage(Lobby lobby) {
+        this.maxPlayers = lobby.getMaxPlayers();
         this.playersNames = lobby.getPlayers();
         this.game = lobby.getGameModel();
     }
 
-    public LobbyViewMessage(){
-        this.message=null;
-        this.messageType=null;
-        this.game=null;
+    public LobbyViewMessage() {
+        this.message = null;
+        this.messageType = null;
+        this.game = null;
     }
 
     public int getMaxPlayers() {

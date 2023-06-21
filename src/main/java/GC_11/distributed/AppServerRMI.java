@@ -6,11 +6,11 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class AppServerRMI {
-    public static void main( String[] args ) throws RemoteException {
+    public static void main(String[] args) throws RemoteException {
         try {
             //System.setProperty("java.rmi.server.hostname", "indirizzo ip corretto");
             System.out.println("***** Constructing server implementation *****\n");
-            ServerImplRei server = new ServerImplRei();
+            ServerImplRMI server = new ServerImplRMI();
             System.out.println("***** Getting the registry *****\n");
             Registry registry = LocateRegistry.createRegistry(4321);
             System.out.println("***** Binding server implementation to registry *****\n");
@@ -19,8 +19,8 @@ public class AppServerRMI {
             System.out.println(server);
             System.out.println(server.getRef());
             System.out.println(registry.list());
-        } catch (Exception e){
-            System.err.println("server error: "+ e.getMessage());
+        } catch (Exception e) {
+            System.err.println("server error: " + e.getMessage());
         }
     }
 }

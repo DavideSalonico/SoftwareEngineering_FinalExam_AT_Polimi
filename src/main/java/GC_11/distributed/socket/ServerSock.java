@@ -1,7 +1,6 @@
 package GC_11.distributed.socket;
 
 
-import GC_11.model.GameViewMessage;
 import GC_11.network.Lobby;
 import GC_11.network.LobbyController;
 import GC_11.network.MessageView;
@@ -27,27 +26,26 @@ public class ServerSock implements PropertyChangeListener {
     private List<ServerClientHandler> serverClientHandlerList;
 
 
-    public ServerSock(int port){
+    public ServerSock(int port) {
 
         // Opening TCP port
-        this.port=port;
+        this.port = port;
 
     }
 
-    public void lobbySetup(int maxPlayers){
-        this.lobby=new Lobby(maxPlayers);
+    public void lobbySetup(int maxPlayers) {
+        this.lobby = new Lobby(maxPlayers);
     }
 
     public void startServer() throws IOException, ClassNotFoundException {
 
         // Init phase
-        try{
+        try {
             this.serverSocket = new ServerSocket(this.port);
             System.out.println("---Server---");
-            System.out.println("Server ready on port: "+ port);
+            System.out.println("Server ready on port: " + port);
 
-        }
-        catch(IOException e){
+        } catch (IOException e) {
             System.out.println("Error during initialization phase...");
             System.out.println(e.getMessage());
         }
@@ -55,16 +53,15 @@ public class ServerSock implements PropertyChangeListener {
         //this.lobby=new Lobby();
 
         // Waiting for connection
-        while(true){
-            try{
+        while (true) {
+            try {
                 Socket socket = serverSocket.accept();
                 System.out.println("Received client connection");
-                System.out.println("CLIENT INFO:\nIP: "+ socket.getInetAddress()+"\nPORT:" + socket.getPort());
-                ServerClientHandler sch = new ServerClientHandler(socket,this);
+                System.out.println("CLIENT INFO:\nIP: " + socket.getInetAddress() + "\nPORT:" + socket.getPort());
+                ServerClientHandler sch = new ServerClientHandler(socket, this);
                 this.serverClientHandlerList.add(sch);
                 executor.submit(sch);
-            }
-            catch (IOException e){
+            } catch (IOException e) {
                 System.err.println(e.getMessage());
             }
         }
@@ -100,7 +97,7 @@ public class ServerSock implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if(evt.getPropertyName()=="newGameView"){
+        if (evt.getPropertyName() == "newGameView") {
 
         }
     }

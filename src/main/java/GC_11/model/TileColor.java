@@ -20,18 +20,19 @@ public enum TileColor implements Serializable {
 
     private static final Random RANDOM = new Random();
 
-    public static List<TileColor> getColors(){
+    public static List<TileColor> getColors() {
         return colors();
     }
 
     /**
      * This method return only the colors of the tiles and not the value PROHIBITED and EMPTY
+     *
      * @return List<TileColor> which includes only the colors
      */
-    private static ArrayList<TileColor> colors(){
+    private static ArrayList<TileColor> colors() {
         ArrayList<TileColor> colors = new ArrayList<TileColor>();
-        for (TileColor t : values()){
-            if(t != TileColor.EMPTY && t != TileColor.PROHIBITED){
+        for (TileColor t : values()) {
+            if (t != TileColor.EMPTY && t != TileColor.PROHIBITED) {
                 colors.add(t);
             }
         }
@@ -39,20 +40,20 @@ public enum TileColor implements Serializable {
     }
 
     /**
-     *
      * @return a random TileColor
      */
-    public static TileColor randomColor(){
+    public static TileColor randomColor() {
         return colors().get(RANDOM.nextInt(colors().size()));
     }
 
     /**
-     *  This method parses a String into a TileColor type
+     * This method parses a String into a TileColor type
+     *
      * @param s is a string
      * @return the corresponding type TileColor
      */
-    public static TileColor StringToColor(String s){
-        switch (s){
+    public static TileColor StringToColor(String s) {
+        switch (s) {
             case "WHITE":
                 return WHITE;
             case "PURPLE":
@@ -70,8 +71,8 @@ public enum TileColor implements Serializable {
         }
     }
 
-    public static String ColorToString(TileColor tc){
-        switch (tc){
+    public static String ColorToString(TileColor tc) {
+        switch (tc) {
             case WHITE:
                 return "\u001B[107m  \u001B[0m";
             case PURPLE:

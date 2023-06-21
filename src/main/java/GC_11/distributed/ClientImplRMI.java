@@ -1,7 +1,5 @@
 package GC_11.distributed;
 
-import GC_11.exceptions.ExceededNumberOfPlayersException;
-import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.model.GameViewMessage;
 import GC_11.network.LobbyViewMessage;
 import GC_11.util.choices.Choice;
@@ -13,12 +11,10 @@ import GC_11.view.ViewLobby;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
-import java.rmi.server.RMIClientSocketFactory;
-import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
-public class ClientImplRei extends UnicastRemoteObject implements ClientRei {
+public class ClientImplRMI extends UnicastRemoteObject implements ClientRMI {
 
     private ViewLobby viewLobby;
     private ViewGame viewGame;
@@ -26,13 +22,13 @@ public class ClientImplRei extends UnicastRemoteObject implements ClientRei {
 
     private PropertyChangeListener listener;
 
-    private ServerRei server;
+    private ServerRMI server;
 
-    public ClientImplRei(ViewLobby viewLobby) throws RemoteException {
+    public ClientImplRMI(ViewLobby viewLobby) throws RemoteException {
         this.viewLobby = viewLobby;
     }
 
-    public ClientImplRei(ServerRei server, String nickname) throws RemoteException {
+    public ClientImplRMI(ServerRMI server, String nickname) throws RemoteException {
         this.nickname = nickname;
         System.out.println("HELLO " + nickname + "!!!\n");
         viewLobby = new LobbyCLI();
@@ -40,23 +36,22 @@ public class ClientImplRei extends UnicastRemoteObject implements ClientRei {
             //System.out.println(server.toString());
             server.register(this);
             this.server = server;
-        } catch (Exception e){
-            System.err.println("error in the registration: "+ e.getCause() + "\n" + e.getMessage() + "\n" + e.getStackTrace() + "\n\n\n" + e.toString());
+        } catch (Exception e) {
+            System.err.println("error in the registration: " + e.getCause() + "\n" + e.getMessage() + "\n" + e.getStackTrace() + "\n\n\n" + e.toString());
         }
     }
 
     public int askMaxNumber() {
         boolean b = true;
         int number = 0;
-        while(b) {
+        while (b) {
             Scanner inputLine = new Scanner(System.in);
             System.out.println("How many players do you want to play with ?");
             number = inputLine.nextInt();
 
-            if(number <5 && number >1 ){
-                b=false;
-            }
-            else{
+            if (number < 5 && number > 1) {
+                b = false;
+            } else {
                 System.out.println("matches only go from 2 to 4 players");
             }
         }

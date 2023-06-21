@@ -16,6 +16,7 @@ public class Board implements PropertyChangeListener, Serializable {
     private Tile[][] chessBoard;
     private List<Coordinate> selectedTiles = new ArrayList<>();
     private Bag bag;
+
     public void setListener(PropertyChangeListener listener) {
         this.listener = listener;
     }
@@ -24,13 +25,14 @@ public class Board implements PropertyChangeListener, Serializable {
 
     /**
      * Duplicate method
+     *
      * @return
      */
     private Tile[][] getChessBoard() {
         return chessBoard;
     }
 
-    public Board(){
+    public Board() {
         this.bag = new Bag();
         this.bag.setListener(this);
         this.chessBoard = new Tile[9][9];
@@ -39,9 +41,10 @@ public class Board implements PropertyChangeListener, Serializable {
 
     /**
      * Builder
+     *
      * @param num is the number of players
      */
-    public Board(int num){
+    public Board(int num) {
         this.bag = new Bag();
         this.bag.setListener(this);
         this.chessBoard = new Tile[9][9];
@@ -49,12 +52,12 @@ public class Board implements PropertyChangeListener, Serializable {
         JsonReader json = new JsonReader();
         coordinateList = json.readCoordinate(num);
 
-        for (int i =0; i<9;i++){
-            for (int j=0; j<9;j++){
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
                 chessBoard[i][j] = new Tile(TileColor.EMPTY);
             }
         }
-        for (Coordinate c : coordinateList){
+        for (Coordinate c : coordinateList) {
             this.chessBoard[c.getRow()][c.getColumn()] = new Tile(TileColor.PROHIBITED);
         }
 
@@ -67,10 +70,10 @@ public class Board implements PropertyChangeListener, Serializable {
      */
     private void setBoard() {
         int randomNum;
-        List <Tile> tiles = bag.drawOutTiles();
-        for (int line =0; line<9; line++){
-            for (int column = 0; column<9; column++) {
-                if(chessBoard[line][column].equals(TileColor.EMPTY)) {
+        List<Tile> tiles = bag.drawOutTiles();
+        for (int line = 0; line < 9; line++) {
+            for (int column = 0; column < 9; column++) {
+                if (chessBoard[line][column].equals(TileColor.EMPTY)) {
                     randomNum = new Random().nextInt(tiles.size());
                     this.chessBoard[line][column] = tiles.get(randomNum);
                     tiles.remove(randomNum);
@@ -82,27 +85,29 @@ public class Board implements PropertyChangeListener, Serializable {
 
     /**
      * Return Tile at line 'r' and column 'c'
+     *
      * @param l = line
      * @param c = column
      * @return Tile
      */
-    public Tile getTile(int l, int c){
+    public Tile getTile(int l, int c) {
         return chessBoard[l][c];
     }
 
-    public void setTile(int x, int y, Tile t){
+    public void setTile(int x, int y, Tile t) {
         chessBoard[x][y] = t;
     }
 
     /**
      * Return picked Tile from Board, it creates new Tile with TileColor.EMPTY (Immutable object),
      * the controller firstly call checkLegalMove method and then the drawTile method
+     *
      * @param l = line
      * @param c = column
      * @return picked Tile
      */
     public Tile drawTile(int l, int c) throws IllegalMoveException {
-        if(chessBoard[l][c].getColor().equals(TileColor.PROHIBITED) || chessBoard[l][c].getColor().equals(TileColor.EMPTY))
+        if (chessBoard[l][c].getColor().equals(TileColor.PROHIBITED) || chessBoard[l][c].getColor().equals(TileColor.EMPTY))
             throw new IllegalMoveException("You can't pick this Tile!");
         Tile picked = new Tile(chessBoard[l][c]);
         chessBoard[l][c] = new Tile(TileColor.EMPTY);
@@ -115,10 +120,10 @@ public class Board implements PropertyChangeListener, Serializable {
         return picked;
     }
 
-    public void selectTile(int l, int c)throws IllegalMoveException{
-        if(!this.isPlayable(l,c) || this.freeSides(l,c)==0 || this.selectedTiles.size()==3)
+    public void selectTile(int l, int c) throws IllegalMoveException {
+        if (!this.isPlayable(l, c) || this.freeSides(l, c) == 0 || this.selectedTiles.size() == 3)
             throw new IllegalMoveException("You can't pick this Tile!");
-        if(this.selectedTiles.size()==0) {
+        if (this.selectedTiles.size() == 0) {
             this.selectedTiles.add(new Coordinate(l, c));
             PropertyChangeEvent evt = new PropertyChangeEvent(
                     this,
@@ -126,10 +131,10 @@ public class Board implements PropertyChangeListener, Serializable {
                     null,
                     new Coordinate(l, c));
             this.listener.propertyChange(evt);
-        }else {
-            if(isSelected(new Coordinate(l, c)))
+        } else {
+            if (isSelected(new Coordinate(l, c)))
                 throw new IllegalMoveException("You have already selected this Tile!");
-            if (this.selectedTiles.size()==1) {
+            if (this.selectedTiles.size() == 1) {
                 if ((l == this.selectedTiles.get(0).getRow() && abs(c - this.selectedTiles.get(0).getColumn()) == 1) ||
                         (c == this.selectedTiles.get(0).getColumn() && abs(l - this.selectedTiles.get(0).getRow()) == 1)) {
                     this.selectedTiles.add(new Coordinate(l, c));
@@ -142,12 +147,11 @@ public class Board implements PropertyChangeListener, Serializable {
                 } else {
                     throw new IllegalMoveException("You can't pick this Tile!");
                 }
-            }
-            else {
-                if(this.selectedTiles.get(0).getRow()==this.selectedTiles.get(1).getRow()){
+            } else {
+                if (this.selectedTiles.get(0).getRow() == this.selectedTiles.get(1).getRow()) {
                     int max = this.selectedTiles.stream().mapToInt(Coordinate::getColumn).max().orElseThrow(NoSuchElementException::new);
                     int min = this.selectedTiles.stream().mapToInt(Coordinate::getColumn).min().orElseThrow(NoSuchElementException::new);
-                    if(c == min-1 || c==max+1) {
+                    if (c == min - 1 || c == max + 1) {
                         this.selectedTiles.add(new Coordinate(l, c));
                         PropertyChangeEvent evt = new PropertyChangeEvent(
                                 this,
@@ -155,14 +159,12 @@ public class Board implements PropertyChangeListener, Serializable {
                                 null,
                                 new Coordinate(l, c));
                         this.listener.propertyChange(evt);
-                    }
-                    else
+                    } else
                         throw new IllegalMoveException("You can't pick this Tile!");
-                }
-                else{
+                } else {
                     int max = this.selectedTiles.stream().mapToInt(Coordinate::getRow).max().orElseThrow(NoSuchElementException::new);
                     int min = this.selectedTiles.stream().mapToInt(Coordinate::getRow).min().orElseThrow(NoSuchElementException::new);
-                    if(l == min-1 || l==max+1) {
+                    if (l == min - 1 || l == max + 1) {
                         this.selectedTiles.add(new Coordinate(l, c));
                         PropertyChangeEvent evt = new PropertyChangeEvent(
                                 this,
@@ -170,52 +172,60 @@ public class Board implements PropertyChangeListener, Serializable {
                                 null,
                                 new Coordinate(l, c));
                         this.listener.propertyChange(evt);
-                    }
-                    else
+                    } else
                         throw new IllegalMoveException("You can't pick this Tile!");
 
                 }
 
             }
         }
-        }
+    }
 
-    private int freeSides(int l, int c){
+    private int freeSides(int l, int c) {
         int counter = 0;
-        if( l == 0 || !this.isPlayable(l-1,c)) {counter++;}
-        if(l==8 || !this.isPlayable(l+1, c)){counter++;}
-        if(c==0 || !this.isPlayable(l, c-1)){counter++;}
-        if(c==8 || !this.isPlayable(l,c+1)){counter++;}
+        if (l == 0 || !this.isPlayable(l - 1, c)) {
+            counter++;
+        }
+        if (l == 8 || !this.isPlayable(l + 1, c)) {
+            counter++;
+        }
+        if (c == 0 || !this.isPlayable(l, c - 1)) {
+            counter++;
+        }
+        if (c == 8 || !this.isPlayable(l, c + 1)) {
+            counter++;
+        }
         return counter;
     }
 
-    public boolean isPlayable(int l, int c){
+    public boolean isPlayable(int l, int c) {
         boolean empty = !chessBoard[l][c].getColor().equals(TileColor.EMPTY);
         boolean prohibited = !chessBoard[l][c].getColor().equals(TileColor.PROHIBITED);
-        return  empty && prohibited;
+        return empty && prohibited;
     }
 
     /**
      * It checks if there are only isolated Tiles on the Board so the Board needs a refill of Tiles
+     *
      * @return number of isolated Tiles if the board needs a refill, else it returns 0
      */
-    private int checkDraw(){
+    private int checkDraw() {
         int counter = 0;
-        for (int l =0; l<9;l++){
-            for (int c=0; c<9;c++) {
-                if ( !chessBoard[l][c].getColor().equals(TileColor.PROHIBITED) &&
-                     !chessBoard[l][c].getColor().equals(TileColor.EMPTY) ){
-                    if(l != 0 && !chessBoard[l-1][c].getColor().equals(TileColor.PROHIBITED) &&
-                                 !chessBoard[l-1][c].getColor().equals(TileColor.EMPTY))
-                         return 0;
-                    if(c  != 0 && !chessBoard[l][c-1].getColor().equals(TileColor.PROHIBITED) &&
-                            !chessBoard[l][c-1].getColor().equals(TileColor.EMPTY))
+        for (int l = 0; l < 9; l++) {
+            for (int c = 0; c < 9; c++) {
+                if (!chessBoard[l][c].getColor().equals(TileColor.PROHIBITED) &&
+                        !chessBoard[l][c].getColor().equals(TileColor.EMPTY)) {
+                    if (l != 0 && !chessBoard[l - 1][c].getColor().equals(TileColor.PROHIBITED) &&
+                            !chessBoard[l - 1][c].getColor().equals(TileColor.EMPTY))
                         return 0;
-                    if(l != 8 && !chessBoard[l+1][c].getColor().equals(TileColor.PROHIBITED) &&
-                            !chessBoard[l+1][c].getColor().equals(TileColor.EMPTY))
+                    if (c != 0 && !chessBoard[l][c - 1].getColor().equals(TileColor.PROHIBITED) &&
+                            !chessBoard[l][c - 1].getColor().equals(TileColor.EMPTY))
                         return 0;
-                    if(c != 8 && !chessBoard[l][c+1].getColor().equals(TileColor.PROHIBITED) &&
-                            !chessBoard[l][c+1].getColor().equals(TileColor.EMPTY))
+                    if (l != 8 && !chessBoard[l + 1][c].getColor().equals(TileColor.PROHIBITED) &&
+                            !chessBoard[l + 1][c].getColor().equals(TileColor.EMPTY))
+                        return 0;
+                    if (c != 8 && !chessBoard[l][c + 1].getColor().equals(TileColor.PROHIBITED) &&
+                            !chessBoard[l][c + 1].getColor().equals(TileColor.EMPTY))
                         return 0;
 
                     counter++;
@@ -227,18 +237,18 @@ public class Board implements PropertyChangeListener, Serializable {
     }
 
     public void changeOrder(List<Integer> positions) throws IllegalArgumentException {
-        if(positions.size() != this.selectedTiles.size())
+        if (positions.size() != this.selectedTiles.size())
             throw new InvalidParameterException("Position numbers are not the same of selected tiles!");
 
         Coordinate[] tmp_selected = new Coordinate[selectedTiles.size()];
 
-        for(Coordinate c : selectedTiles){
+        for (Coordinate c : selectedTiles) {
             tmp_selected[positions.get(selectedTiles.indexOf(c))] = c;
         }
 
         //Controlli finali, non dovrebbero mai essere sollevati
-        for(Coordinate tmp_c : tmp_selected){
-            if(tmp_c == null)
+        for (Coordinate tmp_c : tmp_selected) {
+            if (tmp_c == null)
                 throw new IllegalArgumentException("Something went wrong!");
         }
 
@@ -256,11 +266,11 @@ public class Board implements PropertyChangeListener, Serializable {
      * Checks (using checkDraw method) if the Board needs a Tiles' refill, if true, it will clean the board from remaining
      * Tiles inserting them into the Bag and after that it will set again all the Board's cells with random tiles using setBoard() method
      */
-    public void refillBoard(){
-        if(checkDraw()>0){
-            for(int line = 0; line<9; line++){
-                for (int column = 0; column <9; column++){
-                    if(!chessBoard[line][column].getColor().equals(TileColor.PROHIBITED) &&
+    public void refillBoard() {
+        if (checkDraw() > 0) {
+            for (int line = 0; line < 9; line++) {
+                for (int column = 0; column < 9; column++) {
+                    if (!chessBoard[line][column].getColor().equals(TileColor.PROHIBITED) &&
                             !chessBoard[line][column].getColor().equals(TileColor.EMPTY)) {
                         this.bag.insertTile(chessBoard[line][column]);
                         chessBoard[line][column] = new Tile(TileColor.EMPTY);
@@ -282,9 +292,9 @@ public class Board implements PropertyChangeListener, Serializable {
 
     public void deselectTile() throws IllegalMoveException {
         int l = this.selectedTiles.size();
-        if(l == 0)
+        if (l == 0)
             throw new IllegalMoveException("You haven't selected any tile!");
-        this.selectedTiles.remove(l-1);
+        this.selectedTiles.remove(l - 1);
 
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
@@ -297,27 +307,28 @@ public class Board implements PropertyChangeListener, Serializable {
 
     /**
      * Getter method of bag
+     *
      * @return bag of remaining Tiles
      */
-    public Bag getBag(){
+    public Bag getBag() {
         return this.bag;
     }
 
-    public void print(){
+    public void print() {
         String[][] tmpboard = buildBoardPrint();
 
-        for(int i=-1; i < 9; i++){
-            if(i ==-1){
+        for (int i = -1; i < 9; i++) {
+            if (i == -1) {
                 System.out.print("\t");
-                for(int k = 0; k < 9; k++){
+                for (int k = 0; k < 9; k++) {
                     System.out.print("\t" + k);
                 }
                 System.out.println();
-            } else{
-                for(int j=-1; j < 9; j++){
-                    if(j == -1){
+            } else {
+                for (int j = -1; j < 9; j++) {
+                    if (j == -1) {
                         System.out.print("\t" + i);
-                    } else{
+                    } else {
                         System.out.print("\t" + tmpboard[i][j]);
                     }
                 }
@@ -327,22 +338,22 @@ public class Board implements PropertyChangeListener, Serializable {
 
 
         System.out.println("Board selected tiles:");
-        for(Coordinate c : selectedTiles){
+        for (Coordinate c : selectedTiles) {
             System.out.println(c.getRow() + ", " + c.getColumn() + ", " +
                     TileColor.ColorToString(this.getTile(c.getRow(), c.getColumn()).getColor()));
         }
     }
 
-    private String[][] buildBoardPrint(){
-        String [][] tmpboard = new String[9][9];
-        for(int i=0; i < 9; i++){
-            for(int j=0; j < 9; j++){
-                TileColor color = getTile(i,j).getColor();
-                if(color != TileColor.PROHIBITED){
+    private String[][] buildBoardPrint() {
+        String[][] tmpboard = new String[9][9];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                TileColor color = getTile(i, j).getColor();
+                if (color != TileColor.PROHIBITED) {
                     tmpboard[i][j] = TileColor.ColorToString(color);
                 }
-                    //System.out.print("\t" + color.toString().charAt(0));
-                else{
+                //System.out.print("\t" + color.toString().charAt(0));
+                else {
                     tmpboard[i][j] = "▧";
                     //System.out.print("\t" + "X");
                 }
@@ -365,9 +376,9 @@ public class Board implements PropertyChangeListener, Serializable {
         this.selectedTiles = new ArrayList<Coordinate>();
     }
 
-    private boolean isSelected(Coordinate c){
-        for(Coordinate tmp_c : selectedTiles){
-            if(tmp_c.isEquals(c))
+    private boolean isSelected(Coordinate c) {
+        for (Coordinate tmp_c : selectedTiles) {
+            if (tmp_c.isEquals(c))
                 return true;
         }
         return false;

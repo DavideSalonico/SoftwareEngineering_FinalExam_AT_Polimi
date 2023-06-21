@@ -6,12 +6,11 @@ import GC_11.util.choices.Choice;
 import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
 
-public abstract class ViewGame extends View{
+public abstract class ViewGame extends View {
 
     public abstract Choice getPlayerChoice();
 
     protected GameViewMessage modelView;
-
 
 
     public void setInGame(boolean inGame) {
