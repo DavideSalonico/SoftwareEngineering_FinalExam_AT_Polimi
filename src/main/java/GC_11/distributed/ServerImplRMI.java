@@ -1,7 +1,6 @@
 package GC_11.distributed;
 
 import GC_11.controller.Controller;
-import GC_11.controller.LobbyController;
 import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.model.Game;
@@ -16,13 +15,13 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
 
     private Controller gameController;
 
     private Game gameModel;
-    private LobbyController lobbyController;
 
     private Lobby lobbyModel;
 
@@ -41,6 +40,9 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
 
             //System.out.println("***** Constructing server implementation *****\n");
             //System.out.println("***** Getting the registry *****\n");
+            Scanner s = new Scanner(System.in);
+            String serverIp = s.nextLine();
+            System.setProperty("java.rmi.server.hostname", serverIp);
             Registry registry = LocateRegistry.createRegistry(1099);
             //System.out.println("***** Binding server implementation to registry *****\n");
             registry.rebind("server", this);
@@ -111,7 +113,7 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
     @Override
     public void updateLobby(ClientRMI client, Choice choice) throws RemoteException {
         PropertyChangeEvent evt = new PropertyChangeEvent(client, "choice made", null, choice);
-        this.lobbyController.propertyChange(evt);
+        this.gameController.propertyChange(evt);
     }
 
     public synchronized void notifyClients() {

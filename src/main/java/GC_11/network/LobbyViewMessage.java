@@ -18,7 +18,6 @@ public class LobbyViewMessage extends MessageView {
     public LobbyViewMessage(Lobby lobby) {
         this.maxPlayers = lobby.getMaxPlayers();
         this.playersNames = lobby.getPlayers();
-        this.game = lobby.getGameModel();
     }
 
     public LobbyViewMessage() {

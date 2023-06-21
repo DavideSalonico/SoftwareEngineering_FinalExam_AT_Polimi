@@ -48,15 +48,10 @@ public class Controller implements PropertyChangeListener {
     }
 
     /**
-     * Set and Get of game attribute
+     *Get of game attribute
      *
      * @param game
      */
-
-    public void setGame(Game game) {
-        this.model = game;
-    }
-
     public Game getGame() {
         return this.model;
     }
@@ -101,8 +96,6 @@ public class Controller implements PropertyChangeListener {
         }
 
         checkExpectedMove();
-
-        List<String> params = choice.getParams();
 
         try {
             choice.executeOnServer(this);
@@ -283,5 +276,9 @@ public class Controller implements PropertyChangeListener {
         } catch (NameAlreadyTakenException | ExceededNumberOfPlayersException e) {
             lobby.triggerException(e);
         }
+    }
+
+    public void startGame(){
+        this.model = new Game(lobby.getPlayers());
     }
 }

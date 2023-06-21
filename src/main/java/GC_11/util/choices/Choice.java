@@ -1,7 +1,6 @@
 package GC_11.util.choices;
 
 import GC_11.controller.Controller;
-import GC_11.controller.ControllerInterface;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.IllegalMoveException;
 import GC_11.exceptions.NotEnoughFreeSpacesException;

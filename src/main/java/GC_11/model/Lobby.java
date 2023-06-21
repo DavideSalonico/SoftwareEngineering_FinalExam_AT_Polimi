@@ -11,16 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Lobby implements PropertyChangeListener {
-    private final int maxPlayers;
-    private List<String> playersNames;
-    private Game gameModel = null;
+    private int maxPlayers;
+    private List<String> playersNames = new ArrayList<String>();
     private PropertyChangeListener listener;
 
-
-    public Lobby(int n) {
-        maxPlayers = n;
-        playersNames = new ArrayList<String>();
-    }
+    public Lobby(){}
 
     public synchronized boolean nameAlreadyTaken(String playerName) {
         return playersNames.contains(playerName);
@@ -34,15 +29,15 @@ public class Lobby implements PropertyChangeListener {
                         this,
                         "FIRST PLAYER",
                         null,
-                        null);
+                        playerName);
                 this.listener.propertyChange(evt);
             }
-            if(playersNames.size() == this.maxPlayers){
+            if(this.isFull()){
                 PropertyChangeEvent evt = new PropertyChangeEvent(
                         this,
                         "LAST PLAYER",
                         null,
-                        null);
+                        playerName);
                 this.listener.propertyChange(evt);
             }
         } else if (this.isFull()) {
@@ -76,33 +71,8 @@ public class Lobby implements PropertyChangeListener {
         return maxPlayers;
     }
 
-    // TODO LOBBY by Mattia
-    // Il primo giocatore è il capo del gruppo, e sarà l'unico a poter avviare il gioco, gestire la questione dei permessi
-    // Rendere la classe observable, fare anche una view generale condivisa per tutti i player (observer), capire come
-    // sarà la view, che dovrà far vedere le stesse cose a tutti ma solo il primo giocatore ha i permessi (ricorda che i giocatori
-    // non sono ancora stati creati)
-    // rendere la classe runnable sicuro diventerà un thread
-    // scrivere costruttore del controller in modo che inizializzi un nuovo gioco, tutti i player e le loro rispettive view singole
-    // classe LOBBY è al di fuori di MVC (forse sta nel controller),
-    // gestire aspetti di rete e client
-
-
-    public Game getGameModel() {
-        return gameModel;
-    }
-
-    public void setGameModel(Game gameModel) {
-        this.gameModel = gameModel;
-        PropertyChangeEvent evt = new PropertyChangeEvent(
-                this,
-                "GAME CREATED",
-                null,
-                this.gameModel);
-        this.listener.propertyChange(evt);
-    }
-
-    public void setListener(PropertyChangeListener listener) {
-        this.listener = listener;
+    public void setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
     }
 
     public void triggerException(Exception e){
@@ -120,5 +90,9 @@ public class Lobby implements PropertyChangeListener {
                 "lobbyModel",
                 null,
                 this));
+    }
+
+    public void setListener(PropertyChangeListener listener) {
+        this.listener = listener;
     }
 }

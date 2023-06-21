@@ -40,7 +40,7 @@ public class ServerSock implements PropertyChangeListener {
     }
 
     public void lobbySetup(int maxPlayers) {
-        this.lobby = new Lobby(maxPlayers);
+        this.lobby = new Lobby();
     }
 
     public void startServer() throws IOException, ClassNotFoundException {

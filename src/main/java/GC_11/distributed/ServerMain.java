@@ -1,7 +1,6 @@
 package GC_11.distributed;
 
 import GC_11.controller.Controller;
-import GC_11.controller.LobbyController;
 import GC_11.distributed.socket.ServerSock;
 import GC_11.model.Game;
 import GC_11.model.Lobby;
@@ -19,11 +18,9 @@ public class ServerMain implements PropertyChangeListener {
     private ServerImplRMI serverRMI;
     private ServerSock serverSocket;
     private Game gameModel;
-    private Lobby lobbyModel;
+    private Lobby lobby = new Lobby();
     private Controller controller;
     private Map<String, String> clientMap = new HashMap<String, String>(); // <nickname, connectionType>
-
-    private int maxPlayers;
 
     public ServerMain(int port) {
         try {
@@ -46,7 +43,6 @@ public class ServerMain implements PropertyChangeListener {
     });
 
     Thread serverRMIThread = new Thread(new Runnable() {
-
         @Override
         public void run() {
             serverRMI.setup();
@@ -54,11 +50,9 @@ public class ServerMain implements PropertyChangeListener {
 
     });
 
-    public void startServer() throws Exception {
-
+    public void startServer() {
         serverSocketThread.start();
         serverRMIThread.start();
-
     }
 
     public synchronized void addConnection(String clientNickname, String connectionType) {
@@ -69,7 +63,7 @@ public class ServerMain implements PropertyChangeListener {
 
 
     public void notifyClients(GameViewMessage messageView) {
-
+        //TODO: Add filter
         for (Map.Entry<String, String> client : clientMap.entrySet()) {
             if (client.getValue().equals("RMI")) {
                 try {
@@ -86,13 +80,9 @@ public class ServerMain implements PropertyChangeListener {
 
     }
 
-    public void startGame() {
-        this.gameModel = new Game(this.controller.getLobby().getPlayers());
-        this.gameModel.setListener(this);
-    }
-
     public void askMaxPlayers() {
-        //TODO
+        //TODO: ask max players to the first player
+        this.controller.getLobby().setMaxPlayers(4); //To change
     }
 
     @Override
@@ -102,7 +92,7 @@ public class ServerMain implements PropertyChangeListener {
                 this.askMaxPlayers();
             }
             if(evt.getPropertyName().equals("LAST PLAYER")){
-                this.startGame();
+                this.controller.startGame();
             }
         }
         this.notifyClients((GameViewMessage) evt.getNewValue());
