@@ -19,28 +19,28 @@ class CommonGoalCard6Test {
     Tile blue = new Tile(TileColor.BLUE);
     Tile cyan = new Tile(TileColor.CYAN);
     Tile green = new Tile(TileColor.GREEN);
-    Tile orange = new Tile(TileColor.ORANGE);
+    Tile yellow = new Tile(TileColor.YELLOW);
     Tile purple = new Tile(TileColor.PURPLE);
     Tile white = new Tile(TileColor.WHITE);
 
     List<Tile> blues = Arrays.asList(blue,blue,blue);
     List<Tile> cyans = Arrays.asList(cyan,cyan,cyan);
     List<Tile> greens = Arrays.asList(green,green,green);
-    List<Tile> oranges = Arrays.asList(orange,orange,orange);
+    List<Tile> yellows = Arrays.asList(yellow,yellow,yellow);
     List<Tile> purples = Arrays.asList(purple,purple,purple);
     List<Tile> whites = Arrays.asList(white,white,white);
 
     List<Tile> blues2 = Arrays.asList(blue,blue);
     List<Tile> cyans2 = Arrays.asList(cyan,cyan);
     List<Tile> greens2 = Arrays.asList(green,green);
-    List<Tile> oranges2 = Arrays.asList(orange,orange);
+    List<Tile> yellows2 = Arrays.asList(yellow,yellow);
     List<Tile> purples2 = Arrays.asList(purple,purple);
     List<Tile> whites2 = Arrays.asList(white,white);
 
     List<Tile> blues1 = Arrays.asList(blue);
     List<Tile> cyans1 = Arrays.asList(cyan);
     List<Tile> greens1 = Arrays.asList(green);
-    List<Tile> oranges1 = Arrays.asList(orange);
+    List<Tile> yellows1 = Arrays.asList(yellow);
     List<Tile> purples1 = Arrays.asList(purple);
     List<Tile> whites1 = Arrays.asList(white);
 
@@ -54,8 +54,8 @@ class CommonGoalCard6Test {
         // player.getShelf().addTiles(cyans,1);
         // player.getShelf().addTiles(greens,2);
         // player.getShelf().addTiles(greens,2);
-        //  player.getShelf().addTiles(oranges,3);
-        //  player.getShelf().addTiles(oranges,3);
+        //  player.getShelf().addTiles(yellows,3);
+        //  player.getShelf().addTiles(yellows,3);
         //  player.getShelf().addTiles(whites,4);
         //  player.getShelf().addTiles(whites,4);
 
@@ -78,9 +78,9 @@ class CommonGoalCard6Test {
         player.getShelf().addTiles(purples1,0);
         player.getShelf().addTiles(greens1,0);
         player.getShelf().addTiles(whites1,0);
-        player.getShelf().addTiles(oranges1,0);
+        player.getShelf().addTiles(yellows1,0);
         player.getShelf().addTiles(blues1,1);
-        player.getShelf().addTiles(oranges1,1);
+        player.getShelf().addTiles(yellows1,1);
         player.getShelf().addTiles(whites1,1);
         player.getShelf().addTiles(greens1,1);
         player.getShelf().addTiles(purples1,1);
@@ -94,7 +94,7 @@ class CommonGoalCard6Test {
         player.getShelf().addTiles(purples1,4);
         player.getShelf().addTiles(greens1,4);
         player.getShelf().addTiles(whites1,4);
-        player.getShelf().addTiles(oranges1,4);
+        player.getShelf().addTiles(yellows1,4);
 
 
         System.out.println("inizio test good");
@@ -115,7 +115,7 @@ class CommonGoalCard6Test {
         player.getShelf().addTiles(purples1,0);
         player.getShelf().addTiles(greens,0);
         player.getShelf().addTiles(blues1,1);
-        player.getShelf().addTiles(oranges1,1);
+        player.getShelf().addTiles(yellows1,1);
         player.getShelf().addTiles(whites1,1);
         player.getShelf().addTiles(greens1,1);
         player.getShelf().addTiles(purples1,1);

@@ -1,25 +1,25 @@
 package GC_11.distributed;
 
 import GC_11.controller.Controller;
-import GC_11.controller.LobbyController;
 import GC_11.distributed.socket.ServerSock;
 import GC_11.model.Game;
-import GC_11.model.GameViewMessage;
-import GC_11.network.Lobby;
-import GC_11.network.MessageView;
+import GC_11.model.Lobby;
 
+import GC_11.model.GameViewMessage;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ServerMain {
+public class ServerMain implements PropertyChangeListener {
 
     private ServerImplRMI serverRMI;
     private ServerSock serverSocket;
     private Game gameModel;
     private Lobby lobbyModel;
-    private Controller gameController;
-    private LobbyController lobbyController;
+    private Controller controller;
     private Map<String, String> clientMap = new HashMap<String, String>(); // <nickname, connectionType>
 
     private int maxPlayers;
@@ -65,8 +65,6 @@ public class ServerMain {
         System.out.println("ADDED CONNECTION: " + clientNickname + " " + connectionType);
     }
 
-
-
     public void notifyClients(GameViewMessage messageView) {
 
         for (Map.Entry<String, String> client : clientMap.entrySet()) {
@@ -85,5 +83,27 @@ public class ServerMain {
             }
         }
 
+    }
+
+    public void startGame() {
+        this.gameModel = new Game(this.controller.getLobby().getPlayers());
+        this.gameModel.setListener(this);
+    }
+
+    public void askMaxPlayers() {
+        //TODO
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if(evt.getSource() instanceof Lobby){
+            if(evt.getPropertyName().equals("FIRST PLAYER")){
+                this.askMaxPlayers();
+            }
+            if(evt.getPropertyName().equals("LAST PLAYER")){
+                this.startGame();
+            }
+        }
+        this.notifyClients((GameViewMessage) evt.getNewValue());
     }
 }

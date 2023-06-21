@@ -19,21 +19,21 @@ class CommonGoalCard2Test {
     Tile blue = new Tile(TileColor.BLUE);
     Tile cyan = new Tile(TileColor.CYAN);
     Tile green = new Tile(TileColor.GREEN);
-    Tile orange = new Tile(TileColor.ORANGE);
+    Tile yellow = new Tile(TileColor.YELLOW);
     Tile purple = new Tile(TileColor.PURPLE);
     Tile white = new Tile(TileColor.WHITE);
 
     List<Tile> blues = Arrays.asList(blue,blue,blue);
     List<Tile> cyans = Arrays.asList(cyan,cyan,cyan);
     List<Tile> greens = Arrays.asList(green,green,green);
-    List<Tile> oranges = Arrays.asList(orange,orange,orange);
+    List<Tile> yellows = Arrays.asList(yellow,yellow,yellow);
     List<Tile> purples = Arrays.asList(purple,purple,purple);
     List<Tile> whites = Arrays.asList(white,white,white);
 
      List<Tile> blues2 = Arrays.asList(blue,blue);
      List<Tile> cyans2 = Arrays.asList(cyan,cyan);
      List<Tile> greens2 = Arrays.asList(green,green);
-     List<Tile> oranges2 = Arrays.asList(orange,orange);
+     List<Tile> yellows2 = Arrays.asList(yellow,yellow);
      List<Tile> purples2 = Arrays.asList(purple,purple);
      List<Tile> whites2 = Arrays.asList(white,white);
 
@@ -47,8 +47,8 @@ class CommonGoalCard2Test {
         player.insertTiles(cyans,1);
         player.insertTiles(greens,2);
         player.insertTiles(greens,2);
-        player.insertTiles(oranges,3);
-        player.insertTiles(oranges,3);
+        player.insertTiles(yellows,3);
+        player.insertTiles(yellows,3);
         player.insertTiles(whites,4);
         player.insertTiles(whites,4);
 
@@ -72,8 +72,8 @@ class CommonGoalCard2Test {
         player.insertTiles(cyans,1);
         player.insertTiles(greens,2);
         player.getShelf().addTiles(greens,2);
-        player.getShelf().addTiles(oranges,3);
-        player.getShelf().addTiles(oranges,3);
+        player.getShelf().addTiles(yellows,3);
+        player.getShelf().addTiles(yellows,3);
         player.getShelf().addTiles(blues,4);
         player.getShelf().addTiles(blues,4);
         */
@@ -91,14 +91,14 @@ class CommonGoalCard2Test {
     void checkTestDiagonaleSinistraAlta() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
         player.getShelf().addTiles(blues,0);
-        player.getShelf().addTiles(oranges,0);
+        player.getShelf().addTiles(yellows,0);
         player.getShelf().addTiles(cyans,1);
-        player.getShelf().addTiles(oranges,1);
+        player.getShelf().addTiles(yellows,1);
         player.getShelf().addTiles(greens,2);
-        player.getShelf().addTiles(oranges,2);
-        player.getShelf().addTiles(oranges,3);
-        player.getShelf().addTiles(oranges,3);
-        player.getShelf().addTiles(oranges,4);
+        player.getShelf().addTiles(yellows,2);
+        player.getShelf().addTiles(yellows,3);
+        player.getShelf().addTiles(yellows,3);
+        player.getShelf().addTiles(yellows,4);
         player.getShelf().addTiles(blues,4);
 
 
@@ -116,14 +116,14 @@ class CommonGoalCard2Test {
     void checkTestDiagonaleSinistraBassa() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
         player.getShelf().addTiles(blues,0);
-        player.getShelf().addTiles(oranges,0);
+        player.getShelf().addTiles(yellows,0);
         player.getShelf().addTiles(cyans,1);
-        player.getShelf().addTiles(oranges,1);
-        player.getShelf().addTiles(oranges,2);
+        player.getShelf().addTiles(yellows,1);
+        player.getShelf().addTiles(yellows,2);
         player.getShelf().addTiles(greens,2);
-        player.getShelf().addTiles(oranges,3);
-        player.getShelf().addTiles(oranges,3);
-        player.getShelf().addTiles(oranges,4);
+        player.getShelf().addTiles(yellows,3);
+        player.getShelf().addTiles(yellows,3);
+        player.getShelf().addTiles(yellows,4);
         player.getShelf().addTiles(blues,4);
 
 
@@ -141,14 +141,14 @@ class CommonGoalCard2Test {
     void checkTestDiagonaleDestraAlta() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
         player.getShelf().addTiles(blues,0);
-        player.getShelf().addTiles(oranges,0);
+        player.getShelf().addTiles(yellows,0);
         player.getShelf().addTiles(blues,1);
-        player.getShelf().addTiles(oranges,1);
+        player.getShelf().addTiles(yellows,1);
         player.getShelf().addTiles(purples,2);
         player.getShelf().addTiles(blues,2);
-        player.getShelf().addTiles(oranges,3);
+        player.getShelf().addTiles(yellows,3);
         player.getShelf().addTiles(blues,3);
-        player.getShelf().addTiles(oranges,4);
+        player.getShelf().addTiles(yellows,4);
         player.getShelf().addTiles(blues,4);
 
 
@@ -166,14 +166,14 @@ class CommonGoalCard2Test {
     void checkTestDiagonaleDestraBassa() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
 
         player.getShelf().addTiles(blues,0);
-        player.getShelf().addTiles(oranges,0);
+        player.getShelf().addTiles(yellows,0);
         player.getShelf().addTiles(blues,1);
-        player.getShelf().addTiles(oranges,1);
+        player.getShelf().addTiles(yellows,1);
         player.getShelf().addTiles(blues,2);
         player.getShelf().addTiles(purples,2);
-        player.getShelf().addTiles(oranges,3);
+        player.getShelf().addTiles(yellows,3);
         player.getShelf().addTiles(blues,3);
-        player.getShelf().addTiles(oranges,4);
+        player.getShelf().addTiles(yellows,4);
         player.getShelf().addTiles(blues,4);
 
 

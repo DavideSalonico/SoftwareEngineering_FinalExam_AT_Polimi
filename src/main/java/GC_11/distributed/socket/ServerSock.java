@@ -2,7 +2,7 @@ package GC_11.distributed.socket;
 
 
 import GC_11.distributed.ServerMain;
-import GC_11.network.Lobby;
+import GC_11.model.Lobby;
 import GC_11.network.LobbyController;
 import GC_11.network.MessageView;
 

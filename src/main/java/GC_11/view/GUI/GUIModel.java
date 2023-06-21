@@ -32,7 +32,7 @@ public class GUIModel {
         private static final Map<Integer, BufferedImage> blueTiles = new HashMap<>();
         private static final Map<Integer, BufferedImage> whiteTiles = new HashMap<>();
         private static final Map<Integer, BufferedImage> greenTiles = new HashMap<>();
-        private static final Map<Integer, BufferedImage> orangeTiles = new HashMap<>();
+        private static final Map<Integer, BufferedImage> yellowTiles = new HashMap<>();
         private static final Map<Integer, BufferedImage> purpleTiles = new HashMap<>();
         private static final Map<Integer, BufferedImage> cyanTiles = new HashMap<>();
 
@@ -56,7 +56,7 @@ public class GUIModel {
                     blueTiles.put(i, ImageIO.read(new File("src/resources/GraphicalResources/item tiles/Cornici1." + i + ".png")));
                     whiteTiles.put(i, ImageIO.read(new File("src/resources/GraphicalResources/item tiles/Libri1." + i + ".png")));
                     greenTiles.put(i, ImageIO.read(new File("src/resources/GraphicalResources/item tiles/Gatti1." + i + ".png")));
-                    orangeTiles.put(i, ImageIO.read(new File("src/resources/GraphicalResources/item tiles/Giochi1." + i + ".png")));
+                    yellowTiles.put(i, ImageIO.read(new File("src/resources/GraphicalResources/item tiles/Giochi1." + i + ".png")));
                     purpleTiles.put(i, ImageIO.read(new File("src/resources/GraphicalResources/item tiles/Piante1." + i + ".png")));
                     cyanTiles.put(i, ImageIO.read(new File("src/resources/GraphicalResources/item tiles/Trofei1." + i + ".png")));
                 }
@@ -125,7 +125,7 @@ public class GUIModel {
 
             add(title);
             add(firstRow);
-            setBackground(Color.ORANGE);  // if the background is not set, it will be orange
+            setBackground(Color.YELLOW);  // if the background is not set, it will be yellow
             add(secondRow);
             pack();
 

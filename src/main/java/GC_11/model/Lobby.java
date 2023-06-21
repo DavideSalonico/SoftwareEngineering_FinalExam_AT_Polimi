@@ -1,4 +1,4 @@
-package GC_11.network;
+package GC_11.model;
 
 import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
@@ -26,15 +26,30 @@ public class Lobby implements PropertyChangeListener {
         return playersNames.contains(playerName);
     }
 
-    public synchronized Game addPlayer(String playerName) throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
+    public synchronized void addPlayer(String playerName) throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
         if (playersNames.size() < maxPlayers && !playersNames.contains(playerName)) {
             playersNames.add(playerName);
+            if(playersNames.size() == 1){
+                PropertyChangeEvent evt = new PropertyChangeEvent(
+                        this,
+                        "FIRST PLAYER",
+                        null,
+                        null);
+                this.listener.propertyChange(evt);
+            }
+            if(playersNames.size() == this.maxPlayers){
+                PropertyChangeEvent evt = new PropertyChangeEvent(
+                        this,
+                        "LAST PLAYER",
+                        null,
+                        null);
+                this.listener.propertyChange(evt);
+            }
         } else if (this.isFull()) {
             throw new ExceededNumberOfPlayersException();
         } else if (this.nameAlreadyTaken(playerName)) {
             throw new NameAlreadyTakenException(playerName);
         }
-        return null;
     }
 
     public synchronized void removePlayer(String playerName) throws PlayerNotInListException {
@@ -88,6 +103,15 @@ public class Lobby implements PropertyChangeListener {
 
     public void setListener(PropertyChangeListener listener) {
         this.listener = listener;
+    }
+
+    public void triggerException(Exception e){
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "EXCEPTION",
+                null,
+                e);
+        this.listener.propertyChange(evt);
     }
 
     @Override
