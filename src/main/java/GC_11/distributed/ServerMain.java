@@ -1,19 +1,16 @@
 package GC_11.distributed;
 
 import GC_11.controller.Controller;
-import GC_11.distributed.socket.ServerClientHandler;
 import GC_11.distributed.socket.ServerSock;
 import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.model.Game;
-import GC_11.model.Lobby;
-
 import GC_11.model.GameViewMessage;
+import GC_11.model.Lobby;
 import GC_11.model.Player;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
@@ -81,10 +78,11 @@ public class ServerMain implements PropertyChangeListener {
 
     /**
      * This method is called by the serverSocket or serverRMI when a new connection is established and save the connection in a map
+     *
      * @param clientNickname The nickname of the client
      * @param connectionType The type of connection (RMI or SOCKET)
      */
-    public synchronized void addConnection(String clientNickname, String connectionType){
+    public /*synchronized*/ void addConnection(String clientNickname, String connectionType) {
         clientMap.put(clientNickname, connectionType);
         try {
             this.controller.getLobby().addPlayer(clientNickname);
@@ -108,11 +106,11 @@ public class ServerMain implements PropertyChangeListener {
         for (Map.Entry<String, String> client : clientMap.entrySet()) {
 
             // Make a copy of the messageView for every player and keeps the original messageView intact
-            GameViewMessage messageViewCopy = new GameViewMessage(this.controller.getGame(),messageView.getException());
+            GameViewMessage messageViewCopy = new GameViewMessage(this.controller.getGame(), messageView.getException());
 
             // Just before sending the message, we remove the personal goal from the other players
-            for(Player p : messageViewCopy.getPlayers()){
-                if(!p.getNickname().equals(client.getKey())){
+            for (Player p : messageViewCopy.getPlayers()) {
+                if (!p.getNickname().equals(client.getKey())) {
                     p.setPersonalGoal(null);
                 }
             }
@@ -127,7 +125,7 @@ public class ServerMain implements PropertyChangeListener {
             } else if (client.getValue().equals("SOCKET")) {
                 serverSocket.notifyClient(client.getKey(), messageViewCopy);
             } else {
-                System.out.println("Unable to notify " +client.getKey() + " because connection type is unknown");
+                System.out.println("Unable to notify " + client.getKey() + " because connection type is unknown");
             }
         }
 
@@ -140,18 +138,16 @@ public class ServerMain implements PropertyChangeListener {
 
     public void askMaxPlayers() {
         boolean ok = false;
-        while(!ok){
-            if(this.clientMap.get(this.controller.getLobby().getPlayers().get(0)).equals("RMI")){
+        while (!ok) {
+            if (this.clientMap.get(this.controller.getLobby().getPlayers().get(0)).equals("RMI")) {
                 try {
                     this.controller.getLobby().setMaxPlayers(this.serverRMI.getClients().get(0).askMaxNumber());
                     ok = true;
                 } catch (RemoteException e) {
                     System.out.println("Unable to ask max players because of RemoteException");
                 }
-            } else if(this.clientMap.get(this.controller.getLobby().getPlayers().get(0)).equals("SOCKET")){
-                Map<String, ServerClientHandler> tmp = this.serverSocket.getSocketMap();
-                String nick = tmp.get(0).getNickname();
-                int max = this.serverSocket.askMaxNumber(nick);
+            } else if (this.clientMap.get(this.controller.getLobby().getPlayers().get(0)).equals("SOCKET")) {
+                int max = this.serverSocket.askMaxNumber();
                 this.controller.getLobby().setMaxPlayers(max); //TODO Mattia
                 ok = true;
             } else {
@@ -162,11 +158,11 @@ public class ServerMain implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if(evt.getSource() instanceof Lobby){
-            if(evt.getPropertyName().equals("FIRST PLAYER")){
+        if (evt.getSource() instanceof Lobby) {
+            if (evt.getPropertyName().equals("FIRST PLAYER")) {
                 this.askMaxPlayers();
             }
-            if(evt.getPropertyName().equals("LAST PLAYER")){
+            if (evt.getPropertyName().equals("LAST PLAYER")) {
                 this.controller.startGame();
             }
         }

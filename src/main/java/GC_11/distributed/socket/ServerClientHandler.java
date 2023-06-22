@@ -22,6 +22,8 @@ public class ServerClientHandler implements Runnable {
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
 
+    private int maxNumbers;
+
     private String nickname;
 
     /**
@@ -186,13 +188,6 @@ public class ServerClientHandler implements Runnable {
             System.err.println("Unable to get output stream");
         }
         connectionSetup();
-        /*try {
-            lobbySetup();
-        } catch (IOException e) {
-            System.err.println("Unable to setup lobby");
-        } catch (ClassNotFoundException e) {
-            System.err.println("Unable to setup lobby");
-        }*/
         readThread.start();
 
     }
@@ -382,9 +377,17 @@ public class ServerClientHandler implements Runnable {
         return this.nickname;
     }
 
+    public int getMaxNumbers() {
+        return maxNumbers;
+    }
+
+    public void printCiao(){
+        System.out.println("Ciao");
+    }
     public int askMaxNumber() {
-        sendMessageToClient("Inserire il numero massimo di giocatori");
+
         int maxPlayers = -1;
+        sendMessageToClient("Inserire il numero massimo di giocatori");
         try{
             maxPlayers = Integer.parseInt(receiveMessageFromClient());
             while (maxPlayers <= 1 || maxPlayers >= 5) {

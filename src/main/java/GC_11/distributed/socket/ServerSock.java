@@ -30,7 +30,7 @@ public class ServerSock implements PropertyChangeListener {
     private final int port;
     private ServerSocket serverSocket;
     private ServerMain serverMain;
-    private final ExecutorService executor = Executors.newCachedThreadPool();
+    private final ExecutorService executor = Executors.newFixedThreadPool(32);
 
     private List<ServerClientHandler> serverClientHandlerList;
 
@@ -189,7 +189,10 @@ public class ServerSock implements PropertyChangeListener {
         socketMap.get(clientNickname).sendMessageViewToClient(messageView);
     }
 
-    public int askMaxNumber(String clientNickname) {
+    public int askMaxNumber() {
+
+        String clientNickname =this.socketMap.entrySet().iterator().next().getKey();
+
         return socketMap.get(clientNickname).askMaxNumber();
     }
 }
