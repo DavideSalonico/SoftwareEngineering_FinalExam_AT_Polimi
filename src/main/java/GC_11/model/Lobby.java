@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Lobby implements PropertyChangeListener {
-    private int maxPlayers;
+    private int maxPlayers = 1;
     private List<String> playersNames = new ArrayList<String>();
     private PropertyChangeListener listener;
 
