@@ -22,8 +22,6 @@ public class ServerClientHandler implements Runnable {
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
 
-    private int maxNumbers;
-
     private String nickname;
 
     /**
@@ -208,6 +206,11 @@ public class ServerClientHandler implements Runnable {
     }
 
 
+    /**
+     * This method is called when an error occurs during the communication with the client.
+     * Closes the connection with the client. It also notifies the server of the disconnection.
+     * The server will then notify all the other clients of the disconnection.
+     */
     private void closeConnection() {
         System.out.println("Closing socket: " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
         try {
@@ -246,59 +249,6 @@ public class ServerClientHandler implements Runnable {
         }
     }
 
-    public void lobbySetup() throws IOException, ClassNotFoundException {
-        if (this.server.getLobby() == null || this.server.getLobby().getPlayers().size() == 0) {
-            sendMessageToClient("Non c'è ancora nessun giocatore nella lobby. Vuoi crearne una?\n[S] Sì\n[N] no");
-            String reply = receiveLobbyMessageFromClient();
-            reply = reply.toUpperCase();
-            if (reply.equals("S") || reply.equals("Y") || reply.equals("SI") || reply.equals("YES")) {
-                sendMessageToClient("Inserire il numero massimo di giocatori");
-                int maxPlayers = Integer.parseInt(receiveLobbyMessageFromClient());
-                while (maxPlayers <= 1 || maxPlayers >= 5) {
-                    sendMessageToClient("Il numero di giocatori deve essere compreso tra 2 e 4");
-                    maxPlayers = Integer.parseInt(receiveLobbyMessageFromClient());
-                }
-                this.server.lobbySetup(maxPlayers);
-                sendMessageToClient("Inserisci il tuo nome");
-                String playerName = receiveLobbyMessageFromClient();
-                boolean setName = false;
-                while (!setName) {
-                    try {
-                        this.server.getLobby().addPlayer(playerName);
-                        setName = true;
-                    } catch (ExceededNumberOfPlayersException e) {
-                        sendMessageToClient("Raggiunto il numero massimo di giocatori");
-                    } catch (NameAlreadyTakenException e) {
-                        sendMessageToClient("Nome già in uso. Sceglierne un altro");
-                    }
-                }
-            } else {
-                sendMessageToClient("Sei sicuro?");
-            }
-        } else {
-            sendMessageToClient("Esiste già una lobby. Vuoi entrare?\n[S] Sì\n[N] no");
-            String reply = receiveMessageFromClient();
-            reply = reply.toUpperCase();
-            if (reply.equals("S") || reply.equals("Y") || reply.equals("SI") || reply.equals("YES")) {
-                sendMessageToClient("Inserisci il tuo nome");
-                String playerName = receiveMessageFromClient();
-                boolean setName = false;
-                while (!setName) {
-                    try {
-                        this.server.getLobby().addPlayer(playerName);
-                        setName = true;
-                    } catch (ExceededNumberOfPlayersException e) {
-                        sendMessageToClient("Raggiunto il numero massimo di giocatori");
-                    } catch (NameAlreadyTakenException e) {
-                        sendMessageToClient("Nome già in uso. Sceglierne un altro");
-                    }
-                }
-            } else {
-                sendMessageToClient("Sei sicuro?");
-            }
-        }
-        sendMessageToClient("Pronto per giocare");
-    }
 
     /**
      * Sets the nickname for the client.
@@ -318,13 +268,6 @@ public class ServerClientHandler implements Runnable {
         return this.nickname;
     }
 
-    public int getMaxNumbers() {
-        return maxNumbers;
-    }
-
-    public void printCiao(){
-        System.out.println("Ciao");
-    }
     public int askMaxNumber() {
 
         int maxPlayers = -1;
