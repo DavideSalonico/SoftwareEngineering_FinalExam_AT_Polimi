@@ -18,6 +18,11 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
+/**
+ * The class responsible for handling socket connections in the server.
+ * Implements the PropertyChangeListener interface to listen for property changes.
+ */
 public class ServerSock implements PropertyChangeListener {
 
     Lobby lobby;
@@ -32,6 +37,13 @@ public class ServerSock implements PropertyChangeListener {
     private LinkedHashMap<String, ServerClientHandler> socketMap = new LinkedHashMap<String, ServerClientHandler>(); // <socket, nickname>
 
 
+    /**
+     * Constructs a ServerSock object with the specified port number and serverMain instance.
+     *
+     * @param port       The port number to listen on.
+     * @param serverMain The ServerMain instance.
+     */
+
     public ServerSock(int port, ServerMain serverMain) {
 
         // Opening TCP port
@@ -43,6 +55,13 @@ public class ServerSock implements PropertyChangeListener {
         this.lobby = new Lobby();
     }
 
+
+    /**
+     * Starts the server by initializing the server socket and accepting client connections.
+     *
+     * @throws IOException            If an I/O error occurs while initializing the server socket.
+     * @throws ClassNotFoundException If a class required for client communication is not found.
+     */
     public void startServer() throws IOException, ClassNotFoundException {
 
         // Init phase
@@ -74,6 +93,14 @@ public class ServerSock implements PropertyChangeListener {
         }
     }
 
+
+    /**
+     * Notifies all clients except the sourceHandler with the given message.
+     *
+     * @param message       The message to send to clients.
+     * @param sourceHandler The source client handler that triggered the notification.
+     */
+
     public void notifyAllClients(String message, ServerClientHandler sourceHandler) {
         for (ServerClientHandler sch : serverClientHandlerList) {
             if (sch != sourceHandler) {
@@ -81,6 +108,13 @@ public class ServerSock implements PropertyChangeListener {
             }
         }
     }
+
+    /**
+     * Notifies all clients except the sourceHandler with the given message view.
+     *
+     * @param message       The message view to send to clients.
+     * @param sourceHandler The source client handler that triggered the notification.
+     */
 
     public void notifyAllClients(MessageView message, ServerClientHandler sourceHandler) {
         for (ServerClientHandler sch : serverClientHandlerList) {
@@ -90,9 +124,22 @@ public class ServerSock implements PropertyChangeListener {
         }
     }
 
-    public void notifyClient(MessageView messageView, String client){
+    /**
+     * Notifies a specific client with the given message view.
+     *
+     * @param messageView The message view to send to the client.
+     * @param client      The nickname of the client to notify.
+     */
+    public void notifyClient(MessageView messageView, String client) {
         socketMap.get(client).sendMessageViewToClient(messageView);
     }
+
+    /**
+     * Notifies all client sockets about a disconnection and removes the sourceHandler from the serverClientHandlerList.
+     *
+     * @param socket        The socket that got disconnected.
+     * @param sourceHandler The source client handler that triggered the disconnection.
+     */
 
     public void notifyDisconnectionAllSockets(Socket socket, ServerClientHandler sourceHandler) {
         Socket disconnectedSocket = socket;
@@ -102,6 +149,7 @@ public class ServerSock implements PropertyChangeListener {
         }
     }
 
+    // TODO: CHECK IF LOBBY IS NECESSARY
     public Lobby getLobby() {
         return lobby;
     }
@@ -113,15 +161,31 @@ public class ServerSock implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Retrieves the socketMap containing the client sockets and corresponding client handlers.
+     *
+     * @return The socketMap containing the client sockets and client handlers.
+     */
     public Map<String, ServerClientHandler> getSocketMap() {
         return socketMap;
     }
 
+    /**
+     * Retrieves the ServerMain instance.
+     *
+     * @return The ServerMain instance.
+     */
     public ServerMain getServerMain() {
         return serverMain;
     }
 
-    public void notifyClient(String clientNickname, MessageView messageView){
+    /**
+     * Notifies a specific client with the given message view.
+     *
+     * @param clientNickname The nickname of the client to notify.
+     * @param messageView    The message view to send to the client.
+     */
+    public void notifyClient(String clientNickname, MessageView messageView) {
         socketMap.get(clientNickname).sendMessageViewToClient(messageView);
     }
 }
