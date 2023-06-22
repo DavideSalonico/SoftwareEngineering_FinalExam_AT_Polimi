@@ -36,57 +36,37 @@ public class GUIView extends Application {
     public enum State {
         YOUR_TURN, WAITING, SELECTING_TILES, SELECTING_COLUMN, END
     }
-
     public State currentState;
     public String currentPlayerNickname;
 
-
     // ISTANZA MODEL CONTENUTA TEMPORANEAMENTE, POI CAPIRE COME RICEVERLA IN MANIERA DINAMICA
     public Game model;
-
-    @FXML
     public Pane root;
-
     public GridPane mainGrid;
     public String clientNickName = "Pippo";  // TEMPORANEAMENTE FISSO A PIPPO DA RIMUOVERE (deve essere ricevuto dal server)
     public Text clientPoints;
     public ImageView personalGoal;
-    @FXML
     public ImageView ICommonGoalCard;
-    @FXML
     public ImageView IICommonGoalCard;
     Tooltip textCommonI;
     Tooltip textCommonII;
-    @FXML
     public GridPane boardGridPane;
-    @FXML
     public GridPane mainShelfGridPane;
-    @FXML
     public ImageView firstPlayerToken;
-
-    @FXML
     public GridPane playerShelf1;
-    @FXML
     public GridPane playerShelf2;
     public ImageView deletableShelf;
-    @FXML
     public GridPane playerShelf3;
-
     public Text player1Name;
     public Text player2Name;
     public Text player3Name;
-
     public Text player1Points;
     public Text player2Points;
     public Text player3Points;
-
     public ButtonBar columnSelector;
-
     double desiredWidth;
     double desiredHeight;
-
     public Button confirmSelection;
-
     public Text selectTilesError;
     public Text selectColumnError;
 
@@ -196,7 +176,7 @@ public class GUIView extends Application {
             otherPlayers.add(new PlayerView(player1Name, player1Points, playerShelf1));
             otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
 
-            // rimuovo la shelf del giocatore al centro (posta staticamente dall'FXML)
+            //remove the shelf of the player in the center (statically placed by the FXML)
             deletableShelf.setImage(null);
             player2Name.setText("");
             player2Points.setText("");
@@ -450,30 +430,15 @@ public class GUIView extends Application {
                 Tile t = player.getShelf().getTile(j, i);
                 int id = t.getId() + 1;
                 TileColor tileColor = t.getColor();
-                ImageView image;
-                switch (tileColor) {
-                    case WHITE:
-                        image = new ImageView(whiteTiles.get(id));
-                        break;
-                    case PURPLE:
-                        image = new ImageView(purpleTiles.get(id));
-                        break;
-                    case GREEN:
-                        image = new ImageView(greenTiles.get(id));
-                        break;
-                    case BLUE:
-                        image = new ImageView(blueTiles.get(id));
-                        break;
-                    case CYAN:
-                        image = new ImageView(cyanTiles.get(id));
-                        break;
-                    case YELLOW:
-                        image = new ImageView(yellowTiles.get(id));
-                        break;
-                    default:
-                        image = null;
-                        break;
-                }
+                ImageView image = switch (tileColor) {
+                    case WHITE -> new ImageView(whiteTiles.get(id));
+                    case PURPLE -> new ImageView(purpleTiles.get(id));
+                    case GREEN -> new ImageView(greenTiles.get(id));
+                    case BLUE -> new ImageView(blueTiles.get(id));
+                    case CYAN -> new ImageView(cyanTiles.get(id));
+                    case YELLOW -> new ImageView(yellowTiles.get(id));
+                    default -> null;
+                };
 
                 if(image != null) {
                     image.setFitHeight(29);
@@ -491,6 +456,54 @@ public class GUIView extends Application {
      */
     public void updatePoints(Player player, Text points){
         points.setText("Points: " + player.getPoints());
+    }
+
+
+    /**
+     * Method that updates the Board of the client who is using the GUI
+     * @param player
+     * @throws ColumnIndexOutOfBoundsException
+     */
+    public void updateClientShelf(Player player) throws ColumnIndexOutOfBoundsException {
+        for (int i = 1; i < 6; i++) {  //COLUMNS
+            for (int j = 1; j < 7; j++) {  //ROWS
+                Tile t = player.getShelf().getTile(j, i);
+                int id = t.getId() + 1;
+                TileColor tileColor = t.getColor();
+                ImageView image = switch (tileColor) {
+                    case WHITE -> new ImageView(whiteTiles.get(id));
+                    case PURPLE -> new ImageView(purpleTiles.get(id));
+                    case GREEN -> new ImageView(greenTiles.get(id));
+                    case BLUE -> new ImageView(blueTiles.get(id));
+                    case CYAN -> new ImageView(cyanTiles.get(id));
+                    case YELLOW -> new ImageView(yellowTiles.get(id));
+                    default -> null;
+                };
+
+                if(image != null) {
+                    image.setFitHeight(50);  //Other players shelf size is 29x29!
+                    image.setFitWidth(50);
+                    mainShelfGridPane.add(image, i, j);  //Add the image to specif Shelf
+                }
+            }
+        }
+    }
+
+    /**
+     * Method that updates the points of the client who is using the GUI
+     * @param player
+     */
+    public void updateClientPoints(Player player){
+        clientPoints.setText("Points: " + player.getPoints());
+    }
+
+
+    public void setBoardError(String error){
+        selectTilesError.setText(error);
+    }
+
+    public void setColumnError(String error){
+        selectColumnError.setText(error);
     }
 
 
