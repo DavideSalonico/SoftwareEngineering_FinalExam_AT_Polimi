@@ -2,8 +2,6 @@ package GC_11.distributed.socket;
 
 
 import GC_11.distributed.ServerMain;
-import GC_11.model.Lobby;
-import GC_11.network.LobbyController;
 import GC_11.network.MessageView;
 
 import java.beans.PropertyChangeEvent;
@@ -25,16 +23,14 @@ import java.util.concurrent.Executors;
  */
 public class ServerSock implements PropertyChangeListener {
 
-    Lobby lobby;
-    LobbyController lobbyController;
     private final int port;
     private ServerSocket serverSocket;
-    private ServerMain serverMain;
+    private final ServerMain serverMain;
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
     private List<ServerClientHandler> serverClientHandlerList;
 
-    private LinkedHashMap<String, ServerClientHandler> socketMap = new LinkedHashMap<String, ServerClientHandler>(); // <socket, nickname>
+    private final LinkedHashMap<String, ServerClientHandler> socketMap = new LinkedHashMap<String, ServerClientHandler>(); // <socket, nickname>
 
 
     /**
@@ -51,10 +47,6 @@ public class ServerSock implements PropertyChangeListener {
         this.serverMain = serverMain;
     }
 
-    public void lobbySetup(int maxPlayers) {
-        this.lobby = new Lobby();
-    }
-
 
     /**
      * Starts the server by initializing the server socket and accepting client connections.
@@ -68,22 +60,19 @@ public class ServerSock implements PropertyChangeListener {
 
         try {
             this.serverSocket = new ServerSocket(this.port);
-            //System.out.println("---Server---");
-            //System.out.println("Server ready on port: " + port);
 
         } catch (IOException e) {
             System.out.println("Error during initialization phase...");
             System.out.println(e.getMessage());
         }
         this.serverClientHandlerList = new ArrayList<>();
-        //this.lobby=new Lobby();
 
         System.out.println("SERVER SOCKET RUNNING");
         // Waiting for connection
         while (true) {
             try {
                 Socket socket = serverSocket.accept();
-                //System.out.println("Received client connection");
+
                 ServerClientHandler sch = new ServerClientHandler(socket, this);
                 this.serverClientHandlerList.add(sch);
                 executor.submit(sch);
@@ -150,9 +139,7 @@ public class ServerSock implements PropertyChangeListener {
     }
 
     // TODO: CHECK IF LOBBY IS NECESSARY
-    public Lobby getLobby() {
-        return lobby;
-    }
+
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -189,7 +176,10 @@ public class ServerSock implements PropertyChangeListener {
         socketMap.get(clientNickname).sendMessageViewToClient(messageView);
     }
 
-    public int askMaxNumber(String clientNickname) {
+    public int askMaxNumber() {
+
+        String clientNickname =this.socketMap.entrySet().iterator().next().getKey();
+
         return socketMap.get(clientNickname).askMaxNumber();
     }
 }

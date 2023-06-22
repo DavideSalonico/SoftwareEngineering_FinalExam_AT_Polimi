@@ -1,6 +1,6 @@
 package GC_11.view.GUI;
 
-import GC_11.model.GameViewMessage;
+import GC_11.network.GameViewMessage;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

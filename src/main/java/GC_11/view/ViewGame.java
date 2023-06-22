@@ -1,7 +1,7 @@
 package GC_11.view;
 
-import GC_11.model.GameViewMessage;
-import GC_11.util.choices.Choice;
+import GC_11.network.GameViewMessage;
+import GC_11.network.choices.Choice;
 
 import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;

@@ -7,9 +7,8 @@ import GC_11.model.Game;
 import GC_11.model.Tile;
 import GC_11.model.TileColor;
 import GC_11.model.Lobby;
-import GC_11.util.choices.Choice;
-import GC_11.util.choices.ChoiceFactory;
-import GC_11.util.choices.ChoiceType;
+import GC_11.network.choices.Choice;
+import GC_11.network.choices.ChoiceType;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -283,7 +282,6 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void startGame(){
-        this.model = new Game(this.lobby.getPlayers());
-        this.model.setListener(server);
+        this.model = new Game(this.lobby.getPlayers(), this.server);
     }
 }

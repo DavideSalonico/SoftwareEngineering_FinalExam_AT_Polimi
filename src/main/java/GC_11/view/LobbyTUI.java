@@ -2,7 +2,7 @@ package GC_11.view;
 
 import GC_11.distributed.Client;
 import GC_11.network.LobbyViewMessage;
-import GC_11.util.choices.Choice;
+import GC_11.network.choices.Choice;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Scanner;

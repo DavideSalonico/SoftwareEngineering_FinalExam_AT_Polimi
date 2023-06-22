@@ -1,8 +1,13 @@
-package GC_11.model;
+package GC_11.network;
 
 
+import GC_11.model.Board;
+import GC_11.model.Chat;
+import GC_11.model.Game;
+import GC_11.model.Player;
 import GC_11.model.common.CommonGoalCard;
 import GC_11.network.MessageView;
+import GC_11.util.CircularList;
 
 import java.util.List;
 
@@ -53,7 +58,7 @@ public class GameViewMessage extends MessageView {
         return model.getChat();
     }
 
-    public List<Player> getPlayers() {
+    public CircularList<Player> getPlayers() {
         return model.getPlayers();
     }
 

@@ -2,7 +2,7 @@ package GC_11;
 
 import GC_11.controller.JsonWriter;
 import GC_11.model.Game;
-import GC_11.model.GameViewMessage;
+import GC_11.network.GameViewMessage;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ public class AppTia {
         tmpPlayerNames.add("Pluto");
         tmpPlayerNames.add("Paperino");
         tmpPlayerNames.add("Giuseppe");
-        Game g = new Game(tmpPlayerNames);
+        Game g = new Game(tmpPlayerNames, null);
         GameViewMessage modelView = new GameViewMessage(g, null);
         //JsonWriter.saveGame(modelView);
         //JsonWriter.deleteGame();

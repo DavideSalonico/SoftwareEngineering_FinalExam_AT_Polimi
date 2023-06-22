@@ -1,6 +1,6 @@
 package GC_11.view;
 
-import GC_11.util.choices.Choice;
+import GC_11.network.choices.Choice;
 
 public class LobbyCLI extends ViewLobby {
 

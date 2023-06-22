@@ -1,6 +1,6 @@
 package GC_11.distributed;
 
-import GC_11.model.GameViewMessage;
+import GC_11.network.GameViewMessage;
 import GC_11.model.Player;
 import GC_11.view.View;
 

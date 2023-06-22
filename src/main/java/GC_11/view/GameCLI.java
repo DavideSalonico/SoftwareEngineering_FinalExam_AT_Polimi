@@ -3,13 +3,13 @@ package GC_11.view;
 //TODO: 2) cambiare il metodo run con quello aggiornato di dave
 
 import GC_11.distributed.ClientRMI;
-import GC_11.model.GameViewMessage;
+import GC_11.network.GameViewMessage;
 import GC_11.model.Message;
 import GC_11.model.Player;
 import GC_11.model.common.CommonGoalCard;
-import GC_11.util.choices.Choice;
-import GC_11.util.choices.ChoiceFactory;
-import GC_11.util.choices.ChoiceType;
+import GC_11.network.choices.Choice;
+import GC_11.network.choices.ChoiceFactory;
+import GC_11.network.choices.ChoiceType;
 
 import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
