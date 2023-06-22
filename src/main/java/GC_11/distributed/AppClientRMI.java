@@ -26,7 +26,7 @@ public class AppClientRMI {
         System.out.println("Inserire indirizzo ip del server: ");
         Scanner s = new Scanner(System.in);
         String serverIp = s.nextLine();
-        System.setProperty("java.rmi.server.hostname",serverIp);
+        //System.setProperty("java.rmi.server.hostname",serverIp);
         System.out.println("***** Getting the registry *****\n");
         Registry registry = LocateRegistry.getRegistry(serverIp,1099);
         /*String[] e = registry.list();
