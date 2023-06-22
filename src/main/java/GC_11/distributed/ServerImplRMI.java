@@ -35,6 +35,10 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
         this.serverMain = serverMain;
     }
 
+    public List<ClientRMI> getClients() {
+        return this.clients;
+    }
+
     public void setup() {
         try {
             //System.out.println("***** Constructing server implementation *****\n");

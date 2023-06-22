@@ -8,5 +8,6 @@ public enum ChoiceType {
     PICK_COLUMN,
     CHOOSE_ORDER,
     SEND_MESSAGE,
-    RESET_TURN
+    RESET_TURN,
+    MAX_PLAYERS,
 }

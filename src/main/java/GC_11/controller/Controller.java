@@ -278,6 +278,10 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
+    public void setMaxPlayers(int maxPlayers){
+        this.lobby.setMaxPlayers(maxPlayers);
+    }
+
     public void startGame(){
         this.model = new Game(lobby.getPlayers());
     }
