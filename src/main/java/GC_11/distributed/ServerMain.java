@@ -10,6 +10,8 @@ import GC_11.model.Lobby;
 
 import GC_11.model.GameViewMessage;
 import GC_11.model.Player;
+import GC_11.network.LobbyViewMessage;
+import GC_11.network.MessageView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -101,14 +103,24 @@ public class ServerMain implements PropertyChangeListener {
      * Notifies all clients with the given gameViewMessage.
      * Adjusts the message for each client and sends it through the corresponding server type.
      *
-     * @param messageView The game view message to be sent to clients.
      */
 
-    public void notifyClients(GameViewMessage messageView) {
+    public void notifyClientsLobby() {
+            for (Map.Entry<String, String> client : clientMap.entrySet()) {
+                if (client.getValue().equals("RMI")) {
+                    serverRMI.notifyClientsLobby(new LobbyViewMessage(this.controller.getLobby()));
+                } else if (client.getValue().equals("SOCKET")) {
+                    //TODO aggiornare la lobby tramite socket
+                } else {
+                    System.out.println("Unable to notify " + client.getKey() + " because connection type is unknown");
+                }
+            }
+    }
+    public void notifyClientsGame() {
         for (Map.Entry<String, String> client : clientMap.entrySet()) {
 
             // Make a copy of the messageView for every player and keeps the original messageView intact
-            GameViewMessage messageViewCopy = new GameViewMessage(this.controller.getGame(),messageView.getException());
+            GameViewMessage messageViewCopy = new GameViewMessage(this.controller.getGame(), null);
 
             // Just before sending the message, we remove the personal goal from the other players
             for(Player p : messageViewCopy.getPlayers()){
@@ -168,9 +180,14 @@ public class ServerMain implements PropertyChangeListener {
                 this.askMaxPlayers();
             }
             if(evt.getPropertyName().equals("LAST PLAYER")){
+                this.notifyClientsLobby();
                 this.controller.startGame();
-            }
+                this.notifyClientsGame();
+            }else
+                this.notifyClientsLobby();
         }
-        this.notifyClients((GameViewMessage) evt.getNewValue());
+        else {
+            this.notifyClientsGame();
+        }
     }
 }

@@ -6,6 +6,8 @@ import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.model.Game;
 import GC_11.model.GameViewMessage;
 import GC_11.model.Lobby;
+import GC_11.network.LobbyController;
+import GC_11.network.LobbyViewMessage;
 import GC_11.util.choices.Choice;
 
 import java.beans.PropertyChangeEvent;
@@ -43,9 +45,9 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
         try {
             //System.out.println("***** Constructing server implementation *****\n");
             //System.out.println("***** Getting the registry *****\n");
-            Scanner s = new Scanner(System.in);
+            /*Scanner s = new Scanner(System.in);
             String serverIp = s.nextLine();
-            System.setProperty("java.rmi.server.hostname", serverIp);
+            System.setProperty("java.rmi.server.hostname", serverIp);*/
             Registry registry = LocateRegistry.createRegistry(1099);
             //System.out.println("***** Binding server implementation to registry *****\n");
             registry.rebind("server", this);
@@ -132,6 +134,24 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
                 }
             }).start();
 
+        }
+        System.out.println("\n");
+    }
+
+    public synchronized void notifyClientsLobby(LobbyViewMessage lobbyViewMessage){
+        for (ClientRMI c : clients) {
+            try {
+                new Thread(() -> {
+                    try {
+                        c.updateViewLobby(lobbyViewMessage);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+                System.out.println(c.getNickname() + " aggiornato");
+            } catch (RemoteException e) {
+                System.out.println("Error while updating the client: " + e.getMessage() + ". Skipping the update...");
+            }
         }
         System.out.println("\n");
     }

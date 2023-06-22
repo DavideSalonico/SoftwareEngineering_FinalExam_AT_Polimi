@@ -32,10 +32,17 @@ public class Lobby implements PropertyChangeListener {
                         playerName);
                 this.listener.propertyChange(evt);
             }
-            if(this.isFull()){
+            else if(this.isFull()){
                 PropertyChangeEvent evt = new PropertyChangeEvent(
                         this,
                         "LAST PLAYER",
+                        null,
+                        playerName);
+                this.listener.propertyChange(evt);
+            }else{
+                PropertyChangeEvent evt = new PropertyChangeEvent(
+                        this,
+                        "ADDED PLayer",
                         null,
                         playerName);
                 this.listener.propertyChange(evt);
