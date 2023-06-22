@@ -17,7 +17,7 @@ public class AppTia {
         tmpPlayerNames.add("Pluto");
         tmpPlayerNames.add("Paperino");
         tmpPlayerNames.add("Giuseppe");
-        Game g = new Game(tmpPlayerNames);
+        Game g = new Game(tmpPlayerNames, null);
         GameViewMessage modelView = new GameViewMessage(g, null);
         //JsonWriter.saveGame(modelView);
         //JsonWriter.deleteGame();

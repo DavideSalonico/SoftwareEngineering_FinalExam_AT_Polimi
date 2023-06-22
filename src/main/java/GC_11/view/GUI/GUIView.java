@@ -95,7 +95,7 @@ public class GUIView extends Application {
         tmpPlayerNames.add("Pluto");
         tmpPlayerNames.add("Paperino");
         tmpPlayerNames.add("Giuseppe");
-        model = new Game(tmpPlayerNames);
+        model = new Game(tmpPlayerNames, null);
 
 
         //Background contains the images of the scene that will be used to create the GUI ( PROBABILMENTE CI PENSA GIA' SceneBuilder in maniera statica)
