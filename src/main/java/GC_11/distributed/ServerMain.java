@@ -85,7 +85,7 @@ public class ServerMain implements PropertyChangeListener {
      * @param clientNickname The nickname of the client
      * @param connectionType The type of connection (RMI or SOCKET)
      */
-    public /*synchronized*/ void addConnection(String clientNickname, String connectionType) {
+    public synchronized void addConnection(String clientNickname, String connectionType) {
         clientMap.put(clientNickname, connectionType);
         try {
             this.controller.getLobby().addPlayer(clientNickname);
