@@ -19,6 +19,8 @@ public class GameViewMessage extends MessageView {
     private String exceptionMessage;
     private final Game model;
 
+    private Exception exception;
+
     /**
      * Game creates instance of GameViewMessage through listener, if there is an exception it only initializes attributes 'exceptionMessage'
      * and 'error', the model remains null because the Player doesn't need a view refresh, but just the exception Error,
@@ -34,6 +36,7 @@ public class GameViewMessage extends MessageView {
         if (exception != null) {
             this.error = true;
             this.exceptionMessage = exception.getMessage();
+            this.exception = exception;
             this.model = null;
         } else {
             this.model = model;
@@ -121,5 +124,9 @@ public class GameViewMessage extends MessageView {
             if (p.getNickname().equals(clientNickName)) return p;
         }
         return null;   //ATTENZIONE A QUESTO NULL non gestito
+    }
+
+    public Exception getException() {
+        return exception;
     }
 }

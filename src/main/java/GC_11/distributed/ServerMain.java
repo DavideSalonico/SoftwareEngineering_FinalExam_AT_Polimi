@@ -14,6 +14,11 @@ import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The main server class for the multiplayer game server.
+ * Implements the PropertyChangeListener interface to listen for property changes in the model.
+ */
+
 public class ServerMain implements PropertyChangeListener {
 
     private ServerImplRMI serverRMI;
@@ -23,6 +28,13 @@ public class ServerMain implements PropertyChangeListener {
     private Controller controller;
     private Map<String, String> clientMap = new HashMap<String, String>(); // <nickname, connectionType>
 
+    /**
+     * Constructs a new ServerMain object with the specified port number.
+     * Initializes the RMI and socket servers.
+     *
+     * @param port The port number to listen on.
+     */
+
     public ServerMain(int port) {
         try {
             this.serverRMI = new ServerImplRMI(this);
@@ -31,6 +43,8 @@ public class ServerMain implements PropertyChangeListener {
             throw new RuntimeException(e);
         }
     }
+
+    // Runnable threads for starting the server sockets
 
     Thread serverSocketThread = new Thread(new Runnable() {
         @Override
@@ -43,6 +57,8 @@ public class ServerMain implements PropertyChangeListener {
         }
     });
 
+    // Runnable threads for starting the server RMI
+
     Thread serverRMIThread = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -51,42 +67,66 @@ public class ServerMain implements PropertyChangeListener {
 
     });
 
+
+    /**
+     * Starts the server by starting the server socket and RMI threads.
+     */
     public void startServer() {
         serverSocketThread.start();
         serverRMIThread.start();
     }
 
+    /**
+     * This method is called by the serverSocket or serverRMI when a new connection is established and save the connection in a map
+     * @param clientNickname The nickname of the client
+     * @param connectionType The type of connection (RMI or SOCKET)
+     */
     public synchronized void addConnection(String clientNickname, String connectionType) {
         clientMap.put(clientNickname, connectionType);
         System.out.println("ADDED CONNECTION: " + clientNickname + " " + connectionType);
     }
 
 
+    /**
+     * Notifies all clients with the given gameViewMessage.
+     * Adjusts the message for each client and sends it through the corresponding server type.
+     *
+     * @param messageView The game view message to be sent to clients.
+     */
 
     public void notifyClients(GameViewMessage messageView) {
         for (Map.Entry<String, String> client : clientMap.entrySet()) {
 
+            // Make a copy of the messageView for every player and keeps the original messageView intact
+            GameViewMessage messageViewCopy = new GameViewMessage(this.controller.getGame(),messageView.getException());
+
             // Just before sending the message, we remove the personal goal from the other players
-            for(Player p : messageView.getPlayers()){
+            for(Player p : messageViewCopy.getPlayers()){
                 if(!p.getNickname().equals(client.getKey())){
                     p.setPersonalGoal(null);
                 }
             }
 
+            // For every client we check the connection type and notify the corresponding server
             if (client.getValue().equals("RMI")) {
                 try {
-                    serverRMI.notifyClient(client.getKey(), messageView);
+                    serverRMI.notifyClient(client.getKey(), messageViewCopy);
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
             } else if (client.getValue().equals("SOCKET")) {
-                serverSocket.notifyClient(client.getKey(), messageView);
+                serverSocket.notifyClient(client.getKey(), messageViewCopy);
             } else {
-                throw new RuntimeException("Connection type not supported");
+                System.out.println("Unable to notify " +client.getKey() + " because connection type is unknown");
             }
         }
 
     }
+
+    /**
+     * Asks the first player for the maximum number of players in the lobby.
+     * Updates the lobby's maximum players value.
+     */
 
     public void askMaxPlayers() {
         //TODO: ask max players to the first player
