@@ -72,9 +72,6 @@ public class Game implements PropertyChangeListener, Serializable {
         this.commonGoals.get(0).setListener(this);
         this.commonGoals.get(1).setListener(this);
         this.listener = listener;
-
-        PropertyChangeEvent evt = new PropertyChangeEvent(this, "NEW GAME CREATED", null, new GameViewMessage(this, null));
-        listener.propertyChange(evt);
     }
 
     public void setServer(ServerRMI server){
