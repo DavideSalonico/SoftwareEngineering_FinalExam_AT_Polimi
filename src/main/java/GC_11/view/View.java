@@ -3,10 +3,10 @@ package GC_11.view;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.IllegalMoveException;
 import GC_11.exceptions.NotEnoughFreeSpacesException;
-import GC_11.model.GameViewMessage;
+import GC_11.network.GameViewMessage;
 import GC_11.model.Player;
 import GC_11.network.MessageView;
-import GC_11.util.choices.Choice;
+import GC_11.network.choices.Choice;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

@@ -1,4 +1,4 @@
-package GC_11.util.choices;
+package GC_11.network.choices;
 
 public enum ChoiceType {
     SEE_COMMONGOAL,

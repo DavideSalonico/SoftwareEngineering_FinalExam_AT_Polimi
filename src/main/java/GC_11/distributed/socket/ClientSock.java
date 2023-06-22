@@ -2,7 +2,7 @@ package GC_11.distributed.socket;
 
 
 import GC_11.network.MessageView;
-import GC_11.util.choices.Choice;
+import GC_11.network.choices.Choice;
 import GC_11.view.View;
 
 import java.beans.PropertyChangeEvent;

@@ -4,6 +4,7 @@ import GC_11.controller.JsonReader;
 import GC_11.distributed.ServerRMI;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.model.common.*;
+import GC_11.network.GameViewMessage;
 import GC_11.util.CircularList;
 import org.jetbrains.annotations.NotNull;
 

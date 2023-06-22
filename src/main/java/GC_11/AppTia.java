@@ -2,7 +2,7 @@ package GC_11;
 
 import GC_11.controller.JsonWriter;
 import GC_11.model.Game;
-import GC_11.model.GameViewMessage;
+import GC_11.network.GameViewMessage;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;

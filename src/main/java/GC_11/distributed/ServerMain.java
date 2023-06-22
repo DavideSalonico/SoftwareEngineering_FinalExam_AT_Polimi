@@ -1,16 +1,19 @@
 package GC_11.distributed;
 
 import GC_11.controller.Controller;
+import GC_11.distributed.socket.ServerClientHandler;
 import GC_11.distributed.socket.ServerSock;
 import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.model.Game;
-import GC_11.model.GameViewMessage;
 import GC_11.model.Lobby;
+
+import GC_11.network.GameViewMessage;
 import GC_11.model.Player;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
@@ -165,8 +168,12 @@ public class ServerMain implements PropertyChangeListener {
             }
             if (evt.getPropertyName().equals("LAST PLAYER")) {
                 this.controller.startGame();
+                this.notifyClients(new GameViewMessage(this.controller.getGame(), null));
             }
         }
-        this.notifyClients((GameViewMessage) evt.getNewValue());
+        else{
+            this.notifyClients(new GameViewMessage(this.controller.getGame(), null));
+        }
+
     }
 }

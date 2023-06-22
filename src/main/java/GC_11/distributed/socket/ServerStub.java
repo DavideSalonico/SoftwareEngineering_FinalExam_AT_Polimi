@@ -1,7 +1,7 @@
 package GC_11.distributed.socket;
 
 import GC_11.exceptions.*;
-import GC_11.util.choices.Choice;
+import GC_11.network.choices.Choice;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

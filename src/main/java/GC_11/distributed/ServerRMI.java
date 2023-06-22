@@ -2,7 +2,7 @@ package GC_11.distributed;
 
 import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
-import GC_11.util.choices.Choice;
+import GC_11.network.choices.Choice;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

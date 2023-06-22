@@ -1,4 +1,4 @@
-package GC_11.util.choices;
+package GC_11.network.choices;
 
 import GC_11.controller.Controller;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
@@ -6,20 +6,18 @@ import GC_11.exceptions.IllegalMoveException;
 import GC_11.exceptions.NotEnoughFreeSpacesException;
 import GC_11.model.Player;
 
-import java.security.InvalidParameterException;
 import java.util.List;
 
-public class SendMessageChoice extends Choice {
-    public SendMessageChoice(Player player, List<String> params, ChoiceType type) {
+public class ResetTurnChoice extends Choice {
+
+    public ResetTurnChoice(Player player, List<String> params, ChoiceType type) throws IllegalArgumentException {
         super(player, params, type);
 
-        if (params.size() != 2) throw new IllegalArgumentException();
-        if (params.get(0).length() >= 64 || params.get(1).length() >= 64)
-            throw new InvalidParameterException("Message too long");
+        if (params.size() != 0) throw new IllegalArgumentException();
     }
 
     @Override
     public void executeOnServer(Controller controller) throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
-        controller.sendMessage(params);
+        controller.resetTurn(params);
     }
 }
