@@ -282,7 +282,6 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void startGame(){
-        this.model = new Game(this.lobby.getPlayers());
-        this.model.setListener(server);
+        this.model = new Game(this.lobby.getPlayers(), this.server);
     }
 }

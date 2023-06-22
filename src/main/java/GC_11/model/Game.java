@@ -33,7 +33,7 @@ public class Game implements PropertyChangeListener, Serializable {
     //It's not necessary to serialize the listener (attribute transient)
     public transient PropertyChangeListener listener;
 
-    public Game(@NotNull List<String> playerNames) {
+    public Game(@NotNull List<String> playerNames, PropertyChangeListener listener) {
 
         Random random = new Random();
         this.players = new CircularList<>();
@@ -71,6 +71,7 @@ public class Game implements PropertyChangeListener, Serializable {
         this.commonGoals.get(1).getWinningPlayers().add(players.get(2));  // Solo per prova
         this.commonGoals.get(0).setListener(this);
         this.commonGoals.get(1).setListener(this);
+        this.listener = listener;
 
         PropertyChangeEvent evt = new PropertyChangeEvent(this, "NEW GAME CREATED", null, new GameViewMessage(this, null));
         listener.propertyChange(evt);

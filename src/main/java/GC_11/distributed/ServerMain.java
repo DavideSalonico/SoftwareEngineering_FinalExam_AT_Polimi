@@ -145,14 +145,14 @@ public class ServerMain implements PropertyChangeListener {
             if (this.clientMap.get(this.controller.getLobby().getPlayers().get(0)).equals("RMI")) {
                 try {
                     int max = this.serverRMI.getClients().get(0).askMaxNumber();
-                    this.controller.getLobby().setMaxPlayers(max);
+                    this.controller.setMaxPlayers(max);
                     ok = true;
                 } catch (RemoteException e) {
                     System.out.println("Unable to ask max players because of RemoteException");
                 }
             } else if (this.clientMap.get(this.controller.getLobby().getPlayers().get(0)).equals("SOCKET")) {
                 int max = this.serverSocket.askMaxNumber();
-                this.controller.getLobby().setMaxPlayers(max); //TODO Mattia
+                this.controller.setMaxPlayers(max);
                 ok = true;
             } else {
                 System.out.println("Unable to ask max players because connection type is unknown");
