@@ -10,6 +10,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+
+/**
+ * The ServerClientHandler class handles the communication with a single client on the server side.
+ * It implements the Runnable interface, allowing it to be executed as a separate thread.
+ */
 public class ServerClientHandler implements Runnable {
 
     private final ServerSock server;
@@ -19,10 +24,24 @@ public class ServerClientHandler implements Runnable {
 
     private String nickname;
 
+    /**
+     * Constructs a ServerClientHandler object with the specified client socket and server instance.
+     *
+     * @param socket The client socket.
+     * @param server The server instance.
+     */
     public ServerClientHandler(Socket socket, ServerSock server) {
         this.clientSocket = socket;
         this.server = server;
     }
+
+    /**
+     * Receives a lobby message from the client.
+     *
+     * @return The received lobby message.
+     * @throws IOException            If an I/O error occurs.
+     * @throws ClassNotFoundException If the class of the serialized object cannot be found.
+     */
 
     public String receiveLobbyMessageFromClient() throws IOException, ClassNotFoundException {
         String clientMessage = null;
@@ -43,6 +62,14 @@ public class ServerClientHandler implements Runnable {
             return clientMessage;
         }
     }
+
+    /**
+     * Receives a message from the client.
+     *
+     * @return The received message.
+     * @throws IOException            If an I/O error occurs.
+     * @throws ClassNotFoundException If the class of the serialized object cannot be found.
+     */
 
     public String receiveMessageFromClient() throws IOException, ClassNotFoundException {
         String clientChoice = null;
@@ -65,6 +92,10 @@ public class ServerClientHandler implements Runnable {
         }
     }
 
+
+    /**
+     * Receives a choice from the client.
+     */
     public void receiveChoiceFromClient() {
         try {
             Choice clientChoice = (Choice) inputStream.readObject();
@@ -81,6 +112,11 @@ public class ServerClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Sends a message to the client.
+     *
+     * @param s The message to send.
+     */
     public void sendMessageToClient(String s) {
         try {
             outputStream.writeObject(s);
@@ -93,6 +129,11 @@ public class ServerClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Sends a MessageView object to the client.
+     *
+     * @param messageView The MessageView object to send.
+     */
     public void sendMessageViewToClient(MessageView messageView) {
         try {
             outputStream.writeObject(messageView);
@@ -103,6 +144,7 @@ public class ServerClientHandler implements Runnable {
             closeConnection();
         }
     }
+
 
     private Thread readThread = new Thread(new Runnable() {
         boolean connected = true;
@@ -124,6 +166,10 @@ public class ServerClientHandler implements Runnable {
         }
     });
 
+
+    /**
+     * The run method that will be executed when the ServerClientHandler is started as a separate thread.
+     */
 
     @Override
     public void run() {
@@ -187,6 +233,7 @@ public class ServerClientHandler implements Runnable {
 
     }
 
+
     /*
     private void lobbySetup() throws IOException, ClassNotFoundException {
         System.out.println("Lobby setup...");
@@ -246,6 +293,12 @@ public class ServerClientHandler implements Runnable {
 
     }
 */
+
+    /**
+     * Notifies the client of disconnection.
+     *
+     * @param socket The disconnected socket.
+     */
     public void notifyDisconnection(Socket socket) {
         String alert = "Socket " + socket.getInetAddress() + ":" + socket.getPort() + " has disconnected";
         try {
@@ -311,10 +364,20 @@ public class ServerClientHandler implements Runnable {
         sendMessageToClient("Pronto per giocare");
     }
 
+    /**
+     * Sets the nickname for the client.
+     *
+     * @param nickname The nickname to set.
+     */
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
+    /**
+     * Gets the nickname of the client.
+     *
+     * @return The nickname of the client.
+     */
     public String getNickname() {
         return this.nickname;
     }
