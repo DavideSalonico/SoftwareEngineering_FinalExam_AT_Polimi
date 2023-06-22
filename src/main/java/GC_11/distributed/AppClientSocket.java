@@ -4,7 +4,7 @@ import GC_11.distributed.socket.ClientSock;
 
 import java.util.Scanner;
 
-public class AppClientImpl {
+public class AppClientSocket {
     public static void main(String[] args) {
         System.out.println("Inserire indirizzo ip del server: ");
         Scanner s = new Scanner(System.in);

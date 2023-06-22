@@ -1,7 +1,6 @@
 package GC_11.distributed.socket;
 
-import GC_11.exceptions.ExceededNumberOfPlayersException;
-import GC_11.exceptions.NameAlreadyTakenException;
+import GC_11.network.GameViewMessage;
 import GC_11.network.MessageView;
 import GC_11.network.choices.Choice;
 
@@ -191,7 +190,10 @@ public class ServerClientHandler implements Runnable {
     }
 
     private void connectionSetup() {
-        sendMessageToClient("Hi! Welcome to the game! Please, insert your nickname:");
+
+        GameViewMessage msg = new GameViewMessage(null,null);
+        msg.setMessage("Hi! Welcome to the game! Please, insert your nickname:");
+        sendMessageViewToClient(msg);
         String reply = null;
         try {
             reply = (String) inputStream.readObject();
@@ -271,16 +273,20 @@ public class ServerClientHandler implements Runnable {
     public int askMaxNumber() {
 
         int maxPlayers = -1;
-        sendMessageToClient("Inserire il numero massimo di giocatori");
+        GameViewMessage msg = new GameViewMessage(null,null);
+        msg.setMessage("Inserire il numero massimo di giocatori");
+        sendMessageViewToClient(msg);
         try{
             maxPlayers = Integer.parseInt(receiveMessageFromClient());
             while (maxPlayers <= 1 || maxPlayers >= 5) {
-                sendMessageToClient("Il numero di giocatori deve essere compreso tra 2 e 4");
+                msg.setMessage("Il numero di giocatori deve essere compreso tra 2 e 4");
+                sendMessageViewToClient(msg);
                 maxPlayers = Integer.parseInt(receiveMessageFromClient());
             }
         }
         catch (NumberFormatException e){
-            sendMessageToClient("Inserire un numero");
+            msg.setMessage("Inserire un numero");
+            sendMessageViewToClient(msg);
         }
         catch (IOException e){
             System.err.println("Unable to receive message from client");

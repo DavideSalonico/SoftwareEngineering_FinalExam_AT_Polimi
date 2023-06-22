@@ -1,11 +1,7 @@
 package GC_11.distributed;
 
-import GC_11.distributed.socket.ServerSock;
 
-import java.io.IOException;
-
-
-public class AppServerImpl {
+public class AppServerSocket {
 
     public static void main(String[] args) {
         /*ServerSock server = new ServerSock(4321);

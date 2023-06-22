@@ -1,8 +1,11 @@
 package GC_11.distributed.socket;
 
 
+import GC_11.network.GameViewMessage;
+import GC_11.network.LobbyViewMessage;
 import GC_11.network.MessageView;
 import GC_11.network.choices.Choice;
+import GC_11.view.GameCLI;
 import GC_11.view.View;
 
 import java.beans.PropertyChangeEvent;
@@ -28,6 +31,7 @@ public class ClientSock implements PropertyChangeListener {
 
         this.port = port;
         this.ip = ip;
+
 
         try {
             System.out.println("Connecting to server on port " + port);
@@ -79,12 +83,19 @@ public class ClientSock implements PropertyChangeListener {
         }
     }
 
+
     public void receiveGameViewFromServer() {
         try {
-            MessageView messageView = (MessageView) in.readObject();
-            System.out.println("Received gameViewMessage from server: " + messageView.toString());
+            GameViewMessage gameViewMessage = (GameViewMessage) in.readObject();
+            System.out.println("Received gameViewMessage from server: ");
+            if(gameViewMessage.getMessage()!= null){
+                System.out.println(gameViewMessage.getMessage());
+            }
+            else{
+                System.out.println(gameViewMessage.toString());
+            }
             // Una volta ricevuto il messaggio notifico la view
-            this.view.propertyChange(new PropertyChangeEvent(this, "gameViewMessage", null, messageView));
+            //this.view.propertyChange(new PropertyChangeEvent(this, "gameViewMessage", null, messageView));
         } catch (IOException e) {
             System.out.println("Error during receiving gameViewMessage from server. Check server connection");
         } catch (ClassNotFoundException e) {
@@ -112,7 +123,7 @@ public class ClientSock implements PropertyChangeListener {
 
         @Override
         public void run() {
-            System.out.println("Running readGameViewThread Thread");
+            System.out.println("Running readGameView Thread");
             boolean connectionAvailable = true;
             while (connectionAvailable) {
                 try {
@@ -152,8 +163,9 @@ public class ClientSock implements PropertyChangeListener {
 
     public void startClient() {
         System.out.println("ClientSocket running");
-        readThread.start();
+        readGameViewThread.start();
         writeThread.start();
+
     }
 
     private void closeConnection() {
