@@ -252,7 +252,7 @@ public class Board implements PropertyChangeListener, Serializable {
                 throw new IllegalArgumentException("Something went wrong!");
         }
 
-        selectedTiles = Arrays.stream(tmp_selected).toList();
+        this.selectedTiles = Arrays.stream(tmp_selected).toList();
 
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
@@ -283,7 +283,7 @@ public class Board implements PropertyChangeListener, Serializable {
             PropertyChangeEvent evt = new PropertyChangeEvent(
                     this,
                     "BOARD_REFILLED",
-                    this.chessBoard,
+                    null,
                     this.chessBoard);
             this.listener.propertyChange(evt);
 
@@ -374,6 +374,16 @@ public class Board implements PropertyChangeListener, Serializable {
 
     public void resetSelectedTiles() {
         this.selectedTiles = new ArrayList<Coordinate>();
+    }
+
+    public void resetTurn(){
+        resetSelectedTiles();
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "RESET_TURN",
+                null,
+                null);
+        this.listener.propertyChange(evt);
     }
 
     private boolean isSelected(Coordinate c) {

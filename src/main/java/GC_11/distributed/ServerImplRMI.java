@@ -58,7 +58,9 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
 
     @Override
     public synchronized void register(ClientRMI client) throws ExceededNumberOfPlayersException, NameAlreadyTakenException, RemoteException {
+        clients.add(client);
         serverMain.addConnection(client.getNickname(), "RMI");
+
         /*if (clients.size() == 0) {
             maxPlayer = client.askMaxNumber();
             lobbyModel = new Lobby(maxPlayer);

@@ -141,7 +141,8 @@ public class ServerMain implements PropertyChangeListener {
         while (!ok) {
             if (this.clientMap.get(this.controller.getLobby().getPlayers().get(0)).equals("RMI")) {
                 try {
-                    this.controller.getLobby().setMaxPlayers(this.serverRMI.getClients().get(0).askMaxNumber());
+                    int max = this.serverRMI.getClients().get(0).askMaxNumber();
+                    this.controller.getLobby().setMaxPlayers(max);
                     ok = true;
                 } catch (RemoteException e) {
                     System.out.println("Unable to ask max players because of RemoteException");

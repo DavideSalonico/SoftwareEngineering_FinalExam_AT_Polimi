@@ -51,7 +51,7 @@ public class Controller implements PropertyChangeListener {
     /**
      *Get of game attribute
      *
-     * @param game
+     *
      */
     public Game getGame() {
         return this.model;
@@ -113,7 +113,7 @@ public class Controller implements PropertyChangeListener {
     public void resetTurn(List<String> params) {
         if (params.size() != 0) throw new IllegalArgumentException("There shouldn't be options for this command!");
 
-        this.model.getBoard().getSelectedTiles().clear();
+        this.model.getBoard().resetSelectedTiles();
     }
 
     //Sort of FSM to garantee the correct logic flow of moves
@@ -142,7 +142,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void deselectTile(List<String> params) throws IllegalMoveException {
-        if (params.size() != 0) throw new IllegalArgumentException("There shouldn't be options for this command!");
+        if (params.size() != 0) throw new IllegalArgumentException("There shouldn't be parameters for this command!");
 
         this.model.getBoard().deselectTile();
     }
@@ -173,18 +173,17 @@ public class Controller implements PropertyChangeListener {
         int column = paramsToColumnIndex(parameters);
         //TODO: Da rivedere, se possibile farlo senza creare una lista di appoggio
         List<Tile> tmp_tiles = new ArrayList<Tile>();
+        this.model.getCurrentPlayer().getShelf().addTiles(tmp_tiles, column);
+        this.model.getBoard().resetSelectedTiles();
         for (Coordinate c : model.getBoard().getSelectedTiles()) {
             tmp_tiles.add(this.model.getBoard().getTile(c.getRow(), c.getColumn()));
             this.model.getBoard().setTile(c.getRow(), c.getColumn(), new Tile(TileColor.EMPTY));
         }
-        this.model.getCurrentPlayer().getShelf().addTiles(tmp_tiles, column);
-        this.model.getBoard().resetSelectedTiles();
-
         //Update points (all of them)
         this.model.calculateCommonPoints();
         this.model.getCurrentPlayer().updatesPointsPersonalGoal();
         this.model.getCurrentPlayer().calculateAndGiveAdjacencyPoint();
-
+        this.model.getBoard().refillBoard();
         this.model.setNextCurrent();
 
         //this.lastChoice = ChoiceType.RESET_TURN;
@@ -204,7 +203,7 @@ public class Controller implements PropertyChangeListener {
 
     }
 
-    public void chooseOrder(List<String> parameters) {
+    public void chooseOrder(List<String> parameters) throws InvalidParameterException{
         //Integer parameters control
         Integer tilesSize = this.model.getBoard().getSelectedTiles().size();
         if (parameters.size() != tilesSize)
