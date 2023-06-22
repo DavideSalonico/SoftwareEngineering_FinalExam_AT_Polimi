@@ -6,6 +6,7 @@ import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.model.Game;
 import GC_11.network.GameViewMessage;
 import GC_11.model.Lobby;
+import GC_11.network.LobbyViewMessage;
 import GC_11.network.choices.Choice;
 
 import java.beans.PropertyChangeEvent;

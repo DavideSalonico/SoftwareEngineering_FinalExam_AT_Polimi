@@ -188,6 +188,5 @@ public class ServerMain implements PropertyChangeListener {
         else {
             this.notifyClientsGame();
         }
-        this.notifyClients((GameViewMessage) evt.getNewValue());
     }
 }
