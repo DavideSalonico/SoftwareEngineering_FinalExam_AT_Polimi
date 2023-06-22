@@ -124,11 +124,13 @@ public class ServerMain implements PropertyChangeListener {
             GameViewMessage messageViewCopy = new GameViewMessage(this.controller.getGame(), null);
 
             // Just before sending the message, we remove the personal goal from the other players
+
             for(Player p : messageViewCopy.getPlayers()){
                 if(!p.getNickname().equals(client.getKey())){
                     p.setPersonalGoal(null);
                 }
             }
+
 
             // For every client we check the connection type and notify the corresponding server
             if (client.getValue().equals("RMI")) {

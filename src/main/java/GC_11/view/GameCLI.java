@@ -24,6 +24,7 @@ public class GameCLI extends ViewGame {
     // private final Choice controllerChoice;
     private Choice playerChoice;
     private ClientRMI client;
+    private String nickname;
 
     // private final Outcome outcome;
 
@@ -31,9 +32,10 @@ public class GameCLI extends ViewGame {
      * Every view is bound at only one player, it helps to manage every input that the controller receive
      */
 
-    public GameCLI(Player player, ClientRMI client) {
+    public GameCLI(String nickname, ClientRMI client) {
         super();
         this.player = player;
+        this.nickname = nickname;
         this.client = client;
     }
 
@@ -50,7 +52,7 @@ public class GameCLI extends ViewGame {
         boolean show_en = true;
         if (show_en) show();
         System.out.println("\n\nIT IS THE TURN OF: " + this.modelView.getCurrentPlayer().getNickname());
-        if (this.modelView.getCurrentPlayer().equals(this.player)) {
+        if (this.modelView.getCurrentPlayer().getNickname().equals(this.nickname)) {
             Choice choice = getPlayerChoice();
             System.out.println("scelta fatta");
             PropertyChangeEvent evt = new PropertyChangeEvent(
@@ -111,7 +113,7 @@ public class GameCLI extends ViewGame {
             System.out.println("Total Points: " + p.getPoints() + "\n");
             System.out.println("this is " + p.getNickname() + "'s shelf:");
             p.getShelf().print();
-            if (this.player.getNickname().equals(p.getNickname())) {
+            if (this.nickname.equals(p.getNickname())) {
                 //Printing Personal Goal Card
                 System.out.println("\nPersonal Goal: ");
                 p.getPersonalGoal().print();
@@ -126,9 +128,9 @@ public class GameCLI extends ViewGame {
         }
 
         System.out.print("Private Chats: ");
-        for(String nickname : this.modelView.getChat().getPrivateChats(this.player).keySet()) {
+        for(String nickname : this.modelView.getChat().getPrivateChats(this.modelView.getPlayer(this.nickname)).keySet()) {
             System.out.print("--- " + nickname + " ---");
-            for(Message message : this.modelView.getChat().getPrivateChats(this.player).get(nickname)) {
+            for(Message message : this.modelView.getChat().getPrivateChats(this.modelView.getPlayer(this.nickname)).get(nickname)) {
                 System.out.println(message.getSender() + ": " + message.getText());
             }
             System.out.println("");
@@ -147,7 +149,7 @@ public class GameCLI extends ViewGame {
         while (true) {
             String input = s.nextLine();
             try {
-                return ChoiceFactory.createChoice(player, input);
+                return ChoiceFactory.createChoice(this.modelView.getPlayer(this.nickname), input);
             } catch (IllegalArgumentException e) {
                 System.err.println("Invalid type: " + input + " Please retake.");
             }

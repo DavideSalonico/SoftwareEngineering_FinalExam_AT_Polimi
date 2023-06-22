@@ -36,9 +36,7 @@ public class Game implements PropertyChangeListener, Serializable {
     public Game(@NotNull List<String> playerNames, PropertyChangeListener listener) {
 
         Random random = new Random();
-        this.players = new CircularList<>();
-        PersonalGoalCard personalGoalCard = new PersonalGoalCard();
-        //int[] idArray = random.ints(playerNames.size(), 1, 12).distinct().toArray(); // TODO RISOLVERE IL PROBLEMA DELLE CARTE PERSONALI
+        this.players = new CircularList<>();//int[] idArray = random.ints(playerNames.size(), 1, 12).distinct().toArray(); // TODO RISOLVERE IL PROBLEMA DELLE CARTE PERSONALI
         int[] idArray = generateSetOfRandomNumber(playerNames.size(), 0, 11);
         for (int i = 0; i < playerNames.size(); i++) {
             System.out.println("int i = " + i);

@@ -32,6 +32,7 @@ public class ClientImplRMI extends UnicastRemoteObject implements ClientRMI {
         this.nickname = nickname;
         System.out.println("HELLO " + nickname + "!!!\n");
         viewLobby = new LobbyCLI();
+        viewGame = new GameCLI(this.nickname, this);
         try {
             //System.out.println(server.toString());
             server.register(this);
@@ -59,7 +60,7 @@ public class ClientImplRMI extends UnicastRemoteObject implements ClientRMI {
     }
 
     public void updateStartGame(GameViewMessage newView) throws RemoteException {
-        viewGame = new GameCLI(newView.getPlayer(this.nickname), this);
+        viewGame = new GameCLI(this.nickname, this);
         updateViewGame(newView);
     }
 
