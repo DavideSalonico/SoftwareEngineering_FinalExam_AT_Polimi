@@ -3,6 +3,7 @@ package GC_11.view;
 //TODO: 2) cambiare il metodo run con quello aggiornato di dave
 
 import GC_11.distributed.ClientRMI;
+import GC_11.distributed.socket.ClientSock;
 import GC_11.network.GameViewMessage;
 import GC_11.model.Message;
 import GC_11.model.Player;
@@ -24,6 +25,7 @@ public class GameCLI extends ViewGame {
     // private final Choice controllerChoice;
     private Choice playerChoice;
     private ClientRMI client;
+    private ClientSock clientSock;
     private String nickname;
 
     // private final Outcome outcome;
@@ -37,6 +39,13 @@ public class GameCLI extends ViewGame {
         this.player = player;
         this.nickname = nickname;
         this.client = client;
+    }
+
+    public GameCLI(ClientSock client) {
+        super();
+        this.player = player;
+        this.nickname = nickname;
+        this.clientSock = client;
     }
 
     public void setPlayerChoice(Choice c) {

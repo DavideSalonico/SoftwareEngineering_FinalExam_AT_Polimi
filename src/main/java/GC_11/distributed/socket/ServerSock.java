@@ -72,7 +72,6 @@ public class ServerSock implements PropertyChangeListener {
         while (true) {
             try {
                 Socket socket = serverSocket.accept();
-
                 ServerClientHandler sch = new ServerClientHandler(socket, this);
                 this.serverClientHandlerList.add(sch);
                 executor.submit(sch);

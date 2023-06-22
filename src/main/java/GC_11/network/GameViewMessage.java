@@ -61,6 +61,11 @@ public class GameViewMessage extends MessageView {
         }
     }
 
+    // Solo per inviare messaggi testuali da server al client
+    public GameViewMessage(String message){
+        this.message=message;
+    }
+
     public Board getBoard() {
         return this.board;
     }
