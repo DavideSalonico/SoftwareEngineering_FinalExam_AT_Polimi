@@ -32,19 +32,20 @@ public class Controller implements PropertyChangeListener {
     public JsonReader reader;
     private Game model;
     private Lobby lobby;
-    private ServerMain server;
     private ChoiceType lastChoice = ChoiceType.RESET_TURN;
-    private ChoiceFactory choiceFactory;
+    private ServerMain server;
 
     /**
      * Generic constructor of Controller with only the model
      *
      * @param game reference to Model
      */
-    public Controller(Game game) {
-        this.model = game;
+    public Controller(ServerMain server) {
         this.reader = new JsonReader();
         this.choice = null;
+        this.server = server;
+        this.lobby = new Lobby();
+        this.lobby.setListener(this.server);
     }
 
     /**
@@ -277,7 +278,12 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
+    public void setMaxPlayers(int maxPlayers){
+        this.lobby.setMaxPlayers(maxPlayers);
+    }
+
     public void startGame(){
-        this.model = new Game(lobby.getPlayers());
+        this.model = new Game(this.lobby.getPlayers());
+        this.model.setListener(server);
     }
 }

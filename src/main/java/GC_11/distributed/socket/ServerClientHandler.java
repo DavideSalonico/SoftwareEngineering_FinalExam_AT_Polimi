@@ -381,5 +381,27 @@ public class ServerClientHandler implements Runnable {
     public String getNickname() {
         return this.nickname;
     }
+
+    public int askMaxNumber() {
+        sendMessageToClient("Inserire il numero massimo di giocatori");
+        int maxPlayers = -1;
+        try{
+            maxPlayers = Integer.parseInt(receiveMessageFromClient());
+            while (maxPlayers <= 1 || maxPlayers >= 5) {
+                sendMessageToClient("Il numero di giocatori deve essere compreso tra 2 e 4");
+                maxPlayers = Integer.parseInt(receiveMessageFromClient());
+            }
+        }
+        catch (NumberFormatException e){
+            sendMessageToClient("Inserire un numero");
+        }
+        catch (IOException e){
+            System.err.println("Unable to receive message from client");
+        } catch (ClassNotFoundException e) {
+            System.err.println("Unable to receive message from client");
+        }
+
+        return maxPlayers;
+    }
 }
 

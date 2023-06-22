@@ -188,5 +188,9 @@ public class ServerSock implements PropertyChangeListener {
     public void notifyClient(String clientNickname, MessageView messageView) {
         socketMap.get(clientNickname).sendMessageViewToClient(messageView);
     }
+
+    public int askMaxNumber(String clientNickname) {
+        return socketMap.get(clientNickname).askMaxNumber();
+    }
 }
 
