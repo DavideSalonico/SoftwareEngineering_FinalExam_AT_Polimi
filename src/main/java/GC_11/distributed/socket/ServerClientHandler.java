@@ -133,7 +133,7 @@ public class ServerClientHandler implements Runnable {
      *
      * @param messageView The MessageView object to send.
      */
-    public void sendMessageViewToClient(MessageView messageView) {
+    public void sendMessageViewToClient(GameViewMessage messageView) {
         try {
             outputStream.writeObject(messageView);
             outputStream.flush();
@@ -193,6 +193,8 @@ public class ServerClientHandler implements Runnable {
 
         GameViewMessage msg = new GameViewMessage("Hi! Welcome to the game! Please, insert your nickname:");
         sendMessageViewToClient(msg);
+
+        //sendMessageToClient("Hi! Welcome to the game! Please, insert your nickname:");
         String reply = null;
         try {
             reply = (String) inputStream.readObject();
@@ -272,20 +274,23 @@ public class ServerClientHandler implements Runnable {
     public int askMaxNumber() {
 
         int maxPlayers = -1;
-        GameViewMessage msg = new GameViewMessage(null,null);
-        msg.setMessage("Inserire il numero massimo di giocatori");
+        GameViewMessage msg = new GameViewMessage("Inserire il numero massimo di giocatori");
+        //msg.setMessage("Inserire il numero massimo di giocatori");
         sendMessageViewToClient(msg);
+        //sendMessageToClient("Inserire il numero massimo di giocatori");
         try{
             maxPlayers = Integer.parseInt(receiveMessageFromClient());
             while (maxPlayers <= 1 || maxPlayers >= 5) {
                 msg.setMessage("Il numero di giocatori deve essere compreso tra 2 e 4");
                 sendMessageViewToClient(msg);
+                //sendMessageToClient("Il numero di giocatori deve essere compreso tra 2 e 4");
                 maxPlayers = Integer.parseInt(receiveMessageFromClient());
             }
         }
         catch (NumberFormatException e){
             msg.setMessage("Inserire un numero");
             sendMessageViewToClient(msg);
+            //sendMessageToClient("Inserire un numero");
         }
         catch (IOException e){
             System.err.println("Unable to receive message from client");

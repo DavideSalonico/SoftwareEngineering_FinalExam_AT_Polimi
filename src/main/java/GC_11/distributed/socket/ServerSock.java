@@ -2,6 +2,7 @@ package GC_11.distributed.socket;
 
 
 import GC_11.distributed.ServerMain;
+import GC_11.network.GameViewMessage;
 import GC_11.network.MessageView;
 
 import java.beans.PropertyChangeEvent;
@@ -104,7 +105,7 @@ public class ServerSock implements PropertyChangeListener {
      * @param sourceHandler The source client handler that triggered the notification.
      */
 
-    public void notifyAllClients(MessageView message, ServerClientHandler sourceHandler) {
+    public void notifyAllClients(GameViewMessage message, ServerClientHandler sourceHandler) {
         for (ServerClientHandler sch : serverClientHandlerList) {
             if (sch != sourceHandler) {
                 sch.sendMessageViewToClient(message);
@@ -118,7 +119,7 @@ public class ServerSock implements PropertyChangeListener {
      * @param messageView The message view to send to the client.
      * @param client      The nickname of the client to notify.
      */
-    public void notifyClient(MessageView messageView, String client) {
+    public void notifyClient(GameViewMessage messageView, String client) {
         socketMap.get(client).sendMessageViewToClient(messageView);
     }
 
@@ -171,7 +172,7 @@ public class ServerSock implements PropertyChangeListener {
      * @param clientNickname The nickname of the client to notify.
      * @param messageView    The message view to send to the client.
      */
-    public void notifyClient(String clientNickname, MessageView messageView) {
+    public void notifyClient(String clientNickname, GameViewMessage messageView) {
         socketMap.get(clientNickname).sendMessageViewToClient(messageView);
     }
 
