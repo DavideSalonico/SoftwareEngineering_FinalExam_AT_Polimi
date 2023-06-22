@@ -1,6 +1,5 @@
 package GC_11.controller;
 
-import GC_11.distributed.ServerMain;
 import GC_11.exceptions.*;
 import GC_11.model.Coordinate;
 import GC_11.model.Game;
@@ -32,9 +31,7 @@ public class Controller implements PropertyChangeListener {
     public JsonReader reader;
     private Game model;
     private Lobby lobby;
-    private ServerMain server;
     private ChoiceType lastChoice = ChoiceType.RESET_TURN;
-    private ChoiceFactory choiceFactory;
 
     /**
      * Generic constructor of Controller with only the model
@@ -45,6 +42,7 @@ public class Controller implements PropertyChangeListener {
         this.model = game;
         this.reader = new JsonReader();
         this.choice = null;
+        this.lobby = new Lobby();
     }
 
     /**

@@ -2,6 +2,8 @@ package GC_11.distributed;
 
 import GC_11.controller.Controller;
 import GC_11.distributed.socket.ServerSock;
+import GC_11.exceptions.ExceededNumberOfPlayersException;
+import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.model.Game;
 import GC_11.model.Lobby;
 
@@ -24,7 +26,6 @@ public class ServerMain implements PropertyChangeListener {
     private ServerImplRMI serverRMI;
     private ServerSock serverSocket;
     private Game gameModel;
-    private Lobby lobby = new Lobby();
     private Controller controller;
     private Map<String, String> clientMap = new HashMap<String, String>(); // <nickname, connectionType>
 
@@ -81,8 +82,15 @@ public class ServerMain implements PropertyChangeListener {
      * @param clientNickname The nickname of the client
      * @param connectionType The type of connection (RMI or SOCKET)
      */
-    public synchronized void addConnection(String clientNickname, String connectionType) {
+    public synchronized void addConnection(String clientNickname, String connectionType){
         clientMap.put(clientNickname, connectionType);
+        try {
+            this.controller.getLobby().addPlayer(clientNickname);
+        } catch (ExceededNumberOfPlayersException e) {
+            throw new RuntimeException(e); //TODO: handle exception
+        } catch (NameAlreadyTakenException e) {
+            throw new RuntimeException(e); //TODO: handle exception
+        }
         System.out.println("ADDED CONNECTION: " + clientNickname + " " + connectionType);
     }
 
@@ -131,15 +139,15 @@ public class ServerMain implements PropertyChangeListener {
     public void askMaxPlayers() {
         boolean ok = false;
         while(!ok){
-            if(this.clientMap.get(this.lobby.getPlayers().get(0)).equals("RMI")){
+            if(this.clientMap.get(this.controller.getLobby().getPlayers().get(0)).equals("RMI")){
                 try {
-                    this.lobby.setMaxPlayers(this.serverRMI.getClients().get(0).askMaxNumber());
+                    this.controller.getLobby().setMaxPlayers(this.serverRMI.getClients().get(0).askMaxNumber());
                     ok = true;
                 } catch (RemoteException e) {
                     System.out.println("Unable to ask max players because of RemoteException");
                 }
-            } else if(this.clientMap.get(this.lobby.getPlayers().get(0)).equals("SOCKET")){
-                this.lobby.setMaxPlayers(this.serverSocket.askMaxNumber(this.serverSocket.getSocketMap().get(0).getNickname())); //TODO Mattia
+            } else if(this.clientMap.get(this.controller.getLobby().getPlayers().get(0)).equals("SOCKET")){
+                this.controller.getLobby().setMaxPlayers(this.serverSocket.askMaxNumber(this.serverSocket.getSocketMap().get(0).getNickname())); //TODO Mattia
                 ok = true;
             } else {
                 System.out.println("Unable to ask max players because connection type is unknown");
