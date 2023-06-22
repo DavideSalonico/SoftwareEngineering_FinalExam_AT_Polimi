@@ -23,6 +23,7 @@ public class GameViewMessage extends MessageView {
     private boolean error;
     private String exceptionMessage;
     private final Game model;
+    private String message;
 
     private Exception exception;
 
@@ -133,5 +134,13 @@ public class GameViewMessage extends MessageView {
 
     public Exception getException() {
         return exception;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+    	this.message = message;
     }
 }

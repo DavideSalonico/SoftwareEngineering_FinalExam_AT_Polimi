@@ -26,8 +26,9 @@ public class Tile implements Serializable {
      * @param t is the original Tile
      */
     public Tile(Tile t) {
-        this.color = t.color;
-        this.id = RANDOM.nextInt(3);
+        this.color = t.getColor();
+        this.id = t.getId();
+
     }
 
     public Tile(TileColor color, int id) {

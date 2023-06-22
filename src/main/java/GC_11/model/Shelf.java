@@ -31,7 +31,12 @@ public class Shelf implements Serializable {
      * @param shelf is the original instance
      */
     public Shelf(Shelf shelf) {
-        this.myShelf = shelf.getMyShelf();
+        this.myShelf = new Tile[6][5];
+        for (int r = 0; r < 6; r++) {
+            for (int c = 0; c < 5; c++) {
+                this.myShelf[r][c] = new Tile(shelf.getMyShelf()[r][c]);
+            }
+        }
     }
 
     private Tile[][] getMyShelf() {

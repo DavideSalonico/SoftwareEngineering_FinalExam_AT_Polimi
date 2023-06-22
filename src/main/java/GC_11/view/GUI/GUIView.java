@@ -61,6 +61,7 @@ public class GUIView extends Application {
     public GridPane playerShelf1;
     @FXML
     public GridPane playerShelf2;
+    public ImageView deletableShelf;
     @FXML
     public GridPane playerShelf3;
 
@@ -164,8 +165,8 @@ public class GUIView extends Application {
                 clientPoints.setText("YOUR POINTS : " + model.getPlayers().get(i).getPoints());
 
                 // NON FUNZIONA ANCORA BENE CAPISCI PERCHE' (riga sotto)
-                personalGoal.setImage(new Image("file:src/resources/GraphicalResources/personal goal cards/Personal_Goals" + model.getPlayers().get(i).getPersonalGoal().getId() + ".png"));
-            }
+                personalGoal= new ImageView(new Image("file:src/resources/GraphicalResources/personal goal cards/Personal_Goals" + model.getPlayers().get(i).getPersonalGoal().getId() + ".png"));
+            } //src/resources/GraphicalResources/personal goal cards/Personal_Goals2.png
         }
 
         // Versione con 4 giocatori
@@ -180,6 +181,11 @@ public class GUIView extends Application {
             otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
 
             // rimuovo la shelf del giocatore al centro (posta staticamente dall'FXML)
+            deletableShelf.setImage(null);
+            player2Name.setText("");
+            player2Points.setText("");
+            // Questa ricerca dinamica delle celle da svuorare non funziona correttamente, cancello i riferimenti manulamente
+            /*
             Node cell = getNodeByRowColumnIndex(1, 2, mainGrid);
             if (cell != null && cell instanceof Pane) {
                 ((Pane) cell).getChildren().clear();
@@ -189,20 +195,14 @@ public class GUIView extends Application {
             if (cell != null && cell instanceof Pane) {
                 ((Pane) cell).getChildren().clear();
             }
+            */
+
         }
         for (int i = 0; i < others.size(); i++) {
             otherPlayers.get(i).initialize(others.get(i));
         }
 
 
-       /* for(int i = 0; i<otherPlayers.size(); i++){
-            mainGrid.add(otherPlayers.get(i).getClientNickName(), i, 2);
-            mainGrid.add(otherPlayers.get(i).getPoints(), i, 2);
-            GridPane.setHalignment(otherPlayers.get(i).getPoints(), HPos.RIGHT);
-            mainGrid.add(otherPlayers.get(i).getShelf(), i, 1);
-            //DISEGNA UNA GRIGLIA SOPRA LE SHELF E COMPILARE CON UN CICLO FOR
-        }
-    */
         // TEST : Fill the shelf with the tiles randomly
         for (int i = 1; i < 6; i++) {
             for (int j = 1; j < 7; j++) {
@@ -213,19 +213,15 @@ public class GUIView extends Application {
 
                 imageView1.setFitHeight(29);
                 imageView1.setFitWidth(29);
-                imageView1.getStyleClass().add("selected-image");  // This css style is used to highlight the selected tile
 
                 imageView2.setFitHeight(29);
                 imageView2.setFitWidth(29);
-                imageView2.getStyleClass().add("selected-image");
 
                 imageView3.setFitHeight(29);
                 imageView3.setFitWidth(29);
-                imageView3.getStyleClass().add("selected-image");
 
                 imageView4.setFitHeight(50);
                 imageView4.setFitWidth(50);
-                imageView4.getStyleClass().add("selected-image");
 
                 playerShelf1.add(imageView1, i, j);
                 playerShelf2.add(imageView2, i, j);
@@ -234,9 +230,11 @@ public class GUIView extends Application {
             }
         }
 
-        // Set all the points of Players
-        //clientPoints.setText("YOUR POINTS: " + model.getPlayer(clientNickName).getPoints());
-        // player1Points.setText("POINTS: " + model.getPlayer(otherPlayers.get(0).getClientNickName().getText()).getPoints());
+        // PROVO A CAMBIARE UNA TILE per provare
+        ImageView search = getImageViewFromGridPane(playerShelf1, 1, 1);
+        search.setImage(null);
+        search.setImage(yellowTiles.get(1));
+
 
         // Fill the board dynamically using the model
         for (int i = 1; i < 10; i++) {
@@ -269,6 +267,7 @@ public class GUIView extends Application {
                         break;
                 }
                 if (image != null) {
+                    image.getStyleClass().add("selected-image");
                     image.setFitHeight(41);
                     image.setFitWidth(41);
                     boardGridPane.add(image, i, j);
@@ -298,6 +297,31 @@ public class GUIView extends Application {
     }
 
 
+    /**
+     * Method that returns the ImageView from the GridPane given the row and column index
+     * @param gridPane
+     * @param targetRowIndex
+     * @param targetColumnIndex
+     * @return ImageView reference, null if the ImageView is not found
+     */
+    public ImageView getImageViewFromGridPane(GridPane gridPane, int targetRowIndex, int targetColumnIndex) {
+        ObservableList<Node> children = gridPane.getChildren();
+
+        for (Node node : children) {
+            if (node instanceof ImageView) {
+                Integer rowIndex = GridPane.getRowIndex(node);
+                Integer columnIndex = GridPane.getColumnIndex(node);
+
+                if (rowIndex != null && columnIndex != null && rowIndex == targetRowIndex && columnIndex == targetColumnIndex) {
+                    return (ImageView) node;
+                }
+            }
+        }
+
+        return null; // Restituisce null se l'ImageView non è stata trovata
+    }
+
+
     //Method that will be called when the game starts
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -313,8 +337,9 @@ public class GUIView extends Application {
             throw new RuntimeException(e);
 
         }
-        /* QUESTE RIGHE DI CODICE PERMETTONO DI FARE UNA RESIZE DELLA FINESTRA IN BASE ALLE DIMENSIONI DELLO SCHERMO DEL PC!!!!
-        Screen screen = Screen.getPrimary();
+        // QUESTE RIGHE DI CODICE PERMETTONO DI FARE UNA RESIZE DELLA FINESTRA IN BASE ALLE DIMENSIONI DELLO SCHERMO DEL PC!!!!
+        // Funzionano ma dimensionano solo il PANE e non tutto il resto !!!
+        /*Screen screen = Screen.getPrimary();
         double screenWidth = screen.getBounds().getWidth();
         double screenHeight = screen.getBounds().getHeight();
 

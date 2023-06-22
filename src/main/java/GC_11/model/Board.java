@@ -64,6 +64,16 @@ public class Board implements PropertyChangeListener, Serializable {
         setBoard();
     }
 
+    public Board(Board board){
+        this.chessBoard = new Tile[9][9];
+        for(int i=0; i<9; i++){
+            for(int j=0; j<9; j++){
+                this.chessBoard[i][j] = new Tile(board.getChessBoard()[i][j]);
+            }
+        }
+        this.selectedTiles = new ArrayList<>(board.getSelectedTiles());
+    }
+
 
     /**
      * It sets empty cells of chessboard into some random Tile picked from the bag (it uses bag's methods)
