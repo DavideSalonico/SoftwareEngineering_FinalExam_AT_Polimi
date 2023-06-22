@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -77,6 +78,8 @@ public class GUIView extends Application {
 
     double desiredWidth;
     double desiredHeight;
+
+    public Button confirmSelection;
 
     /**
      * Initializes the GUIView automatically when the game starts, all the basic images are loaded and the game is created using
@@ -165,7 +168,7 @@ public class GUIView extends Application {
                 clientPoints.setText("YOUR POINTS : " + model.getPlayers().get(i).getPoints());
 
                 // NON FUNZIONA ANCORA BENE CAPISCI PERCHE' (riga sotto)
-                personalGoal= new ImageView(new Image("file:src/resources/GraphicalResources/personal goal cards/Personal_Goals" + model.getPlayers().get(i).getPersonalGoal().getId() + ".png"));
+                personalGoal.setImage(new Image("file:" +"src/resources/GraphicalResources/personal goal cards/Personal_Goals" + model.getPlayers().get(i).getPersonalGoal().getId() + ".png"));
             } //src/resources/GraphicalResources/personal goal cards/Personal_Goals2.png
         }
 
@@ -268,6 +271,10 @@ public class GUIView extends Application {
                 }
                 if (image != null) {
                     image.getStyleClass().add("selected-image");
+
+                    // This line add the event handler to the image which show it selected when clicked (MAX 3 tiles selected)
+                    setupImageViewSelection(image);
+
                     image.setFitHeight(41);
                     image.setFitWidth(41);
                     boardGridPane.add(image, i, j);
@@ -321,6 +328,37 @@ public class GUIView extends Application {
         return null; // Restituisce null se l'ImageView non è stata trovata
     }
 
+    /**
+     * Method that removes the tile from the board given the row and column index
+     * @param row
+     * @param column
+     */
+    public void removeTileFromBoard(int row, int column) {
+        ImageView image = getImageViewFromGridPane(boardGridPane, row, column);
+        image.setImage(null);
+    }
+
+
+    private List<ImageView> selectedImages = new ArrayList<>();
+
+    private void setupImageViewSelection(ImageView imageView) {
+        final String SELECTED_STYLE_CLASS = "selected-tile";
+
+        imageView.setOnMouseClicked(event -> {
+            if (selectedImages.contains(imageView)) {
+                // L'immagine è già stata selezionata, rimuovila dalla lista
+                selectedImages.remove(imageView);
+                imageView.getStyleClass().remove(SELECTED_STYLE_CLASS);
+            } else {
+                if (selectedImages.size() < 3) {
+                    // Aggiungi l'immagine alla lista delle selezioni
+                    selectedImages.add(imageView);
+                    System.out.println("Tile selected, n° selected: " + selectedImages.size());
+                    imageView.getStyleClass().add(SELECTED_STYLE_CLASS);
+                }
+            }
+        });
+    }
 
     //Method that will be called when the game starts
     @Override

@@ -26,6 +26,16 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 255, 0.8), 20, 0, 0, 0);
 }
 
+
+/* CAPIRE PERCHE' NON VANNO I BORDI */
+.selected-tile {
+    -fx-border-color: red;
+    -fx-border-width: 3px;
+    -fx-effect: dropshadow(gaussian, rgba(255, 0, 0, 0.8), 20, 0, 0, 0);
+    z-index: 1;
+}
+
+
 /* Rimuove l'ombra predefinita */
 .image-view {
     -fx-effect: none;
@@ -71,4 +81,11 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 3, 3, 3, 0);
 }
 
+#confirmSelection {
+    -fx-background-color: transparent; /* Rimuove lo sfondo predefinito */
+    -fx-border-color: green; /* Colore del bordo verde */
+    -fx-border-width: 2px; /* Larghezza del bordo */
+    -fx-border-radius: 50%; /* Bordi arrotondati per ottenere una forma circolare */
+    -fx-effect: dropshadow(gaussian, rgba(26, 255, 0, 0.8), 2, 0.1, 0.1, 0.1);
+}
 
