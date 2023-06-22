@@ -45,8 +45,7 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
 
     public void setup() {
         try {
-            //System.out.println("***** Constructing server implementation *****\n");
-            //System.out.println("***** Getting the registry *****\n");
+
             String serverIp = "127.0.0.1";
             try {
                 Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();

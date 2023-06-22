@@ -207,6 +207,7 @@ public class ServerClientHandler implements Runnable {
         this.server.getServerMain().addConnection(this.nickname, "SOCKET");
     }
 
+
     private void closeConnection() {
         System.out.println("Closing socket: " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
         try {
@@ -228,66 +229,6 @@ public class ServerClientHandler implements Runnable {
 
     }
 
-
-    /*
-    private void lobbySetup() throws IOException, ClassNotFoundException {
-        System.out.println("Lobby setup...");
-        if(this.server.getLobby().getPlayers().size()==0) {
-            System.out.println("Lobby is empty");
-            String reply;
-            outputStream.writeObject("Non c'è ancora nessun giocatore nella lobby. Vuoi crearne una?\n[S] Sì\n[N] no");
-            outputStream.flush();
-            reply = (String) inputStream.readObject();
-            System.out.println("Risposta: "+reply);
-            if (reply.equals("S") || reply.equals("Si") || reply.equals("Sì") || reply.equals("Y") || reply.equals("Yes") || reply.equals("YES") || reply.equals("s") || reply.equals("si") || reply.equals("sì")) {
-                System.out.println("Creazione della lobby");
-                int maxPlayers=-1;
-                while (maxPlayers <= 1 || maxPlayers >= 5){
-                    System.out.println("Inserire numero di giocatori");
-                    outputStream.writeObject("Inserire il numero massimo di giocatori");
-                    outputStream.flush();
-                    reply = (String) inputStream.readObject();
-                    maxPlayers = Integer.parseInt(reply);
-                    System.out.println("Ricevuto:" + maxPlayers);
-                    if (maxPlayers <= 1 || maxPlayers >= 5){
-                        outputStream.writeObject("Il numero di giocatori deve essere compreso tra 2 e 4");
-                        outputStream.flush();
-                    }
-                }
-                outputStream.writeObject("OK");
-                outputStream.flush();
-                this.server.getLobby().setMaxPlayers(maxPlayers);
-                outputStream.writeObject("Inserisci il tuo nome");
-                outputStream.flush();
-                String playerName = (String) inputStream.readObject();
-                try{
-                    this.server.getLobby().addPlayer(playerName);
-                    this.server.getLobby().setFisrtPlayer(playerName);
-                    System.out.println("Aggiunto " + playerName + " alla lobby");
-                    outputStream.writeObject("Sei stato aggiunto alla lobby!");
-                    outputStream.flush();
-                } catch (ExceededNumberOfPlayersException e) {
-                    outputStream.writeObject("Raggiunto il numero massimo di giocatori");
-                } catch (NameAlreadyTakenException e) {
-                    throw new RuntimeException(e);
-                }
-                String message = "Lobby creata!\nNumero massimo di giocatori: "+this.server.getLobby().getMaxPlayers() + "\n";
-                message = message + "Giocatori nella lobby: \n";
-                for (int i=0; i<this.server.getLobby().getPlayers().size();i++){
-                    message=message+this.server.getLobby().getPlayers().get(i);
-                }
-
-                outputStream.writeObject(message);
-                outputStream.flush();
-            }
-        }
-        else{
-            System.out.println("Lobby has" + this.server.getLobby().getPlayers().size() + "players");
-
-        }
-
-    }
-*/
 
     /**
      * Notifies the client of disconnection.
