@@ -191,8 +191,7 @@ public class ServerClientHandler implements Runnable {
 
     private void connectionSetup() {
 
-        GameViewMessage msg = new GameViewMessage(null,null);
-        msg.setMessage("Hi! Welcome to the game! Please, insert your nickname:");
+        GameViewMessage msg = new GameViewMessage("Hi! Welcome to the game! Please, insert your nickname:");
         sendMessageViewToClient(msg);
         String reply = null;
         try {

@@ -24,13 +24,17 @@ public class ClientSock implements PropertyChangeListener {
     private Socket socket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
+
+    GameViewMessage gameViewMessage;
     private View view;
+    private String nickname;
 
 
     public ClientSock(String ip, int port) {
 
         this.port = port;
         this.ip = ip;
+        //this.view = new GameCLI(,this);
 
 
         try {
@@ -86,7 +90,7 @@ public class ClientSock implements PropertyChangeListener {
 
     public void receiveGameViewFromServer() {
         try {
-            GameViewMessage gameViewMessage = (GameViewMessage) in.readObject();
+            GameViewMessage message = (GameViewMessage) in.readObject();
             System.out.println("Received gameViewMessage from server: ");
             if(gameViewMessage.getMessage()!= null){
                 System.out.println(gameViewMessage.getMessage());
@@ -144,6 +148,10 @@ public class ClientSock implements PropertyChangeListener {
             while (true) {
                 //System.out.println("Insert message to send to server");
                 String s = inputLine.nextLine();
+                if (gameViewMessage.getMessage().equals("Hi! Welcome to the game! Please, insert your nickname:"))
+                {
+                    nickname = s;
+                }
                 sendMessageToServer(s);
             }
         }
