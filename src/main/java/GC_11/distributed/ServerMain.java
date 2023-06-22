@@ -1,21 +1,17 @@
 package GC_11.distributed;
 
 import GC_11.controller.Controller;
-import GC_11.distributed.socket.ServerClientHandler;
 import GC_11.distributed.socket.ServerSock;
 import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.model.Game;
 import GC_11.model.Lobby;
-
-import GC_11.network.GameViewMessage;
 import GC_11.model.Player;
+import GC_11.network.GameViewMessage;
 import GC_11.network.LobbyViewMessage;
-import GC_11.network.MessageView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
@@ -103,20 +99,20 @@ public class ServerMain implements PropertyChangeListener {
     /**
      * Notifies all clients with the given gameViewMessage.
      * Adjusts the message for each client and sends it through the corresponding server type.
-     *
      */
 
     public void notifyClientsLobby() {
-            for (Map.Entry<String, String> client : clientMap.entrySet()) {
-                if (client.getValue().equals("RMI")) {
-                    serverRMI.notifyClientsLobby(new LobbyViewMessage(this.controller.getLobby()));
-                } else if (client.getValue().equals("SOCKET")) {
-                    //TODO aggiornare la lobby tramite socket
-                } else {
-                    System.out.println("Unable to notify " + client.getKey() + " because connection type is unknown");
-                }
+        for (Map.Entry<String, String> client : clientMap.entrySet()) {
+            if (client.getValue().equals("RMI")) {
+                serverRMI.notifyClientsLobby(new LobbyViewMessage(this.controller.getLobby()));
+            } else if (client.getValue().equals("SOCKET")) {
+                //TODO aggiornare la lobby tramite socket
+            } else {
+                System.out.println("Unable to notify " + client.getKey() + " because connection type is unknown");
             }
+        }
     }
+
     public void notifyClientsGame() {
         for (Map.Entry<String, String> client : clientMap.entrySet()) {
 
@@ -124,8 +120,8 @@ public class ServerMain implements PropertyChangeListener {
             GameViewMessage messageViewCopy = new GameViewMessage(this.controller.getGame(), null);
 
             // Just before sending the message, we remove the personal goal from the other players
-            for(Player p : messageViewCopy.getPlayers()){
-                if(!p.getNickname().equals(client.getKey())){
+            for (Player p : messageViewCopy.getPlayers()) {
+                if (!p.getNickname().equals(client.getKey())) {
                     p.setPersonalGoal(null);
                 }
             }
@@ -140,7 +136,7 @@ public class ServerMain implements PropertyChangeListener {
             } else if (client.getValue().equals("SOCKET")) {
                 serverSocket.notifyClient(client.getKey(), messageViewCopy);
             } else {
-                System.out.println("Unable to notify " +client.getKey() + " because connection type is unknown");
+                System.out.println("Unable to notify " + client.getKey() + " because connection type is unknown");
             }
         }
 
@@ -178,14 +174,13 @@ public class ServerMain implements PropertyChangeListener {
             if (evt.getPropertyName().equals("FIRST PLAYER")) {
                 this.askMaxPlayers();
             }
-            if(evt.getPropertyName().equals("LAST PLAYER")){
+            if (evt.getPropertyName().equals("LAST PLAYER")) {
                 this.notifyClientsLobby();
                 this.controller.startGame();
                 this.notifyClientsGame();
-            }else
+            } else
                 this.notifyClientsLobby();
-        }
-        else {
+        } else {
             this.notifyClientsGame();
         }
     }

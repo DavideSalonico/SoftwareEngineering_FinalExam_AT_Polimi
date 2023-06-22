@@ -28,7 +28,6 @@ public class Game implements PropertyChangeListener, Serializable {
     private Player endPlayer;
     private Board board;
     private Chat chat;
-    private ServerRMI server;
 
     //It's not necessary to serialize the listener (attribute transient)
     public transient PropertyChangeListener listener;
@@ -74,9 +73,6 @@ public class Game implements PropertyChangeListener, Serializable {
         this.listener = listener;
     }
 
-    public void setServer(ServerRMI server){
-        this.server = server;
-    }
 
     /**
      * THIS BUILDER IS USED ONLY TO CREATE A GAME WITH ATTRIBUTES READ FROM THE JSON FILE
