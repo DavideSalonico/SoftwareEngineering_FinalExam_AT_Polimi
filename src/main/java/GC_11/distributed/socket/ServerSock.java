@@ -3,7 +3,6 @@ package GC_11.distributed.socket;
 
 import GC_11.distributed.ServerMain;
 import GC_11.model.Lobby;
-import GC_11.network.LobbyController;
 import GC_11.network.MessageView;
 
 import java.beans.PropertyChangeEvent;
@@ -26,7 +25,6 @@ import java.util.concurrent.Executors;
 public class ServerSock implements PropertyChangeListener {
 
     Lobby lobby;
-    LobbyController lobbyController;
     private final int port;
     private ServerSocket serverSocket;
     private ServerMain serverMain;

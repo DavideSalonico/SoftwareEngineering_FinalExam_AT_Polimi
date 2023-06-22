@@ -9,11 +9,15 @@ import GC_11.model.Lobby;
 import GC_11.network.choices.Choice;
 
 import java.beans.PropertyChangeEvent;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Scanner;
 
@@ -43,14 +47,29 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
         try {
             //System.out.println("***** Constructing server implementation *****\n");
             //System.out.println("***** Getting the registry *****\n");
-            Scanner s = new Scanner(System.in);
-            String serverIp = s.nextLine();
+            String serverIp = "127.0.0.1";
+            try {
+                Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+
+                while (networkInterfaces.hasMoreElements()) {
+                    NetworkInterface networkInterface = networkInterfaces.nextElement();
+                    Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
+                    while (inetAddresses.hasMoreElements()) {
+                        InetAddress inetAddress = inetAddresses.nextElement();
+                        if(!inetAddress.getHostAddress().startsWith("f") && !inetAddress.isLoopbackAddress()){
+                            serverIp=inetAddress.getHostAddress();
+                        }
+                    }
+                }
+            } catch (SocketException e) {
+                e.printStackTrace();
+            }
+
             System.setProperty("java.rmi.server.hostname", serverIp);
             Registry registry = LocateRegistry.createRegistry(1099);
-            //System.out.println("***** Binding server implementation to registry *****\n");
             registry.rebind("server", this);
-            //System.out.println("***** Waiting for clients *****\n");
             System.out.println("SERVER RMI RUNNING");
+            System.out.println("Server address: " + serverIp);
         } catch (Exception e) {
             System.err.println("server error: " + e.getMessage());
         }
