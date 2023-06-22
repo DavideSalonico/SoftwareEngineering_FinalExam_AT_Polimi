@@ -30,7 +30,7 @@ public class ServerSock implements PropertyChangeListener {
     private final int port;
     private ServerSocket serverSocket;
     private ServerMain serverMain;
-    private final ExecutorService executor = Executors.newFixedThreadPool(32);
+    private final ExecutorService executor = Executors.newCachedThreadPool();
 
     private List<ServerClientHandler> serverClientHandlerList;
 
