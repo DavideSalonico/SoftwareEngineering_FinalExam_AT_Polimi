@@ -12,13 +12,11 @@ import java.util.List;
  * Player's class, all serializable attributes except for ControlMatrix and the Listener of the class
  */
 public class Player implements PropertyChangeListener, Serializable {
-
     private String nickname;
     private int pointsCommonGoals;
     private int pointsPersonalGoal;
     private int pointsAdjacency;
     private PersonalGoalCard personalGoal;
-    private List<Integer> ListCommonGoals;
     private Shelf shelf;
 
     //ControlMatrix and Listener don't need to be Serialized
@@ -48,6 +46,16 @@ public class Player implements PropertyChangeListener, Serializable {
         this.pointsAdjacency = 0;
     }
 
+    public Player(Player p){
+        this.nickname = p.getNickname();
+        this.shelf = new Shelf(p.getShelf());
+        this.shelf.setListener(this);
+        this.personalGoal = new PersonalGoalCard(p.getPersonalGoal().getId(), p.getPersonalGoal().getGoalList());
+        this.pointsCommonGoals = p.getPointsCommonGoals();
+        this.pointsPersonalGoal = p.getPointsPersonalGoal();
+        this.pointsAdjacency = p.getPointsAdjacency();
+    }
+
     //Solo per test, da cancellare
     public Player(String nickname) {
         this.nickname = nickname;
@@ -61,24 +69,6 @@ public class Player implements PropertyChangeListener, Serializable {
         this.shelf = new Shelf();
         this.shelf.setListener(this);
         this.personalGoal = new PersonalGoalCard();
-    }
-
-    /**
-     * Duplicate instance of Player
-     *
-     * @param p original player
-     */
-    public Player(Player p) {
-        this.nickname = p.getNickname();
-        // this.points = p.getPoints(); da modificare aggiungendo i nuovi punti
-        this.shelf = p.getShelf();
-        this.pointsAdjacency = p.getPointsAdjacency();
-        this.personalGoal = p.getPersonalGoal();
-        this.ListCommonGoals = p.getListCommonGoals();
-    }
-
-    private List<Integer> getListCommonGoals() {
-        return this.ListCommonGoals;
     }
 
     public PersonalGoalCard getPersonalGoal() {

@@ -20,12 +20,21 @@ public class GameViewMessage extends MessageView {
     //The serialization process at runtime associates an id with each Serializable class which is known as SerialVersionUID.
     //The sender and receiver must have the same SerialVersionUID, otherwise, InvalidClassException will be thrown when you deserialize the object.
     private static final long serialVersionUID = 2L;
-    private boolean error;
-    private String exceptionMessage;
-    private final Game model;
+    private boolean error = false;
+    private String exceptionMessage = null;
+    private Exception exception = null;
+
+    private CircularList<Player> players = new CircularList<>();
+    private List<CommonGoalCard> commonGoals = null;
+    private String currentPlayer = null;
+    private boolean endGame = false;
+    private String endPlayer = null;
+    private Board board = null;
+    private Chat chat = null;
     private String message;
 
-    private Exception exception;
+
+
 
     /**
      * Game creates instance of GameViewMessage through listener, if there is an exception it only initializes attributes 'exceptionMessage'
@@ -36,51 +45,35 @@ public class GameViewMessage extends MessageView {
      * @param exception caught during the game
      */
     public GameViewMessage(Game model, Exception exception) {
-        //if (model == null){
-        //    throw new IllegalArgumentException();
-        //}
         if (exception != null) {
             this.error = true;
             this.exceptionMessage = exception.getMessage();
             this.exception = exception;
-            this.model = null;
         } else {
-            this.model = model;
-            this.error = false;
-            this.exceptionMessage = null;
+            for (Player p : model.getPlayers()) {
+                this.players.add(new Player(p));
+            }
+            this.commonGoals = model.getCommonGoal(); //TODO passarle per valore e non copiare l'oggetto
+            this.currentPlayer = model.getCurrentPlayer().getNickname();
+            //this.endGame = model.isEndGame();
+            //this.endPlayer = model.getEndPlayer().getNickname();
+            this.board = new Board(model.getBoard());
         }
     }
 
     public Board getBoard() {
-        return model.getBoard();
+        return this.board;
     }
 
-    public Chat getChat() {
-        return model.getChat();
-    }
 
     public CircularList<Player> getPlayers() {
-        return model.getPlayers();
+        return this.players;
     }
 
-    public Player getCurrentPlayer() {
-        return model.getCurrentPlayer();
-    }
+    public String getCurrentPlayer() { return this.currentPlayer; }
 
     public List<CommonGoalCard> getCommonGoalCards() {
-        return model.getCommonGoal();
-    }
-
-    /**
-     * This method needs to be called in ServerClientHandler only on a copy of the original view,
-     * otherwise it will set Null the remaining PersonalCards at first call, so it become useless for the others players
-     *
-     * @param player
-     */
-    public void setPersonalNull(Player player) {
-        for (Player p : this.getPlayers()) {
-            if (!p.equals(player)) p.setPersonalGoal(null);
-        }
+        return this.commonGoals;
     }
 
     /**
@@ -90,7 +83,7 @@ public class GameViewMessage extends MessageView {
      * @return CommonGoalCard at position 'index'
      */
     public CommonGoalCard getCommonGoalCard(int index) {
-        return this.model.getCommonGoal(index);
+        return this.commonGoals.get(index);
     }
 
     public boolean isError() {
@@ -127,7 +120,7 @@ public class GameViewMessage extends MessageView {
 
     public Player getPlayer(String clientNickName) {
         for (Player p : this.getPlayers()) {
-            if (p.getNickname().equals(clientNickName)) return p;
+            if (p.getNickname().equals(clientNickName)) return new Player(p);
         }
         return null;   //ATTENZIONE A QUESTO NULL non gestito
     }

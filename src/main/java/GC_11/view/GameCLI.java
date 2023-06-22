@@ -51,8 +51,8 @@ public class GameCLI extends ViewGame {
     public void run() throws RemoteException {
         boolean show_en = true;
         if (show_en) show();
-        System.out.println("\n\nIT IS THE TURN OF: " + this.modelView.getCurrentPlayer().getNickname());
-        if (this.modelView.getCurrentPlayer().getNickname().equals(this.nickname)) {
+        System.out.println("\n\nIT IS THE TURN OF: " + this.modelView.getCurrentPlayer());
+        if (this.modelView.getCurrentPlayer().equals(this.nickname)) {
             Choice choice = getPlayerChoice();
             System.out.println("scelta fatta");
             PropertyChangeEvent evt = new PropertyChangeEvent(
@@ -91,7 +91,7 @@ public class GameCLI extends ViewGame {
             return;
         }
 
-        Player current = this.modelView.getCurrentPlayer();
+        //Player current = this.modelView.getCurrentPlayer();
         System.out.println("*****************************************************");
 
         //Printing Board
@@ -121,6 +121,7 @@ public class GameCLI extends ViewGame {
         }
 
         //Printing Main Chat
+        /*
         System.out.println("\n\n----------------------------------");
         System.out.println("Main Chat: ");
         for (Message message : this.modelView.getChat().getMainChat()) {
@@ -135,6 +136,8 @@ public class GameCLI extends ViewGame {
             }
             System.out.println("");
         }
+
+         */
     }
 
     public Choice getPlayerChoice() {
