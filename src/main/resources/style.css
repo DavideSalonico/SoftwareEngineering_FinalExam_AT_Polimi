@@ -39,7 +39,7 @@
 /* Define styles for the mainGrid */
 #mainGrid {
     -fx-alignment: center;
-    -fx-padding: 10;
+    -fx-padding: 0;
 }
 
 /* Define styles for the boardGridPane */
@@ -70,4 +70,5 @@
     -fx-text-fill: white;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 3, 3, 3, 0);
 }
+
 
