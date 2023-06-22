@@ -6,6 +6,7 @@ import GC_11.model.Game;
 import GC_11.model.Lobby;
 
 import GC_11.model.GameViewMessage;
+import GC_11.model.Player;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -63,8 +64,15 @@ public class ServerMain implements PropertyChangeListener {
 
 
     public void notifyClients(GameViewMessage messageView) {
-        //TODO: Add filter
         for (Map.Entry<String, String> client : clientMap.entrySet()) {
+
+            // Just before sending the message, we remove the personal goal from the other players
+            for(Player p : messageView.getPlayers()){
+                if(!p.getNickname().equals(client.getKey())){
+                    p.setPersonalGoal(null);
+                }
+            }
+
             if (client.getValue().equals("RMI")) {
                 try {
                     serverRMI.notifyClient(client.getKey(), messageView);
