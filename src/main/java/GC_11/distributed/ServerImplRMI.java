@@ -1,8 +1,7 @@
 package GC_11.distributed;
 
 import GC_11.controller.Controller;
-import GC_11.exceptions.ExceededNumberOfPlayersException;
-import GC_11.exceptions.NameAlreadyTakenException;
+import GC_11.exceptions.*;
 import GC_11.model.Game;
 import GC_11.network.GameViewMessage;
 import GC_11.model.Lobby;
@@ -128,10 +127,23 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
     }
 
     @Override
-    public void updateGame(ClientRMI client, Choice choice) throws RemoteException {
-        PropertyChangeEvent evt = new PropertyChangeEvent(client, "choice made", null, choice);
+    public void updateGame(ClientRMI client, Choice choice) throws RemoteException{
+        //PropertyChangeEvent evt = new PropertyChangeEvent(client, "choice made", null, choice);
         System.out.println(client.getNickname() + ": " + choice.getType());
-        this.gameController.propertyChange(evt);
+        //this.gameController.propertyChange(evt);
+        try {
+            this.serverMain.makeAMove(choice);
+        } catch (ColumnIndexOutOfBoundsException e) { //TODO: to fix
+            throw new RuntimeException(e);
+        } catch (ExceededNumberOfPlayersException e) {
+            throw new RuntimeException(e);
+        } catch (NotEnoughFreeSpacesException e) {
+            throw new RuntimeException(e);
+        } catch (NameAlreadyTakenException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalMoveException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
