@@ -2,13 +2,13 @@ package GC_11.distributed;
 
 import GC_11.controller.Controller;
 import GC_11.distributed.socket.ServerSock;
-import GC_11.exceptions.ExceededNumberOfPlayersException;
-import GC_11.exceptions.NameAlreadyTakenException;
+import GC_11.exceptions.*;
 import GC_11.model.Game;
 import GC_11.model.Lobby;
 import GC_11.model.Player;
 import GC_11.network.GameViewMessage;
 import GC_11.network.LobbyViewMessage;
+import GC_11.network.choices.Choice;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -121,7 +121,7 @@ public class ServerMain implements PropertyChangeListener {
 
             // Just before sending the message, we remove the personal goal from the other players
             for (Player p : messageViewCopy.getPlayers()) {
-                if (!p.getNickname().equals(client.getKey())) {
+                if (!p.getNickname().equals(client.getKey())){
                     p.setPersonalGoal(null);
                 }
             }
@@ -167,6 +167,10 @@ public class ServerMain implements PropertyChangeListener {
                 System.out.println("Unable to ask max players because connection type is unknown");
             }
         }
+    }
+
+    public void makeAMove(Choice choice) throws ColumnIndexOutOfBoundsException, ExceededNumberOfPlayersException, NotEnoughFreeSpacesException, NameAlreadyTakenException, IllegalMoveException, RemoteException {
+        this.controller.update(choice);
     }
 
     @Override

@@ -48,9 +48,6 @@ public class GUIModel {
                 background[5] = ImageIO.read(new File("src/resources/GraphicalResources/common goal cards/" + model.getCommonGoalCard(1).getId() + ".jpg"));
                 background[6] = ImageIO.read(new File("src/resources/GraphicalResources/misc/Sacchetto Chiuso.png"));
 
-                //ATTENZIONE : getPlayer(nickname) può tornare null
-                //background[7] = ImageIO.read(new File("src/resources/GraphicalResources/personal goal cards/Personal_Goals"+model.getPlayer(clientNickName).getPersonalGoal().getId()+".jpg"));
-
 
                 for (int i = 1; i <= 3; i++) {
                     blueTiles.put(i, ImageIO.read(new File("src/resources/GraphicalResources/item tiles/Cornici1." + i + ".png")));
