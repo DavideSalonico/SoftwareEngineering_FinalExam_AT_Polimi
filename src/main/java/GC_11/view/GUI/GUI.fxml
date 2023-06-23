@@ -2,12 +2,11 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
@@ -42,6 +41,9 @@
                     <image>
                         <Image url="@../../../../../resources/GraphicalResources/boards/livingroom.png" />
                     </image>
+               <effect>
+                  <DropShadow height="62.03" radius="42.24" width="108.93" />
+               </effect>
                 </ImageView>
                 <GridPane fx:id="boardGridPane" prefHeight="442.0" prefWidth="477.0" GridPane.columnIndex="1">
                     <columnConstraints>
@@ -96,11 +98,17 @@
                                     <image>
                                         <Image url="@../../../../../resources/GraphicalResources/common goal cards/3.jpg" />
                                     </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
                                 </ImageView>
                                 <ImageView fx:id="IICommonGoalCard" fitHeight="76.0" fitWidth="115.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                                     <image>
                                         <Image url="@../../../../../resources/GraphicalResources/common goal cards/3.jpg" />
                                     </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
                                 </ImageView>
                                 <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="2° Common Goal Card" GridPane.halignment="CENTER" GridPane.rowIndex="4">
                                     <font>
@@ -127,16 +135,35 @@
                                     <image>
                                         <Image url="@../../../../../resources/GraphicalResources/misc/Sacchetto Chiuso.png" />
                                     </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
                                 </ImageView>
                                 <ImageView fx:id="firstPlayerToken" fitHeight="77.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                                     <image>
                                         <Image url="@../../../../../resources/GraphicalResources/misc/firstplayertoken.png" />
                                     </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
                                 </ImageView>
-                        <Button fx:id="confirmSelection" mnemonicParsing="false" onMouseClicked="#columnSelectionConfirmed" text="CONFIRM SELECTION" textFill="WHITE" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                        <Button fx:id="confirmSelection" mnemonicParsing="false" onMouseClicked="#columnSelectionConfirmed" text="CONFIRM SELECTION" textFill="WHITE" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                           <effect>
+                              <DropShadow />
+                           </effect></Button>
                         <Text fx:id="selectTilesError" fill="#ff0202" strokeType="OUTSIDE" strokeWidth="0.0" text="Error message Label" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                            <font>
                               <Font name="System Bold Italic" size="13.0" />
+                           </font>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="BAG" translateX="-30.0" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
+                           <font>
+                              <Font name="System Bold" size="11.0" />
+                           </font>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CHAIR" translateX="20.0" GridPane.valignment="BOTTOM">
+                           <font>
+                              <Font name="System Bold" size="11.0" />
                            </font>
                         </Text>
                             </children>
@@ -204,6 +231,13 @@
                             <image>
                                 <Image url="@../../../../../resources/GraphicalResources/boards/bookshelf_orth.png" />
                             </image>
+                     <effect>
+                        <DropShadow height="48.85" radius="20.505000000000003" width="35.17">
+                           <color>
+                              <Color red="0.32870370149612427" green="0.75" blue="0.2638888955116272" />
+                           </color>
+                        </DropShadow>
+                     </effect>
                         </ImageView>
                     </children>
                 </GridPane>
@@ -314,32 +348,38 @@
                 </ImageView>
             </children>
         </GridPane>
-        <ImageView fitHeight="160.0" fitWidth="157.0" layoutX="1308.0" layoutY="655.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="160.0" fitWidth="157.0" layoutX="1311.0" layoutY="651.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../../../../../resources/GraphicalResources/Publisher material/Title 2000x2000px.png" />
             </image>
+         <effect>
+            <DropShadow />
+         </effect>
         </ImageView>
-        <ImageView fitHeight="50.0" fitWidth="218.0" layoutX="1105.0" layoutY="708.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="50.0" fitWidth="218.0" layoutX="1102.0" layoutY="709.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../../../../../resources/GraphicalResources/Logo_Politecnico_Milano .png" />
             </image>
+         <effect>
+            <DropShadow />
+         </effect>
         </ImageView>
-        <ScrollPane layoutX="1211.0" layoutY="378.0" prefHeight="219.0" prefWidth="194.0" vbarPolicy="ALWAYS">
-            <content>
-                <AnchorPane disable="true" minHeight="0.0" minWidth="0.0" opacity="0.69" prefHeight="221.0" prefWidth="204.0">
-                    <effect>
-                        <Shadow />
-                    </effect>
-                </AnchorPane>
-            </content>
-        </ScrollPane>
-        <Text fontSmoothingType="LCD" layoutX="1245.0" layoutY="363.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Textual CHAT" wrappingWidth="126.40000000000009">
+        <Text fontSmoothingType="LCD" layoutX="1282.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHAT" wrappingWidth="52.40000000000009">
             <font>
                 <Font name="System Bold Italic" size="17.0" />
             </font>
         </Text>
-        <Button layoutX="1287.0" layoutY="651.0" mnemonicParsing="false" text="Send" />
-        <TextField layoutX="1208.0" layoutY="618.0" prefHeight="25.0" prefWidth="200.0" />
+        <Button fx:id="sendMessageButton" layoutX="1287.0" layoutY="651.0" mnemonicParsing="false" onAction="#sendMessageOnChat" text="Send" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect></Button>
+        <TextField fx:id="chatTextField" layoutX="1208.0" layoutY="618.0" prefHeight="25.0" prefWidth="200.0" text="Enter a message....">
+         <effect>
+            <DropShadow />
+         </effect></TextField>
         <ButtonBar fx:id="columnSelector" layoutX="691.0" layoutY="6.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="31.0" prefWidth="415.0" scaleX="0.75">
             <buttons>
                 <Button mnemonicParsing="false" onAction="#selectColumn" scaleX="0.5" />
@@ -349,20 +389,36 @@
                 <Button minWidth="59.0" mnemonicParsing="false" onAction="#selectColumn" prefHeight="18.0" scaleX="0.5" />
             </buttons>
         </ButtonBar>
-        <Text fill="WHITE" layoutX="1245.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Personal Goal Card">
+        <Text fill="WHITE" fontSmoothingType="LCD" layoutX="1245.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Personal Goal Card" underline="true">
             <font>
-                <Font name="System Bold Italic" size="12.0" />
+                <Font name="System Bold Italic" size="13.0" />
             </font>
         </Text>
-        <ImageView fx:id="personalGoal" fitHeight="192.0" fitWidth="139.0" layoutX="1230.0" layoutY="112.0" pickOnBounds="true" preserveRatio="true" />
+        <ImageView fx:id="personalGoal" fitHeight="192.0" fitWidth="139.0" layoutX="1239.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">
+         <effect>
+            <DropShadow />
+         </effect></ImageView>
       <Button layoutX="1105.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#selectionTilesConfirmed" text="OK">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font>
+         <effect>
+            <DropShadow />
+         </effect>
       </Button>
       <Text fx:id="selectColumnError" fill="RED" layoutX="1166.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Error message Label">
          <font>
             <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </Text>
+      <TextArea fx:id="chatTextArea" layoutX="1208.0" layoutY="397.0" prefHeight="200.0" prefWidth="200.0">
+         <effect>
+            <DropShadow />
+         </effect>
+      </TextArea>
+      <Text layoutX="1295.0" layoutY="743.0" strokeType="OUTSIDE" strokeWidth="0.0" text="X">
+         <font>
+            <Font name="System Bold" size="24.0" />
          </font>
       </Text>
     </children>

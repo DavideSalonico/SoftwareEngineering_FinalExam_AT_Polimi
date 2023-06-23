@@ -1,10 +1,7 @@
 package GC_11.view.GUI;
 
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
-import GC_11.model.Game;
-import GC_11.model.Player;
-import GC_11.model.Tile;
-import GC_11.model.TileColor;
+import GC_11.model.*;
 import GC_11.network.GameViewMessage;
 import GC_11.util.PlayerView;
 import javafx.application.Application;
@@ -14,9 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -69,6 +64,9 @@ public class GUIView extends Application {
     public Button confirmSelection;
     public Text selectTilesError;
     public Text selectColumnError;
+    public TextArea chatTextArea;
+    public TextField chatTextField;
+    public Button sendMessageButton;
 
     // Initialize otherPlayers using PlayerView class as a container for the player's nickname, points and shelf (related to javafx objects)
     List<PlayerView> otherPlayers = new ArrayList<>();
@@ -202,7 +200,7 @@ public class GUIView extends Application {
         }
 
 
-        // TEST : Fill the shelf with the tiles randomly
+        // TEST : Fill the shelf with the tiles randomly DA (RIMUOVERE)
         for (int i = 1; i < 6; i++) {
             for (int j = 1; j < 7; j++) {
                 ImageView imageView1 = new ImageView(purpleTiles.get(1));
@@ -234,34 +232,8 @@ public class GUIView extends Application {
         search.setImage(null);
         search.setImage(yellowTiles.get(1));
 
-
-        // Fill the board dynamically using the model
-        for (int i = 1; i < 10; i++) {
-            for (int j = 1; j < 10; j++) {
-                Tile t = model.getBoard().getTile(i - 1, j - 1);
-                int id = t.getId() + 1;
-                TileColor tileColor = t.getColor();
-                ImageView image = switch (tileColor) {
-                    case WHITE -> new ImageView(whiteTiles.get(id));
-                    case PURPLE -> new ImageView(purpleTiles.get(id));
-                    case GREEN -> new ImageView(greenTiles.get(id));
-                    case BLUE -> new ImageView(blueTiles.get(id));
-                    case CYAN -> new ImageView(cyanTiles.get(id));
-                    case YELLOW -> new ImageView(yellowTiles.get(id));
-                    default -> null;
-                };
-                if (image != null) {
-                    image.getStyleClass().add("selected-image");
-
-                    // This line add the event handler to the image which show it selected when clicked (MAX 3 tiles selected)
-                    setupImageViewSelection(image);
-
-                    image.setFitHeight(41);
-                    image.setFitWidth(41);
-                    boardGridPane.add(image, i, j);
-                }
-            }
-        }
+        //Initialize Board with the data received from the server
+        refreshBoard(model);
 
     }
 
@@ -413,18 +385,18 @@ public class GUIView extends Application {
     public void updatePlayer(Player player) throws ColumnIndexOutOfBoundsException {
         PlayerView playerView = getPlayerViewFromNickname(player.getNickname());
         if (playerView != null) {
-            updateBoard(player, playerView.getShelf());
+            updateShelf(player, playerView.getShelf());
             updatePoints(player, playerView.getPoints());
         }
     }
 
     /**
-     * Method that updates the Board of the player
+     * Method that updates the Shelf of the player
      * @param player to update
      * @param shelf GridPane reference
      * @throws ColumnIndexOutOfBoundsException if the player is not found
      */
-    public void updateBoard(Player player, GridPane shelf) throws ColumnIndexOutOfBoundsException {
+    public void updateShelf(Player player, GridPane shelf) throws ColumnIndexOutOfBoundsException {
         for (int i = 1; i < 6; i++) {  //COLUMNS
             for (int j = 1; j < 7; j++) {  //ROWS
                 Tile t = player.getShelf().getTile(j, i);
@@ -505,6 +477,54 @@ public class GUIView extends Application {
     public void setColumnError(String error){
         selectColumnError.setText(error);
     }
+
+
+    public void refreshBoard(Game model){
+        for (int i = 1; i < 10; i++) {
+            for (int j = 1; j < 10; j++) {
+                Tile t = model.getBoard().getTile(i - 1, j - 1);
+                int id = t.getId() + 1;
+                TileColor tileColor = t.getColor();
+                ImageView image = switch (tileColor) {
+                    case WHITE -> new ImageView(whiteTiles.get(id));
+                    case PURPLE -> new ImageView(purpleTiles.get(id));
+                    case GREEN -> new ImageView(greenTiles.get(id));
+                    case BLUE -> new ImageView(blueTiles.get(id));
+                    case CYAN -> new ImageView(cyanTiles.get(id));
+                    case YELLOW -> new ImageView(yellowTiles.get(id));
+                    default -> null;
+                };
+                if (image != null) {
+                    image.getStyleClass().add("selected-image");
+
+                    // This line add the event handler to the image which show it selected when clicked (MAX 3 tiles selected)
+                    setupImageViewSelection(image);
+
+                    image.setFitHeight(41);
+                    image.setFitWidth(41);
+                    boardGridPane.add(image, i, j);
+                }
+            }
+        }
+    }
+
+    /**
+     * Method that receive a message from the server and update the chat
+     * @param message sent by other player
+     */
+    public void updateChat(String message){
+        chatTextArea.appendText(message + "\n");
+    }
+
+    /**
+     * Method that send a message to other players in the chat
+     */
+    public void sendMessageOnChat(){
+        chatTextArea.appendText(currentPlayerNickname + " : " + chatTextField.getText() + "\n");
+        // MANDA MESSAGGIO AL SERVER
+    }
+
+
 
 
     /**
