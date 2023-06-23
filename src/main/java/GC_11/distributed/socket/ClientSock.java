@@ -92,12 +92,11 @@ public class ClientSock implements PropertyChangeListener {
         try {
             GameViewMessage message = (GameViewMessage) in.readObject();
             //System.out.println("Received gameViewMessage from server: "+message.toString());
-            if(message!=null){
-                this.gameViewMessage= message;
-                if(message.getMessage()!= null){
+            if (message != null) {
+                this.gameViewMessage = message;
+                if (message.getMessage() != null) {
                     System.out.println(message.getMessage());
-                }
-                else{
+                } else {
                     this.view.propertyChange(new PropertyChangeEvent(this, "gameViewMessage", null, message));
                     System.out.println(gameViewMessage.toString());
                 }
@@ -152,10 +151,11 @@ public class ClientSock implements PropertyChangeListener {
             while (true) {
                 //System.out.println("Insert message to send to server");
                 String s = inputLine.nextLine();
-                if (gameViewMessage.getMessage().equals("Hi! Welcome to the game! Please, insert your nickname:"))
-                {
-                    nickname = s;
-                    setView(new GameCLI(nickname, ClientSock.this));
+                if (nickname == null || nickname.isEmpty()) {
+                    if (gameViewMessage.getMessage().equals("Hi! Welcome to the game! Please, insert your nickname:")) {
+                        nickname = s;
+                        setView(new GameCLI(nickname, ClientSock.this));
+                    }
                 }
                 sendMessageToServer(s);
             }

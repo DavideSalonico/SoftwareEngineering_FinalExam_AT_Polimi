@@ -189,4 +189,8 @@ public class ServerMain implements PropertyChangeListener {
             this.notifyClientsGame();
         }
     }
+
+    public Map getClientsMap(){
+        return this.clientMap;
+    }
 }

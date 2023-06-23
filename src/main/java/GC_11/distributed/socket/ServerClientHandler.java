@@ -1,8 +1,10 @@
 package GC_11.distributed.socket;
 
+import GC_11.model.Player;
 import GC_11.network.GameViewMessage;
 import GC_11.network.MessageView;
 import GC_11.network.choices.Choice;
+import GC_11.network.choices.ChoiceFactory;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -33,138 +35,6 @@ public class ServerClientHandler implements Runnable {
         this.clientSocket = socket;
         this.server = server;
     }
-
-    /**
-     * Receives a lobby message from the client.
-     *
-     * @return The received lobby message.
-     * @throws IOException            If an I/O error occurs.
-     * @throws ClassNotFoundException If the class of the serialized object cannot be found.
-     */
-
-    public String receiveLobbyMessageFromClient() throws IOException, ClassNotFoundException {
-        String clientMessage = null;
-        try {
-            clientMessage = (String) inputStream.readObject();
-            System.out.println("Received message from client: " + clientMessage);
-        } catch (IOException e) {
-            System.out.println("Error during receiving message from client");
-            closeConnection();
-            server.notifyDisconnectionAllSockets(this.clientSocket, this);
-            throw new IOException();
-        } catch (ClassNotFoundException e) {
-            System.out.println("Error during deserialization of message from client");
-            closeConnection();
-            server.notifyDisconnectionAllSockets(this.clientSocket, this);
-            throw new ClassNotFoundException();
-        } finally {
-            return clientMessage;
-        }
-    }
-
-    /**
-     * Receives a message from the client.
-     *
-     * @return The received message.
-     * @throws IOException            If an I/O error occurs.
-     * @throws ClassNotFoundException If the class of the serialized object cannot be found.
-     */
-
-    public String receiveMessageFromClient() throws IOException, ClassNotFoundException {
-        String clientChoice = null;
-        try {
-            clientChoice = (String) inputStream.readObject();
-            System.out.println("Received choice from client: " + clientChoice);
-            server.notifyAllClients(clientChoice, this);
-        } catch (IOException e) {
-            System.out.println("Error during receiving message from client");
-            closeConnection();
-            server.notifyDisconnectionAllSockets(this.clientSocket, this);
-            throw new IOException();
-        } catch (ClassNotFoundException e) {
-            System.out.println("Error during deserialization of message from client");
-            closeConnection();
-            server.notifyDisconnectionAllSockets(this.clientSocket, this);
-            throw new ClassNotFoundException();
-        } finally {
-            return clientChoice;
-        }
-    }
-
-
-    /**
-     * Receives a choice from the client.
-     */
-    public void receiveChoiceFromClient() {
-        try {
-            Choice clientChoice = (Choice) inputStream.readObject();
-            System.out.println("Received choice from: " + clientChoice.getPlayer() + ":" + clientChoice.getType() + clientChoice.getParams());
-            //this.controller.propertyChange(new PropertyChangeEvent(this, "choice", null, clientChoice));
-        } catch (IOException e) {
-            System.out.println("Error during receiving message from client");
-            closeConnection();
-            server.notifyDisconnectionAllSockets(this.clientSocket, this);
-        } catch (ClassNotFoundException e) {
-            System.out.println("Error during deserialization of message from client");
-            closeConnection();
-            server.notifyDisconnectionAllSockets(this.clientSocket, this);
-        }
-    }
-
-    /**
-     * Sends a message to the client.
-     *
-     * @param s The message to send.
-     */
-    public void sendMessageToClient(String s) {
-        try {
-            outputStream.writeObject(s);
-            outputStream.flush();
-            outputStream.reset();
-        } catch (IOException e) {
-            System.out.println("Error during sending message to client");
-            closeConnection();
-
-        }
-    }
-
-    /**
-     * Sends a MessageView object to the client.
-     *
-     * @param messageView The MessageView object to send.
-     */
-    public void sendMessageViewToClient(GameViewMessage messageView) {
-        try {
-            outputStream.writeObject(messageView);
-            outputStream.flush();
-            outputStream.reset();
-        } catch (IOException e) {
-            System.out.println("Error during sending gameView to client");
-            closeConnection();
-        }
-    }
-
-
-    private Thread readThread = new Thread(new Runnable() {
-        boolean connected = true;
-
-        @Override
-        public void run() {
-            System.out.println("Thread read started");
-            while (connected)
-                try {
-                    receiveMessageFromClient();
-                } catch (IOException | ClassNotFoundException e) {
-                    connected = false;
-                    try {
-                        clientSocket.close();
-                    } catch (IOException ex) {
-                        System.err.println("Unable to close socket");
-                    }
-                }
-        }
-    });
-
 
     /**
      * The run method that will be executed when the ServerClientHandler is started as a separate thread.
@@ -207,6 +77,130 @@ public class ServerClientHandler implements Runnable {
         this.server.getSocketMap().put(this.nickname, this);
         this.server.getServerMain().addConnection(this.nickname, "SOCKET");
     }
+
+    private Thread readThread = new Thread(new Runnable() {
+        boolean connected = true;
+
+        @Override
+        public void run() {
+            System.out.println("Thread read started");
+            while (connected)
+                try {
+                    receiveMessageFromClient();
+                    //receiveChoiceFromClient();
+                } catch (IOException | ClassNotFoundException e) {
+                    connected = false;
+                    try {
+                        clientSocket.close();
+                    } catch (IOException ex) {
+                        System.err.println("Unable to close socket");
+                    }
+                }
+        }
+    });
+
+
+    /**
+     * Receives a lobby message from the client.
+     *
+     * @return The received lobby message.
+     * @throws IOException            If an I/O error occurs.
+     * @throws ClassNotFoundException If the class of the serialized object cannot be found.
+     */
+
+    public String receiveLobbyMessageFromClient() throws IOException, ClassNotFoundException {
+        String clientMessage = null;
+        try {
+            clientMessage = (String) inputStream.readObject();
+            System.out.println("Received message from client: " + clientMessage);
+        } catch (IOException e) {
+            System.out.println("Error during receiving message from client");
+            closeConnection();
+            server.notifyDisconnectionAllSockets(this.clientSocket, this);
+            throw new IOException();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Error during deserialization of message from client");
+            closeConnection();
+            server.notifyDisconnectionAllSockets(this.clientSocket, this);
+            throw new ClassNotFoundException();
+        } finally {
+            return clientMessage;
+        }
+    }
+
+    /**
+     * Receives a message from the client.
+     * It always gets a String from the client. If the name is set and there is more than 1 client in the map
+     * it creates a Choice and notify it to the main server
+     * @return The received message.
+     * @throws IOException            If an I/O error occurs.
+     * @throws ClassNotFoundException If the class of the serialized object cannot be found.
+     */
+
+    public String receiveMessageFromClient() throws IOException, ClassNotFoundException {
+        String clientMessage = null;
+        try {
+            clientMessage = (String) inputStream.readObject();
+            System.out.println("Ricevuto " + clientMessage + " da " + this.nickname);
+            if(this.nickname != null && !this.nickname.isEmpty() && this.server.getServerMain().getClientsMap().size()>1){
+                System.out.println("Provo a creare la choice");
+                Choice clientChoice  = ChoiceFactory.createChoice(new Player(this.nickname),clientMessage);
+                this.server.getServerMain().makeAMove(clientChoice);
+                System.out.println("Convertito " + clientMessage + " a Choice");
+            }
+            //System.out.println("Received choice from client: " + clientChoice);
+            //server.notifyAllClients(clientChoice, this);
+        } catch (IOException e) {
+            System.out.println("Error during receiving message from client");
+            closeConnection();
+            server.notifyDisconnectionAllSockets(this.clientSocket, this);
+            throw new IOException();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Error during deserialization of message from client");
+            closeConnection();
+            server.notifyDisconnectionAllSockets(this.clientSocket, this);
+            throw new ClassNotFoundException();
+        } finally {
+            return clientMessage;
+        }
+    }
+
+
+    /**
+     * Sends a message to the client.
+     *
+     * @param s The message to send.
+     */
+    public void sendMessageToClient(String s) {
+        try {
+            outputStream.writeObject(s);
+            outputStream.flush();
+            outputStream.reset();
+        } catch (IOException e) {
+            System.out.println("Error during sending message to client");
+            closeConnection();
+
+        }
+    }
+
+    /**
+     * Sends a MessageView object to the client.
+     *
+     * @param messageView The MessageView object to send.
+     */
+    public void sendMessageViewToClient(GameViewMessage messageView) {
+        try {
+            outputStream.writeObject(messageView);
+            outputStream.flush();
+            outputStream.reset();
+        } catch (IOException e) {
+            System.out.println("Error during sending gameView to client");
+            closeConnection();
+        }
+    }
+
+
+
 
 
     /**

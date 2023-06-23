@@ -92,8 +92,9 @@ public class ServerSock implements PropertyChangeListener {
 
     public void notifyAllClients(String message, ServerClientHandler sourceHandler) {
         for (ServerClientHandler sch : serverClientHandlerList) {
+            GameViewMessage msg = new GameViewMessage(message);
             if (sch != sourceHandler) {
-                sch.sendMessageToClient(message);
+                sch.sendMessageViewToClient(msg);
             }
         }
     }
