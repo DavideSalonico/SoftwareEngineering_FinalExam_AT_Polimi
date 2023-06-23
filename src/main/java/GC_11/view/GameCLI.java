@@ -70,7 +70,7 @@ public class GameCLI extends ViewGame {
                         "CHOICE",
                         null,
                         choice);
-                this.client.notifyServer(evt);
+                this.client.notifyServer(evt);  // TODO QUA SI ROMPE IL SOCKET, GUARDIAMOLO BENE
             } else {
                 //permettergli di scrivere in chat
             }

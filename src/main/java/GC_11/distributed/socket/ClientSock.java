@@ -94,6 +94,18 @@ public class ClientSock implements PropertyChangeListener {
                 this.gameViewMessage = message;
                 if (message.getMessage() != null) {
                     System.out.println(message.getMessage());
+                    if (message.getMessage().startsWith("Hi!")){
+                        Scanner scanner = new Scanner(System.in);
+                        String inputNickname = scanner.nextLine();
+                        this.nickname = inputNickname;
+                        this.view=new GameCLI(nickname,this);
+                        sendMessageToServer(inputNickname);
+                    }
+                    else if(message.getMessage().startsWith("Inserire")){
+                        Scanner scanner = new Scanner(System.in);
+                        String maxPlayer = scanner.nextLine();
+                        sendMessageToServer(maxPlayer);
+                    }
                 } else {
                     this.view.propertyChange(new PropertyChangeEvent(this, "gameViewMessage", null, message));
                     //System.out.println(gameViewMessage.toString());
