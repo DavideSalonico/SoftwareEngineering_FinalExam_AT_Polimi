@@ -14,11 +14,4 @@ public abstract class Client implements Remote, PropertyChangeListener {
 
     public abstract void update(GameViewMessage view);
 
-    protected abstract void connectionSetup();
-
-    protected abstract void lobbySetup();
-
-    protected abstract void sendMessage(Object o);
-
-
 }

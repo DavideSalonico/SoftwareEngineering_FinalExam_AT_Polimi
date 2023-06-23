@@ -2,8 +2,6 @@ package GC_11.distributed.socket;
 
 
 import GC_11.network.GameViewMessage;
-import GC_11.network.LobbyViewMessage;
-import GC_11.network.MessageView;
 import GC_11.network.choices.Choice;
 import GC_11.view.GameCLI;
 import GC_11.view.View;
@@ -91,7 +89,7 @@ public class ClientSock implements PropertyChangeListener {
     public void receiveGameViewFromServer() {
         try {
             GameViewMessage message = (GameViewMessage) in.readObject();
-            System.out.println("Received gameViewMessage from server: "+message.toString());
+            System.out.println("Received gameViewMessage from server: " + message.toString());
             if (message != null) {
                 this.gameViewMessage = message;
                 if (message.getMessage() != null) {
@@ -178,7 +176,7 @@ public class ClientSock implements PropertyChangeListener {
         System.out.println("ClientSocket running");
         readGameViewThread.start();
         //readThread.start();
-        writeThread.start();
+        //writeThread.start();
 
     }
 
@@ -198,6 +196,18 @@ public class ClientSock implements PropertyChangeListener {
 
     public View getView() {
         return view;
+    }
+
+    public void notifyServer(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("CHOICE"))
+            sendChoiceToServer((Choice) evt.getNewValue());
+    }
+
+    public void updateViewGame(GameViewMessage gameViewMessage) {
+    	this.view.propertyChange(new PropertyChangeEvent(this,
+                "UPDATE GAME",
+                null,
+                gameViewMessage));
     }
 }
 
