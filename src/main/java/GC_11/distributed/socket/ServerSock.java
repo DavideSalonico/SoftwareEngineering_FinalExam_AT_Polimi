@@ -139,7 +139,6 @@ public class ServerSock implements PropertyChangeListener {
         }
     }
 
-    // TODO: CHECK IF LOBBY IS NECESSARY
 
 
     @Override

@@ -143,10 +143,8 @@ public class ServerClientHandler implements Runnable {
             clientMessage = (String) inputStream.readObject();
             System.out.println("Ricevuto " + clientMessage + " da " + this.nickname);
             if(this.nickname != null && !this.nickname.isEmpty() && this.server.getServerMain().getClientsMap().size()>1){
-                System.out.println("Provo a creare la choice");
                 Choice clientChoice  = ChoiceFactory.createChoice(new Player(this.nickname),clientMessage);
                 this.server.getServerMain().makeAMove(clientChoice);
-                System.out.println("Convertito " + clientMessage + " a Choice");
             }
             //System.out.println("Received choice from client: " + clientChoice);
             //server.notifyAllClients(clientChoice, this);
