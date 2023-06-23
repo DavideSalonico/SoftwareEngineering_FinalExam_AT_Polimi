@@ -4,6 +4,7 @@ import GC_11.controller.Controller;
 import GC_11.exceptions.IllegalMoveException;
 import GC_11.model.Player;
 
+import java.rmi.RemoteException;
 import java.util.List;
 
 public class DeselectTileChoice extends Choice {
@@ -15,7 +16,7 @@ public class DeselectTileChoice extends Choice {
     }
 
     @Override
-    public void executeOnServer(Controller controller) throws IllegalMoveException {
+    public void executeOnServer(Controller controller) throws RemoteException {
         controller.deselectTile(params);
     }
 }

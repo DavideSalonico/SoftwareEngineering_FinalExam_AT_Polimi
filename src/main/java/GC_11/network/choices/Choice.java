@@ -23,8 +23,7 @@ public abstract class Choice implements Serializable {
         this.params = params;
     }
 
-    public abstract void executeOnServer(Controller controller)
-            throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException, RemoteException;
+    public abstract void executeOnServer(Controller controller) throws RemoteException;
 
     public void executeOnClient(View view)
             throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {

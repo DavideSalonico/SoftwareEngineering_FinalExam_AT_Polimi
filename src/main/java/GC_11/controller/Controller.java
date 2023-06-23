@@ -36,7 +36,7 @@ public class Controller implements PropertyChangeListener {
     /**
      * Generic constructor of Controller with only the model
      *
-     * @param game reference to Model
+     * @param
      */
     public Controller(ServerMain server) {
         this.reader = new JsonReader();
@@ -82,24 +82,20 @@ public class Controller implements PropertyChangeListener {
         return model.getCurrentPlayer().equals(choice.getPlayer());
     }
 
-    public void update(Choice choice)
-            throws IllegalMoveException,
-            ColumnIndexOutOfBoundsException,
-            NotEnoughFreeSpacesException,
-            ExceededNumberOfPlayersException,
-            NameAlreadyTakenException, RemoteException {
+    public void update(Choice choice) throws RemoteException {
         this.choice = choice;
 
         if (!checkTurn()) {
-            throw new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer() + "'s turn");
+            this.model.triggerException(new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer() + "'s turn"));
         }
 
         try {
             checkExpectedMove();
-            choice.executeOnServer(this);
         } catch (IllegalMoveException e) {
             this.model.triggerException(e);
         }
+
+        choice.executeOnServer(this);
 
         if (!choice.getType().equals(ChoiceType.PICK_COLUMN))
             this.lastChoice = this.choice.getType();
@@ -107,9 +103,10 @@ public class Controller implements PropertyChangeListener {
             this.lastChoice = ChoiceType.RESET_TURN;
     }
 
-    public void resetTurn(List<String> params) throws IllegalMoveException {
-        if (params.size() != 0) throw new IllegalMoveException("There shouldn't be options for this command!");
-        this.model.getBoard().resetSelectedTiles();
+    public void resetTurn(List<String> params) throws RemoteException {
+        if (params.size() != 0)
+            this.model.triggerException(new IllegalMoveException("There shouldn't be options for this command!"));
+        this.model.getBoard().resetTurn();
     }
 
     //Sort of FSM to garantee the correct logic flow of moves
@@ -137,46 +134,64 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    public void deselectTile(List<String> params) throws IllegalMoveException {
-        if (params.size() != 0) throw new IllegalMoveException("There shouldn't be parameters for this command!");
+    public void deselectTile(List<String> params) throws RemoteException {
+        if (params.size() != 0)
+            this.model.triggerException(new IllegalMoveException("There shouldn't be parameters for this command!"));
 
-        this.model.getBoard().deselectTile();
+        try {
+            this.model.getBoard().deselectTile();
+        } catch (IllegalMoveException e) {
+            this.model.triggerException(e);
+        }
     }
 
-    public void selectTile(List<String> parameters) throws IllegalMoveException {
-        if (parameters.size() != 2) throw new IllegalMoveException("There shouldn't be options for this command!");
-        Integer row, col;
+    public void selectTile(List<String> parameters) throws RemoteException {
+        if (parameters.size() != 2)
+            this.model.triggerException(new IllegalMoveException("There should be 2 parameters for this command!"));
+        Integer row = -1, col = -1;
         try {
             row = Integer.parseInt(parameters.get(0));
             col = Integer.parseInt(parameters.get(1));
         } catch (NumberFormatException e) {
-            throw new IllegalMoveException("Invalid format. Row and column numbers must be integers!");
+            this.model.triggerException(e);
         }
         if (row < 0 || row >= 9 || col < 0 || col >= 9)
-            throw new IllegalMoveException("Row or column out of bound!");
+            this.model.triggerException(new IllegalMoveException("Row or column out of bound!"));
         if (this.model.getBoard().getSelectedTiles().size() >= min(3, this.model.getCurrentPlayer().getShelf().maxFreeVerticalSpaces()))
-            throw new IllegalMoveException("Unable to select one more tile. You've already selected 3 or you don't have enough space in your shelf");
+            this.model.triggerException(new IllegalMoveException("You can't select more tiles! You've already selected 3 or you don't have enough space in your shelf"));
 
-        this.model.getBoard().selectTile(row, col);
+        try {
+            this.model.getBoard().selectTile(row, col);
+        } catch (IllegalMoveException e) {
+            this.model.triggerException(e);
+        }
     }
 
-    public void pickColumn(List<String> parameters) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException, RemoteException, IllegalMoveException {
-        int column = paramsToColumnIndex(parameters);
+    public void pickColumn(List<String> parameters) throws RemoteException {
+        int column = 0;
+        try {
+            column = paramsToColumnIndex(parameters);
+        } catch (IllegalMoveException e) {
+            this.model.triggerException(e);
+        }
         //TODO: Da rivedere, se possibile farlo senza creare una lista di appoggio
         List<Tile> tmp_tiles = new ArrayList<Tile>();
         for (Coordinate c : this.model.getBoard().getSelectedTiles()) {
             tmp_tiles.add(this.model.getBoard().getTile(c.getRow(), c.getColumn()));
             this.model.getBoard().setTile(c.getRow(), c.getColumn(), new Tile(TileColor.EMPTY));
         }
-        this.model.getCurrentPlayer().getShelf().addTiles(tmp_tiles, column);
-        this.model.getBoard().resetSelectedTiles();
-        //Update points (all of them)
-        this.model.calculateCommonPoints();
-        this.model.getCurrentPlayer().updatesPointsPersonalGoal();
-        this.model.getCurrentPlayer().calculateAndGiveAdjacencyPoint();
-        this.model.getBoard().refillBoard();
-        this.model.setNextCurrent();
-
+        try {
+            this.model.getCurrentPlayer().getShelf().addTiles(tmp_tiles, column);
+            this.model.getBoard().resetSelectedTiles();
+            //Update points (all of them)
+            this.model.calculateCommonPoints();
+            this.model.getCurrentPlayer().updatesPointsPersonalGoal();
+            this.model.getCurrentPlayer().calculateAndGiveAdjacencyPoint();
+            this.model.getBoard().refillBoard();
+            this.model.setNextCurrent();
+        } catch (NotEnoughFreeSpacesException | ColumnIndexOutOfBoundsException e) {
+            this.model.triggerException(e);
+        }
         //this.lastChoice = ChoiceType.RESET_TURN;
     }
 
@@ -194,11 +209,11 @@ public class Controller implements PropertyChangeListener {
 
     }
 
-    public void chooseOrder(List<String> parameters) throws IllegalMoveException{
+    public void chooseOrder(List<String> parameters) throws RemoteException {
         //Integer parameters control
         Integer tilesSize = this.model.getBoard().getSelectedTiles().size();
         if (parameters.size() != tilesSize)
-            throw new IllegalMoveException("There shouldn't be options for this command!");
+            this.model.triggerException(new IllegalMoveException("There shouldn't be options for this command!"));
         List<Integer> ind = new ArrayList<>();
         for (int i = 0; i < tilesSize; i++) {
             ind.add(null);
@@ -208,48 +223,49 @@ public class Controller implements PropertyChangeListener {
                 ind.set(i, Integer.parseInt(parameters.get(i)));
             }
         } catch (NumberFormatException e) {
-            throw new IllegalMoveException("Order list must be made by integers!");
+            this.model.triggerException(new IllegalMoveException("Invalid format. Order list must be made by integers!"));
         }
         //Not out of bound index control
         for (int i = 0; i < tilesSize; i++) {
-            if (ind.get(i) < 0 || ind.get(i) > tilesSize) throw new IllegalMoveException("Invalid order!");
+            if (ind.get(i) < 0 || ind.get(i) > tilesSize)
+                this.model.triggerException(new IllegalMoveException("Invalid order. Some index are out of bound!"));
         }
         //No duplicates control
         for (int i = 0; i < tilesSize; i++) {
             for (int j = i + 1; j < tilesSize; j++) {
                 if (ind.get(i).equals(ind.get(j)))
-                    throw new IllegalMoveException("Invalid order. There are some duplicate positions!");
+                    this.model.triggerException(new IllegalMoveException("Invalid order. There are some duplicate positions!"));
             }
         }
 
-        this.model.getBoard().changeOrder(ind);
+        try {
+            this.model.getBoard().changeOrder(ind);
+        } catch (IllegalMoveException e) {
+            this.model.triggerException(e);
+        }
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         try {
             update((Choice) evt.getNewValue());
-        } catch (IllegalMoveException | ColumnIndexOutOfBoundsException | NotEnoughFreeSpacesException |
-                 ExceededNumberOfPlayersException | NameAlreadyTakenException e) {
-            try {
-                this.model.triggerException(e);
-            } catch (RemoteException ex) {
-                throw new RuntimeException(ex);
-            }
-        } catch (RemoteException e) {
+
+            //this.model.triggerException(e);
+        }
+        catch (RemoteException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void sendMessage(List<String> parameters) throws IllegalMoveException {
+    public void sendMessage(List<String> parameters) throws RemoteException {
         if (parameters.size() != 2)
-            throw new IllegalMoveException("There should be exactly two options for this command!");
+            this.model.triggerException(new IllegalMoveException("There should be exactly two options for this command!"));
         if (parameters.get(0).length() >= 64 || parameters.get(1).length() >= 64)
-            throw new IllegalMoveException("Message too long");
+            this.model.triggerException(new IllegalMoveException("Message too long"));
         if(!this.model.getPlayers().stream().map(i -> i.getNickname()).toList().contains(parameters.get(0)) || !parameters.get(0).equals("Everyone"))
-            throw new IllegalMoveException("Player not found!");
+            this.model.triggerException(new IllegalMoveException("Player not found!"));
         if (parameters.get(0).equals(this.model.getCurrentPlayer().getNickname()))
-            throw new IllegalMoveException("You can't send a message to yourself!");
+            this.model.triggerException(new IllegalMoveException("You can't send a message to yourself!"));
 
         if (parameters.get(0).equals("Everyone"))
             this.model.getChat().sendMessageToMainChat(this.model.getCurrentPlayer(), parameters.get(1));

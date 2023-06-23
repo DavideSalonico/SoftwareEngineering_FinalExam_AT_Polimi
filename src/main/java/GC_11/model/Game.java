@@ -252,7 +252,6 @@ public class Game implements PropertyChangeListener, Serializable {
                 null,
                 e);
         this.listener.propertyChange(evt);
-        listener.propertyChange(evt);
         System.out.println("Triggered exception\n" + e.getMessage());
     }
 

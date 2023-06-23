@@ -184,8 +184,12 @@ public class ServerMain implements PropertyChangeListener {
         }
     }
 
-    public void makeAMove(Choice choice) throws ColumnIndexOutOfBoundsException, ExceededNumberOfPlayersException, NotEnoughFreeSpacesException, NameAlreadyTakenException, IllegalMoveException, RemoteException {
-        this.controller.update(choice);
+    public void makeAMove(Choice choice) {
+        try {
+            this.controller.update(choice);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

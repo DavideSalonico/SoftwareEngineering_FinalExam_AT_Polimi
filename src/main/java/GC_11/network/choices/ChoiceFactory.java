@@ -16,9 +16,13 @@ public class ChoiceFactory {
         while (st.hasMoreTokens()) {
             tmp.add(st.nextToken());
         }
-
-        ChoiceType type = ChoiceType.valueOf(tmp.get(0));
-
+        ChoiceType type;
+        try {
+            type = ChoiceType.valueOf(tmp.get(0));
+        }
+        catch (IllegalArgumentException e) {
+            throw new IllegalMoveException("wrong choice type");
+        }
         List<String> params = new ArrayList<String>();
         for (String p : tmp) {
             if (tmp.indexOf(p) != 0) {

@@ -18,7 +18,7 @@ public class MaxPlayersChoice extends Choice{
     }
 
     @Override
-    public void executeOnServer(Controller controller) throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException, RemoteException {
+    public void executeOnServer(Controller controller){
         controller.setMaxPlayers(Integer.parseInt(params.get(0)));
     }
 }

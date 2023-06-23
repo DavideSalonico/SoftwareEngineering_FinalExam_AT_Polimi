@@ -24,7 +24,7 @@ public class PickColumnChoice extends Choice {
     }
 
     @Override
-    public void executeOnServer(Controller controller) throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException, RemoteException {
+    public void executeOnServer(Controller controller) throws RemoteException {
         controller.pickColumn(params);
     }
 }

@@ -144,4 +144,8 @@ public class GameViewMessage extends MessageView {
     public void setMessage(String message) {
     	this.message = message;
     }
+
+    public void setException(Exception exception) {
+        this.exception = exception;
+    }
 }

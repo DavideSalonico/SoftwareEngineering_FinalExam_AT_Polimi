@@ -61,11 +61,6 @@ public class GameCLI extends ViewGame {
     public void run() throws RemoteException {
         boolean show_en = true;
         if (show_en) show();
-        if(this.modelView.isError()) {
-            System.out.println(this.modelView.getExceptionMessage());
-            return;
-        }
-        else{
             System.out.println("\n\nIT IS THE TURN OF: " + this.modelView.getCurrentPlayer());
             if (this.modelView.getCurrentPlayer().equals(this.nickname)) {
                 Choice choice = getPlayerChoice();
@@ -79,7 +74,7 @@ public class GameCLI extends ViewGame {
             } else {
                 //permettergli di scrivere in chat
             }
-        }
+
 
 
         //show_en = true;

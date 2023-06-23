@@ -6,6 +6,7 @@ import GC_11.exceptions.IllegalMoveException;
 import GC_11.exceptions.NotEnoughFreeSpacesException;
 import GC_11.model.Player;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class ChooseOrderChoice extends Choice {
     }
 
     @Override
-    public void executeOnServer(Controller controller) throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
+    public void executeOnServer(Controller controller) throws RemoteException {
         controller.chooseOrder(params);
     }
 }

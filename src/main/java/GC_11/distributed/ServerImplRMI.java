@@ -131,19 +131,7 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
         //PropertyChangeEvent evt = new PropertyChangeEvent(client, "choice made", null, choice);
         System.out.println(client.getNickname() + ": " + choice.getType());
         //this.gameController.propertyChange(evt);
-        try {
-            this.serverMain.makeAMove(choice);
-        } catch (ColumnIndexOutOfBoundsException e) { //TODO: to fix
-            throw new RuntimeException(e);
-        } catch (ExceededNumberOfPlayersException e) {
-            throw new RuntimeException(e);
-        } catch (NotEnoughFreeSpacesException e) {
-            throw new RuntimeException(e);
-        } catch (NameAlreadyTakenException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalMoveException e) {
-            throw new RuntimeException(e);
-        }
+        this.serverMain.makeAMove(choice);
     }
 
     @Override
