@@ -172,12 +172,12 @@ public class Controller implements PropertyChangeListener {
         int column = paramsToColumnIndex(parameters);
         //TODO: Da rivedere, se possibile farlo senza creare una lista di appoggio
         List<Tile> tmp_tiles = new ArrayList<Tile>();
-        this.model.getCurrentPlayer().getShelf().addTiles(tmp_tiles, column);
-        this.model.getBoard().resetSelectedTiles();
-        for (Coordinate c : model.getBoard().getSelectedTiles()) {
+        for (Coordinate c : this.model.getBoard().getSelectedTiles()) {
             tmp_tiles.add(this.model.getBoard().getTile(c.getRow(), c.getColumn()));
             this.model.getBoard().setTile(c.getRow(), c.getColumn(), new Tile(TileColor.EMPTY));
         }
+        this.model.getCurrentPlayer().getShelf().addTiles(tmp_tiles, column);
+        this.model.getBoard().resetSelectedTiles();
         //Update points (all of them)
         this.model.calculateCommonPoints();
         this.model.getCurrentPlayer().updatesPointsPersonalGoal();
