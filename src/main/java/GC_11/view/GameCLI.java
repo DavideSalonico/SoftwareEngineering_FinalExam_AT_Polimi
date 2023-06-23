@@ -118,6 +118,7 @@ public class GameCLI extends ViewGame {
         int i = 1;
         for (CommonGoalCard common : this.modelView.getCommonGoalCards()) {
             System.out.println("Common goal " + i + ": " + common.getText());
+            i++;
         }
 
         //Printing Players with relative objects

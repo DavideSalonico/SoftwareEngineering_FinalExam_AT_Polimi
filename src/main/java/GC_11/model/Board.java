@@ -289,12 +289,12 @@ public class Board implements PropertyChangeListener, Serializable {
 
             setBoard();
             /* Can't manage to give right OldValue e NewValue */
-            PropertyChangeEvent evt = new PropertyChangeEvent(
+            /*PropertyChangeEvent evt = new PropertyChangeEvent(
                     this,
                     "BOARD_REFILLED",
                     null,
                     this.chessBoard);
-            this.listener.propertyChange(evt);
+            this.listener.propertyChange(evt);*/
 
         }
     }

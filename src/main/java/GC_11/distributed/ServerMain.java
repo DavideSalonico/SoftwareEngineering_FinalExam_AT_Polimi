@@ -102,15 +102,15 @@ public class ServerMain implements PropertyChangeListener {
      */
 
     public void notifyClientsLobby() {
-        for (Map.Entry<String, String> client : clientMap.entrySet()) {
-            if (client.getValue().equals("RMI")) {
+
+            if (serverRMI.getClients().size()>0) {
                 serverRMI.notifyClientsLobby(new LobbyViewMessage(this.controller.getLobby()));
-            } else if (client.getValue().equals("SOCKET")) {
+            } else if (serverSocket.getSocketMap().size()>0){
                 //TODO aggiornare la lobby tramite socket
             } else {
-                System.out.println("Unable to notify " + client.getKey() + " because connection type is unknown");
+                System.out.println("Unable to notify lobby because no clients are connected");
             }
-        }
+
     }
 
     public void notifyClientsGame(Exception exc) {
