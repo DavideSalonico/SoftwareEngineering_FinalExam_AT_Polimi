@@ -63,9 +63,9 @@ public class Game implements PropertyChangeListener, Serializable {
         }
         this.commonGoals.add(loadCommon(tmp1));
         this.commonGoals.add(loadCommon(tmp2));
-        this.commonGoals.get(0).getWinningPlayers().add(players.get(0));  // Solo per prova
-        this.commonGoals.get(0).getWinningPlayers().add(players.get(1));  // Solo per prova
-        this.commonGoals.get(1).getWinningPlayers().add(players.get(2));  // Solo per prova
+        //this.commonGoals.get(0).getWinningPlayers().add(players.get(0));  // Solo per prova
+        //this.commonGoals.get(0).getWinningPlayers().add(players.get(1));  // Solo per prova
+        //this.commonGoals.get(1).getWinningPlayers().add(players.get(2));  // Solo per prova
         this.commonGoals.get(0).setListener(this);
         this.commonGoals.get(1).setListener(this);
         this.listener = listener;
@@ -249,9 +249,9 @@ public class Game implements PropertyChangeListener, Serializable {
     public void triggerException(Exception e) throws RemoteException {
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
-                e.getMessage(),
+                "EXCEPTION TRIGGERED",
                 null,
-                new GameViewMessage(null, e));
+                e);
         this.listener.propertyChange(evt);
         listener.propertyChange(evt);
         System.out.println("Triggered exception\n" + e.getMessage());

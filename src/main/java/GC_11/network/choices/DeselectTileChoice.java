@@ -8,10 +8,10 @@ import java.util.List;
 
 public class DeselectTileChoice extends Choice {
 
-    public DeselectTileChoice(Player player, List<String> params, ChoiceType type) throws IllegalArgumentException {
+    public DeselectTileChoice(Player player, List<String> params, ChoiceType type) throws IllegalMoveException {
         super(player, params, type);
 
-        if (params.size() != 0) throw new IllegalArgumentException();
+        if (params.size() != 0) throw new IllegalMoveException();
     }
 
     @Override

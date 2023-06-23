@@ -113,34 +113,49 @@ public class ServerMain implements PropertyChangeListener {
         }
     }
 
-    public void notifyClientsGame() {
-        for (Map.Entry<String, String> client : clientMap.entrySet()) {
-
-            // Make a copy of the messageView for every player and keeps the original messageView intact
-            GameViewMessage messageViewCopy = new GameViewMessage(this.controller.getGame(), null);
-
-            // Just before sending the message, we remove the personal goal from the other players
-            for (Player p : messageViewCopy.getPlayers()) {
-                if (!p.getNickname().equals(client.getKey())){
-                    p.setPersonalGoal(null);
-                }
-            }
-
-
-            // For every client we check the connection type and notify the corresponding server
-            if (client.getValue().equals("RMI")) {
+    public void notifyClientsGame(Exception exc) {
+        if(exc != null) {
+            String currPlayer = this.controller.getGame().getCurrentPlayer().getNickname();
+            GameViewMessage messageViewCopy = new GameViewMessage(this.controller.getGame(), exc);
+            if (clientMap.get(currPlayer).equals("RMI")) {
                 try {
-                    serverRMI.notifyClient(client.getKey(), messageViewCopy);
+                    serverRMI.notifyClient(currPlayer, messageViewCopy);
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
-            } else if (client.getValue().equals("SOCKET")) {
-                serverSocket.notifyClient(messageViewCopy, client.getKey());
+            } else if (clientMap.get(currPlayer).equals("SOCKET")) {
+                serverSocket.notifyClient(messageViewCopy, currPlayer);
             } else {
-                System.out.println("Unable to notify " + client.getKey() + " because connection type is unknown");
+                System.out.println("Unable to notify " + currPlayer + " because connection type is unknown");
             }
         }
+        else{
+            for (Map.Entry<String, String> client : clientMap.entrySet()) {
 
+                // Make a copy of the messageView for every player and keeps the original messageView intact
+                GameViewMessage messageViewCopy = new GameViewMessage(this.controller.getGame(), exc);
+
+                // Just before sending the message, we remove the personal goal from the other players
+                for (Player p : messageViewCopy.getPlayers()) {
+                    if (!p.getNickname().equals(client.getKey())){
+                        p.setPersonalGoal(null);
+                    }
+                }
+
+                // For every client we check the connection type and notify the corresponding server
+                if (client.getValue().equals("RMI")) {
+                    try {
+                        serverRMI.notifyClient(client.getKey(), messageViewCopy);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                } else if (client.getValue().equals("SOCKET")) {
+                    serverSocket.notifyClient(messageViewCopy, client.getKey());
+                } else {
+                    System.out.println("Unable to notify " + client.getKey() + " because connection type is unknown");
+                }
+            }
+        }
     }
 
     /**
@@ -182,11 +197,16 @@ public class ServerMain implements PropertyChangeListener {
             if (evt.getPropertyName().equals("LAST PLAYER")) {
                 this.notifyClientsLobby();
                 this.controller.startGame();
-                this.notifyClientsGame();
+                this.notifyClientsGame(null);
             } else
                 this.notifyClientsLobby();
         } else {
-            this.notifyClientsGame();
+            if(evt.getPropertyName().equals("EXCEPTION TRIGGERED")){
+                this.notifyClientsGame((Exception) evt.getNewValue());
+            }
+            else{
+                this.notifyClientsGame(null);
+            }
         }
     }
 

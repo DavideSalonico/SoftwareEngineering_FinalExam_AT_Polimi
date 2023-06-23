@@ -4,6 +4,7 @@ package GC_11.view;
 
 import GC_11.distributed.ClientRMI;
 import GC_11.distributed.socket.ClientSock;
+import GC_11.exceptions.IllegalMoveException;
 import GC_11.network.GameViewMessage;
 import GC_11.model.Message;
 import GC_11.model.Player;
@@ -60,19 +61,26 @@ public class GameCLI extends ViewGame {
     public void run() throws RemoteException {
         boolean show_en = true;
         if (show_en) show();
-        System.out.println("\n\nIT IS THE TURN OF: " + this.modelView.getCurrentPlayer());
-        if (this.modelView.getCurrentPlayer().equals(this.nickname)) {
-            Choice choice = getPlayerChoice();
-            System.out.println("scelta fatta");
-            PropertyChangeEvent evt = new PropertyChangeEvent(
-                    this,
-                    "CHOICE",
-                    null,
-                    choice);
-            this.client.notifyServer(evt);
-        } else {
-            //permettergli di scrivere in chat
+        if(this.modelView.isError()) {
+            System.out.println(this.modelView.getExceptionMessage());
+            return;
         }
+        else{
+            System.out.println("\n\nIT IS THE TURN OF: " + this.modelView.getCurrentPlayer());
+            if (this.modelView.getCurrentPlayer().equals(this.nickname)) {
+                Choice choice = getPlayerChoice();
+                System.out.println("scelta fatta");
+                PropertyChangeEvent evt = new PropertyChangeEvent(
+                        this,
+                        "CHOICE",
+                        null,
+                        choice);
+                this.client.notifyServer(evt);
+            } else {
+                //permettergli di scrivere in chat
+            }
+        }
+
 
         //show_en = true;
 
@@ -162,7 +170,7 @@ public class GameCLI extends ViewGame {
             String input = s.nextLine();
             try {
                 return ChoiceFactory.createChoice(this.modelView.getPlayer(this.nickname), input);
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalMoveException e) {
                 System.err.println("Invalid type: " + input + " Please retake.");
             }
         }

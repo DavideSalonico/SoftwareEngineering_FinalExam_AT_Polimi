@@ -17,7 +17,7 @@ public abstract class Choice implements Serializable {
     protected List<String> params;
     protected Player player;
 
-    public Choice(Player player, List<String> params, ChoiceType type) throws IllegalArgumentException {
+    public Choice(Player player, List<String> params, ChoiceType type) throws IllegalMoveException {
         this.type = type;
         this.player = player;
         this.params = params;

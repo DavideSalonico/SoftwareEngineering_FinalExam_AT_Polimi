@@ -6,7 +6,6 @@ import GC_11.exceptions.IllegalMoveException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
-import java.security.InvalidParameterException;
 import java.util.*;
 
 import static java.lang.Math.abs;
@@ -246,9 +245,9 @@ public class Board implements PropertyChangeListener, Serializable {
         return counter;
     }
 
-    public void changeOrder(List<Integer> positions) throws IllegalArgumentException {
+    public void changeOrder(List<Integer> positions) throws IllegalMoveException {
         if (positions.size() != this.selectedTiles.size())
-            throw new InvalidParameterException("Position numbers are not the same of selected tiles!");
+            throw new IllegalMoveException("Position numbers are not the same of selected tiles!");
 
         Coordinate[] tmp_selected = new Coordinate[selectedTiles.size()];
 
@@ -259,7 +258,7 @@ public class Board implements PropertyChangeListener, Serializable {
         //Controlli finali, non dovrebbero mai essere sollevati
         for (Coordinate tmp_c : tmp_selected) {
             if (tmp_c == null)
-                throw new IllegalArgumentException("Something went wrong!");
+                throw new IllegalMoveException("Something went wrong!");
         }
 
         this.selectedTiles = Arrays.stream(tmp_selected).toList();

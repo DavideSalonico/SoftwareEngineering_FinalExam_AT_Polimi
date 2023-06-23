@@ -9,14 +9,14 @@ import static junit.framework.Assert.*;
 
 public class ChoiceTest {
 
-    @DisplayName("IllegalArgumentException")
+    @DisplayName("IllegalMoveException")
     @Test
-    public void throwsIllegalArgumentException(){
+    public void throwsIllegalMoveException(){
         Player player = new Player("TestPlayer");
         try{
             Choice choice = new Choice(player, "CIAO 7");
-            fail("Choice builder didn't throw the InvalidArgumentException when supposed to");
-        } catch (IllegalArgumentException e){}
+            fail("Choice builder didn't throw the IllegalMoveException when supposed to");
+        } catch (IllegalMoveException e){}
     }
 }
 */

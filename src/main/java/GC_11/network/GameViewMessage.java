@@ -49,6 +49,9 @@ public class GameViewMessage extends MessageView {
             this.error = true;
             this.exceptionMessage = exception.getMessage();
             this.exception = exception;
+            this.currentPlayer = model.getCurrentPlayer().getNickname();
+
+
         } else {
             for (Player p : model.getPlayers()) {
                 this.players.add(new Player(p));

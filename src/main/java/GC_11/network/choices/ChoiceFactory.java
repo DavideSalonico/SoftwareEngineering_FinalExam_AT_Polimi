@@ -1,5 +1,6 @@
 package GC_11.network.choices;
 
+import GC_11.exceptions.IllegalMoveException;
 import GC_11.model.Player;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.StringTokenizer;
 
 public class ChoiceFactory {
 
-    public static Choice createChoice(Player player, String input) {
+    public static Choice createChoice(Player player, String input) throws IllegalMoveException {
         List<String> tmp = new ArrayList<String>();
 
         StringTokenizer st = new StringTokenizer(input);
