@@ -144,6 +144,7 @@ public class ServerClientHandler implements Runnable {
             System.out.println("Ricevuto " + clientMessage + " da " + this.nickname);
             if(this.nickname != null && !this.nickname.isEmpty() && this.server.getServerMain().getClientsMap().size()>1){
                 Choice clientChoice  = ChoiceFactory.createChoice(new Player(this.nickname),clientMessage);
+                System.out.println("Chiamo il controller");
                 this.server.getServerMain().makeAMove(clientChoice);
             }
             //System.out.println("Received choice from client: " + clientChoice);

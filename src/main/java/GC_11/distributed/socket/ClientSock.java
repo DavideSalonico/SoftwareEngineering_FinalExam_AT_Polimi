@@ -91,14 +91,14 @@ public class ClientSock implements PropertyChangeListener {
     public void receiveGameViewFromServer() {
         try {
             GameViewMessage message = (GameViewMessage) in.readObject();
-            //System.out.println("Received gameViewMessage from server: "+message.toString());
+            System.out.println("Received gameViewMessage from server: "+message.toString());
             if (message != null) {
                 this.gameViewMessage = message;
                 if (message.getMessage() != null) {
                     System.out.println(message.getMessage());
                 } else {
                     this.view.propertyChange(new PropertyChangeEvent(this, "gameViewMessage", null, message));
-                    System.out.println(gameViewMessage.toString());
+                    //System.out.println(gameViewMessage.toString());
                 }
             }
             // Una volta ricevuto il messaggio notifico la view
