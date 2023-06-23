@@ -135,7 +135,7 @@ public class ServerMain implements PropertyChangeListener {
                     e.printStackTrace();
                 }
             } else if (client.getValue().equals("SOCKET")) {
-                serverSocket.notifyClient(client.getKey(), messageViewCopy);
+                serverSocket.notifyClient(messageViewCopy, client.getKey());
             } else {
                 System.out.println("Unable to notify " + client.getKey() + " because connection type is unknown");
             }

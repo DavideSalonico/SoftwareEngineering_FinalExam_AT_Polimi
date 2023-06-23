@@ -1,12 +1,15 @@
 package GC_11.view.GUI;
 
+import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.model.Game;
 import GC_11.model.Player;
 import GC_11.model.Tile;
 import GC_11.model.TileColor;
+import GC_11.network.GameViewMessage;
 import GC_11.util.PlayerView;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -30,56 +33,79 @@ import java.util.Map;
 
 public class GUIView extends Application {
 
+    public enum State {
+        YOUR_TURN, WAITING, SELECTING_TILES, SELECTING_COLUMN, END
+    }
+    public State currentState;
+    public String currentPlayerNickname;
+
     // ISTANZA MODEL CONTENUTA TEMPORANEAMENTE, POI CAPIRE COME RICEVERLA IN MANIERA DINAMICA
-
-
     public Game model;
-
-    @FXML
     public Pane root;
-
     public GridPane mainGrid;
     public String clientNickName = "Pippo";  // TEMPORANEAMENTE FISSO A PIPPO DA RIMUOVERE (deve essere ricevuto dal server)
     public Text clientPoints;
     public ImageView personalGoal;
-    @FXML
     public ImageView ICommonGoalCard;
-    @FXML
     public ImageView IICommonGoalCard;
     Tooltip textCommonI;
     Tooltip textCommonII;
-    @FXML
     public GridPane boardGridPane;
-    @FXML
     public GridPane mainShelfGridPane;
-    @FXML
-    public GridPane otherShelfGridPane;
-
-    @FXML
     public ImageView firstPlayerToken;
-
-    @FXML
     public GridPane playerShelf1;
-    @FXML
     public GridPane playerShelf2;
     public ImageView deletableShelf;
-    @FXML
     public GridPane playerShelf3;
-
     public Text player1Name;
     public Text player2Name;
     public Text player3Name;
-
     public Text player1Points;
     public Text player2Points;
     public Text player3Points;
-
     public ButtonBar columnSelector;
-
     double desiredWidth;
     double desiredHeight;
-
     public Button confirmSelection;
+    public Text selectTilesError;
+    public Text selectColumnError;
+
+    // Initialize otherPlayers using PlayerView class as a container for the player's nickname, points and shelf (related to javafx objects)
+    List<PlayerView> otherPlayers = new ArrayList<>();
+    List<Player> others = new ArrayList<>();
+
+    // The following maps contain the images of the tiles that will be used to create the GUI
+    Map<Integer, Image> blueTiles = new HashMap<>();
+    Map<Integer, Image> whiteTiles = new HashMap<>();
+    Map<Integer, Image> greenTiles = new HashMap<>();
+    Map<Integer, Image> yellowTiles = new HashMap<>();
+    Map<Integer, Image> purpleTiles = new HashMap<>();
+    Map<Integer, Image> cyanTiles = new HashMap<>();
+
+
+    /**
+     * This method is used to load the images of the tiles that will be used to create the GUI.
+     */
+    public void loadTilesImages(){
+        // Percorsi dei file immagine
+        String blueTilePath = "src/resources/GraphicalResources/item tiles/Cornici1.";
+        String whiteTilePath = "src/resources/GraphicalResources/item tiles/Libri1.";
+        String greenTilePath = "src/resources/GraphicalResources/item tiles/Gatti1.";
+        String yellowTilePath = "src/resources/GraphicalResources/item tiles/Giochi1.";
+        String purpleTilePath = "src/resources/GraphicalResources/item tiles/Piante1.";
+        String cyanTilePath = "src/resources/GraphicalResources/item tiles/Trofei1.";
+
+
+        for (int i = 1; i <= 3; i++) {
+            blueTiles.put(i, new Image("file:" + blueTilePath + i + ".png"));
+            whiteTiles.put(i, new Image("file:" + whiteTilePath + i + ".png"));
+            greenTiles.put(i, new Image("file:" + greenTilePath + i + ".png"));
+            yellowTiles.put(i, new Image("file:" + yellowTilePath + i + ".png"));
+            purpleTiles.put(i, new Image("file:" + purpleTilePath + i + ".png"));
+            cyanTiles.put(i, new Image("file:" + cyanTilePath + i + ".png"));
+        }
+    }
+
 
     /**
      * Initializes the GUIView automatically when the game starts, all the basic images are loaded and the game is created using
@@ -87,9 +113,11 @@ public class GUIView extends Application {
      */
     @FXML
     public void initialize() {
-        //TODO: Metti in memoria tutte le tile, associa ogni cella ad un immagine, crea la costruzione dinamica delle restanti Shelf (copiandole da quella principale)
 
-        // Imposta le dimensioni della finestra in base alla dimensione dello schermo e alle dimensioni specificate nel file FXML
+        // Load all the images of the tiles
+        loadTilesImages();
+
+        // Save the desired dimensions of the window (specified in the FXML file) in order to resize the window when the game starts
         desiredWidth = root.getPrefWidth();
         desiredHeight = root.getPrefHeight();
 
@@ -102,11 +130,9 @@ public class GUIView extends Application {
         model = new Game(tmpPlayerNames, null);
 
 
-        //Background contains the images of the scene that will be used to create the GUI ( PROBABILMENTE CI PENSA GIA' SceneBuilder in maniera statica)
-        Image[] background = new Image[8];
 
-        // Put current Player's nickname into the chair on GUI
-        Tooltip firstPlayer = new Tooltip("CURRENT PLAYER : " + model.getCurrentPlayer().getNickname());
+        // Put first Player's nickname into the chair on GUI
+        Tooltip firstPlayer = new Tooltip("First PLAYER : " + model.getCurrentPlayer().getNickname());
         Tooltip.install(firstPlayerToken, firstPlayer);
 
         //Get common goal cards from the model
@@ -127,39 +153,6 @@ public class GUIView extends Application {
         ICommonGoalCard.getStyleClass().add("selected-image");
         IICommonGoalCard.getStyleClass().add("selected-image");
 
-        // Config event handler for common goal cards
-        //setupCommonGoalCardEvents();
-
-        //The following maps contain the images of the tiles that will be used to create the GUI
-        // Percorsi dei file immagine
-        String blueTilePath = "src/resources/GraphicalResources/item tiles/Cornici1.";
-        String whiteTilePath = "src/resources/GraphicalResources/item tiles/Libri1.";
-        String greenTilePath = "src/resources/GraphicalResources/item tiles/Gatti1.";
-        String yellowTilePath = "src/resources/GraphicalResources/item tiles/Giochi1.";
-        String purpleTilePath = "src/resources/GraphicalResources/item tiles/Piante1.";
-        String cyanTilePath = "src/resources/GraphicalResources/item tiles/Trofei1.";
-
-        // The following maps contain the images of the tiles that will be used to create the GUI
-        Map<Integer, Image> blueTiles = new HashMap<>();
-        Map<Integer, Image> whiteTiles = new HashMap<>();
-        Map<Integer, Image> greenTiles = new HashMap<>();
-        Map<Integer, Image> yellowTiles = new HashMap<>();
-        Map<Integer, Image> purpleTiles = new HashMap<>();
-        Map<Integer, Image> cyanTiles = new HashMap<>();
-
-        for (int i = 1; i <= 3; i++) {
-            blueTiles.put(i, new Image("file:" + blueTilePath + i + ".png"));
-            whiteTiles.put(i, new Image("file:" + whiteTilePath + i + ".png"));
-            greenTiles.put(i, new Image("file:" + greenTilePath + i + ".png"));
-            yellowTiles.put(i, new Image("file:" + yellowTilePath + i + ".png"));
-            purpleTiles.put(i, new Image("file:" + purpleTilePath + i + ".png"));
-            cyanTiles.put(i, new Image("file:" + cyanTilePath + i + ".png"));
-        }
-
-        // Initialize otherPlayers using PlayerView class as a container for the player's nickname, points and shelf (related to javafx objects)
-
-        List<PlayerView> otherPlayers = new ArrayList<>();
-        List<Player> others = new ArrayList<>();
 
         for (int i = 0; i < model.getPlayers().size(); i++) {
             if (!model.getPlayers().get(i).getNickname().equals(clientNickName)) {
@@ -167,9 +160,9 @@ public class GUIView extends Application {
             } else {
                 clientPoints.setText("YOUR POINTS : " + model.getPlayers().get(i).getPoints());
 
-                // NON FUNZIONA ANCORA BENE CAPISCI PERCHE' (riga sotto)
+                // OGNI TANTO MI TORNA PERSONAL GOAL NULL, CONTROLLARE!!!
                 personalGoal.setImage(new Image("file:" +"src/resources/GraphicalResources/personal goal cards/Personal_Goals" + model.getPlayers().get(i).getPersonalGoal().getId() + ".png"));
-            } //src/resources/GraphicalResources/personal goal cards/Personal_Goals2.png
+            }
         }
 
         // Versione con 4 giocatori
@@ -183,11 +176,12 @@ public class GUIView extends Application {
             otherPlayers.add(new PlayerView(player1Name, player1Points, playerShelf1));
             otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
 
-            // rimuovo la shelf del giocatore al centro (posta staticamente dall'FXML)
+            //remove the shelf of the player in the center (statically placed by the FXML)
             deletableShelf.setImage(null);
             player2Name.setText("");
             player2Points.setText("");
-            // Questa ricerca dinamica delle celle da svuorare non funziona correttamente, cancello i riferimenti manulamente
+
+            // Questa ricerca dinamica delle celle da svuotare non funziona correttamente, cancello i riferimenti manulamente
             /*
             Node cell = getNodeByRowColumnIndex(1, 2, mainGrid);
             if (cell != null && cell instanceof Pane) {
@@ -201,6 +195,8 @@ public class GUIView extends Application {
             */
 
         }
+
+        // Initialize the other players with the data received from the server binding the GUI elements to each player's data
         for (int i = 0; i < others.size(); i++) {
             otherPlayers.get(i).initialize(others.get(i));
         }
@@ -245,30 +241,15 @@ public class GUIView extends Application {
                 Tile t = model.getBoard().getTile(i - 1, j - 1);
                 int id = t.getId() + 1;
                 TileColor tileColor = t.getColor();
-                ImageView image;
-                switch (tileColor) {
-                    case WHITE:
-                        image = new ImageView(whiteTiles.get(id));
-                        break;
-                    case PURPLE:
-                        image = new ImageView(purpleTiles.get(id));
-                        break;
-                    case GREEN:
-                        image = new ImageView(greenTiles.get(id));
-                        break;
-                    case BLUE:
-                        image = new ImageView(blueTiles.get(id));
-                        break;
-                    case CYAN:
-                        image = new ImageView(cyanTiles.get(id));
-                        break;
-                    case YELLOW:
-                        image = new ImageView(yellowTiles.get(id));
-                        break;
-                    default:
-                        image = null;
-                        break;
-                }
+                ImageView image = switch (tileColor) {
+                    case WHITE -> new ImageView(whiteTiles.get(id));
+                    case PURPLE -> new ImageView(purpleTiles.get(id));
+                    case GREEN -> new ImageView(greenTiles.get(id));
+                    case BLUE -> new ImageView(blueTiles.get(id));
+                    case CYAN -> new ImageView(cyanTiles.get(id));
+                    case YELLOW -> new ImageView(yellowTiles.get(id));
+                    default -> null;
+                };
                 if (image != null) {
                     image.getStyleClass().add("selected-image");
 
@@ -285,7 +266,17 @@ public class GUIView extends Application {
     }
 
 
-    // Metodo ausiliario per ottenere il nodo della cella dalla riga e colonna
+    public void updateView(GameViewMessage message){
+        //TODO: update the view with the data received from the server
+    }
+
+
+    /**
+     * Method that returns the node from the GridPane given the row and column index
+     * @param column column
+     * @param gridPane reference to GUI component
+     * @ return Node reference, null if the node is not found
+     */
     private Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
         Node result = null;
         ObservableList<Node> children = gridPane.getChildren();
@@ -306,9 +297,9 @@ public class GUIView extends Application {
 
     /**
      * Method that returns the ImageView from the GridPane given the row and column index
-     * @param gridPane
-     * @param targetRowIndex
-     * @param targetColumnIndex
+     * @param gridPane reference
+     * @param targetRowIndex line
+     * @param targetColumnIndex column
      * @return ImageView reference, null if the ImageView is not found
      */
     public ImageView getImageViewFromGridPane(GridPane gridPane, int targetRowIndex, int targetColumnIndex) {
@@ -330,8 +321,8 @@ public class GUIView extends Application {
 
     /**
      * Method that removes the tile from the board given the row and column index
-     * @param row
-     * @param column
+     * @param row line
+     * @param column column
      */
     public void removeTileFromBoard(int row, int column) {
         ImageView image = getImageViewFromGridPane(boardGridPane, row, column);
@@ -340,7 +331,10 @@ public class GUIView extends Application {
 
 
     private List<ImageView> selectedImages = new ArrayList<>();
-
+    /**
+     * Method that set up the event handler for the ImageView to show it selected when clicked (MAX 3 tiles selected)
+     * @param imageView ImageView to set up
+     */
     private void setupImageViewSelection(ImageView imageView) {
         final String SELECTED_STYLE_CLASS = "selected-tile";
 
@@ -360,7 +354,163 @@ public class GUIView extends Application {
         });
     }
 
-    //Method that will be called when the game starts
+    /**
+     * Method bound to the button "Confirm" that will send the request to the server after the user has selected the tiles to draw from the board
+     */
+    public void selectionTilesConfirmed(){
+        if(selectedImages.size() == 0){
+            System.out.println("Select at least one tile !");
+        }else{
+            System.out.println("Request to server...");
+            // Make the request to the server
+        }
+    }
+
+
+    int columnSelected = 0;
+    /**
+     * Method bound to every button of the column selector that will set the columnSelected variable to the column selected
+     * @param event to get the id of the button pressed
+     */
+    public void selectColumn(ActionEvent event){
+        Button button = (Button) event.getSource();
+        columnSelected = columnSelector.getButtons().indexOf(button) + 1;
+        System.out.println("Column selected: " + columnSelected);
+    }
+
+    /**
+     * Method bound to the button "Confirm" that will send the request to the server after the user has selected the column where to place the tile
+     */
+    public void columnSelectionConfirmed(){
+        if(columnSelected != 0) {
+            System.out.println("Select first the column !");
+        }else {
+            System.out.println("Request to server...");
+            // Make the request to the server
+        }
+    }
+
+
+    /**
+     * It finds the PlayerView from the nickname between the otherPlayers list
+     * @param nickname of the player
+     * @return PlayerView reference, null if the player is not found
+     */
+    public PlayerView getPlayerViewFromNickname(String nickname){
+        for(PlayerView playerView : otherPlayers){
+            if(playerView.getClientNickName().getText().equals(nickname)){
+                return playerView;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Method that updates Shelf and Points of the player given as parameter
+     * @param player to update
+     * @throws ColumnIndexOutOfBoundsException if the player is not found
+     */
+    public void updatePlayer(Player player) throws ColumnIndexOutOfBoundsException {
+        PlayerView playerView = getPlayerViewFromNickname(player.getNickname());
+        if (playerView != null) {
+            updateBoard(player, playerView.getShelf());
+            updatePoints(player, playerView.getPoints());
+        }
+    }
+
+    /**
+     * Method that updates the Board of the player
+     * @param player to update
+     * @param shelf GridPane reference
+     * @throws ColumnIndexOutOfBoundsException if the player is not found
+     */
+    public void updateBoard(Player player, GridPane shelf) throws ColumnIndexOutOfBoundsException {
+        for (int i = 1; i < 6; i++) {  //COLUMNS
+            for (int j = 1; j < 7; j++) {  //ROWS
+                Tile t = player.getShelf().getTile(j, i);
+                int id = t.getId() + 1;
+                TileColor tileColor = t.getColor();
+                ImageView image = switch (tileColor) {
+                    case WHITE -> new ImageView(whiteTiles.get(id));
+                    case PURPLE -> new ImageView(purpleTiles.get(id));
+                    case GREEN -> new ImageView(greenTiles.get(id));
+                    case BLUE -> new ImageView(blueTiles.get(id));
+                    case CYAN -> new ImageView(cyanTiles.get(id));
+                    case YELLOW -> new ImageView(yellowTiles.get(id));
+                    default -> null;
+                };
+
+                if(image != null) {
+                    image.setFitHeight(29);
+                    image.setFitWidth(29);
+                    shelf.add(image, i, j);
+                }
+            }
+        }
+    }
+
+    /**
+     * Method that updates the points of the player
+     * @param player to update
+     * @param points Text reference
+     */
+    public void updatePoints(Player player, Text points){
+        points.setText("Points: " + player.getPoints());
+    }
+
+
+    /**
+     * Method that updates the Board of the client who is using the GUI
+     * @param player
+     * @throws ColumnIndexOutOfBoundsException
+     */
+    public void updateClientShelf(Player player) throws ColumnIndexOutOfBoundsException {
+        for (int i = 1; i < 6; i++) {  //COLUMNS
+            for (int j = 1; j < 7; j++) {  //ROWS
+                Tile t = player.getShelf().getTile(j, i);
+                int id = t.getId() + 1;
+                TileColor tileColor = t.getColor();
+                ImageView image = switch (tileColor) {
+                    case WHITE -> new ImageView(whiteTiles.get(id));
+                    case PURPLE -> new ImageView(purpleTiles.get(id));
+                    case GREEN -> new ImageView(greenTiles.get(id));
+                    case BLUE -> new ImageView(blueTiles.get(id));
+                    case CYAN -> new ImageView(cyanTiles.get(id));
+                    case YELLOW -> new ImageView(yellowTiles.get(id));
+                    default -> null;
+                };
+
+                if(image != null) {
+                    image.setFitHeight(50);  //Other players shelf size is 29x29!
+                    image.setFitWidth(50);
+                    mainShelfGridPane.add(image, i, j);  //Add the image to specif Shelf
+                }
+            }
+        }
+    }
+
+    /**
+     * Method that updates the points of the client who is using the GUI
+     * @param player
+     */
+    public void updateClientPoints(Player player){
+        clientPoints.setText("Points: " + player.getPoints());
+    }
+
+
+    public void setBoardError(String error){
+        selectTilesError.setText(error);
+    }
+
+    public void setColumnError(String error){
+        selectColumnError.setText(error);
+    }
+
+
+    /**
+     * Method that will be called when the game starts
+     * @param primaryStage Stage reference
+     */
     @Override
     public void start(Stage primaryStage) throws IOException {
 
@@ -397,9 +547,6 @@ public class GUIView extends Application {
     }
 
 
-    public void launchApp() {
-        launch();
-    }
 
 
 }

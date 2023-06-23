@@ -41,7 +41,7 @@ public class GameCLI extends ViewGame {
         this.client = client;
     }
 
-    public GameCLI(ClientSock client) {
+    public GameCLI(String nickname,ClientSock client) {
         super();
         this.player = player;
         this.nickname = nickname;
