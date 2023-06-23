@@ -95,9 +95,8 @@ public class Controller implements PropertyChangeListener {
             throw new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer() + "'s turn");
         }
 
-        checkExpectedMove();
-
         try {
+            checkExpectedMove();
             choice.executeOnServer(this);
         } catch (IllegalArgumentException e) {
             this.model.triggerException(e);
@@ -111,7 +110,6 @@ public class Controller implements PropertyChangeListener {
 
     public void resetTurn(List<String> params) {
         if (params.size() != 0) throw new IllegalArgumentException("There shouldn't be options for this command!");
-
         this.model.getBoard().resetSelectedTiles();
     }
 
@@ -165,7 +163,6 @@ public class Controller implements PropertyChangeListener {
         } catch (IllegalMoveException e) {
             throw new InvalidParameterException("You can't pick this tile!");
         }
-
     }
 
     public void pickColumn(List<String> parameters) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException, RemoteException, IllegalMoveException {
