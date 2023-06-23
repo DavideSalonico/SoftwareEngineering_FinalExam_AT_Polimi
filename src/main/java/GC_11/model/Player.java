@@ -56,7 +56,7 @@ public class Player implements PropertyChangeListener, Serializable {
         this.pointsAdjacency = p.getPointsAdjacency();
     }
 
-    //Solo per test, da cancellare
+    //Solo per test, da cancellare. OCCHIO viene usato dal ServerSocket
     public Player(String nickname) {
         this.nickname = nickname;
         this.shelf = new Shelf();

@@ -18,7 +18,7 @@ public class Tile implements Serializable {
 
     public Tile() {
         this.color = TileColor.randomColor();
-    }
+    } //TODO: to add random int
 
     /**
      * Duplicate Tile constructor
@@ -28,7 +28,6 @@ public class Tile implements Serializable {
     public Tile(Tile t) {
         this.color = t.getColor();
         this.id = t.getId();
-
     }
 
     public Tile(TileColor color, int id) {
