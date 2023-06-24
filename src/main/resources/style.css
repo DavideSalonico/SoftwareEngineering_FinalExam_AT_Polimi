@@ -167,7 +167,7 @@
     -fx-background-color: #444;
 }
 
-#chatTextArea3 {
+.text-area {
     -fx-control-inner-background: #222;
     -fx-text-fill: white;
     -fx-padding: 5px;
@@ -175,20 +175,20 @@
     -fx-background-color: transparent;
 }
 
-#chatTextArea3 .paragraph {
+.text-area .paragraph {
     -fx-text-indent: 20px;
 }
 
 
-#chatTextArea3 .scroll-bar {
+.text-area .scroll-bar {
     -fx-background-color: #333;
 }
 
-#chatTextArea3 .thumb {
+.text-area .thumb {
     -fx-background-color: #666;
 }
 
-#chatTextArea3 .track {
+.text-area .track {
     -fx-background-color: #444;
 }
 

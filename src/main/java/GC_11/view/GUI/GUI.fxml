@@ -153,7 +153,7 @@
                               <DropShadow />
                            </effect>
                            <font>
-                              <Font size="6.0" />
+                              <Font size="8.0" />
                            </font></Button>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="BAG" translateX="-40.0" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
                            <font>
@@ -219,17 +219,17 @@
                         </ImageView>
                   <ImageView fx:id="firstImage" fitHeight="44.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
                      <image>
-                        <Image url="@../../../../../resources/GraphicalResources/item%20tiles/Cornici1.3.png" />
+                        <Image url="@../../../../../resources/GraphicalResources/item tiles/Cornici1.3.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="secondImage" fitHeight="42.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="45.0" GridPane.rowIndex="2">
                      <image>
-                        <Image url="@../../../../../resources/GraphicalResources/item%20tiles/Gatti1.2.png" />
+                        <Image url="@../../../../../resources/GraphicalResources/item tiles/Gatti1.2.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="thirdImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="90.0" GridPane.rowIndex="2">
                      <image>
-                        <Image url="@../../../../../resources/GraphicalResources/item%20tiles/Trofei1.3.png" />
+                        <Image url="@../../../../../resources/GraphicalResources/item tiles/Trofei1.3.png" />
                      </image>
                   </ImageView>
                   <Button fx:id="firstTile" mnemonicParsing="false" onAction="#setTileOrder" prefHeight="32.0" prefWidth="38.0" text="1" textFill="WHITE" GridPane.rowIndex="2">
@@ -373,7 +373,7 @@
             <DropShadow />
          </effect>
         </ImageView>
-        <ImageView fitHeight="40.0" fitWidth="174.0" layoutX="779.0" layoutY="681.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="40.0" fitWidth="174.0" layoutX="772.0" layoutY="683.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../../../../../resources/GraphicalResources/Logo_Politecnico_Milano .png" />
             </image>
@@ -381,7 +381,7 @@
             <DropShadow />
          </effect>
         </ImageView>
-        <Text fontSmoothingType="LCD" layoutX="959.0" layoutY="388.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHAT" wrappingWidth="52.40000000000009">
+        <Text fontSmoothingType="LCD" layoutX="959.0" layoutY="401.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHAT" wrappingWidth="52.40000000000009">
             <font>
                 <Font name="System Bold Italic" size="17.0" />
             </font>
@@ -422,7 +422,7 @@
       </Text>
       <Text layoutX="926.0" layoutY="710.0" strokeType="OUTSIDE" strokeWidth="0.0" text="X">
          <font>
-            <Font name="System Bold" size="24.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Text>
       <TabPane fx:id="tabPane" layoutX="910.0" layoutY="407.0" prefHeight="176.0" prefWidth="151.0" tabClosingPolicy="UNAVAILABLE">

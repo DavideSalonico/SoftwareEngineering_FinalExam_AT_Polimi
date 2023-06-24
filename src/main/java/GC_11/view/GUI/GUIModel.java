@@ -68,6 +68,7 @@ public class GUIModel extends ViewGame {
         if (this.modelView.isError()) {
             view.setError(this.modelView.getExceptionMessage());
         }else{
+            view.setError("");
             this.view.updatePlayer(modelView.getBoard(),modelView.getPlayer(modelView.getCurrentPlayer()));
         }
     }
