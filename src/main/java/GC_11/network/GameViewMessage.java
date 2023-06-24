@@ -56,7 +56,7 @@ public class GameViewMessage extends MessageView {
         this.commonGoals = model.getCommonGoal(); //TODO passarle per valore e non copiare l'oggetto
         this.currentPlayer = model.getCurrentPlayer().getNickname();
         this.endGame = model.isEndGame();
-        this.endPlayer = model.getEndPlayer().getNickname();
+        if(model.getEndPlayer() != null) this.endPlayer = model.getEndPlayer().getNickname();
         this.board = new Board(model.getBoard());
     }
 
