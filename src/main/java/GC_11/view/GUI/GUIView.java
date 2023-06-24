@@ -217,8 +217,8 @@ public class GUIView extends Application {
                 imageView3.setFitHeight(29);
                 imageView3.setFitWidth(29);
 
-                imageView4.setFitHeight(50);
-                imageView4.setFitWidth(50);
+                imageView4.setFitHeight(45);
+                imageView4.setFitWidth(45);
 
                 playerShelf1.add(imageView1, i, j);
                 playerShelf2.add(imageView2, i, j);
@@ -414,8 +414,8 @@ public class GUIView extends Application {
                 };
 
                 if(image != null) {
-                    image.setFitHeight(29);
-                    image.setFitWidth(29);
+                    image.setFitHeight(35);
+                    image.setFitWidth(35);
                     shelf.add(image, i, j);
                 }
             }
@@ -501,8 +501,8 @@ public class GUIView extends Application {
                     // This line add the event handler to the image which show it selected when clicked (MAX 3 tiles selected)
                     setupImageViewSelection(image);
 
-                    image.setFitHeight(43);
-                    image.setFitWidth(43);
+                    image.setFitHeight(35);
+                    image.setFitWidth(35);
                     boardGridPane.add(image, i, j);
                 }
             }
