@@ -87,12 +87,14 @@ public class Controller implements PropertyChangeListener {
 
         if (!checkTurn()) {
             this.model.triggerException(new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer().getNickname() + "'s turn"));
+            return;
         }
 
         try {
             checkExpectedMove();
         } catch (IllegalMoveException e) {
             this.model.triggerException(e);
+            return;
         }
 
         choice.executeOnServer(this);
@@ -104,8 +106,10 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void resetTurn(List<String> params) throws RemoteException {
-        if (params.size() != 0)
+        if (params.size() != 0){
             this.model.triggerException(new IllegalMoveException("There shouldn't be options for this command!"));
+            return;
+        }
         this.model.getBoard().resetTurn();
     }
 
@@ -135,8 +139,10 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void deselectTile(List<String> params) throws RemoteException {
-        if (params.size() != 0)
+        if (params.size() != 0){
             this.model.triggerException(new IllegalMoveException("There shouldn't be parameters for this command!"));
+            return;
+        }
 
         try {
             this.model.getBoard().deselectTile();
@@ -146,19 +152,26 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void selectTile(List<String> parameters) throws RemoteException {
-        if (parameters.size() != 2)
+        if (parameters.size() != 2) {
             this.model.triggerException(new IllegalMoveException("There should be 2 parameters for this command!"));
+            return;
+        }
         Integer row = -1, col = -1;
         try {
             row = Integer.parseInt(parameters.get(0));
             col = Integer.parseInt(parameters.get(1));
         } catch (NumberFormatException e) {
             this.model.triggerException(e);
+            return;
         }
-        if (row < 0 || row >= 9 || col < 0 || col >= 9)
+        if (row < 0 || row >= 9 || col < 0 || col >= 9){
             this.model.triggerException(new IllegalMoveException("Row or column out of bound!"));
-        if (this.model.getBoard().getSelectedTiles().size() >= min(3, this.model.getCurrentPlayer().getShelf().maxFreeVerticalSpaces()))
+            return;
+        }
+        if (this.model.getBoard().getSelectedTiles().size() >= min(3, this.model.getCurrentPlayer().getShelf().maxFreeVerticalSpaces())){
             this.model.triggerException(new IllegalMoveException("You can't select more tiles! You've already selected 3 or you don't have enough space in your shelf"));
+            return;
+        }
 
         try {
             this.model.getBoard().selectTile(row, col);
@@ -174,6 +187,7 @@ public class Controller implements PropertyChangeListener {
             column = paramsToColumnIndex(parameters);
         } catch (IllegalMoveException e) {
             this.model.triggerException(e);
+            return;
         }
         //TODO: Da rivedere, se possibile farlo senza creare una lista di appoggio
         List<Tile> tmp_tiles = new ArrayList<Tile>();
@@ -196,6 +210,7 @@ public class Controller implements PropertyChangeListener {
             }
         } catch (NotEnoughFreeSpacesException | ColumnIndexOutOfBoundsException e) {
             this.model.triggerException(e);
+            return;
         }
 
         if(end){
@@ -221,8 +236,10 @@ public class Controller implements PropertyChangeListener {
     public void chooseOrder(List<String> parameters) throws RemoteException {
         //Integer parameters control
         Integer tilesSize = this.model.getBoard().getSelectedTiles().size();
-        if (parameters.size() != tilesSize)
+        if (parameters.size() != tilesSize) {
             this.model.triggerException(new IllegalMoveException("There shouldn't be options for this command!"));
+            return;
+        }
         List<Integer> ind = new ArrayList<>();
         for (int i = 0; i < tilesSize; i++) {
             ind.add(null);
@@ -231,19 +248,24 @@ public class Controller implements PropertyChangeListener {
             for (int i = 0; i < tilesSize; i++) {
                 ind.set(i, Integer.parseInt(parameters.get(i)));
             }
-        } catch (NumberFormatException e) {
-            this.model.triggerException(new IllegalMoveException("Invalid format. Order list must be made by integers!"));
+        } catch (NumberFormatException|IndexOutOfBoundsException e) {
+            this.model.triggerException(new IllegalMoveException("Invalid format!"));
+            return;
         }
         //Not out of bound index control
         for (int i = 0; i < tilesSize; i++) {
-            if (ind.get(i) < 0 || ind.get(i) > tilesSize)
+            if (ind.get(i) < 0 || ind.get(i) > tilesSize) {
                 this.model.triggerException(new IllegalMoveException("Invalid order. Some index are out of bound!"));
+                return;
+            }
         }
         //No duplicates control
         for (int i = 0; i < tilesSize; i++) {
             for (int j = i + 1; j < tilesSize; j++) {
-                if (ind.get(i).equals(ind.get(j)))
+                if (ind.get(i).equals(ind.get(j))) {
                     this.model.triggerException(new IllegalMoveException("Invalid order. There are some duplicate positions!"));
+                    return;
+                }
             }
         }
 
@@ -267,15 +289,22 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void sendMessage(List<String> parameters) throws RemoteException {
-        if (parameters.size() != 2)
+        if (parameters.size() != 2){
             this.model.triggerException(new IllegalMoveException("There should be exactly two options for this command!"));
-        if (parameters.get(0).length() >= 64 || parameters.get(1).length() >= 64)
+            return;
+        }
+        if (parameters.get(0).length() >= 64 || parameters.get(1).length() >= 64){
             this.model.triggerException(new IllegalMoveException("Message too long"));
-        if(!this.model.getPlayers().stream().map(i -> i.getNickname()).toList().contains(parameters.get(0)) || !parameters.get(0).equals("Everyone"))
+            return;
+        }
+        if(!this.model.getPlayers().stream().map(i -> i.getNickname()).toList().contains(parameters.get(0)) || !parameters.get(0).equals("Everyone")){
             this.model.triggerException(new IllegalMoveException("Player not found!"));
-        if (parameters.get(0).equals(this.model.getCurrentPlayer().getNickname()))
+            return;
+        }
+        if (parameters.get(0).equals(this.model.getCurrentPlayer().getNickname())){
             this.model.triggerException(new IllegalMoveException("You can't send a message to yourself!"));
-
+            return;
+        }
         if (parameters.get(0).equals("Everyone"))
             this.model.getChat().sendMessageToMainChat(this.model.getCurrentPlayer(), parameters.get(1));
         else
