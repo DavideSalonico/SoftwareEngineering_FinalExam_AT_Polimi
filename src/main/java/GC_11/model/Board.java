@@ -131,7 +131,7 @@ public class Board implements PropertyChangeListener, Serializable {
 
     public void selectTile(int l, int c) throws IllegalMoveException {
         if (!this.isPlayable(l, c) || this.freeSides(l, c) == 0 || this.selectedTiles.size() == 3)
-            throw new IllegalMoveException("You can't pick this Tile!");
+            throw new IllegalMoveException("You can't pick this Tile: it's not playable!");
         if (this.selectedTiles.size() == 0) {
             this.selectedTiles.add(new Coordinate(l, c));
             PropertyChangeEvent evt = new PropertyChangeEvent(
@@ -154,7 +154,7 @@ public class Board implements PropertyChangeListener, Serializable {
                             new Coordinate(l, c));
                     this.listener.propertyChange(evt);
                 } else {
-                    throw new IllegalMoveException("You can't pick this Tile!");
+                    throw new IllegalMoveException("You can't pick this Tile: You're not selecting a Tile adjacent to the first one!");
                 }
             } else {
                 if (this.selectedTiles.get(0).getRow() == this.selectedTiles.get(1).getRow()) {
@@ -169,7 +169,7 @@ public class Board implements PropertyChangeListener, Serializable {
                                 new Coordinate(l, c));
                         this.listener.propertyChange(evt);
                     } else
-                        throw new IllegalMoveException("You can't pick this Tile!");
+                        throw new IllegalMoveException("You can't pick this Tile: You're not selecting a Tile adjacent to the first ones!");
                 } else {
                     int max = this.selectedTiles.stream().mapToInt(Coordinate::getRow).max().orElseThrow(NoSuchElementException::new);
                     int min = this.selectedTiles.stream().mapToInt(Coordinate::getRow).min().orElseThrow(NoSuchElementException::new);
@@ -182,7 +182,7 @@ public class Board implements PropertyChangeListener, Serializable {
                                 new Coordinate(l, c));
                         this.listener.propertyChange(evt);
                     } else
-                        throw new IllegalMoveException("You can't pick this Tile!");
+                        throw new IllegalMoveException("You can't pick this Tile! You're not selecting a Tile adjacent to the first ones!");
 
                 }
 

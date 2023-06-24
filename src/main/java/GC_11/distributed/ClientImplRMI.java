@@ -96,7 +96,6 @@ public class ClientImplRMI extends UnicastRemoteObject implements ClientRMI {
                 null,
                 newView);
         this.viewGame.propertyChange(evt);
-
     }
 
     public String getNickname() {

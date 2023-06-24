@@ -79,7 +79,7 @@ public class Controller implements PropertyChangeListener {
      * @return True if it's the current Player
      */
     public boolean checkTurn() {
-        return model.getCurrentPlayer().equals(choice.getPlayer());
+        return model.getCurrentPlayer().getNickname().equals(choice.getPlayer().getNickname());
     }
 
     public void update(Choice choice) throws RemoteException {

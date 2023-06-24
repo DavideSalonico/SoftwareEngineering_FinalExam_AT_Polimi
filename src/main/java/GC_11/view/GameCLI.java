@@ -103,40 +103,39 @@ public class GameCLI extends ViewGame {
     public void show() {
         if (this.modelView.isError()) {
             System.out.println(this.modelView.getExceptionMessage());
-            return;
         }
+        else {
+            //Player current = this.modelView.getCurrentPlayer();
+            System.out.println("*****************************************************");
 
-        //Player current = this.modelView.getCurrentPlayer();
-        System.out.println("*****************************************************");
+            //Printing Board
+            this.modelView.getBoard().print();
 
-        //Printing Board
-        this.modelView.getBoard().print();
-
-        //Printing CommonGoalCards
-        int i = 1;
-        for (CommonGoalCard common : this.modelView.getCommonGoalCards()) {
-            System.out.println("Common goal " + i + ": " + common.getText());
-            i++;
-        }
-
-        //Printing Players with relative objects
-        for (Player p : this.modelView.getPlayers()) {
-            System.out.println("\n\n----------------------------------");
-            System.out.println("Player : " + p.getNickname());
-            System.out.println("Points from CommonGoalCards: " + p.getPointsCommonGoals());
-            System.out.println("Points from PersonalGoalCard: " + p.getPointsPersonalGoal());
-            System.out.println("Points from Adjacency: " + p.getPointsAdjacency());
-            System.out.println("Total Points: " + p.getPoints() + "\n");
-            System.out.println("this is " + p.getNickname() + "'s shelf:");
-            p.getShelf().print();
-            if (this.nickname.equals(p.getNickname())) {
-                //Printing Personal Goal Card
-                System.out.println("\nPersonal Goal: ");
-                p.getPersonalGoal().print();
+            //Printing CommonGoalCards
+            int i = 1;
+            for (CommonGoalCard common : this.modelView.getCommonGoalCards()) {
+                System.out.println("Common goal " + i + ": " + common.getText());
+                i++;
             }
-        }
 
-        //Printing Main Chat
+            //Printing Players with relative objects
+            for (Player p : this.modelView.getPlayers()) {
+                System.out.println("\n\n----------------------------------");
+                System.out.println("Player : " + p.getNickname());
+                System.out.println("Points from CommonGoalCards: " + p.getPointsCommonGoals());
+                System.out.println("Points from PersonalGoalCard: " + p.getPointsPersonalGoal());
+                System.out.println("Points from Adjacency: " + p.getPointsAdjacency());
+                System.out.println("Total Points: " + p.getPoints() + "\n");
+                System.out.println("this is " + p.getNickname() + "'s shelf:");
+                p.getShelf().print();
+                if (this.nickname.equals(p.getNickname())) {
+                    //Printing Personal Goal Card
+                    System.out.println("\nPersonal Goal: ");
+                    p.getPersonalGoal().print();
+                }
+            }
+
+            //Printing Main Chat
         /*
         System.out.println("\n\n----------------------------------");
         System.out.println("Main Chat: ");
@@ -154,6 +153,7 @@ public class GameCLI extends ViewGame {
         }
 
          */
+        }
     }
 
     public Choice getPlayerChoice() {
