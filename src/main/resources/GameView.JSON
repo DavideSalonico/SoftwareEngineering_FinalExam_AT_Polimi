@@ -91,16 +91,16 @@
           "id": 0
         },
         {
-          "color": "EMPTY",
+          "color": "PURPLE",
+          "id": 2
+        },
+        {
+          "color": "PURPLE",
           "id": 0
         },
         {
-          "color": "EMPTY",
-          "id": 0
-        },
-        {
-          "color": "EMPTY",
-          "id": 0
+          "color": "BLUE",
+          "id": 1
         },
         {
           "color": "PROHIBITED",
@@ -121,99 +121,15 @@
           "id": 0
         },
         {
-          "color": "EMPTY",
-          "id": 0
-        },
-        {
-          "color": "EMPTY",
-          "id": 0
-        },
-        {
-          "color": "EMPTY",
-          "id": 0
-        },
-        {
-          "color": "EMPTY",
-          "id": 0
-        },
-        {
-          "color": "EMPTY",
-          "id": 0
-        },
-        {
-          "color": "EMPTY",
-          "id": 0
-        },
-        {
-          "color": "PROHIBITED",
-          "id": 0
-        },
-        {
-          "color": "PROHIBITED",
-          "id": 0
-        }
-      ],
-      [
-        {
-          "color": "PROHIBITED",
-          "id": 0
-        },
-        {
-          "color": "PURPLE",
-          "id": 1
-        },
-        {
-          "color": "BLUE",
-          "id": 1
-        },
-        {
           "color": "PURPLE",
           "id": 0
-        },
-        {
-          "color": "BLUE",
-          "id": 2
-        },
-        {
-          "color": "GREEN",
-          "id": 2
         },
         {
           "color": "WHITE",
           "id": 1
         },
         {
-          "color": "EMPTY",
-          "id": 0
-        },
-        {
-          "color": "PROHIBITED",
-          "id": 0
-        }
-      ],
-      [
-        {
-          "color": "PROHIBITED",
-          "id": 0
-        },
-        {
-          "color": "PROHIBITED",
-          "id": 0
-        },
-        {
-          "color": "CYAN",
-          "id": 1
-        },
-        {
-          "color": "CYAN",
-          "id": 1
-        },
-        {
-          "color": "PURPLE",
-          "id": 1
-        },
-        {
-          "color": "BLUE",
+          "color": "YELLOW",
           "id": 1
         },
         {
@@ -221,6 +137,52 @@
           "id": 2
         },
         {
+          "color": "BLUE",
+          "id": 0
+        },
+        {
+          "color": "PURPLE",
+          "id": 1
+        },
+        {
+          "color": "PROHIBITED",
+          "id": 0
+        },
+        {
+          "color": "PROHIBITED",
+          "id": 0
+        }
+      ],
+      [
+        {
+          "color": "PROHIBITED",
+          "id": 0
+        },
+        {
+          "color": "YELLOW",
+          "id": 2
+        },
+        {
+          "color": "YELLOW",
+          "id": 1
+        },
+        {
+          "color": "BLUE",
+          "id": 1
+        },
+        {
+          "color": "CYAN",
+          "id": 1
+        },
+        {
+          "color": "GREEN",
+          "id": 2
+        },
+        {
+          "color": "BLUE",
+          "id": 1
+        },
+        {
           "color": "EMPTY",
           "id": 0
         },
@@ -239,11 +201,11 @@
           "id": 0
         },
         {
-          "color": "PROHIBITED",
-          "id": 0
+          "color": "YELLOW",
+          "id": 1
         },
         {
-          "color": "BLUE",
+          "color": "CYAN",
           "id": 0
         },
         {
@@ -251,8 +213,46 @@
           "id": 0
         },
         {
-          "color": "BLUE",
+          "color": "YELLOW",
+          "id": 1
+        },
+        {
+          "color": "GREEN",
+          "id": 1
+        },
+        {
+          "color": "EMPTY",
+          "id": 0
+        },
+        {
+          "color": "PROHIBITED",
+          "id": 0
+        }
+      ],
+      [
+        {
+          "color": "PROHIBITED",
+          "id": 0
+        },
+        {
+          "color": "PROHIBITED",
+          "id": 0
+        },
+        {
+          "color": "PROHIBITED",
+          "id": 0
+        },
+        {
+          "color": "CYAN",
           "id": 2
+        },
+        {
+          "color": "WHITE",
+          "id": 2
+        },
+        {
+          "color": "PURPLE",
+          "id": 1
         },
         {
           "color": "PROHIBITED",
@@ -281,7 +281,7 @@
           "id": 0
         },
         {
-          "color": "WHITE",
+          "color": "GREEN",
           "id": 0
         },
         {
@@ -346,49 +346,49 @@
     ],
     "selectedTiles": [
       {
-        "row": 7,
-        "column": 3
+        "row": 3,
+        "column": 1
       }
     ]
   },
   "players": [
     {
-      "nickname": "dado",
+      "nickname": "Mattia",
       "pointsCommonGoals": 0,
       "pointsPersonalGoal": 1,
       "pointsAdjacency": 0,
       "personalGoal": {
-        "id": 1,
+        "id": 7,
         "goalList": [
           {
             "row": 5,
-            "col": 4,
-            "color": "BLUE"
+            "col": 3,
+            "color": "YELLOW"
           },
           {
             "row": 4,
             "col": 3,
-            "color": "CYAN"
-          },
-          {
-            "row": 3,
-            "col": 4,
             "color": "WHITE"
           },
           {
-            "row": 2,
+            "row": 3,
             "col": 0,
-            "color": "GREEN"
+            "color": "PURPLE"
           },
           {
             "row": 2,
             "col": 2,
-            "color": "YELLOW"
+            "color": "CYAN"
           },
           {
             "row": 1,
             "col": 1,
-            "color": "PURPLE"
+            "color": "GREEN"
+          },
+          {
+            "row": 0,
+            "col": 4,
+            "color": "BLUE"
           }
         ]
       },
@@ -396,7 +396,29 @@
         "myShelf": [
           [
             {
-              "color": "YELLOW",
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            }
+          ],
+          [
+            {
+              "color": "EMPTY",
               "id": 0
             },
             {
@@ -418,8 +440,8 @@
           ],
           [
             {
-              "color": "YELLOW",
-              "id": 2
+              "color": "EMPTY",
+              "id": 0
             },
             {
               "color": "EMPTY",
@@ -440,32 +462,50 @@
           ],
           [
             {
-              "color": "GREEN",
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            }
+          ],
+          [
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "WHITE",
               "id": 1
             },
             {
               "color": "EMPTY",
               "id": 0
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
             }
           ],
           [
             {
-              "color": "WHITE",
-              "id": 2
-            },
-            {
               "color": "EMPTY",
               "id": 0
             },
@@ -477,49 +517,9 @@
               "color": "EMPTY",
               "id": 0
             },
-            {
-              "color": "EMPTY",
-              "id": 0
-            }
-          ],
-          [
             {
               "color": "BLUE",
               "id": 2
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
-            }
-          ],
-          [
-            {
-              "color": "PURPLE",
-              "id": 0
-            },
-            {
-              "color": "WHITE",
-              "id": 1
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
             },
             {
               "color": "EMPTY",
@@ -530,42 +530,42 @@
       }
     },
     {
-      "nickname": "ram",
+      "nickname": "Dado",
       "pointsCommonGoals": 0,
       "pointsPersonalGoal": 1,
       "pointsAdjacency": 0,
       "personalGoal": {
-        "id": 9,
+        "id": 10,
         "goalList": [
           {
             "row": 5,
             "col": 3,
-            "color": "PURPLE"
+            "color": "CYAN"
           },
           {
             "row": 4,
-            "col": 1,
-            "color": "BLUE"
+            "col": 4,
+            "color": "GREEN"
           },
           {
             "row": 3,
-            "col": 3,
-            "color": "GREEN"
+            "col": 2,
+            "color": "BLUE"
           },
           {
             "row": 2,
             "col": 0,
-            "color": "WHITE"
+            "color": "YELLOW"
           },
           {
             "row": 1,
             "col": 1,
-            "color": "YELLOW"
+            "color": "WHITE"
           },
           {
             "row": 0,
-            "col": 4,
-            "color": "CYAN"
+            "col": 2,
+            "color": "PURPLE"
           }
         ]
       },
@@ -573,8 +573,30 @@
         "myShelf": [
           [
             {
-              "color": "CYAN",
-              "id": 2
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            }
+          ],
+          [
+            {
+              "color": "EMPTY",
+              "id": 0
             },
             {
               "color": "EMPTY",
@@ -595,8 +617,8 @@
           ],
           [
             {
-              "color": "BLUE",
-              "id": 1
+              "color": "EMPTY",
+              "id": 0
             },
             {
               "color": "EMPTY",
@@ -616,6 +638,40 @@
             }
           ],
           [
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            }
+          ],
+          [
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
             {
               "color": "WHITE",
               "id": 0
@@ -623,80 +679,24 @@
             {
               "color": "EMPTY",
               "id": 0
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
             }
           ],
           [
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
+            {
+              "color": "EMPTY",
+              "id": 0
+            },
             {
               "color": "CYAN",
               "id": 1
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
-            }
-          ],
-          [
-            {
-              "color": "GREEN",
-              "id": 2
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
-            }
-          ],
-          [
-            {
-              "color": "CYAN",
-              "id": 0
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
-            },
-            {
-              "color": "EMPTY",
-              "id": 0
             },
             {
               "color": "EMPTY",
@@ -709,11 +709,11 @@
   ],
   "commonGoalCards": [
     {
-      "id": 4,
+      "id": 1,
       "winningPlayers": "[]"
     },
     {
-      "id": 10,
+      "id": 5,
       "winningPlayers": "[]"
     }
   ]
