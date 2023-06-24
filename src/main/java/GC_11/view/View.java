@@ -32,14 +32,14 @@ public abstract class View implements PropertyChangeListener {
         return player;
     }
 
-    public abstract void show();
+    public abstract void show() throws ColumnIndexOutOfBoundsException;
 
     @Override
     public abstract void propertyChange(PropertyChangeEvent evt);
 
     public abstract Choice getPlayerChoice();
 
-    public void run() throws RemoteException {
+    public void run() throws RemoteException, ColumnIndexOutOfBoundsException {
         while (inGame) {
             if (show_en) show();
             Choice choice = getPlayerChoice();

@@ -1,5 +1,6 @@
 package GC_11.view;
 
+import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.network.LobbyViewMessage;
 
 import java.beans.PropertyChangeEvent;
@@ -22,6 +23,8 @@ public abstract class ViewLobby extends View {
         try {
             run();
         } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        } catch (ColumnIndexOutOfBoundsException e) {
             throw new RuntimeException(e);
         }
     }

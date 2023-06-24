@@ -233,7 +233,7 @@ public class GUIView extends Application {
         search.setImage(yellowTiles.get(1));
 
         //Initialize Board with the data received from the server
-        refreshBoard(model);
+        refreshBoard(model.getBoard());
 
     }
 
@@ -382,9 +382,10 @@ public class GUIView extends Application {
      * @param player to update
      * @throws ColumnIndexOutOfBoundsException if the player is not found
      */
-    public void updatePlayer(Player player) throws ColumnIndexOutOfBoundsException {
+    public void updatePlayer(Board board, Player player) throws ColumnIndexOutOfBoundsException {
         PlayerView playerView = getPlayerViewFromNickname(player.getNickname());
         if (playerView != null) {
+            refreshBoard(board);
             updateShelf(player, playerView.getShelf());
             updatePoints(player, playerView.getPoints());
         }
@@ -479,10 +480,10 @@ public class GUIView extends Application {
     }
 
 
-    public void refreshBoard(Game model){
+    public void refreshBoard(Board board){
         for (int i = 1; i < 10; i++) {
             for (int j = 1; j < 10; j++) {
-                Tile t = model.getBoard().getTile(i - 1, j - 1);
+                Tile t = board.getTile(i - 1, j - 1);
                 int id = t.getId() + 1;
                 TileColor tileColor = t.getColor();
                 ImageView image = switch (tileColor) {
@@ -500,8 +501,8 @@ public class GUIView extends Application {
                     // This line add the event handler to the image which show it selected when clicked (MAX 3 tiles selected)
                     setupImageViewSelection(image);
 
-                    image.setFitHeight(41);
-                    image.setFitWidth(41);
+                    image.setFitHeight(32);
+                    image.setFitWidth(32);
                     boardGridPane.add(image, i, j);
                 }
             }

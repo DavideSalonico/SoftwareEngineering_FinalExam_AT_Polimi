@@ -1,5 +1,6 @@
 package GC_11.distributed;
 
+import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.network.GameViewMessage;
 import GC_11.network.LobbyViewMessage;
 import GC_11.network.choices.Choice;
@@ -102,7 +103,7 @@ public class ClientImplRMI extends UnicastRemoteObject implements ClientRMI {
         return nickname;
     }
 
-    public void run() throws RemoteException {
+    public void run() throws RemoteException, ColumnIndexOutOfBoundsException {
         viewLobby.run();
     }
 
