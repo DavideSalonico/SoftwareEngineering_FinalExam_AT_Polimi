@@ -173,19 +173,25 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
         System.out.println("\n");
     }
 
-    public void notifyDisconnection(String nickname, GameViewMessage msg) throws RemoteException {
+    public void notifyDisconnection(String nickname, GameViewMessage msg){
         for (ClientRMI c : clients) {
-            if (!c.getNickname().equals(nickname)) {
-                new Thread(() -> {
-                    try {
-                        c.updateViewGame(msg);
-                        System.out.println(c.getNickname() + " aggiornato GAME correctly");
-                    } catch (RemoteException e) {
-                        System.out.println(e.getMessage());
-                    }
-                }).start();
-                System.out.println("\n");
+            try{
+                if (!c.getNickname().equals(nickname)) {
+                    new Thread(() -> {
+                        try {
+                            c.updateViewGame(msg);
+                            System.out.println(c.getNickname() + " aggiornato GAME correctly");
+                        } catch (RemoteException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }).start();
+                    System.out.println("\n");
+                }
             }
+            catch (RemoteException e){
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -204,5 +210,6 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
             }
         }
     }
+
 }
 

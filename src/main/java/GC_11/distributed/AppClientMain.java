@@ -1,5 +1,7 @@
 package GC_11.distributed;
 
+import GC_11.distributed.socket.ClientSock;
+
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -57,12 +59,16 @@ public class AppClientMain {
         Registry registry = LocateRegistry.getRegistry(serverIp,1099);
         System.out.println("***** looking up for the server *****\n");
         ServerRMI server = (ServerRMI) registry.lookup("server");
-        System.out.println("***** Creating a client rei implementation *****\n");
+        System.out.println("***** Creating a client rmi implementation *****\n");
         ClientImplRMI client = new ClientImplRMI(server, nickname, choiceInterface);
     }
 
     private static void  serverSOCKETSetup(String choiceInterface){
-        //implememntare il setup per il client socket
+        System.out.println("Inserire indirizzo ip del server: ");
+        Scanner s = new Scanner(System.in);
+        String serverIp = s.nextLine();
+        ClientSock client = new ClientSock(serverIp, 4322,choiceInterface);
+        client.startClient();
     }
 
 }

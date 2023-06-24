@@ -1,10 +1,15 @@
 package GC_11.distributed.socket;
 
 
+import GC_11.distributed.ClientImplRMI;
 import GC_11.network.GameViewMessage;
 import GC_11.network.choices.Choice;
+import GC_11.view.GUI.GUIModel;
+import GC_11.view.GUI.GUIView;
 import GC_11.view.GameCLI;
+import GC_11.view.LobbyCLI;
 import GC_11.view.View;
+import javafx.application.Application;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -13,6 +18,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class ClientSock implements PropertyChangeListener {
@@ -23,6 +29,7 @@ public class ClientSock implements PropertyChangeListener {
     private ObjectOutputStream out;
     private ObjectInputStream in;
 
+    String graphicInterface;
     GameViewMessage gameViewMessage;
     private View view;
     private String nickname;
@@ -48,6 +55,29 @@ public class ClientSock implements PropertyChangeListener {
             System.out.println("Connection established");
         }
     }
+
+    public ClientSock(String ip, int port, String gInterface) {
+
+        this.port = port;
+        this.ip = ip;
+        this.graphicInterface=gInterface;
+
+        try {
+            System.out.println("Connecting to server on port " + port);
+            socket = new Socket(ip, port);
+            out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
+        } catch (UnknownHostException e) {
+            System.out.println("Unknown host");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("Error in loading streams");
+            e.printStackTrace();
+        } finally {
+            System.out.println("Connection established");
+        }
+    }
+
 
     public void sendMessageToServer(String s) {
         try {
@@ -96,7 +126,13 @@ public class ClientSock implements PropertyChangeListener {
                         Scanner scanner = new Scanner(System.in);
                         String inputNickname = scanner.nextLine();
                         this.nickname = inputNickname;
-                        this.view = new GameCLI(nickname, this);
+                       if(this.graphicInterface.equals("CLI"))
+                            this.view = new GameCLI(nickname, this);
+                        else
+                        {
+                            this.view = new GUIModel(this.nickname,this);
+                            Application.launch(GUIView.class);
+                        }
                         sendMessageToServer(inputNickname);
                     } else if (message.getMessage().startsWith("Inserire")) {
                         Scanner scanner = new Scanner(System.in);

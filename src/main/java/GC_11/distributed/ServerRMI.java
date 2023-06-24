@@ -43,4 +43,5 @@ public interface ServerRMI extends Remote {
      */
     public void notifyClients() throws RemoteException;
 
+
 }

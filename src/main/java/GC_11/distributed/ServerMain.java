@@ -122,6 +122,8 @@ public class ServerMain implements PropertyChangeListener {
                 try {
                     serverRMI.notifyClient(currPlayer, messageViewCopy);
                 } catch (RemoteException e) {
+                    // If an error occurs, notify the server
+                    this.removeConnection(currPlayer);
                     e.printStackTrace();
                 }
             } else if (clientMap.get(currPlayer).equals("SOCKET")) {
@@ -148,6 +150,8 @@ public class ServerMain implements PropertyChangeListener {
                     try {
                         serverRMI.notifyClient(client.getKey(), messageViewCopy);
                     } catch (RemoteException e) {
+                        // If an error occurs, notify the server
+                        this.removeConnection(client.getKey());
                         e.printStackTrace();
                     }
                 } else if (client.getValue().equals("SOCKET")) {
@@ -223,12 +227,9 @@ public class ServerMain implements PropertyChangeListener {
             this.controller.getGame().setEndGame(true);
             GameViewMessage msg = new GameViewMessage(this.controller.getGame(), new Exception("Player " + nickname + " disconnected"));
             this.serverSocket.notifyDisconnection(nickname,msg);
-            try{
-                this.serverRMI.notifyDisconnection(nickname,msg);
-            }
-            catch(RemoteException e){
-                System.out.println("Unable to notify disconnection because of RemoteException");
-            }
+            this.serverRMI.notifyDisconnection(nickname,msg);
+
+
 
         }
         else{
