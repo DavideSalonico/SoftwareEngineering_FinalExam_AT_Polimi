@@ -62,11 +62,21 @@ public class GUIView extends Application {
     double desiredWidth;
     double desiredHeight;
     public Button confirmSelection;
-    public Text selectTilesError;
-    public Text selectColumnError;
+    public Text error;
     public TextArea chatTextArea;
+    public TextArea chatTextArea1;
+    public TextArea chatTextArea2;
+    public TextArea chatTextArea3;
+    public TabPane tabPane;
     public TextField chatTextField;
     public Button sendMessageButton;
+
+    public ImageView firstImage;
+    public Button firstTile;
+    public Button secondTile;
+    public ImageView secondImage;
+    public Button thirdTile;
+    public ImageView thirdImage;
 
     // Initialize otherPlayers using PlayerView class as a container for the player's nickname, points and shelf (related to javafx objects)
     List<PlayerView> otherPlayers = new ArrayList<>();
@@ -111,6 +121,14 @@ public class GUIView extends Application {
      */
     @FXML
     public void initialize() {
+
+        // Initialize order tile
+        firstTile.setText("");
+        firstImage.setImage(null);
+        secondTile.setText("");
+        secondImage.setImage(null);
+        thirdTile.setText("");
+        thirdImage.setImage(null);
 
         // Load all the images of the tiles
         loadTilesImages();
@@ -315,12 +333,26 @@ public class GUIView extends Application {
                 // L'immagine è già stata selezionata, rimuovila dalla lista
                 selectedImages.remove(imageView);
                 imageView.getStyleClass().remove(SELECTED_STYLE_CLASS);
+
             } else {
                 if (selectedImages.size() < 3) {
                     // Aggiungi l'immagine alla lista delle selezioni
                     selectedImages.add(imageView);
                     System.out.println("Tile selected, n° selected: " + selectedImages.size());
                     imageView.getStyleClass().add(SELECTED_STYLE_CLASS);
+                    System.out.println("Selected images: " + selectedImages.size());
+                    if(selectedImages.size() == 2){
+                        secondImage.setImage(imageView.getImage());
+                        imageView.setImage(null);
+                    }
+                    if(selectedImages.size() == 1){
+                        firstImage.setImage(imageView.getImage());
+                        imageView.setImage(null);
+                    }
+                    if(selectedImages.size() == 3){
+                        thirdImage.setImage(imageView.getImage());
+                        imageView.setImage(null);
+                    }
                 }
             }
         });
@@ -471,14 +503,9 @@ public class GUIView extends Application {
     }
 
 
-    public void setBoardError(String error){
-        selectTilesError.setText(error);
+    public void setError(String errorMSG){
+        error.setText(errorMSG);
     }
-
-    public void setColumnError(String error){
-        selectColumnError.setText(error);
-    }
-
 
     public void refreshBoard(Board board){
         for (int i = 1; i < 10; i++) {
@@ -526,7 +553,60 @@ public class GUIView extends Application {
     }
 
 
+    /**
+     * Method that remove a tile from the board and put it available to be inserted in the shelf
+     * @param selectedTiles
+     */
+    public void setSelectedTiles(List <Coordinate> selectedTiles){
+        firstImage.setImage(null);
+        secondImage.setImage(null);
+        thirdImage.setImage(null);
 
+        if(selectedTiles.size() == 1){
+            Image image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(0).getRow() + 1, selectedTiles.get(0).getColumn() + 1).getImage();
+            firstImage.setImage(image);
+            removeTileFromBoard(selectedTiles.get(0).getRow() +1, selectedTiles.get(0).getColumn() + 1);
+
+        } else if (selectedTiles.size() == 2) {
+            Image image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(0).getRow() + 1, selectedTiles.get(0).getColumn() + 1).getImage();
+            firstImage.setImage(image);
+            removeTileFromBoard(selectedTiles.get(0).getRow() +1, selectedTiles.get(0).getColumn() + 1);
+            image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(1).getRow() + 1, selectedTiles.get(1).getColumn() + 1).getImage();
+            secondImage.setImage(image);
+            removeTileFromBoard(selectedTiles.get(1).getRow() +1, selectedTiles.get(1).getColumn() + 1);
+
+        } else if (selectedTiles.size() == 3) {
+            Image image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(0).getRow() + 1, selectedTiles.get(0).getColumn() + 1).getImage();
+            firstImage.setImage(image);
+            removeTileFromBoard(selectedTiles.get(0).getRow() +1, selectedTiles.get(0).getColumn() + 1);
+            image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(1).getRow() + 1, selectedTiles.get(1).getColumn() + 1).getImage();
+            secondImage.setImage(image);
+            removeTileFromBoard(selectedTiles.get(1).getRow() +1, selectedTiles.get(1).getColumn() + 1);
+            image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(2).getRow() + 1, selectedTiles.get(2).getColumn() + 1).getImage();
+            thirdImage.setImage(image);
+            removeTileFromBoard(selectedTiles.get(2).getRow() +1, selectedTiles.get(2).getColumn() + 1);
+
+        }
+    }
+
+    List <Integer> tilesOrdered = new ArrayList<>();
+    int [] tilesOrder = new int[3];
+    public void setTileOrder(ActionEvent event){
+        if(tilesOrdered.size() < 3)
+            if(event.getSource() == firstTile && !tilesOrdered.contains((Integer) 0)){
+                tilesOrder[0] = tilesOrdered.size();
+                tilesOrdered.add(0);
+                firstTile.setText(String.valueOf(tilesOrder[0]));
+            } else if (event.getSource() == secondTile && !tilesOrdered.contains((Integer) 1)){
+                tilesOrder[1] = tilesOrdered.size();
+                tilesOrdered.add(1);
+                secondTile.setText(String.valueOf(tilesOrder[1]));
+            } else if (event.getSource() == thirdTile && !tilesOrdered.contains((Integer) 2)){
+                tilesOrder[2] = tilesOrdered.size();
+                tilesOrdered.add(2);
+                thirdTile.setText(String.valueOf(tilesOrder[2]));
+            }
+    }
 
     /**
      * Method that will be called when the game starts
