@@ -9,18 +9,15 @@ import java.rmi.RemoteException;
 
 public abstract class ViewGame extends View {
 
-    public abstract Choice getPlayerChoice();
+    protected boolean inGame = true;
 
     protected GameViewMessage modelView;
 
+    public abstract Choice getPlayerChoice();
 
     public void setInGame(boolean inGame) {
         this.inGame = inGame;
     }
-
-    protected abstract void seeCommonGoal(Choice choice);
-
-    protected abstract void seePersonalGoal(Choice choice);
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {

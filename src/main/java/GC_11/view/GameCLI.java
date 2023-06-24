@@ -24,7 +24,6 @@ import static java.lang.Integer.parseInt;
 public class GameCLI extends ViewGame {
 
     // private final Choice controllerChoice;
-    private Choice playerChoice;
     private ClientRMI client;
     private ClientSock clientSock;
     private String nickname;
@@ -37,30 +36,19 @@ public class GameCLI extends ViewGame {
 
     public GameCLI(String nickname, ClientRMI client) {
         super();
-        this.player = player;
         this.nickname = nickname;
         this.client = client;
     }
 
     public GameCLI(String nickname,ClientSock client) {
         super();
-        this.player = player;
         this.nickname = nickname;
         this.clientSock = client;
     }
 
-    public void setPlayerChoice(Choice c) {
-        this.playerChoice = c;
-    }
-
-    public void setModelView(GameViewMessage modelView) {
-        this.modelView = modelView;
-    }
-
     @Override
     public void run() throws RemoteException {
-        boolean show_en = true;
-        if (show_en) show();
+         show();
             System.out.println("\n\nIT IS THE TURN OF: " + this.modelView.getCurrentPlayer());
             if (this.modelView.getCurrentPlayer().equals(this.nickname)) {
                 Choice choice = getPlayerChoice();
@@ -173,18 +161,6 @@ public class GameCLI extends ViewGame {
                 System.err.println("Invalid type: " + input + " Please retake.");
             }
         }
-    }
-
-    @Override
-    protected void seeCommonGoal(Choice choice) {
-        int index = parseInt(choice.getParams().get(0));
-        System.out.println(this.modelView.getCommonGoalCard(index).getText());
-    }
-
-    @Override
-    protected void seePersonalGoal(Choice choice) {
-        if (choice.getPlayer().getPersonalGoal() != null) choice.getPlayer().getPersonalGoal().print();
-        else System.out.println("Null PersonalGoalCard");
     }
 }
 

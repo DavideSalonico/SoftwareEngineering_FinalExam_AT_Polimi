@@ -25,14 +25,12 @@ public class GUIModel extends ViewGame {
 
     public GUIModel(String nickname, ClientRMI client) {
         super();
-        this.player = player;
         this.nickname = nickname;
         this.client = client;
     }
 
     public GUIModel(String nickname,ClientSock client) {
         super();
-        this.player = player;
         this.nickname = nickname;
         this.clientSock = client;
     }
@@ -92,14 +90,4 @@ public class GUIModel extends ViewGame {
         return null;
     }
 
-    // QUESTI METODI NON SONO NECESSARI PER LA GUI
-    @Override
-    protected void seeCommonGoal(Choice choice) {
-
-    }
-
-    @Override
-    protected void seePersonalGoal(Choice choice) {
-
-    }
 }

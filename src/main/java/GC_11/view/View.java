@@ -18,59 +18,18 @@ import java.rmi.RemoteException;
  */
 public abstract class View implements PropertyChangeListener {
 
-    protected Player player;
-    protected MessageView messageView;
-
-    protected GameViewMessage modelView;
-    protected boolean inGame = true;
-    protected boolean show_en = true;
-
     //Controller must register
     private PropertyChangeListener listener;
-
-    public Player getPlayer() {
-        return player;
-    }
 
     public abstract void show() throws ColumnIndexOutOfBoundsException;
 
     @Override
     public abstract void propertyChange(PropertyChangeEvent evt);
 
-    public abstract Choice getPlayerChoice();
-
-    public void run() throws RemoteException, ColumnIndexOutOfBoundsException {
-        while (inGame) {
-            if (show_en) show();
-            Choice choice = getPlayerChoice();
-
-            try {
-                choice.executeOnClient(this);
-            } catch (IllegalMoveException | ColumnIndexOutOfBoundsException | NotEnoughFreeSpacesException e) {
-                System.out.println("Errore");
-            }
-
-        }
-    }
+    public void run() throws RemoteException, ColumnIndexOutOfBoundsException {}
 
     public void setListener(PropertyChangeListener listener) {
         this.listener = listener;
-    }
-
-    public void setInGame(boolean inGame) {
-        this.inGame = inGame;
-    }
-
-    protected abstract void seeCommonGoal(Choice choice);
-
-    protected abstract void seePersonalGoal(Choice choice);
-
-    public boolean isShow_en() {
-        return show_en;
-    }
-
-    public void setShow_en(boolean show_en) {
-        this.show_en = show_en;
     }
 
     public PropertyChangeListener getListener() {

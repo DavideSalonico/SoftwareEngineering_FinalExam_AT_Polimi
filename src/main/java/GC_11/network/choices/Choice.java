@@ -33,7 +33,6 @@ public abstract class Choice implements Serializable {
                 null,
                 this);
         view.getListener().propertyChange(evt);
-        view.setShow_en(true);
     }
 
     public List<String> getParams() {

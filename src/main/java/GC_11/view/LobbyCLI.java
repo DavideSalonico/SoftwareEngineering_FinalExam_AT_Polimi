@@ -24,23 +24,9 @@ public class LobbyCLI extends ViewLobby {
         }
     }
 
-    @Override
-    public Choice getPlayerChoice() {
-        return null;
-    }
-
     public void run() {
         show();
     }
 
-    @Override
-    protected void seeCommonGoal(Choice choice) {
-
-    }
-
-    @Override
-    protected void seePersonalGoal(Choice choice) {
-
-    }
 
 }
