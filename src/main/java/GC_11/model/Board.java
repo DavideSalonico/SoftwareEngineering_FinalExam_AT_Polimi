@@ -53,11 +53,11 @@ public class Board implements PropertyChangeListener, Serializable {
 
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                chessBoard[i][j] = new Tile(TileColor.EMPTY);
+                chessBoard[i][j] = new Tile(TileColor.EMPTY, 0);
             }
         }
         for (Coordinate c : coordinateList) {
-            this.chessBoard[c.getRow()][c.getColumn()] = new Tile(TileColor.PROHIBITED);
+            this.chessBoard[c.getRow()][c.getColumn()] = new Tile(TileColor.PROHIBITED, 0);
         }
 
         setBoard();
@@ -119,12 +119,12 @@ public class Board implements PropertyChangeListener, Serializable {
         if (chessBoard[l][c].getColor().equals(TileColor.PROHIBITED) || chessBoard[l][c].getColor().equals(TileColor.EMPTY))
             throw new IllegalMoveException("You can't pick this Tile!");
         Tile picked = new Tile(chessBoard[l][c]);
-        chessBoard[l][c] = new Tile(TileColor.EMPTY);
+        chessBoard[l][c] = new Tile(TileColor.EMPTY, 0);
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "TILE_PICKED",
                 picked,
-                new Tile(TileColor.EMPTY));
+                new Tile(TileColor.EMPTY, 0));
         this.listener.propertyChange(evt);
         return picked;
     }
@@ -282,7 +282,7 @@ public class Board implements PropertyChangeListener, Serializable {
                     if (!chessBoard[line][column].getColor().equals(TileColor.PROHIBITED) &&
                             !chessBoard[line][column].getColor().equals(TileColor.EMPTY)) {
                         this.bag.insertTile(chessBoard[line][column]);
-                        chessBoard[line][column] = new Tile(TileColor.EMPTY);
+                        chessBoard[line][column] = new Tile(TileColor.EMPTY, 0);
                     }
                 }
             }

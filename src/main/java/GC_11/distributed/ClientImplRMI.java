@@ -5,10 +5,12 @@ import GC_11.network.GameViewMessage;
 import GC_11.network.LobbyViewMessage;
 import GC_11.network.choices.Choice;
 import GC_11.view.GUI.GUIModel;
+import GC_11.view.GUI.GUIView;
 import GC_11.view.GameCLI;
 import GC_11.view.LobbyCLI;
 import GC_11.view.ViewGame;
 import GC_11.view.ViewLobby;
+import javafx.application.Application;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -56,6 +58,7 @@ public class ClientImplRMI extends UnicastRemoteObject implements ClientRMI {
             // creare la logica della lobby GUI per il momento uso la CLI
             viewLobby = new LobbyCLI();
             viewGame = new GUIModel(this.nickname, this);
+            Application.launch(GUIView.class);
         }
         try {
             //System.out.println(server.toString());

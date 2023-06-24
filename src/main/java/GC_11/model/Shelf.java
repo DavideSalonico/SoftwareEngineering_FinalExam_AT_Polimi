@@ -20,7 +20,7 @@ public class Shelf implements Serializable {
         myShelf = new Tile[6][5];
         for (int r = 0; r < 6; r++) {
             for (int c = 0; c < 5; c++) {
-                myShelf[r][c] = new Tile(TileColor.EMPTY);
+                myShelf[r][c] = new Tile(TileColor.EMPTY, 0);
             }
         }
     }

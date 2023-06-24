@@ -16,9 +16,11 @@ public class Tile implements Serializable {
 
     private static Random RANDOM = new Random();
 
-    public Tile() {
+    /*public Tile() {
         this.color = TileColor.randomColor();
     } //TODO: to add random int
+
+     */
 
     /**
      * Duplicate Tile constructor
@@ -35,12 +37,14 @@ public class Tile implements Serializable {
         this.id = id;
     }
 
-    public Tile(TileColor color) {
+    /*public Tile(TileColor color) {
         this.color = color;
     }
 
+     */
+
     public TileColor getColor() {
-        return color;
+        return this.color;
     }
 
     public int getId() {
@@ -54,6 +58,4 @@ public class Tile implements Serializable {
     public boolean equals(TileColor tc) {
         return this.color == tc;
     }
-
-    ;
 }
