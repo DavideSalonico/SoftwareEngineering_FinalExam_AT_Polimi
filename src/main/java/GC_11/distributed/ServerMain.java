@@ -1,6 +1,7 @@
 package GC_11.distributed;
 
 import GC_11.controller.Controller;
+import GC_11.controller.JsonWriter;
 import GC_11.distributed.socket.ServerSock;
 import GC_11.exceptions.*;
 import GC_11.model.Game;
@@ -155,6 +156,7 @@ public class ServerMain implements PropertyChangeListener {
                     System.out.println("Unable to notify " + client.getKey() + " because connection type is unknown");
                 }
             }
+            JsonWriter.saveGame(new GameViewMessage(this.controller.getGame(), null));
         }
     }
 
