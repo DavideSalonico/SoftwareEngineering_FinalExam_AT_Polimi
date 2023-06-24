@@ -49,19 +49,17 @@ public class GameViewMessage extends MessageView {
             this.error = true;
             this.exceptionMessage = exception.getMessage();
             this.exception = exception;
-            this.currentPlayer = model.getCurrentPlayer().getNickname();
 
 
-        } else {
-            for (Player p : model.getPlayers()) {
-                this.players.add(new Player(p));
-            }
-            this.commonGoals = model.getCommonGoal(); //TODO passarle per valore e non copiare l'oggetto
-            this.currentPlayer = model.getCurrentPlayer().getNickname();
-            //this.endGame = model.isEndGame();
-            //this.endPlayer = model.getEndPlayer().getNickname();
-            this.board = new Board(model.getBoard());
         }
+        for (Player p : model.getPlayers()) {
+            this.players.add(new Player(p));
+        }
+        this.commonGoals = model.getCommonGoal(); //TODO passarle per valore e non copiare l'oggetto
+        this.currentPlayer = model.getCurrentPlayer().getNickname();
+        //this.endGame = model.isEndGame();
+        //this.endPlayer = model.getEndPlayer().getNickname();
+        this.board = new Board(model.getBoard());
     }
 
     // Solo per inviare messaggi testuali da server al client

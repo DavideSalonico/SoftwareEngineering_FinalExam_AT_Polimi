@@ -23,10 +23,7 @@ public abstract class ViewGame extends View {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if(evt.getPropertyName().equals("EXCEPTION TRIGGERED"))
-            this.modelView.setExceptionMessage((Exception) evt.getNewValue());
-        else
-            this.modelView = (GameViewMessage) evt.getNewValue();
+        this.modelView = (GameViewMessage) evt.getNewValue();
         try {
             run();
         } catch (RemoteException e) {
