@@ -188,7 +188,7 @@ public class Game implements PropertyChangeListener, Serializable {
      *
      * @param endGame
      */
-    public void setEndGame(boolean endGame) throws RemoteException {
+    public void setEndGame(boolean endGame){
         this.endGame = endGame;
         System.out.println("Set end game");
 
