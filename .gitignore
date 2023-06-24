@@ -10,6 +10,7 @@ softeng_cg11.iml
 
 # GameView.JSON
 GameView.JSON
+src/main/resources/GameView.JSON
 
 #PeerReview
 Peer review - network.pdf
