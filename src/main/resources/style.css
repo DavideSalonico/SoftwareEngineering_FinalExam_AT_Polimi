@@ -203,7 +203,7 @@
 #tabPane .tab {
     -fx-background-color: #333333;
     -fx-background-radius: 10px 10px 0 0;
-    -fx-padding: 8px 12px;
+    -fx-padding: 4px 6px;
 }
 
 #tabPane .tab:selected {
