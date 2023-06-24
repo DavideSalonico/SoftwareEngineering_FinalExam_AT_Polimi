@@ -1,5 +1,6 @@
 package GC_11.view;
 
+import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.network.GameViewMessage;
 import GC_11.network.choices.Choice;
 
@@ -27,6 +28,8 @@ public abstract class ViewGame extends View {
         try {
             run();
         } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        } catch (ColumnIndexOutOfBoundsException e) {
             throw new RuntimeException(e);
         }
     }

@@ -1,5 +1,6 @@
 package GC_11.distributed;
 
+import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.network.GameViewMessage;
 import GC_11.network.LobbyViewMessage;
 
@@ -18,7 +19,7 @@ public interface ClientRMI extends Remote {
 
     String getNickname() throws RemoteException;
 
-    void run() throws RemoteException;
+    void run() throws RemoteException, ColumnIndexOutOfBoundsException;
 
     void updateStartGame(GameViewMessage newView) throws RemoteException;
 
