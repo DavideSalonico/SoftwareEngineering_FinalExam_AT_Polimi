@@ -77,12 +77,14 @@ public class Game implements PropertyChangeListener, Serializable {
      * @param players is the list of players loaded from the json file
      * @param board   is the board loaded from the json file
      */
-    public Game(List<Player> players, Board board, int[] commonGoals, List<Player> winningPlayers1, List<Player> winningPlayers2) {
+    public Game(List<Player> players, Board board, int[] commonGoals,
+                List<Player> winningPlayers1, List<Player> winningPlayers2, String currentPlayer) {
         this.players = new CircularList<>();
         for (Player p : players) {
             this.players.add(p);
             p.setListener(this);
         }
+        this.currentPlayer = getCurrentPlayer(currentPlayer);
         this.board = board;
         this.commonGoals = new ArrayList<CommonGoalCard>();
         this.commonGoals.add(loadCommon(commonGoals[0]));
@@ -92,6 +94,14 @@ public class Game implements PropertyChangeListener, Serializable {
         this.commonGoals.get(0).setListener(this);
         this.commonGoals.get(1).setListener(this);
 
+    }
+
+    private Player getCurrentPlayer(String nickname){
+        for(Player p : players){
+            if(p.getNickname().equals(nickname))
+                return p;
+        }
+        return null;
     }
 
     private CommonGoalCard loadCommon(int i) {
