@@ -117,6 +117,106 @@
     -fx-background-color: #444;
 }
 
+#chatTextArea1 {
+    -fx-control-inner-background: #222;
+    -fx-text-fill: white;
+    -fx-padding: 5px;
+    -fx-wrap-text: true;
+    -fx-background-color: transparent;
+}
+
+#chatTextArea1 .paragraph {
+    -fx-text-indent: 20px;
+}
+
+
+#chatTextArea1 .scroll-bar {
+    -fx-background-color: #333;
+}
+
+#chatTextArea1 .thumb {
+    -fx-background-color: #666;
+}
+
+#chatTextArea1 .track {
+    -fx-background-color: #444;
+}
+
+#chatTextArea2 {
+    -fx-control-inner-background: #222;
+    -fx-text-fill: white;
+    -fx-padding: 5px;
+    -fx-wrap-text: true;
+    -fx-background-color: transparent;
+}
+
+#chatTextArea2 .paragraph {
+    -fx-text-indent: 20px;
+}
+
+
+#chatTextArea2 .scroll-bar {
+    -fx-background-color: #333;
+}
+
+#chatTextArea2 .thumb {
+    -fx-background-color: #666;
+}
+
+#chatTextArea2 .track {
+    -fx-background-color: #444;
+}
+
+#chatTextArea3 {
+    -fx-control-inner-background: #222;
+    -fx-text-fill: white;
+    -fx-padding: 5px;
+    -fx-wrap-text: true;
+    -fx-background-color: transparent;
+}
+
+#chatTextArea3 .paragraph {
+    -fx-text-indent: 20px;
+}
+
+
+#chatTextArea3 .scroll-bar {
+    -fx-background-color: #333;
+}
+
+#chatTextArea3 .thumb {
+    -fx-background-color: #666;
+}
+
+#chatTextArea3 .track {
+    -fx-background-color: #444;
+}
+
+#tabPane {
+    -fx-background-color: #333333;
+}
+
+#tabPane  .tab-header-background {
+    -fx-background-color: #222222;
+}
+
+#tabPane .tab {
+    -fx-background-color: #333333;
+    -fx-background-radius: 10px 10px 0 0;
+    -fx-padding: 4px 6px;
+}
+
+#tabPane .tab:selected {
+    -fx-background-color: #555555;
+}
+
+#tabPane .tab:selected .tab-label {
+    -fx-text-fill: #FFFFFF;
+}
+
+#tabPane .tab .tab-label {
+    -fx-text-fill: #CCCCCC;
+}
 
 #sendMessageButton {
     -fx-background-radius: 10px;
@@ -135,4 +235,16 @@
 
 #chatTextField:focused {
     -fx-border-color: #fff;
+}
+
+#firstTile {
+    -fx-background-color: transparent;
+}
+
+#secondTile {
+    -fx-background-color: transparent;
+}
+
+#thirdTile {
+    -fx-background-color: transparent;
 }

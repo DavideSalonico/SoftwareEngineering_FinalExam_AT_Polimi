@@ -226,16 +226,16 @@ public class Board implements PropertyChangeListener, Serializable {
                         !chessBoard[l][c].getColor().equals(TileColor.EMPTY)) {
                     if (l != 0 && !chessBoard[l - 1][c].getColor().equals(TileColor.PROHIBITED) &&
                             !chessBoard[l - 1][c].getColor().equals(TileColor.EMPTY))
-                        return 0;
+                        return -1;
                     if (c != 0 && !chessBoard[l][c - 1].getColor().equals(TileColor.PROHIBITED) &&
                             !chessBoard[l][c - 1].getColor().equals(TileColor.EMPTY))
-                        return 0;
+                        return -1;
                     if (l != 8 && !chessBoard[l + 1][c].getColor().equals(TileColor.PROHIBITED) &&
                             !chessBoard[l + 1][c].getColor().equals(TileColor.EMPTY))
-                        return 0;
+                        return -1;
                     if (c != 8 && !chessBoard[l][c + 1].getColor().equals(TileColor.PROHIBITED) &&
                             !chessBoard[l][c + 1].getColor().equals(TileColor.EMPTY))
-                        return 0;
+                        return -1;
 
                     counter++;
                 }
@@ -276,7 +276,7 @@ public class Board implements PropertyChangeListener, Serializable {
      * Tiles inserting them into the Bag and after that it will set again all the Board's cells with random tiles using setBoard() method
      */
     public void refillBoard() {
-        if (checkDraw() > 0) {
+        if (checkDraw() >= 0) {
             for (int line = 0; line < 9; line++) {
                 for (int column = 0; column < 9; column++) {
                     if (!chessBoard[line][column].getColor().equals(TileColor.PROHIBITED) &&
@@ -288,14 +288,6 @@ public class Board implements PropertyChangeListener, Serializable {
             }
 
             setBoard();
-            /* Can't manage to give right OldValue e NewValue */
-            /*PropertyChangeEvent evt = new PropertyChangeEvent(
-                    this,
-                    "BOARD_REFILLED",
-                    null,
-                    this.chessBoard);
-            this.listener.propertyChange(evt);*/
-
         }
     }
 

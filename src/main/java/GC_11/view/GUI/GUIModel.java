@@ -66,7 +66,7 @@ public class GUIModel extends ViewGame {
     @Override
     public void show() throws ColumnIndexOutOfBoundsException {
         if (this.modelView.isError()) {
-            view.setBoardError(this.modelView.getExceptionMessage());
+            view.setError(this.modelView.getExceptionMessage());
         }else{
             this.view.updatePlayer(modelView.getBoard(),modelView.getPlayer(modelView.getCurrentPlayer()));
         }
