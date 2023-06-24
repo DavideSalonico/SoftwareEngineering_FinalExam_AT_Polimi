@@ -56,6 +56,7 @@ public class PersonalGoalCard implements Serializable {
             }
             System.out.println();
         }
+        System.out.println(" 0  1  2  3  4 ");
     }
 
     public int getId() {

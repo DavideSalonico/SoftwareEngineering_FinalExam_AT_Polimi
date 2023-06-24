@@ -147,14 +147,15 @@ public class GameCLI extends ViewGame {
     public Choice getPlayerChoice() {
 
         Scanner s = new Scanner(System.in);
-        System.out.println("\nOptions available: ");
-        System.out.println("Signs: " +
+        System.out.println("\nOptions available: " +
                 Arrays.stream(ChoiceType.values())
                         .map(ChoiceType::name)
                         .collect(
                                 Collectors.joining(",", "[", "]")));
         while (true) {
             String input = s.nextLine();
+            //print
+            input = ChoiceType.askParams(input);
             try {
                 return ChoiceFactory.createChoice(this.modelView.getPlayer(this.nickname), input);
             } catch (IllegalMoveException e) {

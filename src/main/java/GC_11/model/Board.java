@@ -345,11 +345,10 @@ public class Board implements PropertyChangeListener, Serializable {
             }
         }
 
-
         System.out.println("Board selected tiles:");
-        for (Coordinate c : selectedTiles) {
-            System.out.println(c.getRow() + ", " + c.getColumn() + ", " +
-                    TileColor.ColorToString(this.getTile(c.getRow(), c.getColumn()).getColor()));
+        for (int i=selectedTiles.size(); i>0; i--) {
+            System.out.println(i-1 +": "+ selectedTiles.get(i-1).getRow() + ", " + selectedTiles.get(i-1).getColumn() + ", " +
+                    TileColor.ColorToString(this.getTile(selectedTiles.get(i-1).getRow(), selectedTiles.get(i-1).getColumn()).getColor()));
         }
     }
 
