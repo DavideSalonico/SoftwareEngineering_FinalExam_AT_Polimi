@@ -501,8 +501,8 @@ public class GUIView extends Application {
                     // This line add the event handler to the image which show it selected when clicked (MAX 3 tiles selected)
                     setupImageViewSelection(image);
 
-                    image.setFitHeight(32);
-                    image.setFitWidth(32);
+                    image.setFitHeight(43);
+                    image.setFitWidth(43);
                     boardGridPane.add(image, i, j);
                 }
             }
