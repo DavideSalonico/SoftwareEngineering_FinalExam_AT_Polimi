@@ -216,6 +216,27 @@ public class ServerMain implements PropertyChangeListener {
         }
     }
 
+    public void removeConnection(String nickname) {
+        if (this.clientMap.get(nickname) != null){
+            System.out.println("REMOVED CONNECTION: " + nickname + " " + this.clientMap.get(nickname));
+            this.clientMap.remove(nickname);
+            this.controller.getGame().setEndGame(true);
+            GameViewMessage msg = new GameViewMessage(this.controller.getGame(), new Exception("Player " + nickname + " disconnected"));
+            this.serverSocket.notifyDisconnection(nickname,msg);
+            try{
+                this.serverRMI.notifyDisconnection(nickname,msg);
+            }
+            catch(RemoteException e){
+                System.out.println("Unable to notify disconnection because of RemoteException");
+            }
+
+        }
+        else{
+            System.out.println("Unable to remove connection because nickname is unknown");
+        }
+
+    }
+
     public Map getClientsMap(){
         return this.clientMap;
     }

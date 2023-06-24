@@ -139,6 +139,13 @@ public class ServerSock implements PropertyChangeListener {
         }
     }
 
+    public void notifyDisconnection(String nickname, GameViewMessage message){
+        for (Map.Entry<String, ServerClientHandler> e : socketMap.entrySet()) {
+            if(!e.getKey().equals(nickname)){
+                e.getValue().sendMessageViewToClient(message);
+            }
+        }
+    }
 
 
     @Override
