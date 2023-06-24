@@ -168,6 +168,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void pickColumn(List<String> parameters) throws RemoteException {
+        boolean end = false;
         int column = 0;
         try {
             column = paramsToColumnIndex(parameters);
@@ -181,18 +182,26 @@ public class Controller implements PropertyChangeListener {
             this.model.getBoard().setTile(c.getRow(), c.getColumn(), new Tile(TileColor.EMPTY));
         }
         try {
-            this.model.getCurrentPlayer().getShelf().addTiles(tmp_tiles, column);
+            if(this.model.getCurrentPlayer().getShelf().addTiles(tmp_tiles, column)){
+                end = true;
+            };
             this.model.getBoard().resetSelectedTiles();
             //Update points (all of them)
             this.model.calculateCommonPoints();
             this.model.getCurrentPlayer().updatesPointsPersonalGoal();
             this.model.getCurrentPlayer().calculateAndGiveAdjacencyPoint();
             this.model.getBoard().refillBoard();
-            this.model.setNextCurrent();
+            if(this.model.setNextCurrent()){
+                this.model.triggerEnd();
+            }
         } catch (NotEnoughFreeSpacesException | ColumnIndexOutOfBoundsException e) {
             this.model.triggerException(e);
         }
-        //this.lastChoice = ChoiceType.RESET_TURN;
+
+        if(end){
+            this.model.setEndGame(true);
+            this.model.setEndPlayer(this.model.getCurrentPlayer());
+        }
     }
 
     private int paramsToColumnIndex(List<String> parameters) throws IllegalMoveException {

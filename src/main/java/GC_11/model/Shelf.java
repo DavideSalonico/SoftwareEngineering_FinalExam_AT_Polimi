@@ -65,8 +65,7 @@ public class Shelf implements Serializable {
      * @throws NotEnoughFreeSpacesException    when there is not enough space in the selected column to insert the tiles
      * @throws ColumnIndexOutOfBoundsException when the column index is out of bound
      */
-    public void addTiles(List<Tile> tileList, int column) throws NotEnoughFreeSpacesException, ColumnIndexOutOfBoundsException {
-        Tile[][] oldShelf = myShelf;
+    public boolean addTiles(List<Tile> tileList, int column) throws NotEnoughFreeSpacesException, ColumnIndexOutOfBoundsException {
         if (column < 0 || column >= 5) {
             throw new ColumnIndexOutOfBoundsException(column);
         } else {
@@ -80,12 +79,10 @@ public class Shelf implements Serializable {
                 }
             }
         }
-        /*PropertyChangeEvent evt = new PropertyChangeEvent(
-                this,
-                "SHELF_MODIFIED",
-                oldShelf,
-                this.myShelf);
-        this.listener.propertyChange(evt);*/
+        if(this.isFull()){
+            return true;
+        }
+        return false;
     }
 
     /**

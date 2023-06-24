@@ -164,8 +164,11 @@ public class Game implements PropertyChangeListener, Serializable {
         return players.get(i);
     }
 
-    public void setNextCurrent() {
+    public boolean setNextCurrent() {
         this.currentPlayer = this.players.get(this.players.indexOf(this.currentPlayer) + 1);
+        if(this.currentPlayer.getNickname().equals(this.endPlayer.getNickname()) && this.endGame == true){
+            return true;
+        }
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "CHANGED_CURRENT_PLAYER",
@@ -173,6 +176,7 @@ public class Game implements PropertyChangeListener, Serializable {
                 new GameViewMessage(this, null));
         this.listener.propertyChange(evt);
         System.out.println("Set next current player: " + this.currentPlayer.getNickname());
+        return false;
     }
 
     public boolean isEndGame() {
@@ -186,14 +190,6 @@ public class Game implements PropertyChangeListener, Serializable {
      */
     public void setEndGame(boolean endGame) throws RemoteException {
         this.endGame = endGame;
-        PropertyChangeEvent evt = new PropertyChangeEvent(
-                this,
-                "END_GAME_SET",
-                this.endGame,
-                endGame);
-        this.listener.propertyChange(evt);
-        //server.notifyClients();
-        listener.propertyChange(evt);
         System.out.println("Set end game");
 
     }
@@ -204,13 +200,6 @@ public class Game implements PropertyChangeListener, Serializable {
 
     public void setEndPlayer(Player endPlayer){
         this.endPlayer = endPlayer;
-        PropertyChangeEvent evt = new PropertyChangeEvent(
-                this,
-                "END_GAME_SET",
-                null,
-                new GameViewMessage(this, null));
-        this.listener.propertyChange(evt);
-        listener.propertyChange(evt);
         System.out.println("Set end player");
     }
 
@@ -282,5 +271,14 @@ public class Game implements PropertyChangeListener, Serializable {
 
     public Chat getChat() {
         return chat;
+    }
+
+    public void triggerEnd() {
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "END GAME",
+                null,
+                null);
+        this.listener.propertyChange(evt);
     }
 }
