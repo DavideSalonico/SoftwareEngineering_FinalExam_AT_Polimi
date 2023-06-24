@@ -9,7 +9,7 @@ target/
 softeng_cg11.iml
 
 # GameView.JSON
-src/main/resources/GameView.JSON
+GameView.JSON
 
 
 # User-specific stuff
