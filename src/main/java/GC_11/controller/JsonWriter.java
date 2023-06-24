@@ -81,6 +81,12 @@ public class JsonWriter {
 
             json.add("commonGoalCards", jsonArrayCommonGoalCards);
 
+            // CurrentPlayer
+
+            JsonObject currentPlayer = new JsonObject();
+            currentPlayer.addProperty("nickname", gameView.getCurrentPlayer());
+            json.add("currentPlayer", currentPlayer);
+
 
             // Write JSON file
             gson.toJson(json, writer);
@@ -184,7 +190,12 @@ public class JsonWriter {
                 }
             }
 
+            JsonObject currentPlayer = game.get("currentPlayer").getAsJsonObject();
+            String nickname = currentPlayer.get("nickname").getAsString();
+
+            Game loadedGame = new Game(playersList, board1, commonGoalCardsIds, winningPlayersList.get(0),winningPlayersList.get(1), nickname);
             System.out.println("Partita caricata correttamente");
+
             //Game loadedGame = new Game(playersList, board1, commonGoalCardsIds);
 
 
