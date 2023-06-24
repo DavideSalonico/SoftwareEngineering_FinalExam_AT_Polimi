@@ -1,5 +1,6 @@
 package GC_11.distributed.socket;
 
+import GC_11.exceptions.IllegalMoveException;
 import GC_11.model.Player;
 import GC_11.network.GameViewMessage;
 import GC_11.network.choices.Choice;
@@ -67,9 +68,7 @@ public class ServerClientHandler implements Runnable {
         String reply = null;
         try {
             reply = (String) inputStream.readObject();
-        } catch (IOException e) {
-            System.err.println("Unable to read nickname");
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             System.err.println("Unable to read nickname");
         }
         this.nickname = reply;
@@ -87,7 +86,7 @@ public class ServerClientHandler implements Runnable {
                 try {
                     receiveMessageFromClient();
                     //receiveChoiceFromClient();
-                } catch (IOException | ClassNotFoundException e) {
+                } catch (IOException | ClassNotFoundException | IllegalMoveException e) {
                     connected = false;
                     try {
                         clientSocket.close();
@@ -107,7 +106,7 @@ public class ServerClientHandler implements Runnable {
      * @throws ClassNotFoundException If the class of the serialized object cannot be found.
      */
 
-    public String receiveLobbyMessageFromClient() throws IOException, ClassNotFoundException {
+    public String receiveLobbyMessageFromClient() {
         String clientMessage = null;
         try {
             clientMessage = (String) inputStream.readObject();
@@ -137,9 +136,9 @@ public class ServerClientHandler implements Runnable {
      * @throws ClassNotFoundException If the class of the serialized object cannot be found.
      */
 
-    public String receiveMessageFromClient() throws IOException, ClassNotFoundException {
+    public String receiveMessageFromClient() throws IOException, ClassNotFoundException, IllegalMoveException{
         String clientMessage = null;
-        Choice clientChoice = null;
+        Choice clientChoice;
         try {
             clientMessage = (String) inputStream.readObject();
             System.out.println("Ricevuto " + clientMessage + " da " + this.nickname);
@@ -158,7 +157,12 @@ public class ServerClientHandler implements Runnable {
             closeConnection();
             server.notifyDisconnectionAllSockets(this.clientSocket, this);
             throw new ClassNotFoundException();
-        } finally {
+        } catch(IllegalMoveException e){
+            System.out.println("Error during reading message from client");
+            closeConnection();
+            server.notifyDisconnectionAllSockets(this.clientSocket, this);
+            throw new IllegalMoveException();
+        } finally{
             return clientMessage;
         }
     }
@@ -279,9 +283,7 @@ public class ServerClientHandler implements Runnable {
             msg.setMessage("Inserire un numero");
             sendMessageViewToClient(msg);
             //sendMessageToClient("Inserire un numero");
-        } catch (IOException e) {
-            System.err.println("Unable to receive message from client");
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException | IllegalMoveException e) {
             System.err.println("Unable to receive message from client");
         }
 
