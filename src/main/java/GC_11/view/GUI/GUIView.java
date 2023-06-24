@@ -22,10 +22,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GUIView extends Application {
 
@@ -538,14 +535,6 @@ public class GUIView extends Application {
     }
 
     /**
-     * Method that receive a message from the server and update the chat
-     * @param message sent by other player
-     */
-    public void updateChat(String message){
-        chatTextArea.appendText(message + "\n");
-    }
-
-    /**
      * Method that send a message to other players in the chat
      */
     public void sendMessageOnChat(){
@@ -610,6 +599,54 @@ public class GUIView extends Application {
                 tilesOrdered.add(2);
                 thirdTile.setText(String.valueOf(tilesOrder[2]));
             }
+    }
+
+
+    /**
+     * Method that update all the chat at every update received from the server
+     * @param pvtChat is the map that contains all the messages of the players contained in the set as key
+     */
+    public void updateChat(Map <Set<String>, List<Message>> pvtChat){
+        tabPane.getTabs().clear();
+
+        List<String> tabNames = new ArrayList<>();
+        for(PlayerView playerView: otherPlayers){
+            tabNames.add(playerView.getClientNickName().getText());
+        }
+
+        for(String tabName : tabNames){
+            if(!tabPane.getTabs().contains(tabName)){
+                Tab tab = new Tab(tabName);
+                tabPane.getTabs().add(tab);
+                tabPane.getSelectionModel().select(tab);
+                AnchorPane anchorPane = new AnchorPane();
+                TextArea textArea = new TextArea();
+                textArea.getStyleClass().add("text-area");
+                textArea.setEditable(false);
+                textArea.setWrapText(true);
+                textArea.setPrefHeight(160);
+                textArea.setPrefWidth(160);
+                Set<String> set = new HashSet<>();
+                set.add(tabName);
+                set.add(currentPlayerNickname);
+                fillChat(textArea, pvtChat.get(set));
+                anchorPane.getChildren().add(textArea);
+                tab.setContent(anchorPane);
+            }
+        }
+
+    }
+
+
+    /**
+     * Method that fill the chat with the messages
+     * @param textArea TextArea reference
+     * @param messages List of messages
+     */
+    public void fillChat(TextArea textArea, List<Message> messages){
+        for(Message message : messages){
+            textArea.appendText(message.getSender() + " : " + message.getText() + "\n");
+        }
     }
 
     /**
