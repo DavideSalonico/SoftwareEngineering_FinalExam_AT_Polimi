@@ -8,6 +8,9 @@ target/
 # *.iml files
 softeng_cg11.iml
 
+# Game.JSON
+src/main/resources/GameView.JSON
+
 
 
 # User-specific stuff
