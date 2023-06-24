@@ -464,7 +464,7 @@ public class GUIView extends Application {
 
     /**
      * Method that updates the Board of the client who is using the GUI
-     * @param player
+     * @param player to update
      * @throws ColumnIndexOutOfBoundsException
      */
     public void updateClientShelf(Player player) throws ColumnIndexOutOfBoundsException {
@@ -494,7 +494,7 @@ public class GUIView extends Application {
 
     /**
      * Method that updates the points of the client who is using the GUI
-     * @param player
+     * @param player to update
      */
     public void updateClientPoints(Player player){
         clientPoints.setText("Points: " + player.getPoints());
@@ -602,13 +602,13 @@ public class GUIView extends Application {
     }
 
 
+
     /**
      * Method that update all the chat at every update received from the server
      * @param pvtChat is the map that contains all the messages of the players contained in the set as key
      */
-    public void updateChat(Map <Set<String>, List<Message>> pvtChat){
+    public void updateChat(Map <Set<String>, List<Message>> pvtChat, List<Message> globalChat){
         tabPane.getTabs().clear();
-
         List<String> tabNames = new ArrayList<>();
         for(PlayerView playerView: otherPlayers){
             tabNames.add(playerView.getClientNickName().getText());
@@ -634,6 +634,21 @@ public class GUIView extends Application {
                 tab.setContent(anchorPane);
             }
         }
+
+        // Manage to create the global chat
+        Tab tab = new Tab("Global Chat");
+        tabPane.getTabs().add(tab);
+        tabPane.getSelectionModel().select(tab);
+        AnchorPane anchorPane = new AnchorPane();
+        TextArea textArea = new TextArea();
+        textArea.getStyleClass().add("text-area");
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+        textArea.setPrefHeight(160);
+        textArea.setPrefWidth(160);
+        fillChat(textArea, globalChat);
+        anchorPane.getChildren().add(textArea);
+        tab.setContent(anchorPane);
 
     }
 
