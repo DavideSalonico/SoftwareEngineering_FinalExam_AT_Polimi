@@ -200,7 +200,7 @@ public class Controller implements PropertyChangeListener {
 
         if(end){
             this.model.setEndGame(true);
-            this.model.setEndPlayer(this.model.getCurrentPlayer());
+            this.model.setEndPlayer(this.model.getCurrentPlayer().getNickname());
         }
     }
 
