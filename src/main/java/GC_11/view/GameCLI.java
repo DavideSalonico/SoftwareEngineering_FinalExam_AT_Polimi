@@ -70,7 +70,10 @@ public class GameCLI extends ViewGame {
                         "CHOICE",
                         null,
                         choice);
-                this.client.notifyServer(evt);  // TODO QUA SI ROMPE IL SOCKET, GUARDIAMOLO BENE
+                if (this.client!=null)              //TODO: Implementare un'interfaccia client che permetta di chiamare lo stesso metodo sia socket che RMI
+                    this.client.notifyServer(evt);
+                else
+                    this.clientSock.notifyServer(evt);
             } else {
                 //permettergli di scrivere in chat
             }

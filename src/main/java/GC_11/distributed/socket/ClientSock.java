@@ -32,8 +32,6 @@ public class ClientSock implements PropertyChangeListener {
 
         this.port = port;
         this.ip = ip;
-        //this.view = new GameCLI(,this);
-
 
         try {
             System.out.println("Connecting to server on port " + port);
@@ -89,30 +87,26 @@ public class ClientSock implements PropertyChangeListener {
     public void receiveGameViewFromServer() {
         try {
             GameViewMessage message = (GameViewMessage) in.readObject();
-            System.out.println("Received gameViewMessage from server: " + message.toString());
+            //System.out.println("Received gameViewMessage from server: " + message.toString());
             if (message != null) {
                 this.gameViewMessage = message;
                 if (message.getMessage() != null) {
                     System.out.println(message.getMessage());
-                    if (message.getMessage().startsWith("Hi!")){
+                    if (message.getMessage().startsWith("Hi!")) {
                         Scanner scanner = new Scanner(System.in);
                         String inputNickname = scanner.nextLine();
                         this.nickname = inputNickname;
-                        this.view=new GameCLI(nickname,this);
+                        this.view = new GameCLI(nickname, this);
                         sendMessageToServer(inputNickname);
-                    }
-                    else if(message.getMessage().startsWith("Inserire")){
+                    } else if (message.getMessage().startsWith("Inserire")) {
                         Scanner scanner = new Scanner(System.in);
                         String maxPlayer = scanner.nextLine();
                         sendMessageToServer(maxPlayer);
                     }
                 } else {
                     this.view.propertyChange(new PropertyChangeEvent(this, "gameViewMessage", null, message));
-                    //System.out.println(gameViewMessage.toString());
                 }
             }
-            // Una volta ricevuto il messaggio notifico la view
-            //this.view.propertyChange(new PropertyChangeEvent(this, "gameViewMessage", null, messageView));
         } catch (IOException e) {
             System.out.println("Error during receiving gameViewMessage from server. Check server connection");
         } catch (ClassNotFoundException e) {
@@ -212,11 +206,11 @@ public class ClientSock implements PropertyChangeListener {
 
     public void notifyServer(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("CHOICE"))
-            sendChoiceToServer((Choice) evt.getNewValue());
+            sendMessageToServer((evt.getNewValue()).toString());
     }
 
     public void updateViewGame(GameViewMessage gameViewMessage) {
-    	this.view.propertyChange(new PropertyChangeEvent(this,
+        this.view.propertyChange(new PropertyChangeEvent(this,
                 "UPDATE GAME",
                 null,
                 gameViewMessage));

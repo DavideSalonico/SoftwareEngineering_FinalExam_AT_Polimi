@@ -2,7 +2,6 @@ package GC_11.distributed.socket;
 
 import GC_11.model.Player;
 import GC_11.network.GameViewMessage;
-import GC_11.network.MessageView;
 import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
 
@@ -132,6 +131,7 @@ public class ServerClientHandler implements Runnable {
      * Receives a message from the client.
      * It always gets a String from the client. If the name is set and there is more than 1 client in the map
      * it creates a Choice and notify it to the main server
+     *
      * @return The received message.
      * @throws IOException            If an I/O error occurs.
      * @throws ClassNotFoundException If the class of the serialized object cannot be found.
@@ -139,16 +139,15 @@ public class ServerClientHandler implements Runnable {
 
     public String receiveMessageFromClient() throws IOException, ClassNotFoundException {
         String clientMessage = null;
+        Choice clientChoice = null;
         try {
             clientMessage = (String) inputStream.readObject();
             System.out.println("Ricevuto " + clientMessage + " da " + this.nickname);
-            if(this.nickname != null && !this.nickname.isEmpty() && this.server.getServerMain().getClientsMap().size()>1){
-                Choice clientChoice  = ChoiceFactory.createChoice(new Player(this.nickname),clientMessage);
+            if (this.nickname != null && !this.nickname.isEmpty() && this.server.getServerMain().getClientsMap().size() > 1) {
+                clientChoice = ChoiceFactory.createChoice(new Player(this.nickname), clientMessage);
                 System.out.println("Chiamo il controller");
                 this.server.getServerMain().makeAMove(clientChoice);
             }
-            //System.out.println("Received choice from client: " + clientChoice);
-            //server.notifyAllClients(clientChoice, this);
         } catch (IOException e) {
             System.out.println("Error during receiving message from client");
             closeConnection();
@@ -197,9 +196,6 @@ public class ServerClientHandler implements Runnable {
             closeConnection();
         }
     }
-
-
-
 
 
     /**
@@ -271,7 +267,7 @@ public class ServerClientHandler implements Runnable {
         //msg.setMessage("Inserire il numero massimo di giocatori");
         sendMessageViewToClient(msg);
         //sendMessageToClient("Inserire il numero massimo di giocatori");
-        try{
+        try {
             maxPlayers = Integer.parseInt(receiveMessageFromClient());
             while (maxPlayers <= 1 || maxPlayers >= 5) {
                 msg.setMessage("Il numero di giocatori deve essere compreso tra 2 e 4");
@@ -279,13 +275,11 @@ public class ServerClientHandler implements Runnable {
                 //sendMessageToClient("Il numero di giocatori deve essere compreso tra 2 e 4");
                 maxPlayers = Integer.parseInt(receiveMessageFromClient());
             }
-        }
-        catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             msg.setMessage("Inserire un numero");
             sendMessageViewToClient(msg);
             //sendMessageToClient("Inserire un numero");
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             System.err.println("Unable to receive message from client");
         } catch (ClassNotFoundException e) {
             System.err.println("Unable to receive message from client");

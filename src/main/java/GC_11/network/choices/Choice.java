@@ -47,4 +47,12 @@ public abstract class Choice implements Serializable {
     public ChoiceType getType() {
         return type;
     }
+
+    public String toString(){
+        String choiceStringified = type.toString();
+        for (String p : params){
+            choiceStringified += " "+p;
+        }
+        return choiceStringified;
+    }
 }
