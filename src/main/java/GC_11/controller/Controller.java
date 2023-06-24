@@ -86,7 +86,7 @@ public class Controller implements PropertyChangeListener {
         this.choice = choice;
 
         if (!checkTurn()) {
-            this.model.triggerException(new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer() + "'s turn"));
+            this.model.triggerException(new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer().getNickname() + "'s turn"));
         }
 
         try {
