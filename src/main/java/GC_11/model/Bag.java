@@ -35,7 +35,7 @@ public class Bag implements Serializable {
         for (int i = 0; i < 22; i++) {
             for(TileColor color : TileColor.values()) {
                 if(color != TileColor.EMPTY && color != TileColor.PROHIBITED) {
-                    tiles.add(new Tile(color, i % 3));
+                    this.tiles.add(new Tile(color, i % 3));
                 }
             }
         }
@@ -85,7 +85,6 @@ public class Bag implements Serializable {
     /**
      * Remove all tiles contained in t from tiles
      *
-     * @param t
      */
     public void removeListOfTile(List<Tile> t) {
 
@@ -101,7 +100,7 @@ public class Bag implements Serializable {
     /**
      * Counter Method
      *
-     * @param tc
+     * @param tc is the color of the tiles that I want to count
      * @return Number of tiles in 'tc' coloration
      */
     private int countTiles(TileColor tc) {
@@ -130,14 +129,13 @@ public class Bag implements Serializable {
      * @return tiles Array-List
      */
     public List<Tile> drawOutTiles() {
-        return tiles;
+        return this.tiles;
     }
 
     /**
      * After EVERY Draw-Out, the controller keep in the bag only the remaining Tiles,
      * contained in 'list', and it deletes all the used ones from "tiles"
      *
-     * @param list
      */
     public void updateBag(List<Tile> list) {
         tiles.retainAll(list);

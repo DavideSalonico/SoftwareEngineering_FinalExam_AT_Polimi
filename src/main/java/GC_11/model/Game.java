@@ -27,8 +27,6 @@ public class Game implements PropertyChangeListener, Serializable {
     private String endPlayer;
     private Board board;
     private Chat chat;
-
-    //It's not necessary to serialize the listener (attribute transient)
     public transient PropertyChangeListener listener;
 
     public Game(@NotNull List<String> playerNames, PropertyChangeListener listener) {
@@ -62,9 +60,6 @@ public class Game implements PropertyChangeListener, Serializable {
         }
         this.commonGoals.add(loadCommon(tmp1));
         this.commonGoals.add(loadCommon(tmp2));
-        //this.commonGoals.get(0).getWinningPlayers().add(players.get(0));  // Solo per prova
-        //this.commonGoals.get(0).getWinningPlayers().add(players.get(1));  // Solo per prova
-        //this.commonGoals.get(1).getWinningPlayers().add(players.get(2));  // Solo per prova
         this.commonGoals.get(0).setListener(this);
         this.commonGoals.get(1).setListener(this);
         this.listener = listener;
@@ -166,7 +161,7 @@ public class Game implements PropertyChangeListener, Serializable {
 
     public boolean setNextCurrent() {
         this.currentPlayer = this.players.get(this.players.indexOf(this.currentPlayer) + 1);
-        if(this.currentPlayer.getNickname().equals(this.endPlayer) && this.endGame == true){
+        if(this.currentPlayer.getNickname().equals(this.endPlayer)){
             return true;
         }
         PropertyChangeEvent evt = new PropertyChangeEvent(

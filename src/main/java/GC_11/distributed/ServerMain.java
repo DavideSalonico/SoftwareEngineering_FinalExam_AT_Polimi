@@ -6,6 +6,7 @@ import GC_11.distributed.socket.ServerSock;
 import GC_11.exceptions.*;
 import GC_11.model.Game;
 import GC_11.model.Lobby;
+import GC_11.model.Message;
 import GC_11.model.Player;
 import GC_11.network.GameViewMessage;
 import GC_11.network.LobbyViewMessage;
@@ -15,7 +16,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * The main server class for the multiplayer game server.
@@ -143,6 +146,18 @@ public class ServerMain implements PropertyChangeListener {
                 for (Player p : messageViewCopy.getPlayers()) {
                     if (!p.getNickname().equals(client.getKey())){
                         p.setPersonalGoal(null);
+                        for(Map.Entry<Set<String>, List<Message>> entry : messageViewCopy.getPrivateChats().entrySet()){
+                            if(!entry.getKey().contains(p.getNickname())){
+                                entry.getValue().clear();
+                            }
+                            else{
+                                for(String str : entry.getKey()){
+                                    if(!str.equals(client.getKey())){
+                                        messageViewCopy.getFilteredPvtChats().put(str, entry.getValue());
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 

@@ -12,10 +12,22 @@ import java.util.List;
 public class SendMessageChoice extends Choice {
     public SendMessageChoice(Player player, List<String> params, ChoiceType type) throws IllegalMoveException {
         super(player, params, type);
+        for(int i=2; i<params.size(); i++){
+            String tmp = getString(params, i);
+            params.set(1, params.get(1).concat(" " + tmp));;
+        }
+        for (int i = params.size() - 1; i >= 2; i--) {
+            params.remove(i);
+        }
 
         if (params.size() != 2) throw new IllegalMoveException();
         if (params.get(0).length() >= 64 || params.get(1).length() >= 64)
             throw new IllegalMoveException("Message too long");
+    }
+
+    private static String getString(List<String> params, int i) {
+        String tmp = params.get(i);
+        return tmp;
     }
 
     @Override
