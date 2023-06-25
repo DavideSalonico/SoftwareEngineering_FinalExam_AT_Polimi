@@ -242,8 +242,8 @@ public class ServerMain implements PropertyChangeListener {
             this.clientMap.remove(nickname);
             this.controller.getGame().setEndGame(true);
             GameViewMessage msg = new GameViewMessage(this.controller.getGame(), new Exception("Player " + nickname + " disconnected"), null);
-            this.serverSocket.notifyDisconnection(nickname,msg);
-            this.serverRMI.notifyDisconnection(nickname,msg);
+            //this.serverSocket.notifyDisconnection(nickname,msg);
+            //this.serverRMI.notifyDisconnection(nickname,msg);
 
 
 

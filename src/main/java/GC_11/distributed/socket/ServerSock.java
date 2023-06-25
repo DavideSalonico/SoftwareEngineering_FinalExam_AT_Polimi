@@ -118,20 +118,8 @@ public class ServerSock implements PropertyChangeListener {
         socketMap.get(client).sendMessageViewToClient(messageView);
     }
 
-    /**
-     * Notifies all client sockets about a disconnection and removes the sourceHandler from the serverClientHandlerList.
-     *
-     * @param socket        The socket that got disconnected.
-     * @param sourceHandler The source client handler that triggered the disconnection.
-     */
 
-    public void notifyDisconnectionAllSockets(Socket socket, ServerClientHandler sourceHandler) {
-        Socket disconnectedSocket = socket;
-        serverClientHandlerList.remove(sourceHandler);
-        for (ServerClientHandler sch : serverClientHandlerList) {
-            sch.notifyDisconnection(disconnectedSocket);
-        }
-    }
+
 
     public void notifyDisconnection(String nickname, GameViewMessage message){
         for (Map.Entry<String, ServerClientHandler> e : socketMap.entrySet()) {
