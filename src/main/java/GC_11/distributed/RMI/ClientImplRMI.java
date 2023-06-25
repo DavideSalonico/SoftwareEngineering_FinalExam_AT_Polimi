@@ -15,7 +15,6 @@ import GC_11.view.ViewLobby;
 import javafx.application.Application;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;

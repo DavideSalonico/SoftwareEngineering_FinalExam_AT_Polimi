@@ -16,7 +16,7 @@ public interface ServerRMI extends Remote {
      * @param client
      * @throws RemoteException
      */
-    void register(ClientImplRMI client) throws RemoteException;
+    void register(Client client) throws RemoteException;
 
     /**
      * update the model of the game with the choice of the client

@@ -13,4 +13,6 @@ public interface Client extends Remote, Serializable {
     void notifyServer(Choice choice) throws RemoteException;
 
     String getNickname() throws RemoteException;
+
+    int askMaxNumber();
 }

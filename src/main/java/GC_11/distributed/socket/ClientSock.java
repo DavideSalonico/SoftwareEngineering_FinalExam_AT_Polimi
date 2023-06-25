@@ -275,5 +275,11 @@ public class ClientSock implements PropertyChangeListener, Client {
     public String getNickname() {
         return this.nickname;
     }
+
+    @Override
+    public int askMaxNumber() {
+        //TODO
+        return -1;
+    }
 }
 

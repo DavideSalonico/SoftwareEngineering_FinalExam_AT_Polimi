@@ -32,7 +32,7 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI, Ser
     private Lobby lobbyModel;
 
     private int maxPlayer;
-    private List<ClientImplRMI> clients = new ArrayList<>();
+    private List<Client> clients = new ArrayList<>();
 
     private ServerMain serverMain;
 
@@ -41,7 +41,7 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI, Ser
         this.serverMain = serverMain;
     }
 
-    public List<ClientImplRMI> getClients() {
+    public List<Client> getClients() {
         return this.clients;
     }
 
@@ -77,7 +77,7 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI, Ser
     }
 
     @Override
-    public synchronized void register(ClientImplRMI client) throws RemoteException {
+    public synchronized void register(Client client) throws RemoteException {
         clients.add(client);
         serverMain.addConnection(client.getNickname(), "RMI");
     }
