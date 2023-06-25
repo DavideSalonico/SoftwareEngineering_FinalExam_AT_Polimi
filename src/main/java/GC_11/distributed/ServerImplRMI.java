@@ -109,7 +109,7 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
         System.out.println("\n");
     }
 
-    public synchronized void notifyClientsLobby(LobbyViewMessage lobbyViewMessage){
+    public synchronized void notifyClientsLobby(LobbyViewMessage lobbyViewMessage) throws RemoteException {
         for (ClientRMI c : clients) {
             new Thread(() -> {
                 try {
@@ -123,7 +123,7 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
         System.out.println("\n");
     }
 
-    public void notifyDisconnection(String nickname, GameViewMessage msg){
+    public void notifyDisconnection(String nickname, GameViewMessage msg) throws RemoteException {
         for (ClientRMI c : clients) {
             if (!c.getNickname().equals(nickname)) {
                 new Thread(() -> {
