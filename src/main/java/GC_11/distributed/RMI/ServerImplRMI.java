@@ -4,7 +4,6 @@ import GC_11.controller.Controller;
 import GC_11.distributed.Client;
 import GC_11.distributed.ServerMain;
 import GC_11.distributed.ServerRMI;
-import GC_11.exceptions.*;
 import GC_11.model.Game;
 import GC_11.network.GameViewMessage;
 import GC_11.model.Lobby;
@@ -12,6 +11,7 @@ import GC_11.network.LobbyViewMessage;
 import GC_11.network.choices.Choice;
 
 import java.beans.PropertyChangeEvent;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
+public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI, Serializable {
 
     private Controller gameController;
 
@@ -100,7 +100,7 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
         for (Client c : clients) {
             new Thread(() -> {
                 try {
-                    c.recieveFromServer(new GameViewMessage(gameModel, null, evt));
+                    c.receiveFromServer(new GameViewMessage(gameModel, null, evt));
                     System.out.println(c.getNickname() + " aggiornato GAME correctly");
                 } catch (RemoteException e) {
                     System.out.println(e.getMessage());
@@ -116,7 +116,7 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
         for (Client c : clients) {
             new Thread(() -> {
                 try {
-                    c.recieveFromServer(lobbyViewMessage);
+                    c.receiveFromServer(lobbyViewMessage);
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -136,7 +136,7 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
                 if (!c.getNickname().equals(nickname)) {
                     new Thread(() -> {
                         try {
-                            c.recieveFromServer(msg);
+                            c.receiveFromServer(msg);
                             System.out.println(c.getNickname() + " aggiornato GAME correctly");
                         } catch (RemoteException e) {
                             System.out.println(e.getMessage());
@@ -155,7 +155,7 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
             if (c.getNickname().equals(nickname)) {
                 new Thread(() -> {
                     try {
-                        c.recieveFromServer(gameViewMessage);
+                        c.receiveFromServer(gameViewMessage);
                         System.out.println(c.getNickname() + " aggiornato GAME correctly");
                     } catch (RemoteException e) {
                         System.out.println(e.getMessage());

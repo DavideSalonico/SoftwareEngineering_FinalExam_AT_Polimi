@@ -16,19 +16,17 @@ import javafx.application.Application;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class ClientImplRMI extends UnicastRemoteObject implements Client {
+public class ClientImplRMI extends UnicastRemoteObject implements Client, Serializable {
 
-    private ViewLobby viewLobby;
-    private ViewGame viewGame;
+    private transient ViewLobby viewLobby;
+    private transient ViewGame viewGame;
     private String nickname;
-
-    private PropertyChangeListener listener;
-
     private ServerRMI server;
 
     public ClientImplRMI(ViewLobby viewLobby) throws RemoteException {
@@ -122,7 +120,7 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client {
     }
 
     @Override
-    public void recieveFromServer(MessageView message) throws RemoteException {
+    public void receiveFromServer(MessageView message) throws RemoteException {
         if(message instanceof LobbyViewMessage){
             updateViewLobby((LobbyViewMessage) message);
         }

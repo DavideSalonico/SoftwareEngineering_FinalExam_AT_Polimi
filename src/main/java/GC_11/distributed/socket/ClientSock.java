@@ -121,7 +121,7 @@ public class ClientSock implements PropertyChangeListener, Client {
         }
     }
 
-    public void recieveFromServer(MessageView message) throws RemoteException {
+    public void receiveFromServer(MessageView message) throws RemoteException {
         receiveGameViewFromServer();
     }
 
