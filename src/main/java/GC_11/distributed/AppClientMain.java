@@ -41,14 +41,14 @@ public class AppClientMain {
             }
         }
         if(choiceNetwork.equals("RMI")) {
-            serverRMISetup(choiceInterface);
+            clientRMISetup(choiceInterface);
         }
         else{
-            serverSOCKETSetup(choiceInterface);
+            clientSOCKETSetup(choiceInterface);
         }
     }
 
-    private static void serverRMISetup(String choiceInterface)throws RemoteException, NotBoundException{
+    private static void clientRMISetup(String choiceInterface)throws RemoteException, NotBoundException{
         Scanner inputLine = new Scanner(System.in);
         System.out.println("what's your nickname?");
         String nickname = inputLine.nextLine();
@@ -63,7 +63,7 @@ public class AppClientMain {
         ClientImplRMI client = new ClientImplRMI(server, nickname, choiceInterface);
     }
 
-    private static void  serverSOCKETSetup(String choiceInterface){
+    private static void  clientSOCKETSetup(String choiceInterface){
         System.out.println("Inserire indirizzo ip del server: ");
         Scanner s = new Scanner(System.in);
         String serverIp = s.nextLine();

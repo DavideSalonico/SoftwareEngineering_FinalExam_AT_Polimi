@@ -17,12 +17,6 @@ public interface ClientRMI extends Remote {
 
     int askMaxNumber() throws RemoteException;
 
-    String getNickname() throws RemoteException;
-
-    void run() throws RemoteException, ColumnIndexOutOfBoundsException;
-
-    void updateStartGame(GameViewMessage newView) throws RemoteException;
-
     void notifyServer(PropertyChangeEvent evt) throws RemoteException;
 
 }

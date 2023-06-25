@@ -86,11 +86,6 @@ public class ClientImplRMI extends UnicastRemoteObject implements ClientRMI {
         return number;
     }
 
-    public void updateStartGame(GameViewMessage newView) throws RemoteException {
-        viewGame = new GameCLI(this.nickname, this);
-        updateViewGame(newView);
-    }
-
     @Override
     public void notifyServer(PropertyChangeEvent evt) throws RemoteException {
         if (evt.getPropertyName().equals("UPDATE LOBBY")) {
@@ -127,13 +122,7 @@ public class ClientImplRMI extends UnicastRemoteObject implements ClientRMI {
         this.viewGame.propertyChange(evt);
     }
 
-    public String getNickname() {
-        return nickname;
-    }
 
-    public void run() throws RemoteException, ColumnIndexOutOfBoundsException {
-        viewLobby.run();
-    }
 
 
 }
