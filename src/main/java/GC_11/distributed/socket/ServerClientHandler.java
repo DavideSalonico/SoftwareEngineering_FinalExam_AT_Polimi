@@ -149,17 +149,14 @@ public class ServerClientHandler implements Runnable {
             } catch (IOException e) {
                 System.out.println("Error during receiving message from client");
                 closeConnection();
-                server.notifyDisconnectionAllSockets(this.clientSocket, this);
                 throw new IOException();
             } catch (ClassNotFoundException e) {
                 System.out.println("Error during deserialization of message from client");
                 closeConnection();
-                server.notifyDisconnectionAllSockets(this.clientSocket, this);
                 throw new ClassNotFoundException();
             } catch (IllegalMoveException e) {
                 System.out.println("Error during reading message from client");
                 closeConnection();
-                server.notifyDisconnectionAllSockets(this.clientSocket, this);
                 throw new IllegalMoveException();
             } finally {
                 return clientMessage;
