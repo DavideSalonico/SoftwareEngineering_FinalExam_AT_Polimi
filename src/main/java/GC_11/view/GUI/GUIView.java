@@ -22,7 +22,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GUIView extends Application {
 
@@ -76,6 +79,8 @@ public class GUIView extends Application {
     public Button thirdTile;
     public ImageView thirdImage;
 
+    public Button resetButton;
+
     // Initialize otherPlayers using PlayerView class as a container for the player's nickname, points and shelf (related to javafx objects)
     List<PlayerView> otherPlayers = new ArrayList<>();
     List<Player> others = new ArrayList<>();
@@ -119,6 +124,9 @@ public class GUIView extends Application {
      */
     @FXML
     public void initialize() {
+
+        //Button Reset invisible
+        resetButton.setVisible(false);
 
         // Initialize order tile
         firstTile.setText("");
@@ -224,14 +232,14 @@ public class GUIView extends Application {
                 ImageView imageView3 = new ImageView(whiteTiles.get(1));
                 ImageView imageView4 = new ImageView(blueTiles.get(1));
 
-                imageView1.setFitHeight(24);
-                imageView1.setFitWidth(24);
+                imageView1.setFitHeight(23);
+                imageView1.setFitWidth(23);
 
-                imageView2.setFitHeight(24);
-                imageView2.setFitWidth(24);
+                imageView2.setFitHeight(23);
+                imageView2.setFitWidth(23);
 
-                imageView3.setFitHeight(24);
-                imageView3.setFitWidth(24);
+                imageView3.setFitHeight(23);
+                imageView3.setFitWidth(23);
 
                 imageView4.setFitHeight(45);
                 imageView4.setFitWidth(45);
@@ -332,7 +340,11 @@ public class GUIView extends Application {
                 selectedImages.remove(imageView);
                 imageView.getStyleClass().remove(SELECTED_STYLE_CLASS);
 
+
             } else {
+                //Button reset visibility
+                resetButton.setVisible(true);
+
                 if (selectedImages.size() < 3) {
                     // Aggiungi l'immagine alla lista delle selezioni
                     selectedImages.add(imageView);
@@ -374,21 +386,16 @@ public class GUIView extends Application {
      * Method bound to every button of the column selector that will set the columnSelected variable to the column selected
      * @param event to get the id of the button pressed
      */
-    public void selectColumn(ActionEvent event){
-        Button button = (Button) event.getSource();
-        columnSelected = columnSelector.getButtons().indexOf(button) + 1;
-        System.out.println("Column selected: " + columnSelected);
-    }
-
-    /**
-     * Method bound to the button "Confirm" that will send the request to the server after the user has selected the column where to place the tile
-     */
-    public void columnSelectionConfirmed(){
-        if(columnSelected != 0) {
-            System.out.println("Select first the column !");
+    public String selectColumn(ActionEvent event){
+        if(selectedImages.size() == tilesOrdered.size() && selectedImages.size() != 0){
+            setError("");
+            Button button = (Button) event.getSource();
+            columnSelected = columnSelector.getButtons().indexOf(button) + 1;
+            System.out.println("PICK_COLUMN: " + columnSelected);
+            return "PICK_COLUMN: " + columnSelected;
         }else {
-            System.out.println("Request to server...");
-            // Make the request to the server
+            setError("Select and order all the tiles first !");
+            return "Select all the tiles first !";
         }
     }
 
@@ -586,32 +593,52 @@ public class GUIView extends Application {
     int [] tilesOrder = new int[3];
     public void setTileOrder(ActionEvent event){
         if(tilesOrdered.size() < 3)
-            if(event.getSource() == firstTile && !tilesOrdered.contains((Integer) 0)){
+            if(event.getSource() == firstTile && !tilesOrdered.contains((Integer) 0) && firstImage.getImage() != null){
                 tilesOrder[0] = tilesOrdered.size();
                 tilesOrdered.add(0);
                 firstTile.setText(String.valueOf(tilesOrder[0]));
-            } else if (event.getSource() == secondTile && !tilesOrdered.contains((Integer) 1)){
+            } else if (event.getSource() == secondTile && !tilesOrdered.contains((Integer) 1) && secondImage.getImage() != null){
                 tilesOrder[1] = tilesOrdered.size();
                 tilesOrdered.add(1);
                 secondTile.setText(String.valueOf(tilesOrder[1]));
-            } else if (event.getSource() == thirdTile && !tilesOrdered.contains((Integer) 2)){
+            } else if (event.getSource() == thirdTile && !tilesOrdered.contains((Integer) 2) && thirdImage.getImage() != null){
                 tilesOrder[2] = tilesOrdered.size();
                 tilesOrdered.add(2);
                 thirdTile.setText(String.valueOf(tilesOrder[2]));
             }
     }
 
+    public String chooseOrder(){
+        String input = "CHOOSE_ORDER ";
+        if(tilesOrdered.size() == selectedImages.size() && tilesOrdered.size() != 0){
+            setError("");
+            for( int i = 0; i < tilesOrdered.size(); i++){
+                input = input  + tilesOrder[i] + " ";
+            }
+            return input;
+        } else {
+            setError("First of all, order every tile selected!!");
+            return "First of all, order every tile selected!!";  // Genera eccezione da gestire
+        }
+    }
 
+    /**
+     * Method bound to the button "Confirm" that will send the request to the server after the user has selected the column where to place the tile
+     */
+    public String confirmTilesOrder(){
+        System.out.println(chooseOrder());
+        return chooseOrder();
+    }
 
     /**
      * Method that update all the chat at every update received from the server
      * @param pvtChat is the map that contains all the messages of the players contained in the set as key
      */
-    public void updateChat(Map <Set<String>, List<Message>> pvtChat, List<Message> globalChat){
+    public void updateChat(Map <String, List<Message>> pvtChat, List<Message> globalChat){
         tabPane.getTabs().clear();
         List<String> tabNames = new ArrayList<>();
-        for(PlayerView playerView: otherPlayers){
-            tabNames.add(playerView.getClientNickName().getText());
+        for(String playerName : pvtChat.keySet()){
+            tabNames.add(playerName);
         }
 
         for(String tabName : tabNames){
@@ -626,10 +653,7 @@ public class GUIView extends Application {
                 textArea.setWrapText(true);
                 textArea.setPrefHeight(160);
                 textArea.setPrefWidth(160);
-                Set<String> set = new HashSet<>();
-                set.add(tabName);
-                set.add(currentPlayerNickname);
-                fillChat(textArea, pvtChat.get(set));
+                fillChat(textArea, pvtChat.get(tabName));
                 anchorPane.getChildren().add(textArea);
                 tab.setContent(anchorPane);
             }
@@ -663,6 +687,32 @@ public class GUIView extends Application {
             textArea.appendText(message.getSender() + " : " + message.getText() + "\n");
         }
     }
+
+
+    public void resetButtonAction(){
+        resetButton.setVisible(false);
+        List<String> tmpPlayerNames = new ArrayList<String>();
+        tmpPlayerNames.add("Pippo");
+        tmpPlayerNames.add("Pluto");
+        tmpPlayerNames.add("Paperino");
+        tmpPlayerNames.add("Giuseppe");
+        model = new Game(tmpPlayerNames, null);
+
+        selectedImages.clear();
+        tilesOrdered.clear();
+        firstImage.setImage(null);
+        secondImage.setImage(null);
+        thirdImage.setImage(null);
+        firstTile.setText("");
+        secondTile.setText("");
+        thirdTile.setText("");
+        setError("");
+
+        refreshBoard(model.getBoard());
+    }
+
+
+
 
     /**
      * Method that will be called when the game starts

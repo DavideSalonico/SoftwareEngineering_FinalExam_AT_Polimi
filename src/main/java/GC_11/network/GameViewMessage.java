@@ -1,16 +1,13 @@
 package GC_11.network;
 
 
-import GC_11.model.Board;
-import GC_11.model.Chat;
-import GC_11.model.Game;
-import GC_11.model.Player;
+import GC_11.model.*;
 import GC_11.model.common.CommonGoalCard;
 import GC_11.network.MessageView;
 import GC_11.util.CircularList;
 
 import java.beans.PropertyChangeEvent;
-import java.util.List;
+import java.util.*;
 
 /**
  * This class give all the information about the Game specialized for a particular Player given by parameter
@@ -31,7 +28,9 @@ public class GameViewMessage extends MessageView {
     private boolean endGame = false;
     private String endPlayer = null;
     private Board board = null;
-    private Chat chat = null;
+    private List<Message> mainChat = new ArrayList<>();
+    private Map<Set<String>, List<Message>> privateChats = new HashMap<>();
+    private Map<String, List<Message>> filteredPvtChats = new HashMap<>();
     private String message;
     private PropertyChangeEvent evt;
 
@@ -60,7 +59,8 @@ public class GameViewMessage extends MessageView {
         this.endGame = model.isEndGame();
         if(model.getEndPlayer() != null) this.endPlayer = model.getEndPlayer();
         this.board = new Board(model.getBoard());
-        this.chat = model.getChat();
+        this.mainChat = new ArrayList<>(model.getChat().getMainChat());
+        this.privateChats = new HashMap<>(model.getChat().getPvtChats());
         this.evt = evt;
     }
 
@@ -149,7 +149,26 @@ public class GameViewMessage extends MessageView {
         this.exception = exception;
     }
 
-    public Chat getChat(){
-        return this.chat;
+    public List<Message> getMainChat() {
+        return mainChat;
+    }
+    public Map<Set<String>, List<Message>> getPrivateChats() {
+        return privateChats;
+    }
+
+    public Map<String, List<Message>> getFilteredPvtChats() {
+        return filteredPvtChats;
+    }
+
+    public void setFilteredPvtChats(Map<String, List<Message>> filteredPvtChats) {
+        this.filteredPvtChats = filteredPvtChats;
+    }
+
+    public void setPrivateChats(Map<Set<String>, List<Message>> privateChats) {
+        this.privateChats = privateChats;
+    }
+
+    public void setMainChat(List<Message> mainChat) {
+        this.mainChat = mainChat;
     }
 }

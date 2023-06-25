@@ -99,7 +99,7 @@ public class Controller implements PropertyChangeListener {
 
         choice.executeOnServer(this);
 
-        if (!choice.getType().equals(ChoiceType.PICK_COLUMN))
+        if (!choice.getType().equals(ChoiceType.PICK_COLUMN) && !choice.getType().equals(ChoiceType.SEND_MESSAGE))
             this.lastChoice = this.choice.getType();
         else
             this.lastChoice = ChoiceType.RESET_TURN;

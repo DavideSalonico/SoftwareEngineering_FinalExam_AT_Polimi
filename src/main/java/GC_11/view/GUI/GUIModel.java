@@ -3,8 +3,10 @@ package GC_11.view.GUI;
 import GC_11.distributed.ClientRMI;
 import GC_11.distributed.socket.ClientSock;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
+import GC_11.exceptions.IllegalMoveException;
 import GC_11.network.GameViewMessage;
 import GC_11.network.choices.Choice;
+import GC_11.network.choices.ChoiceFactory;
 import GC_11.view.ViewGame;
 
 import java.beans.PropertyChangeEvent;
@@ -80,14 +82,12 @@ public class GUIModel extends ViewGame {
 
     @Override
     public Choice getPlayerChoice() {
-        /*while (true) {
             try {
-                //ASPETTA LA
+                String input = view.chooseOrder(); // chooseOrder() returns a string that represents the choice of the player but it is called by the view BUTTON
                 return ChoiceFactory.createChoice(this.modelView.getPlayer(this.nickname), input);
             } catch (IllegalMoveException e) {
                 System.err.println("Invalid CHOICE, Please retake.");
             }
-        }*/
         return null;
     }
 

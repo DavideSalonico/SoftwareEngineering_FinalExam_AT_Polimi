@@ -248,3 +248,18 @@
 #thirdTile {
     -fx-background-color: transparent;
 }
+
+#resetButton {
+    -fx-background-color: red;
+    -fx-padding: 5px;
+}
+
+#resetButton .cross {
+    -fx-shape: "M0 0 L1 1 M1 0 L0 1";
+    -fx-stroke: white;
+    -fx-stroke-width: 2px;
+}
+
+#resetButton:hover {
+    -fx-background-color: darkred;
+}

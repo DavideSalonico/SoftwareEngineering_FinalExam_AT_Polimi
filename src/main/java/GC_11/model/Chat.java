@@ -15,6 +15,11 @@ public class Chat implements Serializable {
         pvtChats = new HashMap<>();
     }
 
+    public Chat(Chat chat) {
+        this.mainChat = new ArrayList<>(chat.getMainChat());
+        this.pvtChats = new HashMap<>(chat.getPvtChats());
+    }
+
     public void sendMessageToMainChat(Player user, String text) {
         List<Message> oldMainChat = this.mainChat;
         this.mainChat.add(new Message(user.getNickname(), text));
@@ -54,6 +59,10 @@ public class Chat implements Serializable {
 
     public List<Message> getPrivateChatMessages(Player sender, Player receiver) {
         return this.pvtChats.get(new HashSet<>(Arrays.asList(sender.getNickname(), receiver.getNickname())));
+    }
+
+    public Map<Set<String>, List<Message>> getPvtChats() {
+        return this.pvtChats;
     }
 
     public Map<String, List<Message>> getPrivateChats(Player sender) {
