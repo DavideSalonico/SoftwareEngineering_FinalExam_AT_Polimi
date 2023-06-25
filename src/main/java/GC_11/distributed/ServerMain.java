@@ -176,7 +176,7 @@ public class ServerMain implements PropertyChangeListener {
                     System.out.println("Unable to notify " + client.getKey() + " because connection type is unknown");
                 }
             }
-            JsonWriter.saveGame(new GameViewMessage(this.controller.getGame(), null, evt));
+            JsonWriter.saveGame(this.controller.getGame());
         }
     }
 
@@ -222,6 +222,7 @@ public class ServerMain implements PropertyChangeListener {
             }
             if (evt.getPropertyName().equals("LAST PLAYER")) {
                 this.notifyClientsLobby();
+                // Check if the players' name are the same in the JSON file
                 this.controller.startGame();
                 this.notifyClientsGame(null, evt);
             } else

@@ -157,39 +157,30 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
 
     public synchronized void notifyClientsLobby(LobbyViewMessage lobbyViewMessage){
         for (ClientRMI c : clients) {
-            try {
-                new Thread(() -> {
-                    try {
-                        c.updateViewLobby(lobbyViewMessage);
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                }).start();
-                System.out.println(c.getNickname() + " aggiornato");
-            } catch (RemoteException e) {
-                System.out.println("Error while updating the client: " + e.getMessage() + ". Skipping the update...");
-            }
+            new Thread(() -> {
+                try {
+                    c.updateViewLobby(lobbyViewMessage);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+            System.out.println(c.getNickname() + " aggiornato");
         }
         System.out.println("\n");
     }
 
     public void notifyDisconnection(String nickname, GameViewMessage msg){
         for (ClientRMI c : clients) {
-            try{
-                if (!c.getNickname().equals(nickname)) {
-                    new Thread(() -> {
-                        try {
-                            c.updateViewGame(msg);
-                            System.out.println(c.getNickname() + " aggiornato GAME correctly");
-                        } catch (RemoteException e) {
-                            System.out.println(e.getMessage());
-                        }
-                    }).start();
-                    System.out.println("\n");
-                }
-            }
-            catch (RemoteException e){
-                e.printStackTrace();
+            if (!c.getNickname().equals(nickname)) {
+                new Thread(() -> {
+                    try {
+                        c.updateViewGame(msg);
+                        System.out.println(c.getNickname() + " aggiornato GAME correctly");
+                    } catch (RemoteException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }).start();
+                System.out.println("\n");
             }
 
         }

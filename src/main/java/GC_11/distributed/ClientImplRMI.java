@@ -103,6 +103,11 @@ public class ClientImplRMI extends UnicastRemoteObject implements ClientRMI {
     }
 
     @Override
+    public String getNickname() {
+        return this.nickname;
+    }
+
+    @Override
     public void updateViewLobby(LobbyViewMessage newView) {
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,

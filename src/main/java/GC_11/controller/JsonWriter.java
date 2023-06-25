@@ -39,8 +39,8 @@ public class JsonWriter {
         }
     }
 
-    public static void saveGame(GameViewMessage gameView) {
-        gameView = gameView;
+    public static void saveGame(Game game) {
+        game = game;
 
         // Creazione gson
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -51,13 +51,18 @@ public class JsonWriter {
 
             // Board
 
-            String jsonBoard = gson.toJson(gameView.getBoard());
+            String jsonBoard = gson.toJson(game.getBoard());
             JsonObject board = JsonParser.parseString(jsonBoard).getAsJsonObject();
             json.add("board", board);
 
+            // Bag
+            String jsonBag = gson.toJson(game.getBoard().getBag());
+            JsonObject bag = JsonParser.parseString(jsonBag).getAsJsonObject();
+            json.add("bag", bag);
+
 
             // Players
-            String jsonPlayers = gson.toJson(gameView.getPlayers());
+            String jsonPlayers = gson.toJson(game.getPlayers());
             JsonArray jsonArrayPlayers = JsonParser.parseString(jsonPlayers).getAsJsonArray();
             json.add("players", jsonArrayPlayers);
 
@@ -67,7 +72,7 @@ public class JsonWriter {
             List<String> WinngingPlayers = new ArrayList<String>();
             JsonArray jsonArrayCommonGoalCards = new JsonArray();
 
-            for (CommonGoalCard commonGoalCard : gameView.getCommonGoalCards()) {
+            for (CommonGoalCard commonGoalCard : game.getCommonGoal()) {
                 for (Player player : commonGoalCard.getWinningPlayers()) {
                     WinngingPlayers.add(player.getNickname());
                 }
@@ -84,7 +89,7 @@ public class JsonWriter {
             // CurrentPlayer
 
             JsonObject currentPlayer = new JsonObject();
-            currentPlayer.addProperty("nickname", gameView.getCurrentPlayer());
+            currentPlayer.addProperty("nickname", game.getCurrentPlayer().getNickname());
             json.add("currentPlayer", currentPlayer);
 
 
@@ -193,7 +198,7 @@ public class JsonWriter {
             JsonObject currentPlayer = game.get("currentPlayer").getAsJsonObject();
             String nickname = currentPlayer.get("nickname").getAsString();
 
-            Game loadedGame = new Game(playersList, board1, commonGoalCardsIds, winningPlayersList.get(0),winningPlayersList.get(1), nickname);
+            Game loadedGame = new Game(playersList, board1, commonGoalCardsIds, winningPlayersList.get(0), winningPlayersList.get(1), nickname);
             System.out.println("Partita caricata correttamente");
 
             //Game loadedGame = new Game(playersList, board1, commonGoalCardsIds);
