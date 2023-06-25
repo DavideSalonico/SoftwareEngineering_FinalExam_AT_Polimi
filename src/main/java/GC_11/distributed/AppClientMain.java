@@ -1,5 +1,7 @@
 package GC_11.distributed;
 
+import GC_11.distributed.RMI.ClientImplRMI;
+import GC_11.distributed.RMI.ServerImplRMI;
 import GC_11.distributed.socket.ClientSock;
 
 import java.rmi.NotBoundException;
@@ -40,33 +42,29 @@ public class AppClientMain {
                 flag = false;
             }
         }
+
+        System.out.println("Please insert server IP address: ");
+        Scanner s = new Scanner(System.in);
+        String serverIp = s.nextLine();
+
         if(choiceNetwork.equals("RMI")) {
-            clientRMISetup(choiceInterface);
+            clientRMISetup(choiceInterface, serverIp);
         }
         else{
-            clientSOCKETSetup(choiceInterface);
+            clientSOCKETSetup(choiceInterface, serverIp);
         }
     }
 
-    private static void clientRMISetup(String choiceInterface)throws RemoteException, NotBoundException{
+    private static void clientRMISetup(String choiceInterface, String serverIp)throws RemoteException, NotBoundException{
         Scanner inputLine = new Scanner(System.in);
         System.out.println("what's your nickname?");
         String nickname = inputLine.nextLine();
-        System.out.println("Inserire indirizzo ip del server: ");
-        Scanner s = new Scanner(System.in);
-        String serverIp = s.nextLine();
-        System.out.println("***** Getting the registry *****\n");
         Registry registry = LocateRegistry.getRegistry(serverIp,1099);
-        System.out.println("***** looking up for the server *****\n");
         ServerRMI server = (ServerRMI) registry.lookup("server");
-        System.out.println("***** Creating a client rmi implementation *****\n");
         ClientImplRMI client = new ClientImplRMI(server, nickname, choiceInterface);
     }
 
-    private static void  clientSOCKETSetup(String choiceInterface){
-        System.out.println("Inserire indirizzo ip del server: ");
-        Scanner s = new Scanner(System.in);
-        String serverIp = s.nextLine();
+    private static void  clientSOCKETSetup(String choiceInterface, String serverIp){
         ClientSock client = new ClientSock(serverIp, 4322,choiceInterface);
         client.startClient();
     }

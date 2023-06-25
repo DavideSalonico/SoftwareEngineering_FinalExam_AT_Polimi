@@ -1,6 +1,9 @@
-package GC_11.distributed;
+package GC_11.distributed.RMI;
 
 import GC_11.controller.Controller;
+import GC_11.distributed.Client;
+import GC_11.distributed.ServerMain;
+import GC_11.distributed.ServerRMI;
 import GC_11.exceptions.*;
 import GC_11.model.Game;
 import GC_11.network.GameViewMessage;
@@ -19,7 +22,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Scanner;
 
 public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
 
@@ -30,7 +32,7 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
     private Lobby lobbyModel;
 
     private int maxPlayer;
-    private List<ClientRMI> clients = new ArrayList<>();
+    private List<ClientImplRMI> clients = new ArrayList<>();
 
     private ServerMain serverMain;
 
@@ -39,7 +41,7 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
         this.serverMain = serverMain;
     }
 
-    public List<ClientRMI> getClients() {
+    public List<ClientImplRMI> getClients() {
         return this.clients;
     }
 
@@ -75,59 +77,13 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
     }
 
     @Override
-    public synchronized void register(ClientRMI client) throws ExceededNumberOfPlayersException, NameAlreadyTakenException, RemoteException {
+    public synchronized void register(ClientImplRMI client) throws RemoteException {
         clients.add(client);
         serverMain.addConnection(client.getNickname(), "RMI");
-
-        /*if (clients.size() == 0) {
-            maxPlayer = client.askMaxNumber();
-            lobbyModel = new Lobby(maxPlayer);
-            lobbyController = new LobbyController(lobbyModel);
-        }
-        clients.add(client);
-        System.out.println(client.getNickname() + " connected to the server");
-        lobbyController.addPlayerName(client.getNickname());
-        System.out.println(client.getNickname() + " aggiunto alla lobby");
-        for (ClientRMI c : clients) {
-            try {
-                new Thread(() -> {
-                    try {
-                        c.updateViewLobby(new LobbyViewMessage(lobbyModel));
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                }).start();
-                System.out.println(c.getNickname() + " aggiornato");
-            } catch (RemoteException e) {
-                System.out.println("Error while updating the client: " + e.getMessage() + ". Skipping the update...");
-            }
-        }
-        System.out.println("\n");
-        if (clients.size() == maxPlayer) {
-            System.out.println("\n ##### Starting a game #####\n");
-            this.gameModel = new Game(lobbyModel.getPlayers(), this);
-            this.gameController = new Controller(this.gameModel);
-            for (ClientRMI c : clients) {
-                try {
-                    new Thread(() -> {
-                        try {
-                            c.updateStartGame(new GameViewMessage(gameModel, null));
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
-                        }
-                    }).start();
-                    System.out.println(c.getNickname() + " aggiornato GAME");
-                } catch (RemoteException e) {
-                    System.out.println("Error while notify the client " + e.getMessage());
-                }
-            }
-            System.out.println("\n");
-        }
-*/
     }
 
     @Override
-    public void updateGame(ClientRMI client, Choice choice) throws RemoteException{
+    public void updateGame(Client client, Choice choice) throws RemoteException{
         //PropertyChangeEvent evt = new PropertyChangeEvent(client, "choice made", null, choice);
         System.out.println(client.getNickname() + ": " + choice.getType());
         //this.gameController.propertyChange(evt);
@@ -135,16 +91,16 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
     }
 
     @Override
-    public void updateLobby(ClientRMI client, Choice choice) throws RemoteException {
+    public void updateLobby(Client client, Choice choice) throws RemoteException {
         PropertyChangeEvent evt = new PropertyChangeEvent(client, "choice made", null, choice);
         this.gameController.propertyChange(evt);
     }
 
     public synchronized void notifyClients(PropertyChangeEvent evt) {
-        for (ClientRMI c : clients) {
+        for (Client c : clients) {
             new Thread(() -> {
                 try {
-                    c.updateViewGame(new GameViewMessage(gameModel, null, evt));
+                    c.recieveFromServer(new GameViewMessage(gameModel, null, evt));
                     System.out.println(c.getNickname() + " aggiornato GAME correctly");
                 } catch (RemoteException e) {
                     System.out.println(e.getMessage());
@@ -155,31 +111,32 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
         System.out.println("\n");
     }
 
+    //TODO: puoi usare lo stesso della GameViewMessage
     public synchronized void notifyClientsLobby(LobbyViewMessage lobbyViewMessage){
-        for (ClientRMI c : clients) {
+        for (Client c : clients) {
+            new Thread(() -> {
+                try {
+                    c.recieveFromServer(lobbyViewMessage);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }).start();
             try {
-                new Thread(() -> {
-                    try {
-                        c.updateViewLobby(lobbyViewMessage);
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                }).start();
                 System.out.println(c.getNickname() + " aggiornato");
             } catch (RemoteException e) {
-                System.out.println("Error while updating the client: " + e.getMessage() + ". Skipping the update...");
+                e.printStackTrace();
             }
         }
         System.out.println("\n");
     }
 
     public void notifyDisconnection(String nickname, GameViewMessage msg){
-        for (ClientRMI c : clients) {
-            try{
+        for (Client c : clients) {
+            try {
                 if (!c.getNickname().equals(nickname)) {
                     new Thread(() -> {
                         try {
-                            c.updateViewGame(msg);
+                            c.recieveFromServer(msg);
                             System.out.println(c.getNickname() + " aggiornato GAME correctly");
                         } catch (RemoteException e) {
                             System.out.println(e.getMessage());
@@ -187,20 +144,18 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
                     }).start();
                     System.out.println("\n");
                 }
-            }
-            catch (RemoteException e){
+            } catch (RemoteException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
     public synchronized void notifyClient(String nickname, GameViewMessage gameViewMessage) throws RemoteException {
-        for (ClientRMI c : clients) {
+        for (Client c : clients) {
             if (c.getNickname().equals(nickname)) {
                 new Thread(() -> {
                     try {
-                        c.updateViewGame(gameViewMessage);
+                        c.recieveFromServer(gameViewMessage);
                         System.out.println(c.getNickname() + " aggiornato GAME correctly");
                     } catch (RemoteException e) {
                         System.out.println(e.getMessage());

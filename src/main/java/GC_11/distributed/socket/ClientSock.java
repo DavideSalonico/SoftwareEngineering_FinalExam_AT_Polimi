@@ -1,7 +1,6 @@
 package GC_11.distributed.socket;
 
-
-import GC_11.distributed.ClientImplRMI;
+import GC_11.distributed.Client;
 import GC_11.network.GameViewMessage;
 import GC_11.network.LobbyViewMessage;
 import GC_11.network.MessageView;
@@ -20,10 +19,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Objects;
+import java.rmi.RemoteException;
 import java.util.Scanner;
 
-public class ClientSock implements PropertyChangeListener {
+public class ClientSock implements PropertyChangeListener, Client {
 
     String ip;
     int port;
@@ -59,6 +58,7 @@ public class ClientSock implements PropertyChangeListener {
         }
     }
 
+    //Only one to use
     public ClientSock(String ip, int port, String gInterface) {
 
         this.port = port;
@@ -82,6 +82,10 @@ public class ClientSock implements PropertyChangeListener {
         }
     }
 
+    public void notifyServer(Choice choice){
+        String choiceString = choice.toString();
+        sendMessageToServer(choiceString);
+    }
 
     public void sendMessageToServer(String s) {
         try {
@@ -115,6 +119,10 @@ public class ClientSock implements PropertyChangeListener {
             System.out.println("Error during deserialization of message from server. Check server connection");
             throw new ClassNotFoundException();
         }
+    }
+
+    public void recieveFromServer(MessageView message) throws RemoteException {
+        receiveGameViewFromServer();
     }
 
 
@@ -262,6 +270,10 @@ public class ClientSock implements PropertyChangeListener {
                 "UPDATE GAME",
                 null,
                 gameViewMessage));
+    }
+
+    public String getNickname() {
+        return this.nickname;
     }
 }
 

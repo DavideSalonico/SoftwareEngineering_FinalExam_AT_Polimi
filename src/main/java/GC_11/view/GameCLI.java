@@ -2,10 +2,9 @@ package GC_11.view;
 //TODO: 1) Implementare COME LA SCELTA DEL GIOCAGORE VA AL SERVER E QUINDI AL CONTROLLER E POI AL GAME
 //TODO: 2) cambiare il metodo run con quello aggiornato di dave
 
-import GC_11.distributed.ClientRMI;
+import GC_11.distributed.Client;
 import GC_11.distributed.socket.ClientSock;
 import GC_11.exceptions.IllegalMoveException;
-import GC_11.network.GameViewMessage;
 import GC_11.model.Message;
 import GC_11.model.Player;
 import GC_11.model.common.CommonGoalCard;
@@ -24,7 +23,7 @@ import static java.lang.Integer.parseInt;
 public class GameCLI extends ViewGame {
 
     // private final Choice controllerChoice;
-    private ClientRMI client;
+    private Client client;
     private ClientSock clientSock;
 
     // private final Outcome outcome;
@@ -33,7 +32,7 @@ public class GameCLI extends ViewGame {
      * Every view is bound at only one player, it helps to manage every input that the controller receive
      */
 
-    public GameCLI(String nickname, ClientRMI client) {
+    public GameCLI(String nickname, Client client) {
         super();
         this.nickname = nickname;
         this.client = client;
@@ -143,7 +142,7 @@ public class GameCLI extends ViewGame {
                 null,
                 choice);
         if (this.client!=null)              //TODO: Implementare un'interfaccia client che permetta di chiamare lo stesso metodo sia socket che RMI
-            this.client.notifyServer(evt);
+            this.client.notifyServer(choice);
         else
             this.clientSock.notifyServer(evt);
     }

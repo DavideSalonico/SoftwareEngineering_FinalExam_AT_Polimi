@@ -38,7 +38,7 @@ public class ShelfTest {
     public void throwsNotEnoughFreeSpacesException() {
         List<Tile> tiles = new ArrayList<Tile>();
         for (int i = 0; i < 3; i++) {
-            tiles.add(new Tile());
+            tiles.add(new Tile(TileColor.randomColor(), 0));
         }
 
         for (int i = 0; i < 2; i++) {
@@ -64,7 +64,7 @@ public class ShelfTest {
     @Test
     public void throwsColumnOutOfIndexException(){
         List<Tile> tiles = new ArrayList<Tile>();
-        tiles.add(new Tile());
+        tiles.add(new Tile(TileColor.randomColor(), 0));
 
         try{
             shelf.addTiles(tiles, -1);
@@ -82,7 +82,7 @@ public class ShelfTest {
             for(int j=0; j < 5; j++){
                 System.out.println("i = " + i + " y = " + j);
                 List<Tile> tmpTile = new ArrayList<Tile>();
-                tmpTile.add(new Tile());
+                tmpTile.add(new Tile(TileColor.randomColor(), 0));
                 shelf.addTiles(tmpTile, j);
                 shelf.print();
                 System.out.println();

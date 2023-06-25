@@ -1,8 +1,10 @@
-package GC_11.distributed;
+package GC_11.distributed.RMI;
 
-import GC_11.exceptions.ColumnIndexOutOfBoundsException;
+import GC_11.distributed.Client;
+import GC_11.distributed.ServerRMI;
 import GC_11.network.GameViewMessage;
 import GC_11.network.LobbyViewMessage;
+import GC_11.network.MessageView;
 import GC_11.network.choices.Choice;
 import GC_11.view.GUI.GUIModel;
 import GC_11.view.GUI.GUIView;
@@ -19,7 +21,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class ClientImplRMI extends UnicastRemoteObject implements ClientRMI {
+public class ClientImplRMI extends UnicastRemoteObject implements Client {
 
     private ViewLobby viewLobby;
     private ViewGame viewGame;
@@ -64,9 +66,13 @@ public class ClientImplRMI extends UnicastRemoteObject implements ClientRMI {
             //System.out.println(server.toString());
             server.register(this);
             this.server = server;
-        } catch (Exception e) {
+        } catch (RemoteException e) {
             System.err.println("error in the registration: " + e.getCause() + "\n" + e.getMessage() + "\n" + e.getStackTrace() + "\n\n\n" + e.toString());
         }
+    }
+
+    public String getNickname() {
+        return this.nickname;
     }
 
     public int askMaxNumber() {
@@ -87,22 +93,16 @@ public class ClientImplRMI extends UnicastRemoteObject implements ClientRMI {
     }
 
     @Override
-    public void notifyServer(PropertyChangeEvent evt) throws RemoteException {
-        if (evt.getPropertyName().equals("UPDATE LOBBY")) {
-            //server.updateLobby();
-        }
-        if (evt.getPropertyName().equals("CHOICE")) {
+    public void notifyServer(Choice choice) throws RemoteException {
             new Thread(() -> {
                 try {
-                    server.updateGame(this, (Choice) evt.getNewValue());
+                    server.updateGame(this, choice);
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
             }).start();
-        }
     }
 
-    @Override
     public void updateViewLobby(LobbyViewMessage newView) {
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
@@ -112,7 +112,6 @@ public class ClientImplRMI extends UnicastRemoteObject implements ClientRMI {
         this.viewLobby.propertyChange(evt);
     }
 
-    @Override
     public void updateViewGame(GameViewMessage newView) {
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
@@ -122,7 +121,15 @@ public class ClientImplRMI extends UnicastRemoteObject implements ClientRMI {
         this.viewGame.propertyChange(evt);
     }
 
-
+    @Override
+    public void recieveFromServer(MessageView message) throws RemoteException {
+        if(message instanceof LobbyViewMessage){
+            updateViewLobby((LobbyViewMessage) message);
+        }
+        else if(message instanceof GameViewMessage){
+            updateViewGame((GameViewMessage) message);
+        }
+    }
 
 
 }

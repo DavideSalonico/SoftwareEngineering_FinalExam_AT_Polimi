@@ -1,6 +1,6 @@
 package GC_11.view.GUI;
 
-import GC_11.distributed.ClientRMI;
+import GC_11.distributed.Client;
 import GC_11.distributed.socket.ClientSock;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.IllegalMoveException;
@@ -15,7 +15,7 @@ import java.rmi.RemoteException;
 public class GUIModel extends ViewGame {
 
     private Choice playerChoice;
-    private ClientRMI client;
+    private Client client;
     private ClientSock clientSock;
     private String nickname;
 
@@ -25,7 +25,7 @@ public class GUIModel extends ViewGame {
      * Every view is bound at only one player, it helps to manage every input that the controller receive
      */
 
-    public GUIModel(String nickname, ClientRMI client) {
+    public GUIModel(String nickname, Client client) {
         super();
         this.nickname = nickname;
         this.client = client;
@@ -56,8 +56,8 @@ public class GUIModel extends ViewGame {
                     "CHOICE",
                     null,
                     choice);
-            if (this.client!=null)              //TODO: Implementare un'interfaccia client che permetta di chiamare lo stesso metodo sia socket che RMI
-                this.client.notifyServer(evt);
+            if (this.client!=null)
+                this.client.notifyServer(choice);
             else
                 this.clientSock.notifyServer(evt);
         } else {

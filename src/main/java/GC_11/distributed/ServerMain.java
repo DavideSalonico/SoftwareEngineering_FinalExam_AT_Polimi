@@ -2,6 +2,7 @@ package GC_11.distributed;
 
 import GC_11.controller.Controller;
 import GC_11.controller.JsonWriter;
+import GC_11.distributed.RMI.ServerImplRMI;
 import GC_11.distributed.socket.ServerSock;
 import GC_11.exceptions.*;
 import GC_11.model.Game;
@@ -189,13 +190,9 @@ public class ServerMain implements PropertyChangeListener {
         boolean ok = false;
         while (!ok) {
             if (this.clientMap.get(this.controller.getLobby().getPlayers().get(0)).equals("RMI")) {
-                try {
-                    int max = this.serverRMI.getClients().get(0).askMaxNumber();
-                    this.controller.setMaxPlayers(max);
-                    ok = true;
-                } catch (RemoteException e) {
-                    System.out.println("Unable to ask max players because of RemoteException");
-                }
+                int max = this.serverRMI.getClients().get(0).askMaxNumber();
+                this.controller.setMaxPlayers(max);
+                ok = true;
             } else if (this.clientMap.get(this.controller.getLobby().getPlayers().get(0)).equals("SOCKET")) {
                 int max = this.serverSocket.askMaxNumber();
                 this.controller.setMaxPlayers(max);
@@ -205,6 +202,7 @@ public class ServerMain implements PropertyChangeListener {
             }
         }
     }
+
 
     public void makeAMove(Choice choice) {
         try {
