@@ -158,14 +158,14 @@ public class GameCLI extends ViewGame {
     private void printChat(){
         System.out.println("\n\n----------------------------------");
         System.out.println("Main Chat: ");
-        for (Message message : this.modelView.getChat().getMainChat()) {
+        for (Message message : this.modelView.getMainChat()) {
             System.out.println(message.getSender() + ": " + message.getText());
         }
 
         System.out.print("Private Chats: ");
-        for(String nickname : this.modelView.getChat().getPrivateChats(this.modelView.getPlayer(this.nickname)).keySet()) {
+        for(String nickname : this.modelView.getFilteredPvtChats().keySet() ) {
             System.out.print("--- " + nickname + " ---");
-            for(Message message : this.modelView.getChat().getPrivateChats(this.modelView.getPlayer(this.nickname)).get(nickname)) {
+            for(Message message : this.modelView.getFilteredPvtChats().get(nickname)) {
                 System.out.println(message.getSender() + ": " + message.getText());
             }
             System.out.println();
