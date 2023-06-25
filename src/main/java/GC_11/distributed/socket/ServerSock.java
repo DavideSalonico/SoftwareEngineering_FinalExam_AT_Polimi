@@ -3,6 +3,7 @@ package GC_11.distributed.socket;
 
 import GC_11.distributed.ServerMain;
 import GC_11.network.GameViewMessage;
+import GC_11.network.LobbyViewMessage;
 import GC_11.network.MessageView;
 
 import java.beans.PropertyChangeEvent;
@@ -99,19 +100,12 @@ public class ServerSock implements PropertyChangeListener {
         }
     }
 
-    /**
-     * Notifies all clients except the sourceHandler with the given message view.
-     *
-     * @param message       The message view to send to clients.
-     * @param sourceHandler The source client handler that triggered the notification.
-     */
 
-    public void notifyAllClients(GameViewMessage message, ServerClientHandler sourceHandler) {
-        for (ServerClientHandler sch : serverClientHandlerList) {
-            if (sch != sourceHandler) {
-                sch.sendMessageViewToClient(message);
-            }
-        }
+
+    public void notifyCLientsLobby(LobbyViewMessage lobbyViewMessage) {
+       for(ServerClientHandler sch : serverClientHandlerList){
+           sch.sendLobbyViewMessage(lobbyViewMessage);
+       }
     }
 
     /**

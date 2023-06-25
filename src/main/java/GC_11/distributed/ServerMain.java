@@ -106,8 +106,9 @@ public class ServerMain implements PropertyChangeListener {
 
             if (serverRMI.getClients().size()>0) {
                 serverRMI.notifyClientsLobby(new LobbyViewMessage(this.controller.getLobby()));
-            } else if (serverSocket.getSocketMap().size()>0){
-                //TODO aggiornare la lobby tramite socket
+            }
+            if (serverSocket.getSocketMap().size()>0){
+                this.serverSocket.notifyCLientsLobby(new LobbyViewMessage(this.controller.getLobby()));
             } else {
                 System.out.println("Unable to notify lobby because no clients are connected");
             }

@@ -3,6 +3,8 @@ package GC_11.distributed.socket;
 
 import GC_11.distributed.ClientImplRMI;
 import GC_11.network.GameViewMessage;
+import GC_11.network.LobbyViewMessage;
+import GC_11.network.MessageView;
 import GC_11.network.choices.Choice;
 import GC_11.view.GUI.GUIModel;
 import GC_11.view.GUI.GUIView;
@@ -32,6 +34,7 @@ public class ClientSock implements PropertyChangeListener {
     String graphicInterface;
     GameViewMessage gameViewMessage;
     private View view;
+    private LobbyCLI lobbyCLI=null;
     private String nickname;
 
 
@@ -61,6 +64,7 @@ public class ClientSock implements PropertyChangeListener {
         this.port = port;
         this.ip = ip;
         this.graphicInterface=gInterface;
+        this.lobbyCLI=new LobbyCLI();
 
         try {
             System.out.println("Connecting to server on port " + port);
@@ -116,8 +120,16 @@ public class ClientSock implements PropertyChangeListener {
 
     public void receiveGameViewFromServer() {
         try {
-            GameViewMessage message = (GameViewMessage) in.readObject();
-            //System.out.println("Received gameViewMessage from server: " + message.toString());
+            MessageView msg = (MessageView) in.readObject();
+            GameViewMessage message = null;
+            LobbyViewMessage lobbyMessage = null;
+            if (msg instanceof GameViewMessage)
+                message = (GameViewMessage) msg;
+            else if (msg instanceof LobbyViewMessage)
+            {
+                lobbyMessage = (LobbyViewMessage) msg;
+                this.lobbyCLI.propertyChange(new PropertyChangeEvent(this, "lobbyViewMessage", null, lobbyMessage));
+            }
             if (message != null) {
                 this.gameViewMessage = message;
                 if (message.getMessage() != null) {

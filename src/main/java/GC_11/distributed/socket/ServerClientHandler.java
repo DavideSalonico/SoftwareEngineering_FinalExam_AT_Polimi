@@ -3,6 +3,7 @@ package GC_11.distributed.socket;
 import GC_11.exceptions.IllegalMoveException;
 import GC_11.model.Player;
 import GC_11.network.GameViewMessage;
+import GC_11.network.LobbyViewMessage;
 import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
 
@@ -56,7 +57,7 @@ public class ServerClientHandler implements Runnable {
         } catch (IOException e) {
             System.err.println("Unable to get output stream");
         }
-        this.connected=true;
+        this.connected = true;
         connectionSetup();
         if (connected)
             readThread.start();
@@ -65,7 +66,7 @@ public class ServerClientHandler implements Runnable {
 
     private void connectionSetup() {
 
-        if (connected){
+        if (connected) {
             GameViewMessage msg = new GameViewMessage("Hi! Welcome to the game! Please, insert your nickname:");
             sendMessageViewToClient(msg);
             String reply = null;
@@ -114,26 +115,16 @@ public class ServerClientHandler implements Runnable {
      * @throws ClassNotFoundException If the class of the serialized object cannot be found.
      */
 
-    public String receiveLobbyMessageFromClient() {
-        String clientMessage = null;
+    public void sendLobbyViewMessage(LobbyViewMessage msg) {
         try {
-            clientMessage = (String) inputStream.readObject();
-            System.out.println("Received message from client: " + clientMessage);
+            outputStream.writeObject(msg);
+            outputStream.flush();
+            outputStream.reset();
         } catch (IOException e) {
-            System.out.println("Error during receiving message from client");
-            closeConnection();
-            server.notifyDisconnectionAllSockets(this.clientSocket, this);
-
-            throw new IOException();
-        } catch (ClassNotFoundException e) {
-            System.out.println("Error during deserialization of message from client");
-            closeConnection();
-            server.notifyDisconnectionAllSockets(this.clientSocket, this);
-            throw new ClassNotFoundException();
-        } finally {
-            return clientMessage;
+            System.err.println("Unable to send lobby message");
         }
     }
+
 
     /**
      * Receives a message from the client.
@@ -145,10 +136,10 @@ public class ServerClientHandler implements Runnable {
      * @throws ClassNotFoundException If the class of the serialized object cannot be found.
      */
 
-    public String receiveMessageFromClient() throws IOException, ClassNotFoundException, IllegalMoveException{
+    public String receiveMessageFromClient() throws IOException, ClassNotFoundException, IllegalMoveException {
         String clientMessage = null;
         Choice clientChoice;
-        if (connected){
+        if (connected) {
             try {
                 clientMessage = (String) inputStream.readObject();
                 if (this.nickname != null && !this.nickname.isEmpty() && this.server.getServerMain().getClientsMap().size() > 1) {
@@ -165,12 +156,12 @@ public class ServerClientHandler implements Runnable {
                 closeConnection();
                 server.notifyDisconnectionAllSockets(this.clientSocket, this);
                 throw new ClassNotFoundException();
-            } catch(IllegalMoveException e){
+            } catch (IllegalMoveException e) {
                 System.out.println("Error during reading message from client");
                 closeConnection();
                 server.notifyDisconnectionAllSockets(this.clientSocket, this);
                 throw new IllegalMoveException();
-            } finally{
+            } finally {
                 return clientMessage;
             }
         }
@@ -201,8 +192,7 @@ public class ServerClientHandler implements Runnable {
      * @param messageView The MessageView object to send.
      */
     public void sendMessageViewToClient(GameViewMessage messageView) {
-        if(connected)
-        {
+        if (connected) {
             try {
                 outputStream.writeObject(messageView);
                 outputStream.flush();
@@ -222,7 +212,7 @@ public class ServerClientHandler implements Runnable {
      * The server will then notify all the other clients of the disconnection.
      */
     private void closeConnection() {
-        this.connected=false;
+        this.connected = false;
         System.out.println("Closing socket: " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
         try {
             inputStream.close();
@@ -298,7 +288,7 @@ public class ServerClientHandler implements Runnable {
             sendMessageViewToClient(msg);
         } catch (IOException | ClassNotFoundException | IllegalMoveException e) {
             System.err.println("Unable to receive message from client");
-            this.connected=false;
+            this.connected = false;
         }
 
         return maxPlayers;
