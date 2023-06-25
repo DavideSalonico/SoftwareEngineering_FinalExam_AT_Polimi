@@ -168,7 +168,7 @@ public class Game implements PropertyChangeListener, Serializable {
                 this,
                 "CHANGED_CURRENT_PLAYER",
                 null,
-                new GameViewMessage(this, null));
+                new GameViewMessage(this, null, null));
         this.listener.propertyChange(evt);
         System.out.println("Set next current player: " + this.currentPlayer.getNickname());
         return false;

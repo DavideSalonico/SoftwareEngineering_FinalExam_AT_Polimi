@@ -85,7 +85,7 @@ public class Controller implements PropertyChangeListener {
     public void update(Choice choice) throws RemoteException {
         this.choice = choice;
 
-        if (!checkTurn()) {
+        if (!checkTurn() && !choice.getType().equals(ChoiceType.SEND_MESSAGE)) {
             this.model.triggerException(new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer().getNickname() + "'s turn"));
             return;
         }
@@ -290,7 +290,7 @@ public class Controller implements PropertyChangeListener {
 
     public void sendMessage(List<String> parameters) throws RemoteException {
         if (parameters.size() != 2){
-            this.model.triggerException(new IllegalMoveException("There should be exactly two options for this command!"));
+            this.model.triggerException(new IllegalMoveException("There should be exactly two parameters for this command!"));
             return;
         }
         if (parameters.get(0).length() >= 64 || parameters.get(1).length() >= 64){

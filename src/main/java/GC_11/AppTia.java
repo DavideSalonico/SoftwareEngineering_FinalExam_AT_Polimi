@@ -21,7 +21,7 @@ public class AppTia {
         g.getCommonGoal(0).getWinningPlayers().add(g.getPlayers().get(0));
         g.getCommonGoal(0).getWinningPlayers().add(g.getPlayers().get(1));
         g.getCommonGoal(1).getWinningPlayers().add(g.getPlayers().get(2));
-        GameViewMessage modelView = new GameViewMessage(g, null);
+        GameViewMessage modelView = new GameViewMessage(g, null,null);
         JsonWriter.saveGame(modelView);
         //JsonWriter.deleteGame();
         JsonWriter.loadGame();

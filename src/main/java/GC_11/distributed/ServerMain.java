@@ -115,10 +115,10 @@ public class ServerMain implements PropertyChangeListener {
 
     }
 
-    public void notifyClientsGame(Exception exc) {
+    public void notifyClientsGame(Exception exc, PropertyChangeEvent evt) {
         if(exc != null) {
             String currPlayer = this.controller.getGame().getCurrentPlayer().getNickname();
-            GameViewMessage messageViewCopy = new GameViewMessage(this.controller.getGame(), exc);
+            GameViewMessage messageViewCopy = new GameViewMessage(this.controller.getGame(), exc, null);
             if (clientMap.get(currPlayer).equals("RMI")) {
                 try {
                     serverRMI.notifyClient(currPlayer, messageViewCopy);
@@ -137,7 +137,7 @@ public class ServerMain implements PropertyChangeListener {
             for (Map.Entry<String, String> client : clientMap.entrySet()) {
 
                 // Make a copy of the messageView for every player and keeps the original messageView intact
-                GameViewMessage messageViewCopy = new GameViewMessage(this.controller.getGame(), exc);
+                GameViewMessage messageViewCopy = new GameViewMessage(this.controller.getGame(),null,evt);
 
                 // Just before sending the message, we remove the personal goal from the other players
                 for (Player p : messageViewCopy.getPlayers()) {
@@ -161,7 +161,7 @@ public class ServerMain implements PropertyChangeListener {
                     System.out.println("Unable to notify " + client.getKey() + " because connection type is unknown");
                 }
             }
-            JsonWriter.saveGame(new GameViewMessage(this.controller.getGame(), null));
+            JsonWriter.saveGame(new GameViewMessage(this.controller.getGame(), null, evt));
         }
     }
 
@@ -208,15 +208,15 @@ public class ServerMain implements PropertyChangeListener {
             if (evt.getPropertyName().equals("LAST PLAYER")) {
                 this.notifyClientsLobby();
                 this.controller.startGame();
-                this.notifyClientsGame(null);
+                this.notifyClientsGame(null, evt);
             } else
                 this.notifyClientsLobby();
         } else {
             if(evt.getPropertyName().equals("EXCEPTION TRIGGERED")){
-                this.notifyClientsGame((Exception) evt.getNewValue());
+                this.notifyClientsGame((Exception) evt.getNewValue(),evt);
             }
             else{
-                this.notifyClientsGame(null);
+                this.notifyClientsGame(null, evt);
             }
         }
     }
@@ -226,7 +226,7 @@ public class ServerMain implements PropertyChangeListener {
             System.out.println("REMOVED CONNECTION: " + nickname + " " + this.clientMap.get(nickname));
             this.clientMap.remove(nickname);
             this.controller.getGame().setEndGame(true);
-            GameViewMessage msg = new GameViewMessage(this.controller.getGame(), new Exception("Player " + nickname + " disconnected"));
+            GameViewMessage msg = new GameViewMessage(this.controller.getGame(), new Exception("Player " + nickname + " disconnected"), null);
             this.serverSocket.notifyDisconnection(nickname,msg);
             this.serverRMI.notifyDisconnection(nickname,msg);
 

@@ -140,11 +140,11 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
         this.gameController.propertyChange(evt);
     }
 
-    public synchronized void notifyClients() {
+    public synchronized void notifyClients(PropertyChangeEvent evt) {
         for (ClientRMI c : clients) {
             new Thread(() -> {
                 try {
-                    c.updateViewGame(new GameViewMessage(gameModel, null));
+                    c.updateViewGame(new GameViewMessage(gameModel, null, evt));
                     System.out.println(c.getNickname() + " aggiornato GAME correctly");
                 } catch (RemoteException e) {
                     System.out.println(e.getMessage());

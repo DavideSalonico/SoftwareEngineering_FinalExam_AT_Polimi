@@ -8,7 +8,8 @@ public enum ChoiceType {
     PICK_COLUMN,
     CHOOSE_ORDER,
     SEND_MESSAGE,
-    RESET_TURN;
+    RESET_TURN,
+    SHOW_CHAT;
 
     public static String askParams(String input) {
         Scanner s = new Scanner(System.in);
@@ -29,9 +30,13 @@ public enum ChoiceType {
                 params = s.nextLine();
                 return input + " " + params;
             case "SEND_MESSAGE":
-                System.out.println("Insert the message you want to send");
+                System.out.println("Enter the nickname of the player you want to contact, otherwise type \"Everyone\"");
                 params = s.nextLine();
+                System.out.println("Insert the message you want to send");
+                params = params + " " +s.nextLine();
                 return input + " " + params;
+            case "SHOW_CHAT":
+                    return input;
             case "RESET_TURN":
                 return input;
             default:

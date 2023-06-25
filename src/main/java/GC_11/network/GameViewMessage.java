@@ -9,6 +9,7 @@ import GC_11.model.common.CommonGoalCard;
 import GC_11.network.MessageView;
 import GC_11.util.CircularList;
 
+import java.beans.PropertyChangeEvent;
 import java.util.List;
 
 /**
@@ -32,6 +33,7 @@ public class GameViewMessage extends MessageView {
     private Board board = null;
     private Chat chat = null;
     private String message;
+    private PropertyChangeEvent evt;
 
 
 
@@ -44,7 +46,7 @@ public class GameViewMessage extends MessageView {
      * @param model     Game model
      * @param exception caught during the game
      */
-    public GameViewMessage(Game model, Exception exception) {
+    public GameViewMessage(Game model, Exception exception, PropertyChangeEvent evt) {
         if (exception != null) {
             this.error = true;
             this.exceptionMessage = exception.getMessage();
@@ -58,6 +60,8 @@ public class GameViewMessage extends MessageView {
         this.endGame = model.isEndGame();
         if(model.getEndPlayer() != null) this.endPlayer = model.getEndPlayer();
         this.board = new Board(model.getBoard());
+        this.chat = model.getChat();
+        this.evt = evt;
     }
 
     // Solo per inviare messaggi testuali da server al client
@@ -143,5 +147,9 @@ public class GameViewMessage extends MessageView {
 
     public void setException(Exception exception) {
         this.exception = exception;
+    }
+
+    public Chat getChat(){
+        return this.chat;
     }
 }

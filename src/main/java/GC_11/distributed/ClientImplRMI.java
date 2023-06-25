@@ -97,11 +97,13 @@ public class ClientImplRMI extends UnicastRemoteObject implements ClientRMI {
             //server.updateLobby();
         }
         if (evt.getPropertyName().equals("CHOICE")) {
-            try {
-                server.updateGame(this, (Choice) evt.getNewValue());
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+            new Thread(() -> {
+                try {
+                    server.updateGame(this, (Choice) evt.getNewValue());
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
         }
     }
 
@@ -133,18 +135,6 @@ public class ClientImplRMI extends UnicastRemoteObject implements ClientRMI {
         viewLobby.run();
     }
 
-    /*public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("UPDATE LOBBY")) {
-            //server.updateLobby();
-        }
-        if (evt.getPropertyName().equals("CHOICE")) {
-            try {
-                server.updateGame( this, (Choice) evt.getNewValue());
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }*/
 
 }
 

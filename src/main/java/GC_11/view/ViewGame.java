@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
 
 public abstract class ViewGame extends View {
 
+    protected String nickname;
     protected boolean inGame = true;
 
     protected GameViewMessage modelView;
@@ -22,12 +23,16 @@ public abstract class ViewGame extends View {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         this.modelView = (GameViewMessage) evt.getNewValue();
-        try {
-            run();
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        } catch (ColumnIndexOutOfBoundsException e) {
-            throw new RuntimeException(e);
+        if( !(evt.getPropertyName().equals("CHANGED_MAIN_CHAT") || evt.getPropertyName().equals("CHANGED_PRIVATE_CHAT"))
+        || !this.modelView.getCurrentPlayer().equals(this.nickname)) {
+            try {
+                run();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            } catch (ColumnIndexOutOfBoundsException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
+
 }

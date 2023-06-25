@@ -26,7 +26,6 @@ public class GameCLI extends ViewGame {
     // private final Choice controllerChoice;
     private ClientRMI client;
     private ClientSock clientSock;
-    private String nickname;
 
     // private final Outcome outcome;
 
@@ -47,44 +46,36 @@ public class GameCLI extends ViewGame {
     }
 
     @Override
-    public void run() throws RemoteException {
+    public synchronized void run() throws RemoteException {
+        Choice choice;
          show();
             System.out.println("\n\nIT IS THE TURN OF: " + this.modelView.getCurrentPlayer());
             if (this.modelView.getCurrentPlayer().equals(this.nickname)) {
-                Choice choice = getPlayerChoice();
+                choice = getPlayerChoice();
                 System.out.println("scelta fatta");
-                PropertyChangeEvent evt = new PropertyChangeEvent(
-                        this,
-                        "CHOICE",
-                        null,
-                        choice);
-                if (this.client!=null)              //TODO: Implementare un'interfaccia client che permetta di chiamare lo stesso metodo sia socket che RMI
-                    this.client.notifyServer(evt);
-                else
-                    this.clientSock.notifyServer(evt);
-            } else {
-                //permettergli di scrivere in chat
+                this.sendChoice(choice);
             }
-
-
-
-        //show_en = true;
-
-            /*try {
-                choice.executeOnClient(this);
+            else {
+                    this.printChat();
+                    Scanner s = new Scanner(System.in);
+                    while (true) {
+                        System.out.println("Do you want to send a message? (yes/no)");
+                        String input = s.nextLine();
+                        if(input.equals("yes")) {
+                            try {
+                                input = ChoiceType.askParams("SEND_MESSAGE");
+                                choice = ChoiceFactory.createChoice(this.modelView.getPlayer(this.nickname), input);
+                                System.out.println();
+                                this.sendChoice(choice);
+                                break;
+                            } catch (IllegalMoveException e) {
+                                System.err.println("Invalid type: " + input + " Please retake." + e.getMessage());
+                            }
+                        }else if(input.equals("no"))
+                            System.out.println("OK!");
+                            break;
+                    }
             }
-            catch (IllegalMoveException | ColumnIndexOutOfBoundsException | NotEnoughFreeSpacesException e) {
-                System.out.println("Errore");
-            }*/
-
-        /*PropertyChangeEvent evt = new PropertyChangeEvent(
-                this,
-                "CHOICE",
-                null,
-                choice);
-        this.client.notifyServer(evt);
-        show_en = true;*/
-
     }
 
     @Override
@@ -122,9 +113,49 @@ public class GameCLI extends ViewGame {
                     p.getPersonalGoal().print();
                 }
             }
+        }
+    }
 
-            //Printing Main Chat
-        /*
+    public Choice getPlayerChoice() {
+
+        Scanner s = new Scanner(System.in);
+        this.printOptions();
+        while (true) {
+            String input = s.nextLine();
+            input = ChoiceType.askParams(input);
+            try {
+                if(input.equals("SHOW_CHAT")) {
+                    this.printChat();
+                    this.printOptions();
+                }
+                else
+                    return ChoiceFactory.createChoice(this.modelView.getPlayer(this.nickname), input);
+            } catch (IllegalMoveException e) {
+                System.err.println("Invalid type: " + input + " Please retake.");
+            }
+        }
+    }
+
+    public void sendChoice(Choice choice) throws RemoteException {
+        PropertyChangeEvent evt = new PropertyChangeEvent(
+                this,
+                "CHOICE",
+                null,
+                choice);
+        if (this.client!=null)              //TODO: Implementare un'interfaccia client che permetta di chiamare lo stesso metodo sia socket che RMI
+            this.client.notifyServer(evt);
+        else
+            this.clientSock.notifyServer(evt);
+    }
+
+    private void printOptions(){
+        System.out.println("\nOptions available: " +
+                Arrays.stream(ChoiceType.values())
+                        .map(ChoiceType::name)
+                        .collect(
+                                Collectors.joining(",", "[", "]")));
+    }
+    private void printChat(){
         System.out.println("\n\n----------------------------------");
         System.out.println("Main Chat: ");
         for (Message message : this.modelView.getChat().getMainChat()) {
@@ -137,30 +168,7 @@ public class GameCLI extends ViewGame {
             for(Message message : this.modelView.getChat().getPrivateChats(this.modelView.getPlayer(this.nickname)).get(nickname)) {
                 System.out.println(message.getSender() + ": " + message.getText());
             }
-            System.out.println("");
-        }
-
-         */
-        }
-    }
-
-    public Choice getPlayerChoice() {
-
-        Scanner s = new Scanner(System.in);
-        System.out.println("\nOptions available: " +
-                Arrays.stream(ChoiceType.values())
-                        .map(ChoiceType::name)
-                        .collect(
-                                Collectors.joining(",", "[", "]")));
-        while (true) {
-            String input = s.nextLine();
-            //print
-            input = ChoiceType.askParams(input);
-            try {
-                return ChoiceFactory.createChoice(this.modelView.getPlayer(this.nickname), input);
-            } catch (IllegalMoveException e) {
-                System.err.println("Invalid type: " + input + " Please retake.");
-            }
+            System.out.println();
         }
     }
 }

@@ -4,6 +4,7 @@ import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.network.choices.Choice;
 
+import java.beans.PropertyChangeEvent;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -41,7 +42,7 @@ public interface ServerRMI extends Remote {
      *
      * @throws RemoteException
      */
-    public void notifyClients() throws RemoteException;
+    public void notifyClients(PropertyChangeEvent evt) throws RemoteException;
 
 
 }
