@@ -290,5 +290,26 @@ public class ServerClientHandler implements Runnable {
 
         return maxPlayers;
     }
+
+    public boolean askLoading() {
+        boolean loading = false;
+        GameViewMessage msg = new GameViewMessage("Vuoi caricare una partita precedente?");
+        sendMessageViewToClient(msg);
+        try {
+            String answer = receiveMessageFromClient();
+            while (!answer.equalsIgnoreCase("si") && !answer.equalsIgnoreCase("no")) {
+                msg.setMessage("Rispondere con si o no");
+                sendMessageViewToClient(msg);
+                answer = receiveMessageFromClient();
+            }
+            if (answer.equalsIgnoreCase("si")) {
+                loading = true;
+            }
+        } catch (IOException | ClassNotFoundException | IllegalMoveException e) {
+            System.err.println("Unable to receive message from client");
+            this.connected = false;
+        }
+        return loading;
+    }
 }
 

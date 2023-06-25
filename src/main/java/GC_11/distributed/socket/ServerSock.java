@@ -172,6 +172,11 @@ public class ServerSock implements PropertyChangeListener {
         return socketMap.get(clientNickname).askMaxNumber();
     }
 
+    public boolean askLoading() {
+        String clientNickname =this.socketMap.entrySet().iterator().next().getKey();
+        return socketMap.get(clientNickname).askLoading();
+    }
+
 
 }
 

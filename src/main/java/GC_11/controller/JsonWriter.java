@@ -216,9 +216,31 @@ public class JsonWriter {
         }
     }
 
-    public GameViewMessage readGame() {
-        // Leggi file JSON nel path
-        return gameView;
-    }
+    public static List<String> getNicknames() {
+        List<String> playersNicknames = null;
+        try (FileReader reader = new FileReader("src//main//resources//GameView.JSON")) {
+            JsonObject game = JsonParser.parseReader(reader).getAsJsonObject();
 
+            playersNicknames = new ArrayList<String>();
+
+            String players = game.get("players").toString();
+            JsonArray playersArray = JsonParser.parseString(players).getAsJsonArray();
+
+            for (int i = 0; i < playersArray.size(); i++) {
+
+                JsonObject jsonPlayer = playersArray.get(i).getAsJsonObject();
+
+                String nickname = jsonPlayer.get("nickname").toString();
+                nickname = nickname.replace("\"", "");
+
+                playersNicknames.add(nickname);
+            }
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return playersNicknames;
+    }
 }

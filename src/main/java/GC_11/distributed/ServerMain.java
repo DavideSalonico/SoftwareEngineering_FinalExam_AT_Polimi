@@ -105,7 +105,7 @@ public class ServerMain implements PropertyChangeListener {
      * Adjusts the message for each client and sends it through the corresponding server type.
      */
 
-    public void notifyClientsLobby() {
+    public void notifyClientsLobby() throws RemoteException {
 
             if (serverRMI.getClients().size()>0) {
                 serverRMI.notifyClientsLobby(new LobbyViewMessage(this.controller.getLobby()));
@@ -221,12 +221,41 @@ public class ServerMain implements PropertyChangeListener {
                 this.askMaxPlayers();
             }
             if (evt.getPropertyName().equals("LAST PLAYER")) {
-                this.notifyClientsLobby();
+                try {
+                    this.notifyClientsLobby();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
                 // Check if the players' name are the same in the JSON file
-                this.controller.startGame();
+                List <String> nicks = JsonWriter.getNicknames();
+                boolean equals=true;
+                for (String nick : nicks){
+                    for (String s : this.controller.getLobby().getPlayers()){
+                        if (!nick.equals(s)){
+                            equals=false;
+                        }
+                    }
+                }
+                if (equals){
+                    boolean load = askLoading();
+                    if (load){
+                        // Caricare il gioco da JSON
+                    }
+                    else{
+                        this.controller.startGame();
+                    }
+                }
+                else{
+                    this.controller.startGame();
+                }
                 this.notifyClientsGame(null, evt);
-            } else
-                this.notifyClientsLobby();
+            } else {
+                try {
+                    this.notifyClientsLobby();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         } else {
             if(evt.getPropertyName().equals("EXCEPTION TRIGGERED")){
                 this.notifyClientsGame((Exception) evt.getNewValue(),evt);
@@ -257,5 +286,20 @@ public class ServerMain implements PropertyChangeListener {
 
     public Map getClientsMap(){
         return this.clientMap;
+    }
+
+    private boolean askLoading(){
+        String firstPlayer = this.clientMap.values().iterator().next();
+        if (this.clientMap.get(firstPlayer).equals("RMI")){
+            // Ask RMI
+            return true;
+        }
+        else if (this.clientMap.get(firstPlayer).equals("SOCKET")){
+            return this.serverSocket.askLoading();
+        }
+        else{
+            System.out.println("Unable to ask loading because connection type is unknown");
+            return false;
+        }
     }
 }

@@ -25,6 +25,8 @@ public class AppTia {
         GameViewMessage modelView = new GameViewMessage(g, null,null);
         JsonWriter.saveGame(g);
         //JsonWriter.deleteGame();
-        JsonWriter.loadGame();
+        //JsonWriter.loadGame();
+        List<String> nicks=JsonWriter.getNicknames();
+        System.out.println("Gioco caricato");
     }
 }
