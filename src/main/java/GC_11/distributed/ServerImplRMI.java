@@ -78,52 +78,6 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI {
     public synchronized void register(ClientRMI client) throws ExceededNumberOfPlayersException, NameAlreadyTakenException, RemoteException {
         clients.add(client);
         serverMain.addConnection(client.getNickname(), "RMI");
-
-        /*if (clients.size() == 0) {
-            maxPlayer = client.askMaxNumber();
-            lobbyModel = new Lobby(maxPlayer);
-            lobbyController = new LobbyController(lobbyModel);
-        }
-        clients.add(client);
-        System.out.println(client.getNickname() + " connected to the server");
-        lobbyController.addPlayerName(client.getNickname());
-        System.out.println(client.getNickname() + " aggiunto alla lobby");
-        for (ClientRMI c : clients) {
-            try {
-                new Thread(() -> {
-                    try {
-                        c.updateViewLobby(new LobbyViewMessage(lobbyModel));
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                }).start();
-                System.out.println(c.getNickname() + " aggiornato");
-            } catch (RemoteException e) {
-                System.out.println("Error while updating the client: " + e.getMessage() + ". Skipping the update...");
-            }
-        }
-        System.out.println("\n");
-        if (clients.size() == maxPlayer) {
-            System.out.println("\n ##### Starting a game #####\n");
-            this.gameModel = new Game(lobbyModel.getPlayers(), this);
-            this.gameController = new Controller(this.gameModel);
-            for (ClientRMI c : clients) {
-                try {
-                    new Thread(() -> {
-                        try {
-                            c.updateStartGame(new GameViewMessage(gameModel, null));
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
-                        }
-                    }).start();
-                    System.out.println(c.getNickname() + " aggiornato GAME");
-                } catch (RemoteException e) {
-                    System.out.println("Error while notify the client " + e.getMessage());
-                }
-            }
-            System.out.println("\n");
-        }
-*/
     }
 
     @Override

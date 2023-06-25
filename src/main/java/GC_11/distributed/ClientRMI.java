@@ -19,4 +19,5 @@ public interface ClientRMI extends Remote {
 
     void notifyServer(PropertyChangeEvent evt) throws RemoteException;
 
+    String getNickname()throws RemoteException;
 }
