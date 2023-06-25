@@ -206,6 +206,7 @@ public class Controller implements PropertyChangeListener {
             this.model.getCurrentPlayer().calculateAndGiveAdjacencyPoint();
             this.model.getBoard().refillBoard();
             if(this.model.setNextCurrent()){
+                this.model.setEndGame(true);
                 this.model.triggerEnd();
             }
         } catch (NotEnoughFreeSpacesException | ColumnIndexOutOfBoundsException e) {
@@ -214,7 +215,6 @@ public class Controller implements PropertyChangeListener {
         }
 
         if(end){
-            this.model.setEndGame(true);
             this.model.setEndPlayer(this.model.getCurrentPlayer().getNickname());
         }
     }
@@ -297,7 +297,7 @@ public class Controller implements PropertyChangeListener {
             this.model.triggerException(new IllegalMoveException("Message too long"));
             return;
         }
-        if(!this.model.getPlayers().stream().map(i -> i.getNickname()).toList().contains(parameters.get(0)) || !parameters.get(0).equals("Everyone")){
+        if(!this.model.getPlayers().stream().map(i -> i.getNickname()).toList().contains(parameters.get(0)) && !parameters.get(0).equals("Everyone")){
             this.model.triggerException(new IllegalMoveException("Player not found!"));
             return;
         }

@@ -16,12 +16,6 @@ public class Tile implements Serializable {
 
     private static Random RANDOM = new Random();
 
-    /*public Tile() {
-        this.color = TileColor.randomColor();
-    } //TODO: to add random int
-
-     */
-
     /**
      * Duplicate Tile constructor
      *

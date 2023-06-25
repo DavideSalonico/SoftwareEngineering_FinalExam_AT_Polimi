@@ -18,7 +18,6 @@ import java.rmi.RemoteException;
  */
 public abstract class View implements PropertyChangeListener {
 
-    //Controller must register
     private PropertyChangeListener listener;
 
     public abstract void show() throws ColumnIndexOutOfBoundsException;
