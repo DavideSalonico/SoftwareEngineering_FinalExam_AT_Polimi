@@ -24,6 +24,7 @@ import java.util.Scanner;
 
 public class ClientSock implements PropertyChangeListener, Client {
 
+    Client self = this;
     String ip;
     int port;
     private Socket socket;
@@ -65,6 +66,7 @@ public class ClientSock implements PropertyChangeListener, Client {
         this.ip = ip;
         this.graphicInterface=gInterface;
         this.lobbyCLI=new LobbyCLI();
+        this.view = new GameCLI(null,this);
 
         try {
             System.out.println("Connecting to server on port " + port);
@@ -83,13 +85,12 @@ public class ClientSock implements PropertyChangeListener, Client {
     }
 
     public void notifyServer(Choice choice){
-        String choiceString = choice.toString();
-        sendMessageToServer(choiceString);
+        sendMessageToServer(choice);
     }
 
-    public void sendMessageToServer(String s) {
+    public void sendMessageToServer(Choice choice) {
         try {
-            out.writeObject(s);
+            out.writeObject(choice);
             out.flush();
             out.reset();
         } catch (IOException e) {
@@ -169,26 +170,6 @@ public class ClientSock implements PropertyChangeListener, Client {
         }
     });
 
-    Client self = this;
-    Thread writeThread = new Thread(new Runnable() {
-        Scanner inputLine = new Scanner(System.in);
-
-        @Override
-        public void run() {
-            System.out.println("Running write Thread");
-            while (true) {
-                //System.out.println("Insert message to send to server");
-                String s = inputLine.nextLine();
-                if (nickname == null || nickname.isEmpty()) {
-                    if (gameViewMessage.getMessage().equals("Hi! Welcome to the game! Please, insert your nickname:")) {
-                        nickname = s;
-                        setView(new GameCLI(nickname, self));
-                    }
-                }
-                sendMessageToServer(s);
-            }
-        }
-    });
 
 
     /**
@@ -229,8 +210,8 @@ public class ClientSock implements PropertyChangeListener, Client {
     }
 
     public void notifyServer(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("CHOICE"))
-            sendMessageToServer((evt.getNewValue()).toString());
+        //if (evt.getPropertyName().equals("CHOICE"))
+            //sendMessageToServer((evt.getNewValue()).toString());
     }
 
     public void updateViewGame(GameViewMessage gameViewMessage) {
