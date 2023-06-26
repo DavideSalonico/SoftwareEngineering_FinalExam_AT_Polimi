@@ -24,6 +24,7 @@ public class Game implements PropertyChangeListener, Serializable {
     private List<CommonGoalCard> commonGoals;
     private Player currentPlayer;
     private boolean endGame;
+    private boolean lastTurn;
     private String endPlayer;
     private Board board;
     private Chat chat;
@@ -47,6 +48,7 @@ public class Game implements PropertyChangeListener, Serializable {
         }
         this.currentPlayer = this.players.get(0);
         this.endGame = false;
+        this.lastTurn = false;
         this.commonGoals = new ArrayList<CommonGoalCard>();
         this.board = new Board(players.size());
         this.board.setListener(this);
@@ -87,7 +89,6 @@ public class Game implements PropertyChangeListener, Serializable {
         this.commonGoals.get(1).getWinningPlayers().addAll(winningPlayers2);
         this.commonGoals.get(0).setListener(this);
         this.commonGoals.get(1).setListener(this);
-
     }
 
     private Player getCurrentPlayer(String nickname){
@@ -160,7 +161,7 @@ public class Game implements PropertyChangeListener, Serializable {
 
     public boolean setNextCurrent() {
         this.currentPlayer = this.players.get(this.players.indexOf(this.currentPlayer) + 1);
-        if(this.currentPlayer.getNickname().equals(this.endPlayer)){
+        if(this.currentPlayer.getNickname().equals(this.players.get(0).getNickname()) && this.lastTurn){
             return true;
         }
         PropertyChangeEvent evt = new PropertyChangeEvent(
@@ -279,5 +280,9 @@ public class Game implements PropertyChangeListener, Serializable {
                 null,
                 new GameViewMessage(this, null));
         this.listener.propertyChange(evt);
+    }
+
+    public void setLastTurn(boolean b) {
+        this.lastTurn = b;
     }
 }
