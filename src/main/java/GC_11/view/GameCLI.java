@@ -23,13 +23,10 @@ import static java.lang.Integer.parseInt;
 
 public class GameCLI extends ViewGame {
 
-    // private final Choice controllerChoice;
     private Client client;
 
     private boolean firstTime = true;
-    //private ClientSock clientSock;
 
-    // private final Outcome outcome;
 
     /**
      * Every view is bound at only one player, it helps to manage every input that the controller receive

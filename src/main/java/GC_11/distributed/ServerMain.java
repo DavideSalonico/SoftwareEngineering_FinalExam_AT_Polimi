@@ -1,27 +1,23 @@
 package GC_11.distributed;
 
 import GC_11.controller.Controller;
-import GC_11.controller.JsonWriter;
+
 import GC_11.distributed.RMI.ServerRMIImpl;
 import GC_11.distributed.socket.ServerSock;
-import GC_11.exceptions.*;
-import GC_11.model.Game;
-import GC_11.model.Lobby;
-import GC_11.model.Message;
-import GC_11.model.Player;
+
 import GC_11.network.message.GameViewMessage;
 import GC_11.network.message.LobbyViewMessage;
 import GC_11.network.choices.Choice;
-import GC_11.network.message.MaxNumberMessage;
+
 import GC_11.network.message.MessageView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
-import java.util.Set;
+
 
 /**
  * The main server class for the multiplayer game server.
@@ -130,70 +126,6 @@ public class ServerMain implements PropertyChangeListener {
 
     }
 
-    /*public void notifyClientsGame(Exception exc, PropertyChangeEvent evt) {
-        if(exc != null) {
-            String currPlayer = this.controller.getGame().getCurrentPlayer().getNickname();
-            GameViewMessage messageViewCopy = new GameViewMessage(this.controller.getGame(), exc, null);
-            if (clientMap.get(currPlayer).equals("RMI")) {
-                try {
-                    serverRMI.notifyClient(currPlayer, messageViewCopy);
-                } catch (RemoteException e) {
-                    // If an error occurs, notify the server
-                    this.removeConnection(currPlayer);
-                    e.printStackTrace();
-                }
-            } else if (clientMap.get(currPlayer).equals("SOCKET")) {
-                serverSocket.notifyClient(messageViewCopy, currPlayer);
-            } else {
-                System.out.println("Unable to notify " + currPlayer + " because connection type is unknown");
-            }
-        }
-        else{
-            for (Map.Entry<String, String> client : clientMap.entrySet()) {
-
-                // Make a copy of the messageView for every player and keeps the original messageView intact
-                GameViewMessage messageViewCopy = new GameViewMessage(this.controller.getGame(),null,evt);
-
-                // Just before sending the message, we remove the personal goal from the other players
-                for (Player p : messageViewCopy.getPlayers()) {
-                    if (!p.getNickname().equals(client.getKey())){
-                        p.setPersonalGoal(null);
-                        for(Map.Entry<Set<String>, List<Message>> entry : messageViewCopy.getPrivateChats().entrySet()){
-                            if(!entry.getKey().contains(p.getNickname())){
-                                entry.getValue().clear();
-                            }
-                            else{
-                                for(String str : entry.getKey()){
-                                    if(!str.equals(client.getKey())){
-                                        messageViewCopy.getFilteredPvtChats().put(str, entry.getValue());
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // For every client we check the connection type and notify the corresponding server
-                if (client.getValue().equals("RMI")) {
-                    try {
-                        serverRMI.notifyClient(client.getKey(), messageViewCopy);
-                    } catch (RemoteException e) {
-                        // If an error occurs, notify the server
-                        this.removeConnection(client.getKey());
-                        e.printStackTrace();
-                    }
-                } else if (client.getValue().equals("SOCKET")) {
-                    serverSocket.notifyClient(messageViewCopy, client.getKey());
-                } else {
-                    System.out.println("Unable to notify " + client.getKey() + " because connection type is unknown");
-                }
-            }
-            JsonWriter.saveGame(new GameViewMessage(this.controller.getGame(), null, evt));
-        }
-    }
-
-     */
-
     /**
      * Asks the first player for the maximum number of players in the lobby.
      * Updates the lobby's maximum players value.
@@ -214,26 +146,7 @@ public class ServerMain implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        /*if (evt.getSource() instanceof Lobby) {
-            if (evt.getPropertyName().equals("FIRST PLAYER")) {
-                this.askMaxPlayers();
-            }
-            if (evt.getPropertyName().equals("LAST PLAYER")) {
-                this.notifyClientsLobby();
-                this.controller.startGame();
-                this.notifyClientsGame(null, evt);
-            } else
-                this.notifyClientsLobby();
-        } else {
-            if(evt.getPropertyName().equals("EXCEPTION TRIGGERED")){
-                this.notifyClientsGame((Exception) evt.getNewValue(),evt);
-            }
-            else{
-                this.notifyClientsGame(null, evt);
-            }
-        }
 
-         */
         //TODO far costruire i MessageView giusti
         MessageView msg = (MessageView) evt.getNewValue();
         notifyClients(msg);

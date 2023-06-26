@@ -7,6 +7,7 @@ import GC_11.exceptions.IllegalMoveException;
 import GC_11.network.message.GameViewMessage;
 import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
+import GC_11.network.message.LobbyViewMessage;
 import GC_11.view.ViewGame;
 import javafx.application.Application;
 
@@ -84,6 +85,11 @@ public class GUIModel extends ViewGame {
 
     @Override
     public void askMaxNumber() {
+
+    }
+
+    @Override
+    public void printLobby(LobbyViewMessage lobbyViewMessage) {
 
     }
 
