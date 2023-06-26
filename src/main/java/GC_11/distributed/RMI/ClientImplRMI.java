@@ -8,6 +8,8 @@ import GC_11.network.message.MessageView;
 import GC_11.network.choices.Choice;
 import GC_11.view.*;
 import GC_11.view.GUI.GUIModel;
+import GC_11.view.GUI.GUIView;
+import javafx.application.Application;
 
 import java.beans.PropertyChangeEvent;
 import java.io.Serializable;
@@ -47,6 +49,7 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
         if(Objects.equals(choiceInterface, "CLI")) {
             viewLobby = new LobbyCLI();
             viewGame = new GameCLI(this.nickname, this);
+            Application.launch(GUIView.class);
         }
         else{
             // creare la logica della lobby GUI per il momento uso la CLI

@@ -5,6 +5,9 @@ import GC_11.distributed.Client;
 import java.rmi.RemoteException;
 
 public class NicknameMessage extends MessageView{
+    public NicknameMessage(){
+        super();
+    }
     public NicknameMessage(NicknameMessage nicknameMessage) {
         super();
     }

@@ -1,13 +1,12 @@
 package GC_11.distributed.socket;
 
+import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.IllegalMoveException;
+import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.model.Player;
-import GC_11.network.message.GameViewMessage;
-import GC_11.network.message.LobbyViewMessage;
+import GC_11.network.message.*;
 import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
-import GC_11.network.message.MaxNumberMessage;
-import GC_11.network.message.MessageView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -69,17 +68,28 @@ public class ServerClientHandler implements Runnable {
     private void connectionSetup() {
 
         if (connected) {
-            GameViewMessage msg = new GameViewMessage("Hi! Welcome to the game! Please, insert your nickname:");
-            sendMessageViewToClient(msg);
-            String reply = null;
-            try {
-                reply = (String) inputStream.readObject();
-            } catch (IOException | ClassNotFoundException e) {
-                System.err.println("Unable to read nickname");
-                closeConnection();
-                return;
+            Choice reply = null;
+            boolean ok = false;
+            while(!ok){
+                NicknameMessage msg = new NicknameMessage();
+                sendMessageViewToClient(msg);
+                try {
+                    reply = (Choice) inputStream.readObject();
+                    try {
+                        reply.executeOnServer(this.server.getServerMain().getController());
+                        ok = true;
+                    } catch (ExceededNumberOfPlayersException | NameAlreadyTakenException e) {
+                        LobbyViewMessage errMsg = new LobbyViewMessage(this.server.getServerMain().getController().getLobby(), e);
+                        sendMessageViewToClient(errMsg);
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                } catch (IOException | ClassNotFoundException e) {
+                    System.err.println("Client Disconnected. Unable to read nickname");
+                    closeConnection();
+                    return;
+                }
             }
-            this.nickname = reply;
+            this.nickname = reply.getParams().get(0);
             this.server.getSocketMap().put(this.nickname, this);
             this.server.getServerMain().addConnection(this.nickname, this.server);
         }

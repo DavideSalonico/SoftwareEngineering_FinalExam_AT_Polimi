@@ -34,6 +34,27 @@ public class ServerMain implements PropertyChangeListener {
     private Controller controller = new Controller(this);
     private Map<String, Server> clientMap = new HashMap<String, Server>(); // <nickname, Server >
 
+    // Runnable threads for starting the server sockets
+    Thread serverSocketThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            try {
+                serverSocket.startServer();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    });
+
+    // Runnable threads for starting the server RMI
+    Thread serverRMIThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            serverRMI.setup();
+        }
+
+    });
+
     /**
      * Constructs a new ServerMain object with the specified port number.
      * Initializes the RMI and socket servers.
@@ -49,29 +70,6 @@ public class ServerMain implements PropertyChangeListener {
             throw new RuntimeException(e);
         }
     }
-
-    // Runnable threads for starting the server sockets
-
-    Thread serverSocketThread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            try {
-                serverSocket.startServer();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    });
-
-    // Runnable threads for starting the server RMI
-
-    Thread serverRMIThread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            serverRMI.setup();
-        }
-
-    });
 
 
     /**
