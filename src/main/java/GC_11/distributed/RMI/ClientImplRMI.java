@@ -25,11 +25,13 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
     private String nickname;
     private ServerRMI serverRMI;
 
-    public ClientImplRMI(ViewLobby viewLobby) throws RemoteException {
+    /*public ClientImplRMI(ViewLobby viewLobby) throws RemoteException {
         this.viewLobby = viewLobby;
     }
 
-    public ClientImplRMI(ServerRMI serverRMI, String nickname) throws RemoteException {
+     */
+
+    /*public ClientImplRMI(ServerRMI serverRMI, String nickname) throws RemoteException {
         this.nickname = nickname;
         System.out.println("HELLO " + nickname + "!!!\n");
         viewLobby = new LobbyCLI();
@@ -43,6 +45,8 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
         }
     }
 
+     */
+
     public ClientImplRMI(ServerRMI serverRMI, String nickname, String choiceInterface) throws RemoteException {
         this.nickname = nickname;
         System.out.println("HELLO " + nickname + "!!!\n");
@@ -55,12 +59,6 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
             // creare la logica della lobby GUI per il momento uso la CLI
             viewLobby = new LobbyCLI();
             viewGame = new GUIModel(this.nickname, this);
-        }
-        try {
-            serverRMI.register(this);
-            this.serverRMI = serverRMI;
-        } catch (RemoteException e) {
-            System.err.println("error in the registration: " + e.getCause() + "\n" + e.getMessage() + "\n" + e.getStackTrace() + "\n\n\n" + e.toString());
         }
     }
 
@@ -134,6 +132,8 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
         }
     }
 
-
+    public void setServer(ServerRMI serverRMI) {
+        this.serverRMI = serverRMI;
+    }
 }
 

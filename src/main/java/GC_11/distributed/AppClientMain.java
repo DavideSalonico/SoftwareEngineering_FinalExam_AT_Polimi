@@ -61,6 +61,12 @@ public class AppClientMain {
         Registry registry = LocateRegistry.getRegistry(serverIp,1099);
         ServerRMI serverRMI = (ServerRMI) registry.lookup("server");
         ClientImplRMI client = new ClientImplRMI(serverRMI, nickname, choiceInterface);
+        try {
+            serverRMI.register(client);
+            client.setServer(serverRMI);
+        } catch (RemoteException e) {
+            System.err.println("error in the registration: " + e.getCause() + "\n" + e.getMessage() + "\n" + e.getStackTrace() + "\n\n\n" + e.toString());
+        }
     }
 
     private static void  clientSOCKETSetup(String choiceInterface, String serverIp){
