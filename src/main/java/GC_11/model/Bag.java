@@ -14,7 +14,6 @@ public class Bag implements Serializable {
         this.listener = listener;
     }
 
-    //The listener must be the Board,TODO: change Board builder
     transient PropertyChangeListener listener;
 
 

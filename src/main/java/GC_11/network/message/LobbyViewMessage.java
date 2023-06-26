@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LobbyViewMessage extends MessageView {
+    private Exception exception;
 
     public LobbyViewMessage(Lobby lobby) {
         this.maxPlayers = lobby.getMaxPlayers();
@@ -18,6 +19,15 @@ public class LobbyViewMessage extends MessageView {
         super();
         this.maxPlayers = lobbyViewMessage.getMaxPlayers();
         this.playersNames = new ArrayList<>(lobbyViewMessage.getPlayersNames());
+    }
+
+    public LobbyViewMessage(Lobby lobby, Exception e) {
+        super();
+        if(e != null){
+            this.exception = new Exception(e);
+        }
+        this.maxPlayers = lobby.getMaxPlayers();
+        this.playersNames = new ArrayList<>(lobby.getPlayers());
     }
 
     @Override

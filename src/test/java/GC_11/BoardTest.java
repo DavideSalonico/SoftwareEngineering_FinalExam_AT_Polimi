@@ -11,7 +11,6 @@ import static junit.framework.Assert.*;
 import java.util.List;
 
 public class BoardTest {
-    //TODO: To be implemented by Mattia
 
 
   /*  @Test

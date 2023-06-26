@@ -32,7 +32,6 @@ public class GameViewMessage extends MessageView {
     private Map<Set<String>, List<Message>> privateChats = new HashMap<>();
     private Map<String, List<Message>> filteredPvtChats = new HashMap<>();
     private String message;
-    private PropertyChangeEvent evt;
 
 
 
@@ -45,7 +44,7 @@ public class GameViewMessage extends MessageView {
      * @param model     Game model
      * @param exception caught during the game
      */
-    public GameViewMessage(Game model, Exception exception, PropertyChangeEvent evt) {
+    public GameViewMessage(Game model, Exception exception) {
         if (exception != null) {
             this.error = true;
             this.exceptionMessage = exception.getMessage();
@@ -54,14 +53,13 @@ public class GameViewMessage extends MessageView {
         for (Player p : model.getPlayers()) {
             this.players.add(new Player(p));
         }
-        this.commonGoals = model.getCommonGoal(); //TODO passarle per valore e non copiare l'oggetto
+        this.commonGoals = new ArrayList<>(model.getCommonGoal());
         this.currentPlayer = model.getCurrentPlayer().getNickname();
         this.endGame = model.isEndGame();
         if(model.getEndPlayer() != null) this.endPlayer = model.getEndPlayer();
         this.board = new Board(model.getBoard());
         this.mainChat = new ArrayList<>(model.getChat().getMainChat());
         this.privateChats = new HashMap<>(model.getChat().getPvtChats());
-        this.evt = evt;
     }
 
     // Solo per inviare messaggi testuali da server al client

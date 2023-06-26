@@ -4,6 +4,7 @@ import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.exceptions.PlayerNotInListException;
 import GC_11.model.Game;
+import GC_11.network.message.LobbyViewMessage;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -29,7 +30,7 @@ public class Lobby implements PropertyChangeListener {
                         this,
                         "FIRST PLAYER",
                         null,
-                        playerName);
+                        new LobbyViewMessage(this));
                 this.listener.propertyChange(evt);
             }
             else if(this.isFull()){
@@ -37,14 +38,15 @@ public class Lobby implements PropertyChangeListener {
                         this,
                         "LAST PLAYER",
                         null,
-                        playerName);
+                        new LobbyViewMessage(this));
                 this.listener.propertyChange(evt);
+                //TODO: FAR PARTIRE IL GIOCO
             }else{
                 PropertyChangeEvent evt = new PropertyChangeEvent(
                         this,
-                        "ADDED PLayer",
+                        "ADDED PLAYER",
                         null,
-                        playerName);
+                        new LobbyViewMessage(this));
                 this.listener.propertyChange(evt);
             }
         } else if (this.isFull()) {
@@ -87,7 +89,8 @@ public class Lobby implements PropertyChangeListener {
                 this,
                 "EXCEPTION",
                 null,
-                e);
+                new LobbyViewMessage(this, e));
+        //TODO: CREA LOBBY VIEW FATTA BENE
         this.listener.propertyChange(evt);
     }
 

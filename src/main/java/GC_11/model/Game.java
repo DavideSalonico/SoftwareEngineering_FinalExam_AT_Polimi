@@ -30,9 +30,8 @@ public class Game implements PropertyChangeListener, Serializable {
     public transient PropertyChangeListener listener;
 
     public Game(@NotNull List<String> playerNames, PropertyChangeListener listener) {
-
         Random random = new Random();
-        this.players = new CircularList<>();//int[] idArray = random.ints(playerNames.size(), 1, 12).distinct().toArray(); // TODO RISOLVERE IL PROBLEMA DELLE CARTE PERSONALI
+        this.players = new CircularList<>();
         int[] idArray = generateSetOfRandomNumber(playerNames.size(), 0, 11);
         for (int i = 0; i < playerNames.size(); i++) {
             System.out.println("int i = " + i);
@@ -168,7 +167,7 @@ public class Game implements PropertyChangeListener, Serializable {
                 this,
                 "CHANGED_CURRENT_PLAYER",
                 null,
-                new GameViewMessage(this, null, null));
+                new GameViewMessage(this, null));
         this.listener.propertyChange(evt);
         System.out.println("Set next current player: " + this.currentPlayer.getNickname());
         return false;
@@ -235,15 +234,20 @@ public class Game implements PropertyChangeListener, Serializable {
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        PropertyChangeEvent e = new PropertyChangeEvent(
+                evt.getSource(),
+                evt.getPropertyName(),
+                null,
+                new GameViewMessage(this, null));
         listener.propertyChange(evt);
     }
 
-    public void triggerException(Exception e) throws RemoteException {
+    public void triggerException(Exception e) {
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "EXCEPTION TRIGGERED",
                 null,
-                e);
+                new GameViewMessage(this, e));
         this.listener.propertyChange(evt);
         System.out.println("Triggered exception\n" + e.getMessage());
     }
@@ -273,7 +277,7 @@ public class Game implements PropertyChangeListener, Serializable {
                 this,
                 "END GAME",
                 null,
-                null);
+                new GameViewMessage(this, null));
         this.listener.propertyChange(evt);
     }
 }

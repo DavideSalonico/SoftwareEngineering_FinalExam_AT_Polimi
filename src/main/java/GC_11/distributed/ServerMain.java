@@ -202,7 +202,7 @@ public class ServerMain implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getSource() instanceof Lobby) {
+        /*if (evt.getSource() instanceof Lobby) {
             if (evt.getPropertyName().equals("FIRST PLAYER")) {
                 this.askMaxPlayers();
             }
@@ -220,6 +220,8 @@ public class ServerMain implements PropertyChangeListener {
                 this.notifyClientsGame(null, evt);
             }
         }
+
+         */
         //TODO far costruire i MessageView giusti
         MessageView msg = (MessageView) evt.getNewValue();
         notifyClients(msg);

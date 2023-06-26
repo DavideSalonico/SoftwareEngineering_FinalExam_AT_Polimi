@@ -1,5 +1,7 @@
 package GC_11.model;
 
+import GC_11.network.message.GameViewMessage;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
@@ -48,8 +50,8 @@ public class Chat implements Serializable {
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "CHANGED_PRIVATE_CHAT",
-                oldPvtChats,
-                this.pvtChats);
+                null,
+                null);
         this.listener.propertyChange(evt);
     }
 
