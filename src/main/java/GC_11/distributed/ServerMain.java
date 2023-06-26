@@ -15,10 +15,7 @@ import GC_11.network.choices.Choice;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * The main server class for the multiplayer game server.
@@ -31,7 +28,7 @@ public class ServerMain implements PropertyChangeListener {
     private ServerSock serverSocket;
     private Game gameModel;
     private Controller controller = new Controller(this);
-    private Map<String, String> clientMap = new HashMap<String, String>(); // <nickname, connectionType>
+    private Map<String, String> clientMap = new LinkedHashMap<String, String>(); // <nickname, connectionType>
 
     /**
      * Constructs a new ServerMain object with the specified port number.
@@ -230,16 +227,18 @@ public class ServerMain implements PropertyChangeListener {
                 List <String> nicks = JsonWriter.getNicknames();
                 boolean equals=true;
                 for (String nick : nicks){
-                    for (String s : this.controller.getLobby().getPlayers()){
-                        if (!nick.equals(s)){
-                            equals=false;
-                        }
+                    if(!this.controller.getLobby().getPlayers().contains(nick)){
+                        equals=false;
                     }
+                }
+                if (!(nicks.size() == this.controller.getLobby().getMaxPlayers())){
+                    equals=false;
                 }
                 if (equals){
                     boolean load = askLoading();
                     if (load){
-                        // Caricare il gioco da JSON
+                        Game loadedGame = JsonWriter.loadGame();
+                        this.controller.setGame(loadedGame);
                     }
                     else{
                         this.controller.startGame();
@@ -289,12 +288,12 @@ public class ServerMain implements PropertyChangeListener {
     }
 
     private boolean askLoading(){
-        String firstPlayer = this.clientMap.values().iterator().next();
-        if (this.clientMap.get(firstPlayer).equals("RMI")){
+        String firstPlayerConnection = this.clientMap.values().iterator().next();
+        if (firstPlayerConnection.equals("RMI")){
             // Ask RMI
             return true;
         }
-        else if (this.clientMap.get(firstPlayer).equals("SOCKET")){
+        else if (firstPlayerConnection.equals("SOCKET")){
             return this.serverSocket.askLoading();
         }
         else{

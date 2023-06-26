@@ -105,7 +105,7 @@ public class JsonWriter {
         }
     }
 
-    public static void loadGame() {
+    public static Game loadGame() {
         try (FileReader reader = new FileReader("src//main//resources//GameView.JSON")) {
             JsonObject game = JsonParser.parseReader(reader).getAsJsonObject();
 
@@ -200,11 +200,7 @@ public class JsonWriter {
 
             Game loadedGame = new Game(playersList, board1, commonGoalCardsIds, winningPlayersList.get(0), winningPlayersList.get(1), nickname);
             System.out.println("Partita caricata correttamente");
-
-            //Game loadedGame = new Game(playersList, board1, commonGoalCardsIds);
-
-
-            //System.out.println(loadedGame.getBoard());
+            return loadedGame;
 
         } catch (FileNotFoundException e) {
             System.out.println("Errore nell'apertura del file JSON del salvataggio della partita");
@@ -214,6 +210,7 @@ public class JsonWriter {
             System.out.println("Errore nell'apertura del file JSON del salvataggio della partita");
             throw new RuntimeException(e);
         }
+        return null;
     }
 
     public static List<String> getNicknames() {

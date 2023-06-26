@@ -151,7 +151,7 @@ public class ClientSock implements PropertyChangeListener {
                         String maxPlayer = scanner.nextLine();
                         sendMessageToServer(maxPlayer);
                     }
-                    else if(message.getMessage().startsWith("E' già presente")){
+                    else if(message.getMessage().startsWith("Vuoi")){
                         Scanner scanner = new Scanner(System.in);
                         String reply = scanner.nextLine();
                         sendMessageToServer(reply);

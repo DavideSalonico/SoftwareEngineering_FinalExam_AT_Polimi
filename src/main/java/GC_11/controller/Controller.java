@@ -46,6 +46,7 @@ public class Controller implements PropertyChangeListener {
         this.lobby.setListener(this.server);
     }
 
+
     /**
      *Get of game attribute
      *
@@ -325,5 +326,15 @@ public class Controller implements PropertyChangeListener {
 
     public void startGame(){
         this.model = new Game(this.lobby.getPlayers(), this.server);
+    }
+
+    public void startGame(Game model){
+        this.model = model;
+        model.setListener(this.server);
+    }
+
+
+    public void setGame(Game loadedGame) {
+        this.model = loadedGame;
     }
 }
