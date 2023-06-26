@@ -101,7 +101,7 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
         for (Client c : clients) {
             new Thread(() -> {
                 try {
-                    c.receiveFromServer(new GameViewMessage(gameModel, null, evt));
+                    c.receiveFromServer(new GameViewMessage(gameModel, null));
                     System.out.println(c.getNickname() + " aggiornato GAME correctly");
                 } catch (RemoteException e) {
                     System.out.println(e.getMessage());

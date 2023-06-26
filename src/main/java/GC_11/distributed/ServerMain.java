@@ -242,7 +242,7 @@ public class ServerMain implements PropertyChangeListener {
             System.out.println("REMOVED CONNECTION: " + nickname + " " + this.clientMap.get(nickname));
             this.clientMap.remove(nickname);
             this.controller.getGame().setEndGame(true);
-            GameViewMessage msg = new GameViewMessage(this.controller.getGame(), new Exception("Player " + nickname + " disconnected"), null);
+            GameViewMessage msg = new GameViewMessage(this.controller.getGame(), new Exception("Player " + nickname + " disconnected"));
         }
         else{
             System.out.println("Unable to remove connection because nickname is unknown");

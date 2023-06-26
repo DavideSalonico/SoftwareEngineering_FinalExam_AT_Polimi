@@ -97,7 +97,13 @@ public class Controller implements PropertyChangeListener {
             return;
         }
 
-        choice.executeOnServer(this);
+        try {
+            choice.executeOnServer(this); //TODO: exception handling
+        } catch (ExceededNumberOfPlayersException e) {
+            throw new RuntimeException(e);
+        } catch (NameAlreadyTakenException e) {
+            throw new RuntimeException(e);
+        }
 
         if (!choice.getType().equals(ChoiceType.PICK_COLUMN) && !choice.getType().equals(ChoiceType.SEND_MESSAGE))
             this.lastChoice = this.choice.getType();
