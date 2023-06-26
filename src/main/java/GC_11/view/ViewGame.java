@@ -11,15 +11,11 @@ public abstract class ViewGame extends View {
 
     protected String nickname;
     protected boolean inGame = true;
-
     protected GameViewMessage modelView;
-
     public abstract Choice getPlayerChoice();
-
     public void setInGame(boolean inGame) {
         this.inGame = inGame;
     }
-
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         this.modelView = (GameViewMessage) evt.getNewValue();
@@ -34,5 +30,4 @@ public abstract class ViewGame extends View {
             }
         }
     }
-
 }

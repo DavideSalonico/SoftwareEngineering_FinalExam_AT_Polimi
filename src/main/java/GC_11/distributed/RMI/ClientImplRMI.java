@@ -20,8 +20,7 @@ import java.util.Scanner;
 
 public class ClientImplRMI extends UnicastRemoteObject implements Client, Serializable {
 
-    private transient ViewLobby viewLobby;
-    private transient ViewGame viewGame;
+    private transient ViewGame view;
     private String nickname;
     private ServerRMI serverRMI;
 
@@ -51,14 +50,12 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
         this.nickname = nickname;
         System.out.println("HELLO " + nickname + "!!!\n");
         if(Objects.equals(choiceInterface, "CLI")) {
-            viewLobby = new LobbyCLI();
-            viewGame = new GameCLI(this.nickname, this);
+            this.view = new GameCLI(this.nickname, this);
             Application.launch(GUIView.class);
         }
         else{
             // creare la logica della lobby GUI per il momento uso la CLI
-            viewLobby = new LobbyCLI();
-            viewGame = new GUIModel(this.nickname, this);
+            this.view = new GUIModel(this.nickname, this);
         }
     }
 
@@ -85,7 +82,7 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
 
     @Override
     public View getView() {
-        return this.viewGame;
+        return this.view;
     }
 
     @Override
@@ -104,14 +101,6 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
             }).start();
     }
 
-    public void updateViewLobby(LobbyViewMessage newView) {
-        PropertyChangeEvent evt = new PropertyChangeEvent(
-                this,
-                "UPDATE LOBBY",
-                null,
-                newView);
-        this.viewLobby.propertyChange(evt);
-    }
 
     public void updateViewGame(GameViewMessage newView) {
         PropertyChangeEvent evt = new PropertyChangeEvent(
@@ -119,15 +108,13 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
                 "UPDATE GAME",
                 null,
                 newView);
-        this.viewGame.propertyChange(evt);
+        this.view.propertyChange(evt);
     }
 
     @Override
     public void receiveFromServer(MessageView message) throws RemoteException {
-        if(message instanceof LobbyViewMessage){
-            updateViewLobby((LobbyViewMessage) message);
-        }
-        else if(message instanceof GameViewMessage){
+        //TODO
+        if(message instanceof GameViewMessage){
             updateViewGame((GameViewMessage) message);
         }
     }

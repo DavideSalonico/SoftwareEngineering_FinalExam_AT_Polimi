@@ -5,12 +5,8 @@ import GC_11.network.message.GameViewMessage;
 import GC_11.network.message.LobbyViewMessage;
 import GC_11.network.message.MessageView;
 import GC_11.network.choices.Choice;
-import GC_11.view.GUI.GUIModel;
-import GC_11.view.GUI.GUIView;
 import GC_11.view.GameCLI;
-import GC_11.view.LobbyCLI;
 import GC_11.view.View;
-import javafx.application.Application;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -34,7 +30,6 @@ public class ClientSock implements PropertyChangeListener, Client {
     String graphicInterface;
     GameViewMessage gameViewMessage;
     private View view;
-    private LobbyCLI lobbyCLI=null;
     private String nickname;
 
 
@@ -65,7 +60,6 @@ public class ClientSock implements PropertyChangeListener, Client {
         this.port = port;
         this.ip = ip;
         this.graphicInterface=gInterface;
-        this.lobbyCLI=new LobbyCLI();
         this.view = new GameCLI(null,this);
 
         try {
@@ -139,7 +133,6 @@ public class ClientSock implements PropertyChangeListener, Client {
     }
 
     Thread readThread = new Thread(new Runnable() {
-
         @Override
         public void run() {
             System.out.println("Running read Thread");
@@ -155,7 +148,6 @@ public class ClientSock implements PropertyChangeListener, Client {
     });
 
     Thread readGameViewThread = new Thread(new Runnable() {
-
         @Override
         public void run() {
             System.out.println("Running readGameView Thread");
