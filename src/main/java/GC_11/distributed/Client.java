@@ -14,5 +14,5 @@ public interface Client extends Remote, Serializable {
 
     String getNickname() throws RemoteException;
 
-    int askMaxNumber();
+    int askMaxNumber() throws RemoteException;
 }

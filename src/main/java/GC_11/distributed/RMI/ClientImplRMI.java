@@ -57,10 +57,8 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
             // creare la logica della lobby GUI per il momento uso la CLI
             viewLobby = new LobbyCLI();
             viewGame = new GUIModel(this.nickname, this);
-            Application.launch(GUIView.class);
         }
         try {
-            //System.out.println(server.toString());
             server.register(this);
             this.server = server;
         } catch (RemoteException e) {

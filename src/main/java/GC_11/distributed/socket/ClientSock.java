@@ -202,6 +202,7 @@ public class ClientSock implements PropertyChangeListener, Client {
         }
     });
 
+    Client self = this;
     Thread writeThread = new Thread(new Runnable() {
         Scanner inputLine = new Scanner(System.in);
 
@@ -214,7 +215,7 @@ public class ClientSock implements PropertyChangeListener, Client {
                 if (nickname == null || nickname.isEmpty()) {
                     if (gameViewMessage.getMessage().equals("Hi! Welcome to the game! Please, insert your nickname:")) {
                         nickname = s;
-                        setView(new GameCLI(nickname, ClientSock.this));
+                        setView(new GameCLI(nickname, self));
                     }
                 }
                 sendMessageToServer(s);

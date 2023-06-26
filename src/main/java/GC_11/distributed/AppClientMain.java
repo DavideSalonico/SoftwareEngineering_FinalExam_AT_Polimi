@@ -68,5 +68,4 @@ public class AppClientMain {
         ClientSock client = new ClientSock(serverIp, 4322,choiceInterface);
         client.startClient();
     }
-
 }

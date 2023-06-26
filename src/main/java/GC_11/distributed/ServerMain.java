@@ -190,7 +190,12 @@ public class ServerMain implements PropertyChangeListener {
         boolean ok = false;
         while (!ok) {
             if (this.clientMap.get(this.controller.getLobby().getPlayers().get(0)).equals("RMI")) {
-                int max = this.serverRMI.getClients().get(0).askMaxNumber();
+                int max = 0;
+                try {
+                    max = this.serverRMI.getClients().get(0).askMaxNumber();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
                 this.controller.setMaxPlayers(max);
                 ok = true;
             } else if (this.clientMap.get(this.controller.getLobby().getPlayers().get(0)).equals("SOCKET")) {

@@ -8,6 +8,7 @@ import GC_11.network.GameViewMessage;
 import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
 import GC_11.view.ViewGame;
+import javafx.application.Application;
 
 import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
@@ -29,6 +30,7 @@ public class GUIModel extends ViewGame {
         super();
         this.nickname = nickname;
         this.client = client;
+        Application.launch(GUIView.class);
     }
 
     public GUIModel(String nickname,ClientSock client) {
@@ -60,8 +62,6 @@ public class GUIModel extends ViewGame {
                 this.client.notifyServer(choice);
             else
                 this.clientSock.notifyServer(evt);
-        } else {
-            //permettergli di scrivere in chat
         }
     }
 

@@ -24,7 +24,7 @@ public class GameCLI extends ViewGame {
 
     // private final Choice controllerChoice;
     private Client client;
-    private ClientSock clientSock;
+    //private ClientSock clientSock;
 
     // private final Outcome outcome;
 
@@ -36,12 +36,6 @@ public class GameCLI extends ViewGame {
         super();
         this.nickname = nickname;
         this.client = client;
-    }
-
-    public GameCLI(String nickname,ClientSock client) {
-        super();
-        this.nickname = nickname;
-        this.clientSock = client;
     }
 
     @Override
@@ -141,10 +135,8 @@ public class GameCLI extends ViewGame {
                 "CHOICE",
                 null,
                 choice);
-        if (this.client!=null)              //TODO: Implementare un'interfaccia client che permetta di chiamare lo stesso metodo sia socket che RMI
+        if (this.client!=null)
             this.client.notifyServer(choice);
-        else
-            this.clientSock.notifyServer(evt);
     }
 
     private void printOptions(){
