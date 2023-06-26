@@ -5,11 +5,10 @@ import GC_11.distributed.Client;
 import java.rmi.RemoteException;
 
 public class MaxNumberMessage extends MessageView{
-    public MaxNumberMessage(MaxNumberMessage maxNumberMessage) {
+    public MaxNumberMessage() {
         super();
     }
-
-    public MaxNumberMessage() {
+    public MaxNumberMessage(MaxNumberMessage maxNumberMessage) {
         super();
     }
 
