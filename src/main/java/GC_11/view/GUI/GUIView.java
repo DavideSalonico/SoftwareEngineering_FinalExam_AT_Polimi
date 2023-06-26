@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -325,7 +326,7 @@ public class GUIView extends Application {
      */
     public void removeTileFromBoard(int row, int column) {
         ImageView image = getImageViewFromGridPane(boardGridPane, row, column);
-        image.setImage(null);
+        image = null;
     }
 
 
@@ -338,13 +339,6 @@ public class GUIView extends Application {
         final String SELECTED_STYLE_CLASS = "selected-tile";
 
         imageView.setOnMouseClicked(event -> {
-            if (selectedImages.contains(imageView)) {
-                // L'immagine è già stata selezionata, rimuovila dalla lista
-                selectedImages.remove(imageView);
-                imageView.getStyleClass().remove(SELECTED_STYLE_CLASS);
-
-
-            } else {
                 //Button reset visibility
                 resetButton.setVisible(true);
 
@@ -356,16 +350,34 @@ public class GUIView extends Application {
                     System.out.println("Selected images: " + selectedImages.size());
                     if(selectedImages.size() == 2){
                         secondImage.setImage(imageView.getImage());
-                        imageView.setImage(null);
+                        // Applica l'effetto di scurimento
+                        BoxBlur boxBlur = new BoxBlur();
+                        boxBlur.setWidth(4); // Modifica la larghezza dello sfocato
+                        boxBlur.setHeight(4); // Modifica l'altezza dello sfocato
+                        boxBlur.setIterations(2); // Modifica il numero di iterazioni dello sfocato
+                        imageView.getStyleClass().clear();
+                        imageView.setEffect(boxBlur);
+                        imageView.setOnMouseClicked(null);
                     }
                     if(selectedImages.size() == 1){
                         firstImage.setImage(imageView.getImage());
-                        imageView.setImage(null);
+                        BoxBlur boxBlur = new BoxBlur();
+                        boxBlur.setWidth(4); // Modifica la larghezza dello sfocato
+                        boxBlur.setHeight(4); // Modifica l'altezza dello sfocato
+                        boxBlur.setIterations(2); // Modifica il numero di iterazioni dello sfocato
+                        imageView.getStyleClass().clear();
+                        imageView.setEffect(boxBlur);
+                        imageView.setOnMouseClicked(null);
                     }
                     if(selectedImages.size() == 3){
                         thirdImage.setImage(imageView.getImage());
-                        imageView.setImage(null);
-                    }
+                        BoxBlur boxBlur = new BoxBlur();
+                        boxBlur.setWidth(4); // Modifica la larghezza dello sfocato
+                        boxBlur.setHeight(4); // Modifica l'altezza dello sfocato
+                        boxBlur.setIterations(2); // Modifica il numero di iterazioni dello sfocato
+                        imageView.getStyleClass().clear();
+                        imageView.setEffect(boxBlur);
+                        imageView.setOnMouseClicked(null);
                 }
             }
         });
@@ -517,6 +529,7 @@ public class GUIView extends Application {
     }
 
     public void refreshBoard(Board board){
+        boardGridPane.getChildren().clear();
         for (int i = 1; i < 10; i++) {
             for (int j = 1; j < 10; j++) {
                 Tile t = board.getTile(i - 1, j - 1);
@@ -540,6 +553,7 @@ public class GUIView extends Application {
                     image.setFitHeight(34);
                     image.setFitWidth(34);
                     boardGridPane.add(image, i, j);
+
                 }
             }
         }
