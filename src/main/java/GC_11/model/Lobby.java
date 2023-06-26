@@ -25,30 +25,6 @@ public class Lobby implements PropertyChangeListener {
     public synchronized void addPlayer(String playerName) throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
         if (playersNames.size() < maxPlayers && !playersNames.contains(playerName)) {
             playersNames.add(playerName);
-            if(playersNames.size() == 1){
-                PropertyChangeEvent evt = new PropertyChangeEvent(
-                        this,
-                        "FIRST PLAYER",
-                        null,
-                        new LobbyViewMessage(this));
-                this.listener.propertyChange(evt);
-            }
-            else if(this.isFull()){
-                PropertyChangeEvent evt = new PropertyChangeEvent(
-                        this,
-                        "LAST PLAYER",
-                        null,
-                        new LobbyViewMessage(this));
-                this.listener.propertyChange(evt);
-                //TODO: FAR PARTIRE IL GIOCO
-            }else{
-                PropertyChangeEvent evt = new PropertyChangeEvent(
-                        this,
-                        "ADDED PLAYER",
-                        null,
-                        new LobbyViewMessage(this));
-                this.listener.propertyChange(evt);
-            }
         } else if (this.isFull()) {
             throw new ExceededNumberOfPlayersException();
         } else if (this.nameAlreadyTaken(playerName)) {

@@ -76,6 +76,7 @@ public class ServerClientHandler implements Runnable {
                 try {
                     reply = (Choice) inputStream.readObject();
                     try {
+
                         reply.executeOnServer(this.server.getServerMain().getController());
                         ok = true;
                     } catch (ExceededNumberOfPlayersException | NameAlreadyTakenException e) {

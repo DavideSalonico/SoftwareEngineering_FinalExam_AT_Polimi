@@ -18,6 +18,8 @@ public class AddNicknameChoice extends Choice{
     // TODO: HANDLE EXCEPTIONS
     @Override
     public void executeOnServer(Controller controller) throws RemoteException, ExceededNumberOfPlayersException, NameAlreadyTakenException {
+
         controller.getLobby().addPlayer(params.get(0));
+
     }
 }

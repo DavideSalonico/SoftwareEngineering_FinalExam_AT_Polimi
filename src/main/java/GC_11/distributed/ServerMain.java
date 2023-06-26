@@ -12,6 +12,7 @@ import GC_11.model.Player;
 import GC_11.network.message.GameViewMessage;
 import GC_11.network.message.LobbyViewMessage;
 import GC_11.network.choices.Choice;
+import GC_11.network.message.MaxNumberMessage;
 import GC_11.network.message.MessageView;
 
 import java.beans.PropertyChangeEvent;
@@ -95,6 +96,34 @@ public class ServerMain implements PropertyChangeListener {
             throw new RuntimeException(e); //TODO: handle exception
         }
         System.out.println("ADDED CONNECTION: " + clientNickname); //TODO fare un metodo getConnectionType
+
+
+        if(clientMap.size() == 1){
+            // Ask the first player to choose the max number of players
+            try {
+                server.sendMessage(new MaxNumberMessage(), clientNickname);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else if(clientMap.size() > 1 && clientMap.size() == this.controller.getLobby().getMaxPlayers()){
+            // Start the game
+            this.getController().startGame();
+            notifyClients(new GameViewMessage(this.controller.getGame(), null));
+        }else{
+            // Notify all clients that a new player has joined the lobby
+            notifyClients(new LobbyViewMessage(this.controller.getLobby()));
+        }
+
+
+
+
+
+
+
+
+
+        this.notifyClients(new LobbyViewMessage(this.controller.getLobby()));
     }
 
 
