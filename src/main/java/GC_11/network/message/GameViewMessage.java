@@ -204,7 +204,7 @@ public class GameViewMessage extends MessageView {
     public MessageView sanitize(String key) {
         GameViewMessage copy = new GameViewMessage(this);
 
-        for (Player p : this.players) {
+        for (Player p : copy.getPlayers()) {
             if (!p.getNickname().equals(key)){
                 p.setPersonalGoal(null);
                 for(Map.Entry<Set<String>, List<Message>> entry : copy.getPrivateChats().entrySet()){
