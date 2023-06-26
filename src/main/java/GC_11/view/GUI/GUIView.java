@@ -125,6 +125,9 @@ public class GUIView extends Application {
     @FXML
     public void initialize() {
 
+        //Column Selector invisible
+        columnSelector.setDisable(true);
+
         //Button Reset invisible
         resetButton.setVisible(false);
 
@@ -392,6 +395,7 @@ public class GUIView extends Application {
             Button button = (Button) event.getSource();
             columnSelected = columnSelector.getButtons().indexOf(button) + 1;
             System.out.println("PICK_COLUMN: " + columnSelected);
+            columnSelector.setDisable(true);
             return "PICK_COLUMN: " + columnSelected;
         }else {
             setError("Select and order all the tiles first !");
@@ -626,6 +630,7 @@ public class GUIView extends Application {
      * Method bound to the button "Confirm" that will send the request to the server after the user has selected the column where to place the tile
      */
     public String confirmTilesOrder(){
+        columnSelector.setDisable(false);
         System.out.println(chooseOrder());
         return chooseOrder();
     }
@@ -707,6 +712,7 @@ public class GUIView extends Application {
         secondTile.setText("");
         thirdTile.setText("");
         setError("");
+        columnSelector.setDisable(true);
 
         refreshBoard(model.getBoard());
     }
