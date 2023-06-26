@@ -85,10 +85,13 @@ public class Controller implements PropertyChangeListener {
     public void update(Choice choice) throws RemoteException {
         this.choice = choice;
 
-        if (!checkTurn() && !choice.getType().equals(ChoiceType.SEND_MESSAGE)) {
-            this.model.triggerException(new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer().getNickname() + "'s turn"));
-            return;
+        if(model != null){
+            if (!checkTurn() && !choice.getType().equals(ChoiceType.SEND_MESSAGE)) {
+                this.model.triggerException(new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer().getNickname() + "'s turn"));
+                return;
+            }
         }
+
 
         try {
             checkExpectedMove();
