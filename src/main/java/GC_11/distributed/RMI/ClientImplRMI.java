@@ -47,20 +47,21 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
      */
 
     public ClientImplRMI(ServerRMI serverRMI, String nickname, String choiceInterface) throws RemoteException {
-        this.nickname = nickname;
-        System.out.println("HELLO " + nickname + "!!!\n");
+        //this.nickname = nickname;
+        //System.out.println("HELLO " + nickname + "!!!\n");
+        this.serverRMI=serverRMI;
         if(Objects.equals(choiceInterface, "CLI")) {
             this.view = new GameCLI(this.nickname, this);
-            Application.launch(GUIView.class);
         }
         else{
             // creare la logica della lobby GUI per il momento uso la CLI
             this.view = new GUIModel(this.nickname, this);
+            Application.launch(GUIView.class);
         }
     }
 
     public String getNickname() {
-        return this.nickname;
+        return this.getView().getNickname();
     }
 
     public int askMaxNumber() {
@@ -113,10 +114,7 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
 
     @Override
     public void receiveFromServer(MessageView message) throws RemoteException {
-        //TODO
-        if(message instanceof GameViewMessage){
-            updateViewGame((GameViewMessage) message);
-        }
+        message.executeOnClient(this);
     }
 
     public void setServer(ServerRMI serverRMI) {

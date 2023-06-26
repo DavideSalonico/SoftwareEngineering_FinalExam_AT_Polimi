@@ -55,15 +55,11 @@ public class AppClientMain {
     }
 
     private static void clientRMISetup(String choiceInterface, String serverIp)throws RemoteException, NotBoundException{
-        Scanner inputLine = new Scanner(System.in);
-        System.out.println("what's your nickname?");
-        String nickname = inputLine.nextLine();
         Registry registry = LocateRegistry.getRegistry(serverIp,1099);
         ServerRMI serverRMI = (ServerRMI) registry.lookup("server");
-        ClientImplRMI client = new ClientImplRMI(serverRMI, nickname, choiceInterface);
+        ClientImplRMI client = new ClientImplRMI(serverRMI, null, choiceInterface);
         try {
             serverRMI.register(client);
-            client.setServer(serverRMI);
         } catch (RemoteException e) {
             System.err.println("error in the registration: " + e.getCause() + "\n" + e.getMessage() + "\n" + e.getStackTrace() + "\n\n\n" + e.toString());
         }

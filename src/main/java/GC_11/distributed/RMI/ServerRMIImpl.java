@@ -5,11 +5,9 @@ import GC_11.distributed.Client;
 import GC_11.distributed.ServerMain;
 import GC_11.distributed.ServerRMI;
 import GC_11.model.Game;
-import GC_11.network.message.GameViewMessage;
+import GC_11.network.message.*;
 import GC_11.model.Lobby;
-import GC_11.network.message.LobbyViewMessage;
 import GC_11.network.choices.Choice;
-import GC_11.network.message.MessageView;
 
 import java.beans.PropertyChangeEvent;
 import java.io.Serializable;
@@ -79,8 +77,11 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
 
     @Override
     public synchronized void register(Client client) throws RemoteException {
+
+        client.receiveFromServer(new NicknameMessage());
         clients.add(client);
         serverMain.addConnection(client.getNickname(), this);
+
     }
 
     @Override
@@ -168,12 +169,12 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
     }
 
     @Override
-    public void receiveMessage(Choice choice) {
+    public void receiveMessage(Choice choice) throws RemoteException{
         this.serverMain.makeAMove(choice);
     }
 
     @Override
-    public void sendMessage(MessageView msg, String nickname){
+    public void sendMessage(MessageView msg, String nickname) throws RemoteException{
         try {
             this.notifyClient(nickname,msg);
         } catch (RemoteException e) {
@@ -184,7 +185,7 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
 
     @Override
     public void askMaxNumber() throws RemoteException { // TODO
-
+        this.clients.get(0).receiveFromServer(new MaxNumberMessage());
     }
 
     @Override
