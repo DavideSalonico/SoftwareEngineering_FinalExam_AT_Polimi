@@ -253,7 +253,7 @@ public class ServerMain implements PropertyChangeListener {
     }
 
     public Controller getController(){
-        return this.getController();
+        return this.controller;
     }
 
     public Map getClientsMap(){
