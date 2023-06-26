@@ -87,6 +87,7 @@ public class GameCLI extends View {
         String nickname = s.nextLine();
         try {
             this.client.notifyServer(ChoiceFactory.createChoice(null, "ADD_PLAYER " + nickname));
+            this.nickname = nickname;
         } catch (RemoteException | IllegalMoveException e) {
             e.printStackTrace();
         }
