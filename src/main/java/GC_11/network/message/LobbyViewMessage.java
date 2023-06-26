@@ -31,7 +31,7 @@ public class LobbyViewMessage extends MessageView {
     }
 
     @Override
-    void executeOnClient(Client client) {
+    public void executeOnClient(Client client) {
         //TODO
     }
 

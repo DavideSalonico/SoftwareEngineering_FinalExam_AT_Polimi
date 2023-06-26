@@ -191,7 +191,7 @@ public class GameViewMessage extends MessageView {
     }
 
     @Override
-    void executeOnClient(Client client) {
+    public void executeOnClient(Client client) {
         //TODO
     }
 

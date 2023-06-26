@@ -129,40 +129,7 @@ public class ClientSock implements PropertyChangeListener, Client {
     public void receiveGameViewFromServer() {
         try {
             MessageView msg = (MessageView) in.readObject();
-            GameViewMessage message = null;
-            LobbyViewMessage lobbyMessage = null;
-            if (msg instanceof GameViewMessage)
-                message = (GameViewMessage) msg;
-            else if (msg instanceof LobbyViewMessage)
-            {
-                lobbyMessage = (LobbyViewMessage) msg;
-                this.lobbyCLI.propertyChange(new PropertyChangeEvent(this, "lobbyViewMessage", null, lobbyMessage));
-            }
-            if (message != null) {
-                this.gameViewMessage = message;
-                if (message.getMessage() != null) {
-                    System.out.println(message.getMessage());
-                    if (message.getMessage().startsWith("Hi!")) {
-                        Scanner scanner = new Scanner(System.in);
-                        String inputNickname = scanner.nextLine();
-                        this.nickname = inputNickname;
-                       if(this.graphicInterface.equals("CLI"))
-                            this.view = new GameCLI(nickname, this);
-                        else
-                        {
-                            this.view = new GUIModel(this.nickname,this);
-                            Application.launch(GUIView.class);
-                        }
-                        sendMessageToServer(inputNickname);
-                    } else if (message.getMessage().startsWith("Inserire")) {
-                        Scanner scanner = new Scanner(System.in);
-                        String maxPlayer = scanner.nextLine();
-                        sendMessageToServer(maxPlayer);
-                    }
-                } else {
-                    this.view.propertyChange(new PropertyChangeEvent(this, "gameViewMessage", null, message));
-                }
-            }
+            msg.executeOnClient(this);
         } catch (IOException e) {
             System.out.println("Error during receiving gameViewMessage from server. Check server connection");
         } catch (ClassNotFoundException e) {
