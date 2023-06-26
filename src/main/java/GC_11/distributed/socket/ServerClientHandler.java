@@ -60,8 +60,6 @@ public class ServerClientHandler implements Runnable {
         }
         this.connected = true;
         connectionSetup();
-        if (connected)
-            readThread.start();
 
     }
 
@@ -256,6 +254,11 @@ public class ServerClientHandler implements Runnable {
 
     public void askMaxNumber() {
         sendMessageViewToClient(new MaxNumberMessage());
+        try {
+            receiveMessageFromClient();
+        } catch (IOException | IllegalMoveException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 

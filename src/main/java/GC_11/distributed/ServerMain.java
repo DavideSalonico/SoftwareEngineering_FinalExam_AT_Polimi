@@ -88,20 +88,14 @@ public class ServerMain implements PropertyChangeListener {
      */
     public synchronized void addConnection(String clientNickname, Server server) {
         clientMap.put(clientNickname, server);
-        try {
-            this.controller.getLobby().addPlayer(clientNickname);
-        } catch (ExceededNumberOfPlayersException e) {
-            throw new RuntimeException(e); //TODO: handle exception
-        } catch (NameAlreadyTakenException e) {
-            throw new RuntimeException(e); //TODO: handle exception
-        }
+
         System.out.println("ADDED CONNECTION: " + clientNickname); //TODO fare un metodo getConnectionType
 
 
         if(clientMap.size() == 1){
             // Ask the first player to choose the max number of players
             try {
-                server.sendMessage(new MaxNumberMessage(), clientNickname);
+                server.askMaxNumber();
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -114,15 +108,6 @@ public class ServerMain implements PropertyChangeListener {
             // Notify all clients that a new player has joined the lobby
             notifyClients(new LobbyViewMessage(this.controller.getLobby()));
         }
-
-
-
-
-
-
-
-
-
         this.notifyClients(new LobbyViewMessage(this.controller.getLobby()));
     }
 

@@ -13,6 +13,7 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -180,6 +181,11 @@ public class ServerSock implements PropertyChangeListener, Server {
                 sch.sendMessageViewToClient(msg);
             }
         }
+    }
+
+    @Override
+    public void askMaxNumber() throws RemoteException {
+        this.serverClientHandlerList.get(0).askMaxNumber();
     }
 
     @Override

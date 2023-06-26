@@ -10,6 +10,8 @@ public interface Server {
     
     void sendMessage(MessageView msg, String nickname) throws RemoteException;
 
+    void askMaxNumber() throws RemoteException;
+
     void notifyDisconnectionToClients() throws RemoteException;
 
     void sendHeartbeat() throws RemoteException;

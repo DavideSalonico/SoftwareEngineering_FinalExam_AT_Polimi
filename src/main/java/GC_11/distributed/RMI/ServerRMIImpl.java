@@ -183,6 +183,11 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
     }
 
     @Override
+    public void askMaxNumber() throws RemoteException { // TODO
+
+    }
+
+    @Override
     public void notifyDisconnectionToClients() {
 
     }
