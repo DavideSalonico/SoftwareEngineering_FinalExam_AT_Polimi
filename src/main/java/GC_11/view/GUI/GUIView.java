@@ -53,6 +53,7 @@ public class GUIView extends Application {
     public GridPane playerShelf1;
     public GridPane playerShelf2;
     public ImageView deletableShelf;
+    public ImageView deletableShelf2;
     public GridPane playerShelf3;
     public Text player1Name;
     public Text player2Name;
@@ -123,6 +124,79 @@ public class GUIView extends Application {
      * Initializes the GUIView automatically when the game starts, all the basic images are loaded and the game is created using
      * the instance of the GameView that we receive from the server.
      */
+
+    public void init(GameViewMessage gameViewMessage) {
+        // Load all the images of the tiles
+        loadTilesImages();
+
+        // Put first Player's nickname into the chair on GUI
+        Tooltip firstPlayer = new Tooltip("First PLAYER : " + gameViewMessage.getPlayer(gameViewMessage.getCurrentPlayer()));
+        Tooltip.install(firstPlayerToken, firstPlayer);
+
+        //Get common goal cards from the model
+        String pathCommonI = "src/resources/GraphicalResources/common goal cards/" + gameViewMessage.getCommonGoalCard(0).getId() + ".jpg";
+        String pathCommonII = "src/resources/GraphicalResources/common goal cards/" + gameViewMessage.getCommonGoalCard(1).getId() + ".jpg";
+        Image commonI = new Image("file:" + pathCommonI);
+        Image commonII = new Image("file:" + pathCommonII);
+        // Set common goal cards images on existing javafx objects
+        ICommonGoalCard.setImage(commonI);
+        IICommonGoalCard.setImage(commonII);
+        ICommonGoalCard.setDisable(false);
+        IICommonGoalCard.setDisable(false);
+        //Get the Common Goal text and show only when user go with the mouse over the card
+        textCommonI = new Tooltip(model.getCommonGoal(0).getText());
+        textCommonII = new Tooltip(model.getCommonGoal(1).getText());
+        Tooltip.install(ICommonGoalCard, textCommonI);
+        Tooltip.install(IICommonGoalCard, textCommonII);
+        ICommonGoalCard.getStyleClass().add("selected-image");
+        IICommonGoalCard.getStyleClass().add("selected-image");
+
+        //Initialize the other players and the main player (client)
+        for (int i = 0; i < gameViewMessage.getPlayers().size(); i++) {
+            if (!gameViewMessage.getPlayers().get(i).getNickname().equals(clientNickName)) {
+                others.add(gameViewMessage.getPlayers().get(i));
+            } else {
+                clientPoints.setText("YOUR POINTS : " + gameViewMessage.getPlayers().get(i).getPoints());
+
+                // OGNI TANTO MI TORNA PERSONAL GOAL NULL, CONTROLLARE!!!
+                personalGoal.setImage(new Image("file:src/resources/GraphicalResources/personal goal cards/Personal_Goals" + gameViewMessage.getPlayers().get(i).getPersonalGoal().getId() + ".png"));
+            }
+        }
+
+        // Versione con 4 giocatori
+        if (others.size() == 3) {
+            otherPlayers.add(new PlayerView(player1Name, player1Points, playerShelf1));
+            otherPlayers.add(new PlayerView(player2Name, player2Points, playerShelf2));
+            otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
+        }
+        // Versione con 3 giocatori
+        else if (others.size() == 2) {
+            otherPlayers.add(new PlayerView(player1Name, player1Points, playerShelf1));
+            otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
+
+            clearCellContent(mainGrid,1,2);
+            clearCellContent(mainGrid,2,2);
+
+
+        } else if (others.size() == 1) {
+            otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
+
+            //remove the shelf of the player in the center (statically placed by the FXML)
+            clearCellContent(mainGrid,1,2);
+            clearCellContent(mainGrid,2,2);
+
+            clearCellContent(mainGrid,1,1);
+            clearCellContent(mainGrid,2,1);
+
+        }
+
+        // Initialize the other players with the data received from the server binding the GUI elements to each player's data
+        for (int i = 0; i < others.size(); i++) {
+            otherPlayers.get(i).initialize(others.get(i));
+        }
+
+
+    }
     @FXML
     public void initialize() {
 
@@ -149,25 +223,22 @@ public class GUIView extends Application {
         // Load all the images of the tiles
         loadTilesImages();
 
-        // Save the desired dimensions of the window (specified in the FXML file) in order to resize the window when the game starts
-        desiredWidth = root.getPrefWidth();
-        desiredHeight = root.getPrefHeight();
 
         // Mi creo temporaneamente un modello di gioco per inizializzare bene la view
         List<String> tmpPlayerNames = new ArrayList<String>();
         tmpPlayerNames.add("Pippo");
         tmpPlayerNames.add("Pluto");
-        tmpPlayerNames.add("Paperino");
-        tmpPlayerNames.add("Giuseppe");
+        //tmpPlayerNames.add("Paperino");
+        //tmpPlayerNames.add("Giuseppe");
         model = new Game(tmpPlayerNames, null);
 
 
 
-        // Put first Player's nickname into the chair on GUI
+        // Put first Player's nickname into the chair on GUI    RIMUOVI
         Tooltip firstPlayer = new Tooltip("First PLAYER : " + model.getCurrentPlayer().getNickname());
         Tooltip.install(firstPlayerToken, firstPlayer);
 
-        //Get common goal cards from the model
+        //Get common goal cards from the model    RIMUOVI
         String pathCommonI = "src/resources/GraphicalResources/common goal cards/" + model.getCommonGoal(0).getId() + ".jpg";
         String pathCommonII = "src/resources/GraphicalResources/common goal cards/" + model.getCommonGoal(1).getId() + ".jpg";
         Image commonI = new Image("file:" + pathCommonI);
@@ -186,6 +257,7 @@ public class GUIView extends Application {
         IICommonGoalCard.getStyleClass().add("selected-image");
 
 
+        // RIMUOVI
         for (int i = 0; i < model.getPlayers().size(); i++) {
             if (!model.getPlayers().get(i).getNickname().equals(clientNickName)) {
                 others.add(model.getPlayers().get(i));
@@ -197,7 +269,7 @@ public class GUIView extends Application {
             }
         }
 
-        // Versione con 4 giocatori
+        // Versione con 4 giocatori    RIMUOVI TUTTO
         if (others.size() == 3) {
             otherPlayers.add(new PlayerView(player1Name, player1Points, playerShelf1));
             otherPlayers.add(new PlayerView(player2Name, player2Points, playerShelf2));
@@ -208,32 +280,32 @@ public class GUIView extends Application {
             otherPlayers.add(new PlayerView(player1Name, player1Points, playerShelf1));
             otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
 
-            //remove the shelf of the player in the center (statically placed by the FXML)
-            deletableShelf.setImage(null);
-            player2Name.setText("");
-            player2Points.setText("");
+            clearCellContent(mainGrid,1,2);
+            clearCellContent(mainGrid,2,2);
 
-            // Questa ricerca dinamica delle celle da svuotare non funziona correttamente, cancello i riferimenti manulamente
-            /*
-            Node cell = getNodeByRowColumnIndex(1, 2, mainGrid);
-            if (cell != null && cell instanceof Pane) {
-                ((Pane) cell).getChildren().clear();
-            }
-            //rimuovo i riferimenti al nome e al punteggio
-            cell = getNodeByRowColumnIndex(2, 2, mainGrid);
-            if (cell != null && cell instanceof Pane) {
-                ((Pane) cell).getChildren().clear();
-            }
-            */
+
+        } else if (others.size() == 1) {
+            otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
+
+            //remove the shelf of the player in the center (statically placed by the FXML)
+            clearCellContent(mainGrid,1,2);
+            clearCellContent(mainGrid,2,2);
+
+            clearCellContent(mainGrid,1,1);
+            clearCellContent(mainGrid,2,1);
 
         }
 
+
+
+
+        //RIMUOVI
         // Initialize the other players with the data received from the server binding the GUI elements to each player's data
         for (int i = 0; i < others.size(); i++) {
             otherPlayers.get(i).initialize(others.get(i));
         }
 
-
+        // RIMUOVI, serviva solo per provare
         // TEST : Fill the shelf with the tiles randomly DA (RIMUOVERE)
         for (int i = 1; i < 6; i++) {
             for (int j = 1; j < 7; j++) {
@@ -279,26 +351,27 @@ public class GUIView extends Application {
 
     /**
      * Method that returns the node from the GridPane given the row and column index
-     * @param column column
+     * @param row line of the node
+     * @param col column of the node
      * @param gridPane reference to GUI component
      * @ return Node reference, null if the node is not found
      */
-    private Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
-        Node result = null;
-        ObservableList<Node> children = gridPane.getChildren();
+    private void clearCellContent(GridPane gridPane, int row, int col) {
+        List<Node> nodesToRemove = new ArrayList<>();
 
-        for (Node node : children) {
+        for (Node node : gridPane.getChildren()) {
             Integer rowIndex = GridPane.getRowIndex(node);
-            Integer columnIndex = GridPane.getColumnIndex(node);
+            Integer colIndex = GridPane.getColumnIndex(node);
 
-            if (rowIndex != null && columnIndex != null && rowIndex == row && columnIndex == column) {
-                result = node;
-                break;
+            if (rowIndex != null && colIndex != null && rowIndex.intValue() == row && colIndex.intValue() == col) {
+                nodesToRemove.add(node);
             }
         }
 
-        return result;
+        gridPane.getChildren().removeAll(nodesToRemove);
     }
+
+
 
 
     /**
