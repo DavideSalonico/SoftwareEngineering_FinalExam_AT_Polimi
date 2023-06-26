@@ -132,21 +132,6 @@ public class ClientSock implements PropertyChangeListener, Client {
         }
     }
 
-    Thread readThread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            System.out.println("Running read Thread");
-            boolean connectionAvailable = true;
-            while (connectionAvailable) {
-                try {
-                    receiveMessageFromServer();
-                } catch (IOException | ClassNotFoundException e) {
-                    connectionAvailable = false;
-                }
-            }
-        }
-    });
-
     Thread readGameViewThread = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -178,8 +163,7 @@ public class ClientSock implements PropertyChangeListener, Client {
     public void startClient() {
         System.out.println("ClientSocket running");
         readGameViewThread.start();
-        //readThread.start();
-        //writeThread.start();
+
 
     }
 

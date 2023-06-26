@@ -92,6 +92,7 @@ public class ServerMain implements PropertyChangeListener {
             // Ask the first player to choose the max number of players
             try {
                 server.askMaxNumber();
+                notifyClients(new LobbyViewMessage(this.controller.getLobby()));
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -104,7 +105,7 @@ public class ServerMain implements PropertyChangeListener {
             // Notify all clients that a new player has joined the lobby
             notifyClients(new LobbyViewMessage(this.controller.getLobby()));
         }
-        this.notifyClients(new LobbyViewMessage(this.controller.getLobby()));
+
     }
 
 

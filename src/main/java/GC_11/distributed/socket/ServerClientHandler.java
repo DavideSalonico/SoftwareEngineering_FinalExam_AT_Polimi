@@ -226,7 +226,7 @@ public class ServerClientHandler implements Runnable {
         } catch (IOException e) {
             System.err.println("Unable to close socket");
         }
-        this.readThread.interrupt();
+        //this.readThread.interrupt();
         //this.server.notifyDisconnectionAllSockets(this.clientSocket, this);
         this.server.getServerMain().removeConnection(this.nickname);
 

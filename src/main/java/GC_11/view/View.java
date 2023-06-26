@@ -30,20 +30,6 @@ public abstract class View implements PropertyChangeListener {
     public abstract String getNickname();
     public abstract void setModelView(GameViewMessage modelView);
 
-    /*public void propertyChange(PropertyChangeEvent evt) {
-        this.modelView = (GameViewMessage) evt.getNewValue();
-        if( !(evt.getPropertyName().equals("CHANGED_MAIN_CHAT") || evt.getPropertyName().equals("CHANGED_PRIVATE_CHAT"))
-                || !this.modelView.getCurrentPlayer().equals(this.nickname)) {
-            try {
-                run();
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            } catch (ColumnIndexOutOfBoundsException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-     */
     public abstract void propertyChange(PropertyChangeEvent evt);
     public void setListener(PropertyChangeListener listener) {
         this.listener = listener;

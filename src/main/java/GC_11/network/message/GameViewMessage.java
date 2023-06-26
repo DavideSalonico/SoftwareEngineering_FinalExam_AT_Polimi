@@ -7,6 +7,7 @@ import GC_11.model.common.CommonGoalCard;
 import GC_11.util.CircularList;
 
 import java.beans.PropertyChangeEvent;
+import java.rmi.RemoteException;
 import java.util.*;
 
 /**
@@ -192,7 +193,11 @@ public class GameViewMessage extends MessageView {
 
     @Override
     public void executeOnClient(Client client) {
-        //TODO
+        try {
+            client.getView().setModelView(this);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
