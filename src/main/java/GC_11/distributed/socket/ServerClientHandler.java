@@ -60,6 +60,9 @@ public class ServerClientHandler implements Runnable {
         }
         this.connected = true;
         connectionSetup();
+        if(connected){
+            readThread.start();
+        }
 
     }
 
@@ -103,8 +106,7 @@ public class ServerClientHandler implements Runnable {
             System.out.println("Thread read started");
             while (connected)
                 try {
-                    receiveMessageFromClient();
-                    //receiveChoiceFromClient();
+                    receiveChoiceFromClient();
                 } catch (IOException | ClassNotFoundException | IllegalMoveException e) {
 
                     closeConnection();
@@ -147,7 +149,7 @@ public class ServerClientHandler implements Runnable {
      * @throws ClassNotFoundException If the class of the serialized object cannot be found.
      */
 
-    public void receiveMessageFromClient() throws IOException, ClassNotFoundException, IllegalMoveException {
+    public void receiveChoiceFromClient() throws IOException, ClassNotFoundException, IllegalMoveException {
         Choice clientChoice;
         if (connected) {
             try {
@@ -255,7 +257,7 @@ public class ServerClientHandler implements Runnable {
     public void askMaxNumber() {
         sendMessageViewToClient(new MaxNumberMessage());
         try {
-            receiveMessageFromClient();
+            receiveChoiceFromClient();
         } catch (IOException | IllegalMoveException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
