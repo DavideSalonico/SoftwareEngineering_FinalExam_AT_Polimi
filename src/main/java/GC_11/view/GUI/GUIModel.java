@@ -8,14 +8,14 @@ import GC_11.network.message.GameViewMessage;
 import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
 import GC_11.network.message.LobbyViewMessage;
-import GC_11.view.ViewGame;
+import GC_11.view.View;
 import javafx.application.Application;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 
-public class GUIModel extends ViewGame {
+public class GUIModel extends View {
 
     private Choice playerChoice;
     private Client client;
@@ -46,8 +46,8 @@ public class GUIModel extends ViewGame {
     }
 
     @Override
-    public void run() throws RemoteException, ColumnIndexOutOfBoundsException {
-        show();
+    public void run() {
+        /*show();
         if (this.modelView.getCurrentPlayer().equals(this.nickname)) {
             Choice choice = getPlayerChoice();
             System.out.println("scelta fatta");
@@ -61,15 +61,21 @@ public class GUIModel extends ViewGame {
             else
                 this.clientSock.notifyServer(evt);
         }
+
+         */
     }
 
     @Override
-    public void show() throws ColumnIndexOutOfBoundsException {
+    public void show() {
         if (this.modelView.isError()) {
             view.setError(this.modelView.getExceptionMessage());
         }else{
             view.setError("");
-            this.view.updatePlayer(modelView.getBoard(),modelView.getPlayer(modelView.getCurrentPlayer()));
+            try {
+                this.view.updatePlayer(modelView.getBoard(),modelView.getPlayer(modelView.getCurrentPlayer()));
+            } catch (ColumnIndexOutOfBoundsException e) {
+                throw new RuntimeException(e); //TODO handle this exception
+            }
         }
     }
 

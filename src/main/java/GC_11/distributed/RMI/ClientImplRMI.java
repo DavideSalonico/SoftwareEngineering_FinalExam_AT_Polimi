@@ -20,7 +20,7 @@ import java.util.Scanner;
 
 public class ClientImplRMI extends UnicastRemoteObject implements Client, Serializable {
 
-    private transient ViewGame view;
+    private transient View view;
     private String nickname;
     private ServerRMI serverRMI;
 

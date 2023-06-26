@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
 
-public class GameCLI extends ViewGame {
+public class GameCLI extends View {
 
     private Client client;
 
@@ -39,14 +39,18 @@ public class GameCLI extends ViewGame {
     }
 
     @Override
-    public synchronized void run() throws RemoteException {
+    public synchronized void run(){
         Choice choice;
          show();
             System.out.println("\n\nIT IS THE TURN OF: " + this.modelView.getCurrentPlayer());
             if (this.modelView.getCurrentPlayer().equals(this.nickname)) {
                 choice = getPlayerChoice();
                 System.out.println("scelta fatta");
-                this.sendChoice(choice);
+                try {
+                    this.sendChoice(choice);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e); //TODO: handle this exception
+                }
             }
             else {
                     this.printChat();
@@ -59,7 +63,11 @@ public class GameCLI extends ViewGame {
                                 input = ChoiceType.askParams("SEND_MESSAGE");
                                 choice = ChoiceFactory.createChoice(this.modelView.getPlayer(this.nickname), input);
                                 System.out.println();
-                                this.sendChoice(choice);
+                                try {
+                                    this.sendChoice(choice);
+                                } catch (RemoteException e) {
+                                    throw new RuntimeException(e); //TODO: handle this exception
+                                }
                                 break;
                             } catch (IllegalMoveException e) {
                                 System.err.println("Invalid type: " + input + " Please retake." + e.getMessage());
@@ -116,6 +124,11 @@ public class GameCLI extends ViewGame {
         } else {
             System.out.println(lobbyViewMessage.getPlayersNames().size() + ": " + lobbyViewMessage.getPlayersNames().get(lobbyViewMessage.getPlayersNames().size() - 1));
         }
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+
     }
 
 
