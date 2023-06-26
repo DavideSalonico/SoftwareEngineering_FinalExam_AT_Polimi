@@ -11,7 +11,9 @@ public abstract class ViewGame extends View {
 
     protected String nickname;
     protected boolean inGame = true;
+    protected boolean alreadyReading = false;
 
+    protected Object lock = new Object();
     protected GameViewMessage modelView;
 
     public abstract Choice getPlayerChoice();
@@ -23,16 +25,22 @@ public abstract class ViewGame extends View {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         this.modelView = (GameViewMessage) evt.getNewValue();
-        if( !(evt.getPropertyName().equals("CHANGED_MAIN_CHAT") || evt.getPropertyName().equals("CHANGED_PRIVATE_CHAT"))
-        || !this.modelView.getCurrentPlayer().equals(this.nickname)) {
+        synchronized (lock) {
             try {
-                run();
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                show();
             } catch (ColumnIndexOutOfBoundsException e) {
-                throw new RuntimeException(e);
+                System.err.println(e.getMessage());
+            }
+            if (!alreadyReading) {
+                alreadyReading = true;
+                new Thread(this::getPlayerChoice).start();
             }
         }
     }
+
+    /*
+            if( !(evt.getPropertyName().equals("CHANGED_MAIN_CHAT") || evt.getPropertyName().equals("CHANGED_PRIVATE_CHAT"))
+        || !this.modelView.getCurrentPlayer().equals(this.nickname))
+     */
 
 }

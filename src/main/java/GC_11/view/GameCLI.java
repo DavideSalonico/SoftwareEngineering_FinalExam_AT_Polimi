@@ -113,27 +113,44 @@ public class GameCLI extends ViewGame {
                     p.getPersonalGoal().print();
                 }
             }
+            System.out.println("\n\nIT IS THE TURN OF: " + this.modelView.getCurrentPlayer());
+            if (this.modelView.getCurrentPlayer().equals(this.nickname)) {
+                this.printOptions();
+            }else
+                System.out.println("\nMake a move: [SHOW_CHAT,SEND_MESSAGE]");
         }
     }
 
     public Choice getPlayerChoice() {
 
         Scanner s = new Scanner(System.in);
-        this.printOptions();
-        while (true) {
+        Boolean flag = true;
+        Choice choice = null;
+        while (flag) {
             String input = s.nextLine();
-            input = ChoiceType.askParams(input);
-            try {
-                if(input.equals("SHOW_CHAT")) {
-                    this.printChat();
-                    this.printOptions();
+            synchronized (lock) {
+                input = ChoiceType.askParams(input);
+                try {
+                    if (input.equals("SHOW_CHAT")) {
+                        this.printChat();
+                        System.out.println("YOU CAN MAKE ANOTHER MOVE");
+                    } else {
+                        choice = ChoiceFactory.createChoice(this.modelView.getPlayer(this.nickname), input);
+                        flag = false;
+                    }
+                } catch (IllegalMoveException e) {
+                    System.err.println("Invalid type: " + input + " Please retake.");
                 }
-                else
-                    return ChoiceFactory.createChoice(this.modelView.getPlayer(this.nickname), input);
-            } catch (IllegalMoveException e) {
-                System.err.println("Invalid type: " + input + " Please retake.");
             }
         }
+        alreadyReading= false;
+        System.out.println("scelta fatta");
+        try {
+            this.sendChoice(choice);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+        return choice;
     }
 
     public void sendChoice(Choice choice) throws RemoteException {
@@ -168,8 +185,9 @@ public class GameCLI extends ViewGame {
             for(Message message : this.modelView.getFilteredPvtChats().get(nickname)) {
                 System.out.println(message.getSender() + ": " + message.getText());
             }
-            System.out.println();
         }
+        System.out.println();
     }
+
 }
 
