@@ -12,11 +12,16 @@ import java.util.List;
 public class PersonalGoalCard implements Serializable {
 
     private int id;
-    private List<Triplet> goalList = new ArrayList<Triplet>();
+    private List<Triplet> goalList;
 
     public PersonalGoalCard(int id, List<Triplet> goalList) {
         this.id = id;
-        this.goalList = goalList;
+        this.goalList = new ArrayList<Triplet>(goalList);
+    }
+
+    public PersonalGoalCard(PersonalGoalCard p){
+        this.id = p.getId();
+        this.goalList = new ArrayList<Triplet>(p.getGoalList());
     }
 
     public PersonalGoalCard() {
