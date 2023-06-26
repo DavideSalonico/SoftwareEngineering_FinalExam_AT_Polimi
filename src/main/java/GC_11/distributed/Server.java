@@ -6,11 +6,11 @@ import GC_11.network.message.MessageView;
 import java.rmi.RemoteException;
 
 public interface Server {
-    void receiveMessage(Choice choice);
+    void receiveMessage(Choice choice) throws RemoteException;
     
-    void sendMessage(MessageView msg, String nickname);
+    void sendMessage(MessageView msg, String nickname) throws RemoteException;
 
-    void notifyDisconnectionToClients();
+    void notifyDisconnectionToClients() throws RemoteException;
 
-    void sendHeartbeat();
+    void sendHeartbeat() throws RemoteException;
 }

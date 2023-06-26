@@ -17,7 +17,7 @@ public interface Client extends Remote, Serializable {
 
     int askMaxNumber() throws RemoteException;
 
-    View getView();
+    View getView() throws RemoteException;
 
-    void notifyDisconnection();
+    void notifyDisconnection() throws RemoteException;
 }

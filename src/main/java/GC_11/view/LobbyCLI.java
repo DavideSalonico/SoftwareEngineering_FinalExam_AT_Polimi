@@ -28,5 +28,15 @@ public class LobbyCLI extends ViewLobby {
         show();
     }
 
+    @Override
+    public void askNickname() {
+        //TODO
+    }
+
+    @Override
+    public void askMaxNumber() {
+        //TODO
+    }
+
 
 }

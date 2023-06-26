@@ -74,6 +74,16 @@ public class GUIModel extends ViewGame {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        //TODO
+    }
+
+    @Override
+    public void askNickname() {
+        //TODO
+    }
+
+    @Override
+    public void askMaxNumber() {
 
     }
 

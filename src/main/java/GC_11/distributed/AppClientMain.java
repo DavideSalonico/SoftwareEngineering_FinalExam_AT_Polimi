@@ -59,7 +59,7 @@ public class AppClientMain {
         System.out.println("what's your nickname?");
         String nickname = inputLine.nextLine();
         Registry registry = LocateRegistry.getRegistry(serverIp,1099);
-        ServerRMI serverRMI = (ServerRMI) registry.lookup("serverRMI");
+        ServerRMI serverRMI = (ServerRMI) registry.lookup("server");
         ClientImplRMI client = new ClientImplRMI(serverRMI, nickname, choiceInterface);
     }
 

@@ -88,14 +88,18 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
     }
 
     @Override
-    public void notifyDisconnection() {
+    public void notifyDisconnection() throws RemoteException{
         //TODO
     }
 
     @Override
     public void notifyServer(Choice choice) throws RemoteException {
             new Thread(() -> {
-                serverRMI.receiveMessage(choice);
+                try {
+                    serverRMI.receiveMessage(choice);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }).start();
     }
 

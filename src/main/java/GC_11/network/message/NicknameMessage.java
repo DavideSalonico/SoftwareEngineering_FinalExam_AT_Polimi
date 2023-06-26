@@ -2,6 +2,8 @@ package GC_11.network.message;
 
 import GC_11.distributed.Client;
 
+import java.rmi.RemoteException;
+
 public class NicknameMessage extends MessageView{
     public NicknameMessage(NicknameMessage nicknameMessage) {
         super();
@@ -9,7 +11,11 @@ public class NicknameMessage extends MessageView{
 
     @Override
     void executeOnClient(Client client) {
-        client.getView().askNickname();
+        try {
+            client.getView().askNickname();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

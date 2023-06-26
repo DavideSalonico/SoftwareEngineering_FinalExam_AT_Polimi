@@ -232,7 +232,11 @@ public class ServerMain implements PropertyChangeListener {
 
             MessageView msgCopy = msg.sanitize(entry.getKey());
 
-            entry.getValue().sendMessage(msgCopy,entry.getKey());
+            try {
+                entry.getValue().sendMessage(msgCopy,entry.getKey());
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
         //JsonWriter.saveGame(new GameViewMessage(this.controller.getGame(), null, null)); //TODO: adapt parameters and uncomment
     }
