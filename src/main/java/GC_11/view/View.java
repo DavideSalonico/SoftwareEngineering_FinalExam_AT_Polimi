@@ -27,6 +27,8 @@ public abstract class View implements PropertyChangeListener {
     public abstract void askNickname();
     public abstract void askMaxNumber();
     public abstract void printLobby(LobbyViewMessage lobbyViewMessage);
+    public abstract String getNickname();
+    public abstract void setModelView(GameViewMessage modelView);
 
     /*public void propertyChange(PropertyChangeEvent evt) {
         this.modelView = (GameViewMessage) evt.getNewValue();
@@ -49,5 +51,4 @@ public abstract class View implements PropertyChangeListener {
     public PropertyChangeListener getListener() {
         return this.listener;
     }
-
 }

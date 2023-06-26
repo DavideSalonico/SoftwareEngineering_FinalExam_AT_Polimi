@@ -11,6 +11,7 @@ import GC_11.model.common.CommonGoalCard;
 import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
 import GC_11.network.choices.ChoiceType;
+import GC_11.network.message.GameViewMessage;
 import GC_11.network.message.LobbyViewMessage;
 
 import java.beans.PropertyChangeEvent;
@@ -124,6 +125,17 @@ public class GameCLI extends View {
         } else {
             System.out.println(lobbyViewMessage.getPlayersNames().size() + ": " + lobbyViewMessage.getPlayersNames().get(lobbyViewMessage.getPlayersNames().size() - 1));
         }
+    }
+
+    @Override
+    public String getNickname() {
+        return this.nickname;
+    }
+
+    @Override
+    public void setModelView(GameViewMessage modelView) {
+        this.modelView = modelView;
+        run();
     }
 
     @Override

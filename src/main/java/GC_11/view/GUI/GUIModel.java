@@ -100,6 +100,11 @@ public class GUIModel extends View {
     }
 
     @Override
+    public String getNickname() {
+        return this.nickname;
+    }
+
+    @Override
     public Choice getPlayerChoice() {
             try {
                 String input = view.chooseOrder(); // chooseOrder() returns a string that represents the choice of the player but it is called by the view BUTTON

@@ -19,18 +19,13 @@ import java.rmi.RemoteException;
 import java.util.Scanner;
 
 public class ClientSock implements PropertyChangeListener, Client {
-
-    Client self = this;
     String ip;
     int port;
     private Socket socket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
-
     String graphicInterface;
-    GameViewMessage gameViewMessage;
     private View view;
-    private String nickname;
 
 
     public ClientSock(String ip, int port) {
@@ -80,6 +75,11 @@ public class ClientSock implements PropertyChangeListener, Client {
 
     public void notifyServer(Choice choice){
         sendMessageToServer(choice);
+    }
+
+    @Override
+    public String getNickname() throws RemoteException {
+        return this.view.getNickname(); //TODO
     }
 
     public void sendMessageToServer(Choice choice) {
@@ -211,10 +211,6 @@ public class ClientSock implements PropertyChangeListener, Client {
                 "UPDATE GAME",
                 null,
                 gameViewMessage));
-    }
-
-    public String getNickname() {
-        return this.nickname;
     }
 
     @Override
