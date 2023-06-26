@@ -14,7 +14,7 @@ public class MaxNumberMessage extends MessageView{
     }
 
     @Override
-    void executeOnClient(Client client) {
+    public void executeOnClient(Client client) {
         try {
             client.getView().askMaxNumber();
         } catch (RemoteException e) {
