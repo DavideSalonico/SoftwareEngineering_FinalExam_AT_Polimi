@@ -11,6 +11,7 @@ import GC_11.model.common.CommonGoalCard;
 import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
 import GC_11.network.choices.ChoiceType;
+import GC_11.network.message.LobbyViewMessage;
 
 import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
@@ -24,6 +25,8 @@ public class GameCLI extends ViewGame {
 
     // private final Choice controllerChoice;
     private Client client;
+
+    private boolean firstTime = true;
     //private ClientSock clientSock;
 
     // private final Outcome outcome;
@@ -101,6 +104,23 @@ public class GameCLI extends ViewGame {
             }
         }
     }
+
+    @Override
+    public void printLobby(LobbyViewMessage lobbyViewMessage) {
+
+        if (firstTime) {
+            int count = 1;
+            System.out.println("#############################\n\nthe game is about to start !!! \nthere will be " + lobbyViewMessage.getMaxPlayers() + " players!\n");
+            for (String p : lobbyViewMessage.getPlayersNames()) {
+                System.out.println(count + ": " + p);
+                count++;
+            }
+            firstTime = false;
+        } else {
+            System.out.println(lobbyViewMessage.getPlayersNames().size() + ": " + lobbyViewMessage.getPlayersNames().get(lobbyViewMessage.getPlayersNames().size() - 1));
+        }
+    }
+
 
     @Override
     public void show() {
@@ -193,5 +213,9 @@ public class GameCLI extends ViewGame {
             System.out.println();
         }
     }
+
+
+
+
 }
 

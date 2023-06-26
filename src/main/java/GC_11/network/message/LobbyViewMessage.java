@@ -1,9 +1,9 @@
 package GC_11.network.message;
 
 import GC_11.distributed.Client;
-import GC_11.model.Game;
 import GC_11.model.Lobby;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +32,11 @@ public class LobbyViewMessage extends MessageView {
 
     @Override
     public void executeOnClient(Client client) {
-        //TODO
+        try {
+            client.getView().printLobby(this);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e); // TODO
+        }
     }
 
     @Override

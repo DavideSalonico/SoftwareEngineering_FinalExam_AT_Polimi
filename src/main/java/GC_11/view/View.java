@@ -1,6 +1,7 @@
 package GC_11.view;
 
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
+import GC_11.network.message.LobbyViewMessage;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -26,4 +27,7 @@ public abstract class View implements PropertyChangeListener {
     public abstract void askNickname();
 
     public abstract void askMaxNumber();
+
+    public abstract void printLobby(LobbyViewMessage lobbyViewMessage);
+
 }
