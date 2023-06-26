@@ -48,7 +48,6 @@ public class GameTest {
     @Test
     public void rightCurrentPlayer(){
         assertEquals(game.getCurrentPlayer(), game.getPlayers().get(0));
-        //TODO: expand when we add turn logic to controller
     }
 
     @DisplayName("No null pointers")
