@@ -204,11 +204,6 @@ public class GameCLI extends View {
     }
 
     public void sendChoice(Choice choice) throws RemoteException {
-        PropertyChangeEvent evt = new PropertyChangeEvent(
-                this,
-                "CHOICE",
-                null,
-                choice);
         if (this.client!=null)
             this.client.notifyServer(choice);
     }
@@ -236,9 +231,5 @@ public class GameCLI extends View {
             System.out.println();
         }
     }
-
-
-
-
 }
 
