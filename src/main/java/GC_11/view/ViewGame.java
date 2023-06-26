@@ -1,7 +1,7 @@
 package GC_11.view;
 
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
-import GC_11.network.GameViewMessage;
+import GC_11.network.message.GameViewMessage;
 import GC_11.network.choices.Choice;
 
 import java.beans.PropertyChangeEvent;

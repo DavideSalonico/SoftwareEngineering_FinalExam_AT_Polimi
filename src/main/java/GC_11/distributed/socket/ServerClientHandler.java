@@ -2,10 +2,11 @@ package GC_11.distributed.socket;
 
 import GC_11.exceptions.IllegalMoveException;
 import GC_11.model.Player;
-import GC_11.network.GameViewMessage;
-import GC_11.network.LobbyViewMessage;
+import GC_11.network.message.GameViewMessage;
+import GC_11.network.message.LobbyViewMessage;
 import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
+import GC_11.network.message.MessageView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -79,7 +80,7 @@ public class ServerClientHandler implements Runnable {
             }
             this.nickname = reply;
             this.server.getSocketMap().put(this.nickname, this);
-            this.server.getServerMain().addConnection(this.nickname, "SOCKET");
+            this.server.getServerMain().addConnection(this.nickname, this.server);
         }
 
     }
@@ -136,16 +137,13 @@ public class ServerClientHandler implements Runnable {
      * @throws ClassNotFoundException If the class of the serialized object cannot be found.
      */
 
-    public String receiveMessageFromClient() throws IOException, ClassNotFoundException, IllegalMoveException {
+    public void receiveMessageFromClient() throws IOException, ClassNotFoundException, IllegalMoveException {
         String clientMessage = null;
         Choice clientChoice;
         if (connected) {
             try {
-                clientMessage = (String) inputStream.readObject();
-                if (this.nickname != null && !this.nickname.isEmpty() && this.server.getServerMain().getClientsMap().size() > 1) {
-                    clientChoice = ChoiceFactory.createChoice(new Player(this.nickname), clientMessage);
-                    this.server.getServerMain().makeAMove(clientChoice);
-                }
+                clientChoice = (Choice) inputStream.readObject();
+                this.server.receiveMessage(clientChoice);
             } catch (IOException e) {
                 System.out.println("Error during receiving message from client");
                 closeConnection();
@@ -154,15 +152,8 @@ public class ServerClientHandler implements Runnable {
                 System.out.println("Error during deserialization of message from client");
                 closeConnection();
                 throw new ClassNotFoundException();
-            } catch (IllegalMoveException e) {
-                System.out.println("Error during reading message from client");
-                closeConnection();
-                throw new IllegalMoveException();
-            } finally {
-                return clientMessage;
             }
         }
-        return clientMessage;
     }
 
 
@@ -188,7 +179,7 @@ public class ServerClientHandler implements Runnable {
      *
      * @param messageView The MessageView object to send.
      */
-    public void sendMessageViewToClient(GameViewMessage messageView) {
+    public void sendMessageViewToClient(MessageView messageView) {
         if (connected) {
             try {
                 outputStream.writeObject(messageView);

@@ -21,7 +21,7 @@ TO DO LIST:
 9) Capire come ricevere dinamicamente le istanze di GameView e fare in modo che si aggiorni tutta la view di conseguenza (scrivere il
     metodo risvegliato dal propertyChange)
 
-10) Capire quando e come un utente che esegue un azione può devo comunicare al server che ha finito il suo turno e compiuto le sue azioni
+10) Capire quando e come un utente che esegue un azione può devo comunicare al serverRMI che ha finito il suo turno e compiuto le sue azioni
 
 11) Gestire il fatto che un utente si scolleghi e poi eventualmente riprenda inizializzando la view dall'utlimo stato di gioco (sfruttando la persistenza)
 

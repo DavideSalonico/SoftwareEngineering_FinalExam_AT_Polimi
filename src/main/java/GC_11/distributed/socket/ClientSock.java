@@ -1,9 +1,9 @@
 package GC_11.distributed.socket;
 
 import GC_11.distributed.Client;
-import GC_11.network.GameViewMessage;
-import GC_11.network.LobbyViewMessage;
-import GC_11.network.MessageView;
+import GC_11.network.message.GameViewMessage;
+import GC_11.network.message.LobbyViewMessage;
+import GC_11.network.message.MessageView;
 import GC_11.network.choices.Choice;
 import GC_11.view.GUI.GUIModel;
 import GC_11.view.GUI.GUIView;
@@ -281,6 +281,11 @@ public class ClientSock implements PropertyChangeListener, Client {
     public int askMaxNumber() {
         //TODO
         return -1;
+    }
+
+    @Override
+    public void notifyDisconnection() {
+        //TODO
     }
 }
 

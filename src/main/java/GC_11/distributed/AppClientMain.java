@@ -1,7 +1,6 @@
 package GC_11.distributed;
 
 import GC_11.distributed.RMI.ClientImplRMI;
-import GC_11.distributed.RMI.ServerImplRMI;
 import GC_11.distributed.socket.ClientSock;
 
 import java.rmi.NotBoundException;
@@ -60,8 +59,8 @@ public class AppClientMain {
         System.out.println("what's your nickname?");
         String nickname = inputLine.nextLine();
         Registry registry = LocateRegistry.getRegistry(serverIp,1099);
-        ServerRMI server = (ServerRMI) registry.lookup("server");
-        ClientImplRMI client = new ClientImplRMI(server, nickname, choiceInterface);
+        ServerRMI serverRMI = (ServerRMI) registry.lookup("serverRMI");
+        ClientImplRMI client = new ClientImplRMI(serverRMI, nickname, choiceInterface);
     }
 
     private static void  clientSOCKETSetup(String choiceInterface, String serverIp){

@@ -2,17 +2,12 @@ package GC_11.distributed.RMI;
 
 import GC_11.distributed.Client;
 import GC_11.distributed.ServerRMI;
-import GC_11.network.GameViewMessage;
-import GC_11.network.LobbyViewMessage;
-import GC_11.network.MessageView;
+import GC_11.network.message.GameViewMessage;
+import GC_11.network.message.LobbyViewMessage;
+import GC_11.network.message.MessageView;
 import GC_11.network.choices.Choice;
+import GC_11.view.*;
 import GC_11.view.GUI.GUIModel;
-import GC_11.view.GUI.GUIView;
-import GC_11.view.GameCLI;
-import GC_11.view.LobbyCLI;
-import GC_11.view.ViewGame;
-import GC_11.view.ViewLobby;
-import javafx.application.Application;
 
 import java.beans.PropertyChangeEvent;
 import java.io.Serializable;
@@ -26,27 +21,27 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
     private transient ViewLobby viewLobby;
     private transient ViewGame viewGame;
     private String nickname;
-    private ServerRMI server;
+    private ServerRMI serverRMI;
 
     public ClientImplRMI(ViewLobby viewLobby) throws RemoteException {
         this.viewLobby = viewLobby;
     }
 
-    public ClientImplRMI(ServerRMI server, String nickname) throws RemoteException {
+    public ClientImplRMI(ServerRMI serverRMI, String nickname) throws RemoteException {
         this.nickname = nickname;
         System.out.println("HELLO " + nickname + "!!!\n");
         viewLobby = new LobbyCLI();
         viewGame = new GameCLI(this.nickname, this);
         try {
-            //System.out.println(server.toString());
-            server.register(this);
-            this.server = server;
+            //System.out.println(serverRMI.toString());
+            serverRMI.register(this);
+            this.serverRMI = serverRMI;
         } catch (Exception e) {
             System.err.println("error in the registration: " + e.getCause() + "\n" + e.getMessage() + "\n" + e.getStackTrace() + "\n\n\n" + e.toString());
         }
     }
 
-    public ClientImplRMI(ServerRMI server, String nickname, String choiceInterface) throws RemoteException {
+    public ClientImplRMI(ServerRMI serverRMI, String nickname, String choiceInterface) throws RemoteException {
         this.nickname = nickname;
         System.out.println("HELLO " + nickname + "!!!\n");
         if(Objects.equals(choiceInterface, "CLI")) {
@@ -59,8 +54,8 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
             viewGame = new GUIModel(this.nickname, this);
         }
         try {
-            server.register(this);
-            this.server = server;
+            serverRMI.register(this);
+            this.serverRMI = serverRMI;
         } catch (RemoteException e) {
             System.err.println("error in the registration: " + e.getCause() + "\n" + e.getMessage() + "\n" + e.getStackTrace() + "\n\n\n" + e.toString());
         }
@@ -88,13 +83,19 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
     }
 
     @Override
+    public View getView() {
+        return this.viewGame;
+    }
+
+    @Override
+    public void notifyDisconnection() {
+        //TODO
+    }
+
+    @Override
     public void notifyServer(Choice choice) throws RemoteException {
             new Thread(() -> {
-                try {
-                    server.updateGame(this, choice);
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+                serverRMI.receiveMessage(choice);
             }).start();
     }
 

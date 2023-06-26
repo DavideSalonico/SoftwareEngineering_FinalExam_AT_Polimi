@@ -1,10 +1,12 @@
 package GC_11.distributed.socket;
 
 
+import GC_11.distributed.Server;
 import GC_11.distributed.ServerMain;
-import GC_11.network.GameViewMessage;
-import GC_11.network.LobbyViewMessage;
-import GC_11.network.MessageView;
+import GC_11.network.choices.Choice;
+import GC_11.network.message.GameViewMessage;
+import GC_11.network.message.LobbyViewMessage;
+import GC_11.network.message.MessageView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -23,7 +25,7 @@ import java.util.concurrent.Executors;
  * The class responsible for handling socket connections in the server.
  * Implements the PropertyChangeListener interface to listen for property changes.
  */
-public class ServerSock implements PropertyChangeListener {
+public class ServerSock implements PropertyChangeListener, Server {
 
     private final int port;
     private ServerSocket serverSocket;
@@ -173,5 +175,28 @@ public class ServerSock implements PropertyChangeListener {
     }
 
 
+    @Override
+    public void receiveMessage(Choice choice) {
+        this.serverMain.makeAMove(choice);
+    }
+
+    @Override
+    public void sendMessage(MessageView msg, String nickname) {
+        for (ServerClientHandler sch : serverClientHandlerList){
+            if (sch.getNickname().equals(nickname)){
+                sch.sendMessageViewToClient(msg);
+            }
+        }
+    }
+
+    @Override
+    public void notifyDisconnectionToClients() {
+
+    }
+
+    @Override
+    public void sendHeartbeat() {
+
+    }
 }
 

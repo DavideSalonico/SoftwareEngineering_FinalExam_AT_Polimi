@@ -3,7 +3,7 @@ package GC_11.controller;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.model.*;
 import GC_11.model.common.CommonGoalCard;
-import GC_11.network.GameViewMessage;
+import GC_11.network.message.GameViewMessage;
 import com.google.gson.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

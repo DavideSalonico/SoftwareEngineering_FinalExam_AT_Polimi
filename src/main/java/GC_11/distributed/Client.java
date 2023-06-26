@@ -1,7 +1,8 @@
 package GC_11.distributed;
 
-import GC_11.network.MessageView;
+import GC_11.network.message.MessageView;
 import GC_11.network.choices.Choice;
+import GC_11.view.View;
 
 import java.io.Serializable;
 import java.rmi.Remote;
@@ -15,4 +16,8 @@ public interface Client extends Remote, Serializable {
     String getNickname() throws RemoteException;
 
     int askMaxNumber() throws RemoteException;
+
+    View getView();
+
+    void notifyDisconnection();
 }

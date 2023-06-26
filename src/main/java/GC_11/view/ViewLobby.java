@@ -1,7 +1,7 @@
 package GC_11.view;
 
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
-import GC_11.network.LobbyViewMessage;
+import GC_11.network.message.LobbyViewMessage;
 
 import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;

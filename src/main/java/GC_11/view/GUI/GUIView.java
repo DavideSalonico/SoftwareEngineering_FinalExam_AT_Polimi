@@ -2,7 +2,7 @@ package GC_11.view.GUI;
 
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.model.*;
-import GC_11.network.GameViewMessage;
+import GC_11.network.message.GameViewMessage;
 import GC_11.util.PlayerView;
 import javafx.application.Application;
 import javafx.collections.ObservableList;

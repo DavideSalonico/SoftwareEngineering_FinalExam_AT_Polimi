@@ -5,10 +5,11 @@ import GC_11.distributed.Client;
 import GC_11.distributed.ServerMain;
 import GC_11.distributed.ServerRMI;
 import GC_11.model.Game;
-import GC_11.network.GameViewMessage;
+import GC_11.network.message.GameViewMessage;
 import GC_11.model.Lobby;
-import GC_11.network.LobbyViewMessage;
+import GC_11.network.message.LobbyViewMessage;
 import GC_11.network.choices.Choice;
+import GC_11.network.message.MessageView;
 
 import java.beans.PropertyChangeEvent;
 import java.io.Serializable;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI, Serializable {
+public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Serializable {
 
     private Controller gameController;
 
@@ -36,7 +37,7 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI, Ser
 
     private ServerMain serverMain;
 
-    public ServerImplRMI(ServerMain serverMain) throws RemoteException {
+    public ServerRMIImpl(ServerMain serverMain) throws RemoteException {
         super();
         this.serverMain = serverMain;
     }
@@ -70,7 +71,7 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI, Ser
             Registry registry = LocateRegistry.createRegistry(1099);
             registry.rebind("server", this);
             System.out.println("SERVER RMI RUNNING");
-            System.out.println("Server address: " + serverIp);
+            System.out.println("ServerRMI address: " + serverIp);
         } catch (Exception e) {
             System.err.println("server error: " + e.getMessage());
         }
@@ -79,7 +80,7 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI, Ser
     @Override
     public synchronized void register(Client client) throws RemoteException {
         clients.add(client);
-        serverMain.addConnection(client.getNickname(), "RMI");
+        serverMain.addConnection(client.getNickname(), this);
     }
 
     @Override
@@ -150,12 +151,12 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI, Ser
         }
     }
 
-    public synchronized void notifyClient(String nickname, GameViewMessage gameViewMessage) throws RemoteException {
+    public synchronized void notifyClient(String nickname, MessageView messageView) throws RemoteException {
         for (Client c : clients) {
             if (c.getNickname().equals(nickname)) {
                 new Thread(() -> {
                     try {
-                        c.receiveFromServer(gameViewMessage);
+                        c.receiveFromServer(messageView);
                         System.out.println(c.getNickname() + " aggiornato GAME correctly");
                     } catch (RemoteException e) {
                         System.out.println(e.getMessage());
@@ -166,5 +167,29 @@ public class ServerImplRMI extends UnicastRemoteObject implements ServerRMI, Ser
         }
     }
 
+    @Override
+    public void receiveMessage(Choice choice) {
+        this.serverMain.makeAMove(choice);
+    }
+
+    @Override
+    public void sendMessage(MessageView msg, String nickname){
+        try {
+            this.notifyClient(nickname,msg);
+        } catch (RemoteException e) {
+            //TODO: Runtime
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void notifyDisconnectionToClients() {
+
+    }
+
+    @Override
+    public void sendHeartbeat() {
+
+    }
 }
 

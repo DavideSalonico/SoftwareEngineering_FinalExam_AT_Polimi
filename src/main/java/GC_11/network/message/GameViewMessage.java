@@ -1,9 +1,9 @@
-package GC_11.network;
+package GC_11.network.message;
 
 
+import GC_11.distributed.Client;
 import GC_11.model.*;
 import GC_11.model.common.CommonGoalCard;
-import GC_11.network.MessageView;
 import GC_11.util.CircularList;
 
 import java.beans.PropertyChangeEvent;
@@ -67,6 +67,26 @@ public class GameViewMessage extends MessageView {
     // Solo per inviare messaggi testuali da server al client
     public GameViewMessage(String message){
         this.message=message;
+    }
+
+    public GameViewMessage(GameViewMessage gameViewMessage) {
+        super();
+        this.error = gameViewMessage.error;
+        this.exceptionMessage = gameViewMessage.exceptionMessage;
+        this.exception = new Exception(gameViewMessage.exception);
+        for (Player p : gameViewMessage.getPlayers()) {
+            this.players.add(new Player(p));
+        }
+        this.commonGoals = gameViewMessage.getCommonGoalCards();
+
+        this.currentPlayer = gameViewMessage.getCurrentPlayer();
+        this.endGame = gameViewMessage.isEndGame();
+        if(gameViewMessage.getEndPlayer() != null)
+            this.endPlayer = gameViewMessage.getEndPlayer();
+        this.board = new Board(gameViewMessage.getBoard());
+        this.mainChat = new ArrayList<>(gameViewMessage.getMainChat());
+        this.privateChats = new HashMap<>(gameViewMessage.getPrivateChats());
+        this.filteredPvtChats = new HashMap<>();
     }
 
     public Board getBoard() {
@@ -170,5 +190,43 @@ public class GameViewMessage extends MessageView {
 
     public void setMainChat(List<Message> mainChat) {
         this.mainChat = mainChat;
+    }
+
+    @Override
+    void executeOnClient(Client client) {
+        //TODO
+    }
+
+    @Override
+    public MessageView sanitize(String key) {
+        GameViewMessage copy = new GameViewMessage(this);
+
+        for (Player p : this.players) {
+            if (!p.getNickname().equals(key)){
+                p.setPersonalGoal(null);
+                for(Map.Entry<Set<String>, List<Message>> entry : copy.getPrivateChats().entrySet()){
+                    if(!entry.getKey().contains(p.getNickname())){
+                        entry.getValue().clear();
+                    }
+                    else{
+                        for(String str : entry.getKey()){
+                            if(!str.equals(key)){
+                                copy.getFilteredPvtChats().put(str, entry.getValue());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return copy;
+    }
+
+    public boolean isEndGame() {
+        return endGame;
+    }
+
+    public String getEndPlayer() {
+    	return endPlayer;
     }
 }

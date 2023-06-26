@@ -2,16 +2,17 @@ package GC_11.distributed;
 
 import GC_11.controller.Controller;
 import GC_11.controller.JsonWriter;
-import GC_11.distributed.RMI.ServerImplRMI;
+import GC_11.distributed.RMI.ServerRMIImpl;
 import GC_11.distributed.socket.ServerSock;
 import GC_11.exceptions.*;
 import GC_11.model.Game;
 import GC_11.model.Lobby;
 import GC_11.model.Message;
 import GC_11.model.Player;
-import GC_11.network.GameViewMessage;
-import GC_11.network.LobbyViewMessage;
+import GC_11.network.message.GameViewMessage;
+import GC_11.network.message.LobbyViewMessage;
 import GC_11.network.choices.Choice;
+import GC_11.network.message.MessageView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -28,11 +29,10 @@ import java.util.Set;
 
 public class ServerMain implements PropertyChangeListener {
 
-    private ServerImplRMI serverRMI;
+    private ServerRMIImpl serverRMI;
     private ServerSock serverSocket;
-    private Game gameModel;
     private Controller controller = new Controller(this);
-    private Map<String, String> clientMap = new HashMap<String, String>(); // <nickname, connectionType>
+    private Map<String, Server> clientMap = new HashMap<String, Server>(); // <nickname, Server >
 
     /**
      * Constructs a new ServerMain object with the specified port number.
@@ -43,7 +43,7 @@ public class ServerMain implements PropertyChangeListener {
 
     public ServerMain(int port) {
         try {
-            this.serverRMI = new ServerImplRMI(this);
+            this.serverRMI = new ServerRMIImpl(this);
             this.serverSocket = new ServerSock(port, this);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
@@ -88,8 +88,8 @@ public class ServerMain implements PropertyChangeListener {
      * @param clientNickname The nickname of the client
      * @param connectionType The type of connection (RMI or SOCKET)
      */
-    public synchronized void addConnection(String clientNickname, String connectionType) {
-        clientMap.put(clientNickname, connectionType);
+    public synchronized void addConnection(String clientNickname, Server server) {
+        clientMap.put(clientNickname, server);
         try {
             this.controller.getLobby().addPlayer(clientNickname);
         } catch (ExceededNumberOfPlayersException e) {
@@ -97,7 +97,7 @@ public class ServerMain implements PropertyChangeListener {
         } catch (NameAlreadyTakenException e) {
             throw new RuntimeException(e); //TODO: handle exception
         }
-        System.out.println("ADDED CONNECTION: " + clientNickname + " " + connectionType);
+        System.out.println("ADDED CONNECTION: " + clientNickname); //TODO fare un metodo getConnectionType
     }
 
 
@@ -119,7 +119,7 @@ public class ServerMain implements PropertyChangeListener {
 
     }
 
-    public void notifyClientsGame(Exception exc, PropertyChangeEvent evt) {
+    /*public void notifyClientsGame(Exception exc, PropertyChangeEvent evt) {
         if(exc != null) {
             String currPlayer = this.controller.getGame().getCurrentPlayer().getNickname();
             GameViewMessage messageViewCopy = new GameViewMessage(this.controller.getGame(), exc, null);
@@ -181,6 +181,8 @@ public class ServerMain implements PropertyChangeListener {
         }
     }
 
+     */
+
     /**
      * Asks the first player for the maximum number of players in the lobby.
      * Updates the lobby's maximum players value.
@@ -209,7 +211,7 @@ public class ServerMain implements PropertyChangeListener {
     }
 
 
-    public void makeAMove(Choice choice) {
+    public void makeAMove(Choice choice) { //TODO: rename
         try {
             this.controller.update(choice);
         } catch (RemoteException e) {
@@ -237,6 +239,19 @@ public class ServerMain implements PropertyChangeListener {
                 this.notifyClientsGame(null, evt);
             }
         }
+        //TODO far costruire i MessageView giusti
+        MessageView msg = (MessageView) evt.getNewValue();
+        notifyClients(msg);
+    }
+
+    private void notifyClients(MessageView msg) {
+        for(Map.Entry<String,Server> entry : clientMap.entrySet()){
+
+            MessageView msgCopy = msg.sanitize(entry.getKey());
+
+            entry.getValue().sendMessage(msgCopy,entry.getKey());
+        }
+        //JsonWriter.saveGame(new GameViewMessage(this.controller.getGame(), null, null)); //TODO: adapt parameters and uncomment
     }
 
     public void removeConnection(String nickname) {
@@ -245,11 +260,6 @@ public class ServerMain implements PropertyChangeListener {
             this.clientMap.remove(nickname);
             this.controller.getGame().setEndGame(true);
             GameViewMessage msg = new GameViewMessage(this.controller.getGame(), new Exception("Player " + nickname + " disconnected"), null);
-            //this.serverSocket.notifyDisconnection(nickname,msg);
-            //this.serverRMI.notifyDisconnection(nickname,msg);
-
-
-
         }
         else{
             System.out.println("Unable to remove connection because nickname is unknown");
@@ -257,7 +267,15 @@ public class ServerMain implements PropertyChangeListener {
 
     }
 
+    public Controller getController(){
+        return this.getController();
+    }
+
     public Map getClientsMap(){
         return this.clientMap;
+    }
+
+    public void isAlive(String s) {
+        //TODO
     }
 }

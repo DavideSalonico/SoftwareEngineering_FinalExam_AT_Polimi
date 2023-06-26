@@ -25,7 +25,7 @@ import static java.lang.Math.min;
  * Card read from JSON file
  */
 public class Controller implements PropertyChangeListener {
-    // Controller receive directly from Server an Object Choice which contains Player reference, type and params
+    // Controller receive directly from ServerRMI an Object Choice which contains Player reference, type and params
     public Choice choice;
     public JsonReader reader;
     private Game model;
@@ -61,7 +61,7 @@ public class Controller implements PropertyChangeListener {
 
 
     /**
-     * Set and Get of Choice attribute, which will be updated by Server
+     * Set and Get of Choice attribute, which will be updated by ServerRMI
      *
      * @param choice
      */
@@ -325,5 +325,9 @@ public class Controller implements PropertyChangeListener {
 
     public void startGame(){
         this.model = new Game(this.lobby.getPlayers(), this.server);
+    }
+
+    public ServerMain getServer() {
+        return this.server;
     }
 }

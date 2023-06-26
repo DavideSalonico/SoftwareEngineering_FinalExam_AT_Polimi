@@ -4,13 +4,14 @@ import GC_11.distributed.Client;
 import GC_11.distributed.socket.ClientSock;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.IllegalMoveException;
-import GC_11.network.GameViewMessage;
+import GC_11.network.message.GameViewMessage;
 import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
 import GC_11.view.ViewGame;
 import javafx.application.Application;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 
 public class GUIModel extends ViewGame {
@@ -19,8 +20,10 @@ public class GUIModel extends ViewGame {
     private Client client;
     private ClientSock clientSock;
     private String nickname;
+    private PropertyChangeListener listener;
 
     public GUIView view;
+
 
     /**
      * Every view is bound at only one player, it helps to manage every input that the controller receive
@@ -31,12 +34,6 @@ public class GUIModel extends ViewGame {
         this.nickname = nickname;
         this.client = client;
         Application.launch(GUIView.class);
-    }
-
-    public GUIModel(String nickname,ClientSock client) {
-        super();
-        this.nickname = nickname;
-        this.clientSock = client;
     }
 
     public void setPlayerChoice(Choice c) {
