@@ -7,6 +7,10 @@ public class MaxNumberMessage extends MessageView{
         super();
     }
 
+    public MaxNumberMessage() {
+        super();
+    }
+
     @Override
     void executeOnClient(Client client) {
         client.getView().askMaxNumber();

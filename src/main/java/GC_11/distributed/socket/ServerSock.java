@@ -167,13 +167,6 @@ public class ServerSock implements PropertyChangeListener, Server {
         socketMap.get(clientNickname).sendMessageViewToClient(messageView);
     }
 
-    public int askMaxNumber() {
-
-        String clientNickname =this.socketMap.entrySet().iterator().next().getKey();
-
-        return socketMap.get(clientNickname).askMaxNumber();
-    }
-
 
     @Override
     public void receiveMessage(Choice choice) {

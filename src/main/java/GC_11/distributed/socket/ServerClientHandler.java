@@ -6,6 +6,7 @@ import GC_11.network.message.GameViewMessage;
 import GC_11.network.message.LobbyViewMessage;
 import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
+import GC_11.network.message.MaxNumberMessage;
 import GC_11.network.message.MessageView;
 
 import java.io.IOException;
@@ -138,7 +139,6 @@ public class ServerClientHandler implements Runnable {
      */
 
     public void receiveMessageFromClient() throws IOException, ClassNotFoundException, IllegalMoveException {
-        String clientMessage = null;
         Choice clientChoice;
         if (connected) {
             try {
@@ -225,23 +225,6 @@ public class ServerClientHandler implements Runnable {
 
 
     /**
-     * Notifies the client of disconnection.
-     *
-     * @param socket The disconnected socket.
-     */
-    public void notifyDisconnection(Socket socket) {
-        String alert = "Socket " + socket.getInetAddress() + ":" + socket.getPort() + " has disconnected";
-        try {
-            outputStream.writeObject(alert);
-            outputStream.reset();
-            outputStream.flush();
-        } catch (IOException e) {
-            System.err.println("Unable to notify socket disconnection");
-        }
-    }
-
-
-    /**
      * Sets the nickname for the client.
      *
      * @param nickname The nickname to set.
@@ -259,27 +242,9 @@ public class ServerClientHandler implements Runnable {
         return this.nickname;
     }
 
-    public int askMaxNumber() {
 
-        int maxPlayers = -1;
-        GameViewMessage msg = new GameViewMessage("Inserire il numero massimo di giocatori");
-        sendMessageViewToClient(msg);
-        try {
-            maxPlayers = Integer.parseInt(receiveMessageFromClient());
-            while (maxPlayers <= 1 || maxPlayers >= 5) {
-                msg.setMessage("Il numero di giocatori deve essere compreso tra 2 e 4");
-                sendMessageViewToClient(msg);
-                maxPlayers = Integer.parseInt(receiveMessageFromClient());
-            }
-        } catch (NumberFormatException e) {
-            msg.setMessage("Inserire un numero");
-            sendMessageViewToClient(msg);
-        } catch (IOException | ClassNotFoundException | IllegalMoveException e) {
-            System.err.println("Unable to receive message from client");
-            this.connected = false;
-        }
-
-        return maxPlayers;
+    public void askMaxNumber() {
+        sendMessageViewToClient(new MaxNumberMessage());
     }
 }
 

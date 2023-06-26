@@ -86,7 +86,6 @@ public class ServerMain implements PropertyChangeListener {
      * This method is called by the serverSocket or serverRMI when a new connection is established and save the connection in a map
      *
      * @param clientNickname The nickname of the client
-     * @param connectionType The type of connection (RMI or SOCKET)
      */
     public synchronized void addConnection(String clientNickname, Server server) {
         clientMap.put(clientNickname, server);
@@ -189,25 +188,7 @@ public class ServerMain implements PropertyChangeListener {
      */
 
     public void askMaxPlayers() {
-        boolean ok = false;
-        while (!ok) {
-            if (this.clientMap.get(this.controller.getLobby().getPlayers().get(0)).equals("RMI")) {
-                int max = 0;
-                try {
-                    max = this.serverRMI.getClients().get(0).askMaxNumber();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-                this.controller.setMaxPlayers(max);
-                ok = true;
-            } else if (this.clientMap.get(this.controller.getLobby().getPlayers().get(0)).equals("SOCKET")) {
-                int max = this.serverSocket.askMaxNumber();
-                this.controller.setMaxPlayers(max);
-                ok = true;
-            } else {
-                System.out.println("Unable to ask max players because connection type is unknown");
-            }
-        }
+
     }
 
 

@@ -72,6 +72,37 @@ public class GameCLI extends ViewGame {
     }
 
     @Override
+    public void askNickname() {
+        System.out.println("Hi, welcome to MyShelfie. Please insert your nickname: ");
+        Scanner s = new Scanner(System.in);
+        String nickname = s.nextLine();
+        try {
+            this.client.notifyServer(ChoiceFactory.createChoice(null, "ADD_PLAYER " + nickname));
+        } catch (RemoteException | IllegalMoveException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void askMaxNumber() {
+        System.out.println("Please insert the max number of players: ");
+        Scanner s = new Scanner(System.in);
+        String maxNumber = s.nextLine();
+        try{
+            int max = parseInt(maxNumber);
+        }catch (NumberFormatException e){
+            System.out.println("Please insert a number");
+            askMaxNumber();
+        }finally {
+            try {
+                this.client.notifyServer(ChoiceFactory.createChoice(null, "SET_MAX_NUMBER " + maxNumber));
+            } catch (RemoteException | IllegalMoveException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
     public void show() {
         if (this.modelView.isError()) {
             System.out.println(this.modelView.getExceptionMessage());
