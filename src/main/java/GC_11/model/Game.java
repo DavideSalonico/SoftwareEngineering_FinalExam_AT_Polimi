@@ -239,7 +239,7 @@ public class Game implements PropertyChangeListener, Serializable {
                 evt.getPropertyName(),
                 null,
                 new GameViewMessage(this, null));
-        listener.propertyChange(evt);
+        listener.propertyChange(e);
     }
 
     public void triggerException(Exception e) {

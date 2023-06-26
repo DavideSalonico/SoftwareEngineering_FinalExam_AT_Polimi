@@ -2,6 +2,7 @@ package GC_11.model;
 
 import GC_11.controller.JsonReader;
 import GC_11.exceptions.IllegalMoveException;
+import GC_11.network.message.GameViewMessage;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -138,7 +139,7 @@ public class Board implements PropertyChangeListener, Serializable {
                     this,
                     "TILE_SELECTED",
                     null,
-                    new Coordinate(l, c));
+                    null);
             this.listener.propertyChange(evt);
         } else {
             if (isSelected(new Coordinate(l, c)))
@@ -151,7 +152,7 @@ public class Board implements PropertyChangeListener, Serializable {
                             this,
                             "TILE_SELECTED",
                             null,
-                            new Coordinate(l, c));
+                            null);
                     this.listener.propertyChange(evt);
                 } else {
                     throw new IllegalMoveException("You can't pick this Tile: You're not selecting a Tile adjacent to the first one!");
@@ -166,7 +167,7 @@ public class Board implements PropertyChangeListener, Serializable {
                                 this,
                                 "TILE_SELECTED",
                                 null,
-                                new Coordinate(l, c));
+                                null);
                         this.listener.propertyChange(evt);
                     } else
                         throw new IllegalMoveException("You can't pick this Tile: You're not selecting a Tile adjacent to the first ones!");
@@ -179,7 +180,7 @@ public class Board implements PropertyChangeListener, Serializable {
                                 this,
                                 "TILE_SELECTED",
                                 null,
-                                new Coordinate(l, c));
+                               null);
                         this.listener.propertyChange(evt);
                     } else
                         throw new IllegalMoveException("You can't pick this Tile! You're not selecting a Tile adjacent to the first ones!");
@@ -301,7 +302,7 @@ public class Board implements PropertyChangeListener, Serializable {
                 this,
                 "DESELECTED_TILE",
                 null,
-                this.chessBoard);
+                null);
         this.listener.propertyChange(evt);
     }
 
