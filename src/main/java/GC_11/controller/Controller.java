@@ -224,7 +224,7 @@ public class Controller implements PropertyChangeListener {
         }
 
         if(end){
-            this.model.setEndPlayer(this.model.getCurrentPlayer().getNickname());
+            this.model.setLastTurn(true);
         }
     }
 
