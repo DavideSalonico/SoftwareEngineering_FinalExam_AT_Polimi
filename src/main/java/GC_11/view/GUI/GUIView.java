@@ -126,6 +126,12 @@ public class GUIView extends Application {
     @FXML
     public void initialize() {
 
+        //textField per la chat editabile comodamente
+        chatTextField.setOnMouseClicked(event -> {
+            chatTextField.setText(""); // Seleziona tutto il testo del TextField
+        });
+
+
         //Column Selector invisible
         columnSelector.setDisable(true);
 
@@ -187,7 +193,7 @@ public class GUIView extends Application {
                 clientPoints.setText("YOUR POINTS : " + model.getPlayers().get(i).getPoints());
 
                 // OGNI TANTO MI TORNA PERSONAL GOAL NULL, CONTROLLARE!!!
-                personalGoal.setImage(new Image("file:" +"src/resources/GraphicalResources/personal goal cards/Personal_Goals" + model.getPlayers().get(i).getPersonalGoal().getId() + ".png"));
+                personalGoal.setImage(new Image("file:src/resources/GraphicalResources/personal goal cards/Personal_Goals" + model.getPlayers().get(i).getPersonalGoal().getId() + ".png"));
             }
         }
 
@@ -567,6 +573,7 @@ public class GUIView extends Application {
         AnchorPane selectedAnchorPane = (AnchorPane) selectedTab.getContent();
         TextArea selectedChatArea = (TextArea) selectedAnchorPane.lookup(".text-area");
         selectedChatArea.appendText(currentPlayerNickname + " : " + chatTextField.getText() + "\n");
+        chatTextField.setText("Enter a message...");
         // MANDA MESSAGGIO AL SERVER
     }
 
@@ -633,8 +640,10 @@ public class GUIView extends Application {
             for( int i = 0; i < tilesOrdered.size(); i++){
                 input = input  + tilesOrder[i] + " ";
             }
+            columnSelector.setDisable(false);
             return input;
         } else {
+            columnSelector.setDisable(true);
             setError("First of all, order every tile selected!!");
             return "First of all, order every tile selected!!";  // Genera eccezione da gestire
         }
@@ -644,9 +653,17 @@ public class GUIView extends Application {
      * Method bound to the button "Confirm" that will send the request to the server after the user has selected the column where to place the tile
      */
     public String confirmTilesOrder(){
-        columnSelector.setDisable(false);
-        System.out.println(chooseOrder());
-        return chooseOrder();
+        if(selectedImages.size() != 0){
+            System.out.println(chooseOrder());
+
+            for (Node node : boardGridPane.getChildren()) {
+                node.setOnMouseClicked(null);
+                node.getStyleClass().clear();
+            }
+            return chooseOrder();
+        }
+        setError("You have to select at least one tile and order it!");
+        return "You have to select at least one tile!";
     }
 
     /**
@@ -752,23 +769,9 @@ public class GUIView extends Application {
             throw new RuntimeException(e);
 
         }
-        // QUESTE RIGHE DI CODICE PERMETTONO DI FARE UNA RESIZE DELLA FINESTRA IN BASE ALLE DIMENSIONI DELLO SCHERMO DEL PC!!!!
-        // Funzionano ma dimensionano solo il PANE e non tutto il resto !!!
-        /*Screen screen = Screen.getPrimary();
-        double screenWidth = screen.getBounds().getWidth();
-        double screenHeight = screen.getBounds().getHeight();
-
-        // Calcola le nuove dimensioni mantenendo le proporzioni originali
-        double scaleFactor = Math.min(screenWidth / desiredWidth, screenHeight / desiredHeight); //desiredWidth e Height non sono inizializzate
-        double newWidth = desiredWidth * scaleFactor;
-        double newHeight = desiredHeight * scaleFactor;
-
-        // Imposta le nuove dimensioni della finestra
-        primaryStage.setWidth(newWidth);
-        primaryStage.setHeight(newHeight);
-        */
         Scene scene = new Scene(pane);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        primaryStage.getIcons().add(new Image("file:src/resources/GraphicalResources/Publisher material/Icon 50x50px.png"));
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();

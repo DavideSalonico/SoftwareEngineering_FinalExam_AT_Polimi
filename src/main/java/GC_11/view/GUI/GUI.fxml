@@ -103,7 +103,7 @@
                               <DropShadow />
                            </effect>
                                 </ImageView>
-                                <ImageView fx:id="IICommonGoalCard" fitHeight="60.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                                <ImageView fx:id="IICommonGoalCard" fitHeight="72.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                                     <image>
                                         <Image url="@../../../../../resources/GraphicalResources/common goal cards/3.jpg" />
                                     </image>
@@ -420,7 +420,7 @@
          <effect>
             <DropShadow />
          </effect></ImageView>
-      <Text fx:id="error" fill="RED" layoutX="905.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Error message Label" wrappingWidth="160.00000000000023">
+      <Text fx:id="error" fill="#ff8000" layoutX="905.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Error message Label" wrappingWidth="160.00000000000023">
          <font>
             <Font name="System Bold Italic" size="13.0" />
          </font>

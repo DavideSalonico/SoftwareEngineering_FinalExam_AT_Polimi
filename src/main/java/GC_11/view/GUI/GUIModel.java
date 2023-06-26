@@ -8,6 +8,7 @@ import GC_11.network.GameViewMessage;
 import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
 import GC_11.view.ViewGame;
+import javafx.application.Application;
 
 import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
@@ -77,7 +78,13 @@ public class GUIModel extends ViewGame {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        try {
+            run();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        } catch (ColumnIndexOutOfBoundsException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -89,6 +96,10 @@ public class GUIModel extends ViewGame {
                 System.err.println("Invalid CHOICE, Please retake.");
             }
         return null;
+    }
+
+    public static void main(String[] args) {
+        Application.launch(GUIView.class, args);
     }
 
 }
