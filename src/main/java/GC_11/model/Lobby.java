@@ -49,10 +49,14 @@ public class Lobby implements PropertyChangeListener {
                         new LobbyViewMessage(this));
                 this.listener.propertyChange(evt);
             }
-        } else if (this.isFull()) {
-            throw new ExceededNumberOfPlayersException();
-        } else if (this.nameAlreadyTaken(playerName)) {
-            throw new NameAlreadyTakenException(playerName);
+        }
+        else {
+            if (this.nameAlreadyTaken(playerName)) {
+                throw new NameAlreadyTakenException(playerName);
+            }
+            else if (this.isFull()) {
+                throw new ExceededNumberOfPlayersException();
+            }
         }
     }
 
