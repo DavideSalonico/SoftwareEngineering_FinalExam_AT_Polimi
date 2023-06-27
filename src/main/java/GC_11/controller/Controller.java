@@ -2,11 +2,7 @@ package GC_11.controller;
 
 import GC_11.distributed.ServerMain;
 import GC_11.exceptions.*;
-import GC_11.model.Coordinate;
-import GC_11.model.Game;
-import GC_11.model.Tile;
-import GC_11.model.TileColor;
-import GC_11.model.Lobby;
+import GC_11.model.*;
 import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceType;
 import GC_11.network.message.AskLoadGame;
@@ -302,7 +298,7 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    public void sendMessage(List<String> parameters) throws RemoteException {
+    public void sendMessage(Player player, List<String> parameters) throws RemoteException {
         if (parameters.size() != 2){
             this.model.triggerException(new IllegalMoveException("There should be exactly two parameters for this command!"));
             return;
@@ -315,14 +311,14 @@ public class Controller implements PropertyChangeListener {
             this.model.triggerException(new IllegalMoveException("Player not found!"));
             return;
         }
-        if (parameters.get(0).equals(this.model.getCurrentPlayer().getNickname())){
+        if (parameters.get(0).equals(player.getNickname())){
             this.model.triggerException(new IllegalMoveException("You can't send a message to yourself!"));
             return;
         }
         if (parameters.get(0).equals("Everyone"))
-            this.model.getChat().sendMessageToMainChat(this.model.getCurrentPlayer(), parameters.get(1));
+            this.model.getChat().sendMessageToMainChat(player , parameters.get(1));
         else
-            this.model.getChat().sendMessageToPrivateChat(this.model.getCurrentPlayer(), this.model.getPlayer(parameters.get(0)), parameters.get(1));
+            this.model.getChat().sendMessageToPrivateChat(player, this.model.getPlayer(parameters.get(0)), parameters.get(1));
     }
 
     public void insertName(String name){

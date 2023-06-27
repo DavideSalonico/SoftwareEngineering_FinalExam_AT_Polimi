@@ -227,9 +227,9 @@ public class GameCLI extends View {
             System.out.println(message.getSender() + ": " + message.getText());
         }
 
-        System.out.print("Private Chats: ");
+        System.out.println("Private Chats: ");
         for(String nickname : this.modelView.getFilteredPvtChats().keySet() ) {
-            System.out.print("--- " + nickname + " ---");
+            System.out.println("--- " + nickname + " ---");
             for(Message message : this.modelView.getFilteredPvtChats().get(nickname)) {
                 System.out.println(message.getSender() + ": " + message.getText());
             }
