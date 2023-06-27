@@ -15,8 +15,6 @@ public abstract class View {
 
     protected String nickname;
     protected GameViewMessage modelView;
-
-    //public abstract void run();
     public abstract void show();
     public abstract Choice getPlayerChoice();
     public abstract void askNickname();

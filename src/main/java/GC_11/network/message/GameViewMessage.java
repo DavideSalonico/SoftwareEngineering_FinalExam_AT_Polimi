@@ -33,6 +33,7 @@ public class GameViewMessage extends MessageView {
     private Map<Set<String>, List<Message>> privateChats = new HashMap<>();
     private Map<String, List<Message>> filteredPvtChats = new HashMap<>();
     private String message;
+    private Player winner = null;
 
 
 
@@ -51,9 +52,12 @@ public class GameViewMessage extends MessageView {
             this.exceptionMessage = exception.getMessage();
             this.exception = exception;
         }
+        Player playerMaxPoints = model.getPlayers().get(0);
         for (Player p : model.getPlayers()) {
             this.players.add(new Player(p));
+            playerMaxPoints = p.getPoints() > playerMaxPoints.getPoints() ? p : playerMaxPoints;
         }
+        this.winner = playerMaxPoints;
         this.commonGoals = new ArrayList<>(model.getCommonGoal());
         this.currentPlayer = model.getCurrentPlayer().getNickname();
         this.endGame = model.isEndGame();
@@ -73,15 +77,18 @@ public class GameViewMessage extends MessageView {
         this.error = gameViewMessage.error;
         this.exceptionMessage = gameViewMessage.exceptionMessage;
         this.exception = new Exception(gameViewMessage.exception);
+        Player playerMaxPoints = gameViewMessage.getPlayers().get(0);
         for (Player p : gameViewMessage.getPlayers()) {
             this.players.add(new Player(p));
+            playerMaxPoints = p.getPoints() > playerMaxPoints.getPoints() ? p : playerMaxPoints;
         }
+        this.winner = playerMaxPoints;
         this.commonGoals = gameViewMessage.getCommonGoalCards();
-
         this.currentPlayer = gameViewMessage.getCurrentPlayer();
         this.endGame = gameViewMessage.isEndGame();
         if(gameViewMessage.getEndPlayer() != null)
             this.endPlayer = gameViewMessage.getEndPlayer();
+        this.endGame = gameViewMessage.isEndGame();
         this.board = new Board(gameViewMessage.getBoard());
         this.mainChat = new ArrayList<>(gameViewMessage.getMainChat());
         this.privateChats = new HashMap<>(gameViewMessage.getPrivateChats());
@@ -115,6 +122,10 @@ public class GameViewMessage extends MessageView {
 
     public boolean isError() {
         return this.error;
+    }
+
+    public Player getWinner() {
+    	return this.winner;
     }
 
     /**
