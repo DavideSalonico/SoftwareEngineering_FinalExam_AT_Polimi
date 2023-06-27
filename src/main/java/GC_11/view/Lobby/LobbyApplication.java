@@ -1,6 +1,9 @@
 package GC_11.view.Lobby;
 
 import GC_11.distributed.Client;
+import GC_11.exceptions.IllegalMoveException;
+import GC_11.network.choices.Choice;
+import GC_11.network.choices.ChoiceFactory;
 import GC_11.network.message.LobbyViewMessage;
 import GC_11.view.GUI.GUIApplication;
 import javafx.application.Application;
@@ -79,6 +82,9 @@ public class LobbyApplication extends Application {
         showPlayers(players);
     }
 
+    public void setClient(Client client) {
+        this.client = client;
+    }
     public String sendNumberOfPlayer(){
         int numberOfPlayers = Integer.parseInt((String) chooseNumberPlayers.getValue());
         System.out.println(numberOfPlayers);
@@ -86,7 +92,20 @@ public class LobbyApplication extends Application {
         return chooseNumberPlayers.getValue().toString();
     }
 
-    public String confirmNickname() {
+    public void createChoice(String s) {
+        Choice choice;
+        try {
+            choice = ChoiceFactory.createChoice(null, s);
+        } catch (IllegalMoveException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            client.notifyServer(choice);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void confirmNickname() {
         confirmName.setDisable(true);
         chooseNumberPlayers.setVisible(true);
         clientNickname.setVisible(false);
@@ -98,7 +117,8 @@ public class LobbyApplication extends Application {
         });
 
         confirmName.setOnAction(event -> sendNumberOfPlayer());
-        return clientNickname.getText();
+        createChoice("ADD_PLAYER " +clientNickname.getText());
+        notifyAll();
     }
 
     public void updatePlayerList(LobbyViewMessage message) {
@@ -136,7 +156,7 @@ public class LobbyApplication extends Application {
         }
         Scene scene = new Scene(pane);
 
-        LobbyController controller = loader.getController();
+        //LobbyController controller = loader.getController();
 
         primaryStage.getIcons().add(new Image("file:src/resources/GraphicalResources/Publisher material/Icon 50x50px.png"));
         primaryStage.setResizable(false);

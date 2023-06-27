@@ -59,13 +59,19 @@ public class GUI extends View {
 
     @Override
     public void askNickname() {
-        String nickname = this.lobbyApplication.confirmNickname();
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        /*String nickname = this.lobbyApplication.confirmNickname();
         try {
             this.client.notifyServer(ChoiceFactory.createChoice(null, "ADD_PLAYER " + nickname));
             this.nickname = nickname;
         } catch (RemoteException | IllegalMoveException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override
