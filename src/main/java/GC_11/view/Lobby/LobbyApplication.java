@@ -1,5 +1,6 @@
 package GC_11.view.Lobby;
 
+import GC_11.distributed.Client;
 import GC_11.network.message.LobbyViewMessage;
 import GC_11.view.GUI.GUIApplication;
 import javafx.application.Application;
@@ -12,6 +13,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +28,10 @@ public class LobbyApplication extends Application {
     public TextArea errorArea;
     public Label text;
 
-    public LobbyApplication(){
+    private Client client;
+
+    public LobbyApplication(Client client){
+        this.client = client;
         new Thread(()->Application.launch(LobbyApplication.class)).start();
     }
 
@@ -99,8 +104,10 @@ public class LobbyApplication extends Application {
             listPlayers.appendText(player + "\n");
     }
 
-    public void changeScene(Stage primaryStage){
+    public void changeScene(Stage primaryStage) throws RemoteException {
         GUIApplication guiApplication = new GUIApplication();
+        this.client.getView().setGuiApplication(guiApplication);
+
         try {
             guiApplication.start(primaryStage);
         } catch (Exception e) {
