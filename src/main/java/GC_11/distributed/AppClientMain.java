@@ -1,6 +1,6 @@
 package GC_11.distributed;
 
-import GC_11.distributed.RMI.ClientImplRMI;
+import GC_11.distributed.rmi.ClientImplRMI;
 import GC_11.distributed.socket.ClientSock;
 
 import java.rmi.NotBoundException;

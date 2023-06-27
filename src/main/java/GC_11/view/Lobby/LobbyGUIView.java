@@ -1,6 +1,6 @@
 package GC_11.view.Lobby;
 
-import GC_11.view.GUI.GUIView;
+import GC_11.view.GUI.GUIApplication;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -89,9 +89,9 @@ public class LobbyGUIView extends Application {
     }
 
     public void changeScene(Stage primaryStage){
-        GUIView guiView = new GUIView();
+        GUIApplication guiApplication = new GUIApplication();
         try {
-            guiView.start(new Stage());
+            guiApplication.start(new Stage());
         } catch (Exception e) {
             e.printStackTrace();
         }

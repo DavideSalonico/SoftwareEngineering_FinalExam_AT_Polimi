@@ -187,14 +187,7 @@ public class ClientSock implements PropertyChangeListener, Client {
 
     public void notifyServer(PropertyChangeEvent evt) {
         //if (evt.getPropertyName().equals("CHOICE"))
-            //sendMessageToServer((evt.getNewValue()).toString());
-    }
-
-    public void updateViewGame(GameViewMessage gameViewMessage) {
-        this.view.propertyChange(new PropertyChangeEvent(this,
-                "UPDATE GAME",
-                null,
-                gameViewMessage));
+        //sendMessageToServer((evt.getNewValue()).toString());
     }
 
     @Override

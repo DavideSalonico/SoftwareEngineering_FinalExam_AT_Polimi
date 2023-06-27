@@ -4,6 +4,7 @@ package GC_11.view;
 
 import GC_11.distributed.Client;
 import GC_11.distributed.socket.ClientSock;
+import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.IllegalMoveException;
 import GC_11.model.Message;
 import GC_11.model.Player;
@@ -27,6 +28,8 @@ public class GameCLI extends View {
     private Client client;
 
     private boolean firstTime = true;
+    private Object lock = new Object();
+    private boolean alreadyReading = false;
 
 
     /**
@@ -39,7 +42,7 @@ public class GameCLI extends View {
         this.client = client;
     }
 
-    @Override
+    /*@Override
     public synchronized void run(){
         Choice choice;
          show();
@@ -80,6 +83,7 @@ public class GameCLI extends View {
             }
     }
 
+     */
     @Override
     public void askNickname() {
         System.out.println("Hi, welcome to MyShelfie. Please insert your nickname: ");
@@ -133,15 +137,15 @@ public class GameCLI extends View {
         return this.nickname;
     }
 
-    @Override
-    public void setModelView(GameViewMessage modelView) {
-        this.modelView = modelView;
-        run();
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-
+    public void update(GameViewMessage gameViewMessage) {
+        this.modelView = gameViewMessage;
+        synchronized (lock) {
+            show();
+            if (!alreadyReading) {
+                alreadyReading = true;
+                new Thread(this::getPlayerChoice).start();
+            }
+        }
     }
 
 
@@ -248,6 +252,5 @@ public class GameCLI extends View {
         }
         System.out.println();
     }
-
 }
 

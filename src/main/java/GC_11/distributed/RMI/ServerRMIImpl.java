@@ -1,4 +1,4 @@
-package GC_11.distributed.RMI;
+package GC_11.distributed.rmi;
 
 import GC_11.controller.Controller;
 import GC_11.distributed.Client;

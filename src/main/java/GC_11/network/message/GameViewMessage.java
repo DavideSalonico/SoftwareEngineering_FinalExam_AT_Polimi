@@ -192,9 +192,9 @@ public class GameViewMessage extends MessageView {
     }
 
     @Override
-    public void executeOnClient(Client client) {
+    public void executeOnClient(Client client){
         try {
-            client.getView().setModelView(this);
+            client.getView().update(this);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }

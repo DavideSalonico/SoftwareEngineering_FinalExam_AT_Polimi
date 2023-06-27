@@ -35,7 +35,6 @@ public class GUI extends View {
         this.modelView = modelView;
     }
 
-    @Override
     public void run() {
         /*show();
         if (this.modelView.getCurrentPlayer().equals(this.nickname)) {
@@ -70,11 +69,6 @@ public class GUI extends View {
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        //TODO
-    }
-
-    @Override
     public void askNickname() {
         //TODO
     }
@@ -95,6 +89,10 @@ public class GUI extends View {
     }
 
     @Override
+    public void update(GameViewMessage modelView) {
+        //TODO
+    }
+
     public Choice getPlayerChoice() {
             try {
                 String input = guiApplication.chooseOrder(); // chooseOrder() returns a string that represents the choice of the player but it is called by the view BUTTON

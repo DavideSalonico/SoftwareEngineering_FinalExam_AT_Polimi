@@ -24,16 +24,6 @@ public abstract class Choice implements Serializable {
 
     public abstract void executeOnServer(Controller controller) throws RemoteException, ExceededNumberOfPlayersException, NameAlreadyTakenException;
 
-    public void executeOnClient(View view)
-            throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
-        PropertyChangeEvent evt = new PropertyChangeEvent(
-                this,
-                "CHOICE",
-                null,
-                this);
-        view.getListener().propertyChange(evt);
-    }
-
     public List<String> getParams() {
         return params;
     }

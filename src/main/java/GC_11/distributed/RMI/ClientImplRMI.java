@@ -1,4 +1,4 @@
-package GC_11.distributed.RMI;
+package GC_11.distributed.rmi;
 
 import GC_11.distributed.Client;
 import GC_11.distributed.ServerRMI;
@@ -76,17 +76,6 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
                 }
             }).start();
     }
-
-
-    public void updateViewGame(GameViewMessage newView) {
-        PropertyChangeEvent evt = new PropertyChangeEvent(
-                this,
-                "UPDATE GAME",
-                null,
-                newView);
-        this.view.propertyChange(evt);
-    }
-
     @Override
     public void receiveFromServer(MessageView message) throws RemoteException {
         message.executeOnClient(this);
