@@ -103,6 +103,7 @@ public class LobbyApplication extends Application {
 
     public GUIApplication changeScene() throws RemoteException {
         GUIApplication guiApplication = new GUIApplication();
+        guiApplication.setClient(this.client);
 
         try {
             guiApplication.start(this.primaryStage);
