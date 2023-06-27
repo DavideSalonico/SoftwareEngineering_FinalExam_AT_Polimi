@@ -33,6 +33,6 @@ public class SendMessageChoice extends Choice {
 
     @Override
     public void executeOnServer(Controller controller) throws RemoteException {
-        controller.sendMessage(params);
+        controller.sendMessage(player, params);
     }
 }

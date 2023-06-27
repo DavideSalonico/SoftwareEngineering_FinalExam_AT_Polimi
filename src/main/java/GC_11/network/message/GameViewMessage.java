@@ -201,22 +201,21 @@ public class GameViewMessage extends MessageView {
     }
 
     @Override
-    public MessageView sanitize(String key) {
+    public MessageView sanitize(String receiver) {
         GameViewMessage copy = new GameViewMessage(this);
 
         for (Player p : copy.getPlayers()) {
-            if (!p.getNickname().equals(key)){
+            if (!p.getNickname().equals(receiver))
                 p.setPersonalGoal(null);
-                for(Map.Entry<Set<String>, List<Message>> entry : copy.getPrivateChats().entrySet()){
-                    if(!entry.getKey().contains(p.getNickname())){
-                        entry.getValue().clear();
-                    }
-                    else{
-                        for(String str : entry.getKey()){
-                            if(!str.equals(key)){
-                                copy.getFilteredPvtChats().put(str, entry.getValue());
-                            }
-                        }
+        }
+        for(Map.Entry<Set<String>, List<Message>> entry : copy.getPrivateChats().entrySet()){
+            if(!entry.getKey().contains(receiver)){
+                copy.getPrivateChats().remove(entry.getKey());
+            }
+            else{
+                for(String str : entry.getKey()){
+                    if(!str.equals(receiver)){
+                        copy.getFilteredPvtChats().put(str, entry.getValue());
                     }
                 }
             }
