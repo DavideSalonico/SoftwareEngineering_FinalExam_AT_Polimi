@@ -54,6 +54,9 @@ public class ChoiceFactory {
             case SET_MAX_NUMBER -> {
                 return new SetMaxNumberChoice(player, params, type);
             }
+            case LOAD_GAME -> {
+                return new LoadGameChoice(player, params, type);
+            }
         }
         return null;
     }

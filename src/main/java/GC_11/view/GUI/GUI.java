@@ -63,6 +63,11 @@ public class GUI extends View {
     }
 
     @Override
+    public void askLoadGame() {
+
+    }
+
+    @Override
     public void printLobby(LobbyViewMessage lobbyViewMessage) {
 
     }
