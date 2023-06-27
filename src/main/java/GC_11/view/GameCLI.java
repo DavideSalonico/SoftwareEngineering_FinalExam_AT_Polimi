@@ -73,6 +73,18 @@ public class GameCLI extends View {
     }
 
     @Override
+    public void askLoadGame() {
+        System.out.println("Do you want to load a previous game? (yes/no)");
+        Scanner s = new Scanner(System.in);
+        String answer = s.nextLine();
+        try {
+            this.client.notifyServer(ChoiceFactory.createChoice(null, "LOAD_GAME " + answer));
+        } catch (RemoteException | IllegalMoveException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void printLobby(LobbyViewMessage lobbyViewMessage) {
 
         if (firstTime) {

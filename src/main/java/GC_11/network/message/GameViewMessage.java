@@ -63,8 +63,16 @@ public class GameViewMessage extends MessageView {
         this.endGame = model.isEndGame();
         if(model.getEndPlayer() != null) this.endPlayer = model.getEndPlayer();
         this.board = new Board(model.getBoard());
-        this.mainChat = new ArrayList<>(model.getChat().getMainChat());
-        this.privateChats = new HashMap<>(model.getChat().getPvtChats());
+        if (model.getChat() != null) {
+            this.mainChat = new ArrayList<>(model.getChat().getMainChat());
+            this.privateChats = new HashMap<>(model.getChat().getPvtChats());
+        }
+        else{
+            this.mainChat = new ArrayList<>();
+            this.privateChats = new HashMap<>();
+        }
+        // TODO VEDERE SE COSI VA BENE
+
     }
 
     // Solo per inviare messaggi testuali da server al client

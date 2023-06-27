@@ -15,6 +15,7 @@ public abstract class View {
     //public abstract Choice getPlayerChoice();
     public abstract void askNickname();
     public abstract void askMaxNumber();
+    public abstract void askLoadGame();
     public abstract void printLobby(LobbyViewMessage lobbyViewMessage);
     public abstract String getNickname();
     public abstract void update(GameViewMessage modelView);
