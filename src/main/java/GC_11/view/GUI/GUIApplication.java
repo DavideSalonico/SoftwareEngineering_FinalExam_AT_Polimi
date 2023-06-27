@@ -199,6 +199,9 @@ public class GUIApplication extends Application {
             otherPlayers.get(i).initialize(others.get(i));
         }
 
+        //Initialize Board with the data received from the server
+        refreshBoard(gameViewMessage.getBoard());
+
 
     }
     @FXML

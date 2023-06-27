@@ -3,14 +3,12 @@ package GC_11.view.GUI;
 import GC_11.distributed.Client;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.IllegalMoveException;
-import GC_11.network.message.GameViewMessage;
 import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
+import GC_11.network.message.GameViewMessage;
 import GC_11.network.message.LobbyViewMessage;
 import GC_11.view.Lobby.LobbyApplication;
 import GC_11.view.View;
-
-import java.beans.PropertyChangeEvent;
 
 public class GUI extends View {
     private Client client;
@@ -26,7 +24,7 @@ public class GUI extends View {
     public GUI(Client client) {
         super();
         this.client = client;
-        this.lobbyApplication = new LobbyApplication();
+        this.lobbyApplication = new LobbyApplication(client);
         //this.guiApplication = new GUIApplication();
     }
 

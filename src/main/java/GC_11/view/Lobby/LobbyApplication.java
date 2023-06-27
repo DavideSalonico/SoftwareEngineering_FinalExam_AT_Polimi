@@ -1,5 +1,6 @@
 package GC_11.view.Lobby;
 
+import GC_11.distributed.Client;
 import GC_11.network.message.LobbyViewMessage;
 import GC_11.view.GUI.GUIApplication;
 import javafx.application.Application;
@@ -12,6 +13,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +28,10 @@ public class LobbyApplication extends Application {
     public TextArea errorArea;
     public Label text;
 
-    public LobbyApplication(){
+    private Client client;
+
+    public LobbyApplication(Client client){
+        this.client = client;
         new Thread(()->Application.launch(LobbyApplication.class)).start();
     }
 
@@ -67,16 +72,14 @@ public class LobbyApplication extends Application {
         showPlayers(players);
     }
 
-    public void sendNumberOfPlayer(){
+    public String sendNumberOfPlayer(){
         int numberOfPlayers = Integer.parseInt((String) chooseNumberPlayers.getValue());
         System.out.println(numberOfPlayers);
-
-        //SEND NUMBER OF PLAYERS TO SERVER
-
         waitingRoom();
+        return chooseNumberPlayers.getValue().toString();
     }
 
-    public void confirmNickname() {
+    public String confirmNickname() {
         confirmName.setDisable(true);
         chooseNumberPlayers.setVisible(true);
         clientNickname.setVisible(false);
@@ -87,9 +90,8 @@ public class LobbyApplication extends Application {
             confirmName.setDisable(newValue == null);
         });
 
-        //manda il nickname al server
-
         confirmName.setOnAction(event -> sendNumberOfPlayer());
+        return clientNickname.getText();
     }
 
     public void updatePlayerList(LobbyViewMessage message) {
@@ -99,13 +101,15 @@ public class LobbyApplication extends Application {
             listPlayers.appendText(player + "\n");
     }
 
-    public void changeScene(Stage primaryStage){
+    public GUIApplication changeScene() throws RemoteException {
         GUIApplication guiApplication = new GUIApplication();
+
         try {
-            guiApplication.start(primaryStage);
+            guiApplication.start(this.primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return guiApplication;
     }
     @Override
     public void start(Stage primaryStage) throws Exception {
