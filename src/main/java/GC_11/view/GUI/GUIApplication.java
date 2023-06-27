@@ -32,7 +32,6 @@ public class GUIApplication extends Application {
     public enum State {
         YOUR_TURN, WAITING, SELECTING_TILES, SELECTING_COLUMN, END
     }
-    public State currentState;
     public String currentPlayerNickname;
 
     public Game model;
