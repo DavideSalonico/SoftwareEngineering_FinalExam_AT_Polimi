@@ -18,12 +18,11 @@ import java.util.List;
 
 public class LobbyApplication extends Application {
 
+    public Stage primaryStage;
     public Button confirmName;
     public TextField clientNickname;
     public TextArea listPlayers;
-
     public ChoiceBox chooseNumberPlayers;
-
     public TextArea errorArea;
     public Label text;
 
@@ -110,6 +109,8 @@ public class LobbyApplication extends Application {
     }
     @Override
     public void start(Stage primaryStage) throws Exception {
+        this.primaryStage = primaryStage;
+
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(new URL("file:///" + System.getProperty("user.dir") + "\\src\\main\\java\\GC_11\\view\\Lobby\\LobbyGUI.fxml"));
         Pane pane;
