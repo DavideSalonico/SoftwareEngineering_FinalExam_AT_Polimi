@@ -1,25 +1,16 @@
 package GC_11.view.Lobby;
 
-import GC_11.distributed.Client;
 import GC_11.network.message.LobbyViewMessage;
 import GC_11.view.GUI.GUIApplication;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
+import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class LobbyApplication extends Application {
-
+public class LobbyController {
     public Stage primaryStage;
     public Button confirmName;
     public TextField clientNickname;
@@ -27,13 +18,6 @@ public class LobbyApplication extends Application {
     public ChoiceBox chooseNumberPlayers;
     public TextArea errorArea;
     public Label text;
-
-    private Client client;
-
-    public LobbyApplication(){
-      //  this.client = client;
-        new Thread(()->Application.launch(LobbyApplication.class)).start();
-    }
 
     public void initialize() {
         confirmName.setDisable(true);
@@ -59,7 +43,7 @@ public class LobbyApplication extends Application {
 
         setError("Waiting for other players...");
     }
-    
+
     public void waitingRoom(){
 
         //OTTIENI LISTA PLAYER DA GAMEVIEWMESSAGE
@@ -72,6 +56,7 @@ public class LobbyApplication extends Application {
         showPlayers(players);
     }
 
+    @FXML
     public String sendNumberOfPlayer(){
         int numberOfPlayers = Integer.parseInt((String) chooseNumberPlayers.getValue());
         System.out.println(numberOfPlayers);
@@ -79,6 +64,7 @@ public class LobbyApplication extends Application {
         return chooseNumberPlayers.getValue().toString();
     }
 
+    @FXML
     public String confirmNickname() {
         confirmName.setDisable(true);
         chooseNumberPlayers.setVisible(true);
@@ -94,6 +80,7 @@ public class LobbyApplication extends Application {
         return clientNickname.getText();
     }
 
+    //USA platform.runLater
     public void updatePlayerList(LobbyViewMessage message) {
         List<String> players = message.getPlayersNames();
         listPlayers.setText("");
@@ -103,7 +90,7 @@ public class LobbyApplication extends Application {
 
     public GUIApplication changeScene() throws RemoteException {
         GUIApplication guiApplication = new GUIApplication();
-        guiApplication.setClient(this.client);
+        //guiApplication.setClient(this.client);
 
         try {
             guiApplication.start(this.primaryStage);
@@ -112,29 +99,4 @@ public class LobbyApplication extends Application {
         }
         return guiApplication;
     }
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        this.primaryStage = primaryStage;
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(new URL("file:///" + System.getProperty("user.dir") + "\\src\\main\\java\\GC_11\\view\\Lobby\\LobbyGUI.fxml"));
-        Pane pane;
-
-        try {
-            pane = loader.<Pane>load();
-        } catch (IOException e) {
-            System.out.println("Errore nel caricamento della GUI " + e.getMessage());
-            throw new RuntimeException(e);
-
-        }
-        Scene scene = new Scene(pane);
-
-        LobbyController controller = loader.getController();
-
-        primaryStage.getIcons().add(new Image("file:src/resources/GraphicalResources/Publisher material/Icon 50x50px.png"));
-        primaryStage.setResizable(false);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-
 }

@@ -3,17 +3,13 @@ package GC_11.view.GUI;
 import GC_11.distributed.Client;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.IllegalMoveException;
-import GC_11.network.choices.ChoiceType;
-import GC_11.network.message.GameViewMessage;
-import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
+import GC_11.network.message.GameViewMessage;
 import GC_11.network.message.LobbyViewMessage;
 import GC_11.view.Lobby.LobbyApplication;
 import GC_11.view.View;
 
-import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
-import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
 
@@ -32,7 +28,7 @@ public class GUI extends View {
         super();
         this.client = client;
         this.inGame = false;
-        this.lobbyApplication = new LobbyApplication(client);
+        this.lobbyApplication = new LobbyApplication();
     }
 
     public void setNickname(String nickname) {
