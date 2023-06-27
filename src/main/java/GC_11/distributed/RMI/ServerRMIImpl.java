@@ -158,7 +158,6 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
         try {
             this.notifyClient(nickname,msg);
         } catch (RemoteException e) {
-            //TODO: Runtime
             throw new RuntimeException(e);
         }
     }

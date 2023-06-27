@@ -35,25 +35,6 @@ public class GUI extends View {
         this.modelView = modelView;
     }
 
-    public void run() {
-        /*show();
-        if (this.modelView.getCurrentPlayer().equals(this.nickname)) {
-            Choice choice = getPlayerChoice();
-            System.out.println("scelta fatta");
-            PropertyChangeEvent evt = new PropertyChangeEvent(
-                    this,
-                    "CHOICE",
-                    null,
-                    choice);
-            if (this.client!=null)
-                this.client.notifyServer(choice);
-            else
-                this.clientSock.notifyServer(evt);
-        }
-
-         */
-    }
-
     @Override
     public void show() {
         if (this.modelView.isError()) {
@@ -70,7 +51,7 @@ public class GUI extends View {
 
     @Override
     public void askNickname() {
-        //TODO
+
     }
 
     @Override
@@ -90,7 +71,7 @@ public class GUI extends View {
 
     @Override
     public void update(GameViewMessage modelView) {
-        //TODO
+        this.guiApplication.init(modelView);
     }
 
     public Choice getPlayerChoice() {
