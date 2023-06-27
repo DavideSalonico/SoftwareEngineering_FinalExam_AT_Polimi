@@ -11,27 +11,44 @@ import java.util.*;
 
 import static java.lang.Math.abs;
 
+
+/**
+ * Represents the game board.
+ */
 public class Board implements PropertyChangeListener, Serializable {
 
     private Tile[][] chessBoard;
     private List<Coordinate> selectedTiles = new ArrayList<>();
     private Bag bag;
 
+    /**
+     * Sets the listener for property change events.
+     *
+     * @param listener the property change listener
+     */
     public void setListener(PropertyChangeListener listener) {
         this.listener = listener;
     }
 
+    /**
+     * Retrieves the chess board.
+     *
+     * @return the chess board
+     */
     transient PropertyChangeListener listener;
 
     /**
-     * Duplicate method
+     * Retrieves the chess board.
      *
-     * @return
+     * @return the chess board
      */
     private Tile[][] getChessBoard() {
         return chessBoard;
     }
 
+    /**
+     * Creates a new Board instance.
+     */
     public Board() {
         this.bag = new Bag();
         this.bag.setListener(this);
@@ -40,9 +57,9 @@ public class Board implements PropertyChangeListener, Serializable {
 
 
     /**
-     * Builder
+     * Creates a new Board instance with a specific number of players.
      *
-     * @param num is the number of players
+     * @param num the number of players
      */
     public Board(int num) {
         this.bag = new Bag();
@@ -52,11 +69,13 @@ public class Board implements PropertyChangeListener, Serializable {
         JsonReader json = new JsonReader();
         coordinateList = json.readCoordinate(num);
 
+        // Initialize the chess board with empty tiles
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 chessBoard[i][j] = new Tile(TileColor.EMPTY, 0);
             }
         }
+        // Initialize the chess board with empty tiles
         for (Coordinate c : coordinateList) {
             this.chessBoard[c.getRow()][c.getColumn()] = new Tile(TileColor.PROHIBITED, 0);
         }
@@ -64,6 +83,11 @@ public class Board implements PropertyChangeListener, Serializable {
         setBoard();
     }
 
+    /**
+     * Creates a new Board instance by copying the contents of another board.
+     *
+     * @param board the board to copy
+     */
     public Board(Board board){
         this.chessBoard = new Tile[9][9];
         for(int i=0; i<9; i++){
@@ -76,7 +100,8 @@ public class Board implements PropertyChangeListener, Serializable {
 
 
     /**
-     * It sets empty cells of chessboard into some random Tile picked from the bag (it uses bag's methods)
+     * Sets the empty cells of the chessboard with random tiles from the bag.
+     * This method uses the bag's methods to draw tiles.
      */
     private void setBoard() {
         int randomNum;
@@ -94,27 +119,36 @@ public class Board implements PropertyChangeListener, Serializable {
     }
 
     /**
-     * Return Tile at line 'r' and column 'c'
+     * Returns the tile at the specified position on the board.
      *
-     * @param l = line
-     * @param c = column
-     * @return Tile
+     * @param l the line (row) of the tile
+     * @param c the column of the tile
+     * @return the tile at the specified position
      */
     public Tile getTile(int l, int c) {
         return chessBoard[l][c];
     }
 
+
+    /**
+     * Sets the tile at the specified position on the board.
+     *
+     * @param x the line (row) of the tile
+     * @param y the column of the tile
+     * @param t the tile to set
+     */
     public void setTile(int x, int y, Tile t) {
         chessBoard[x][y] = t;
     }
 
     /**
-     * Return picked Tile from Board, it creates new Tile with TileColor.EMPTY (Immutable object),
-     * the controller firstly call checkLegalMove method and then the drawTile method
+     * Draws and removes the tile at the specified position on the board.
+     * It also notifies the listener about the tile being picked.
      *
-     * @param l = line
-     * @param c = column
-     * @return picked Tile
+     * @param l the line (row) of the tile
+     * @param c the column of the tile
+     * @return the picked tile
+     * @throws IllegalMoveException if the tile cannot be picked
      */
     public Tile drawTile(int l, int c) throws IllegalMoveException {
         if (chessBoard[l][c].getColor().equals(TileColor.PROHIBITED) || chessBoard[l][c].getColor().equals(TileColor.EMPTY))
@@ -130,6 +164,14 @@ public class Board implements PropertyChangeListener, Serializable {
         return picked;
     }
 
+    /**
+     * Selects a tile at the specified position on the board.
+     * It adds the tile to the list of selected tiles and notifies the listener.
+     *
+     * @param l the line (row) of the tile
+     * @param c the column of the tile
+     * @throws IllegalMoveException if the tile cannot be selected
+     */
     public void selectTile(int l, int c) throws IllegalMoveException {
         if (!this.isPlayable(l, c) || this.freeSides(l, c) == 0 || this.selectedTiles.size() == 3)
             throw new IllegalMoveException("You can't pick this Tile: it's not playable!");
@@ -191,6 +233,13 @@ public class Board implements PropertyChangeListener, Serializable {
         }
     }
 
+    /**
+     * Checks if the tile at the specified position on the board is selected.
+     *
+     * @param l the line (row) of the tile
+     * @param c the column of the tile
+     * @return true if the tile is selected, false otherwise
+     */
     private int freeSides(int l, int c) {
         int counter = 0;
         if (l == 0 || !this.isPlayable(l - 1, c)) {
@@ -208,6 +257,13 @@ public class Board implements PropertyChangeListener, Serializable {
         return counter;
     }
 
+    /**
+     * Checks if the tile at the specified position on the board is selected.
+     *
+     * @param l the line (row) of the tile
+     * @param c the column of the tile
+     * @return true if the tile is selected, false otherwise
+     */
     public boolean isPlayable(int l, int c) {
         boolean empty = !chessBoard[l][c].getColor().equals(TileColor.EMPTY);
         boolean prohibited = !chessBoard[l][c].getColor().equals(TileColor.PROHIBITED);
@@ -245,6 +301,10 @@ public class Board implements PropertyChangeListener, Serializable {
         //probabilmente non ci interessa sapere quante Tiles isolate ci sono, ma lascio per future necessità
         return counter;
     }
+
+    /**
+     * Method to change the order of the selected Tiles
+     */
 
     public void changeOrder(List<Integer> positions) throws IllegalMoveException {
         if (positions.size() != this.selectedTiles.size())
@@ -292,6 +352,10 @@ public class Board implements PropertyChangeListener, Serializable {
         }
     }
 
+    /**
+     * Deselct the last selected Tile
+     * @throws IllegalMoveException
+     */
     public void deselectTile() throws IllegalMoveException {
         int l = this.selectedTiles.size();
         if (l == 0)
@@ -316,6 +380,10 @@ public class Board implements PropertyChangeListener, Serializable {
         return this.bag;
     }
 
+    /**
+     * Method to print the board in the console
+     *
+     */
     public void print() {
         String[][] tmpboard = buildBoardPrint();
 
@@ -345,6 +413,11 @@ public class Board implements PropertyChangeListener, Serializable {
         }
     }
 
+    /**
+     * Method to build the board to print
+     *
+     * @return String[][] of the board to print
+     */
     private String[][] buildBoardPrint() {
         String[][] tmpboard = new String[9][9];
         for (int i = 0; i < 9; i++) {
@@ -364,19 +437,30 @@ public class Board implements PropertyChangeListener, Serializable {
         return tmpboard;
     }
 
+    /**
+     *  Method to get the selected tiles
+     * @return List of selected tiles
+     */
     public List<Coordinate> getSelectedTiles() {
         return selectedTiles;
     }
+
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         this.listener.propertyChange(evt);
     }
 
+    /**
+     * Method to reset the selected tiles
+     */
     public void resetSelectedTiles() {
         this.selectedTiles = new ArrayList<Coordinate>();
     }
 
+    /**
+     * Method to reset the turn
+     */
     public void resetTurn(){
         resetSelectedTiles();
         PropertyChangeEvent evt = new PropertyChangeEvent(
@@ -386,6 +470,10 @@ public class Board implements PropertyChangeListener, Serializable {
                 null);
         this.listener.propertyChange(evt);
     }
+
+    /**
+     *  Method to check if a Tile has already been selected
+     */
 
     private boolean isSelected(Coordinate c) {
         for (Coordinate tmp_c : selectedTiles) {
