@@ -1,7 +1,10 @@
 package GC_11.view.GUI;
 
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
+import GC_11.exceptions.IllegalMoveException;
 import GC_11.model.*;
+import GC_11.network.choices.Choice;
+import GC_11.network.choices.ChoiceFactory;
 import GC_11.network.message.GameViewMessage;
 import GC_11.util.PlayerView;
 import javafx.application.Application;
@@ -60,8 +63,6 @@ public class GUIApplication extends Application {
     public Text player2Points;
     public Text player3Points;
     public ButtonBar columnSelector;
-    double desiredWidth;
-    double desiredHeight;
     public Button confirmSelection;
     public Text error;
     public TextArea chatTextArea;
@@ -406,7 +407,7 @@ public class GUIApplication extends Application {
      * @param row line
      * @param column column
      */
-    public void removeTileFromBoard(int row, int column) {
+    public void removeTileFromBoard(Integer row, Integer column) {
         ImageView image = getImageViewFromGridPane(boardGridPane, row, column);
         image = null;
     }
@@ -421,49 +422,20 @@ public class GUIApplication extends Application {
         final String SELECTED_STYLE_CLASS = "selected-tile";
 
         imageView.setOnMouseClicked(event -> {
-                //Button reset visibility
-                resetButton.setVisible(true);
-
-                if (selectedImages.size() < 3) {
-                    // Aggiungi l'immagine alla lista delle selezioni
-                    selectedImages.add(imageView);
-                    System.out.println("Tile selected, n° selected: " + selectedImages.size());
-                    imageView.getStyleClass().add(SELECTED_STYLE_CLASS);
-                    System.out.println("Selected images: " + selectedImages.size());
-                    if(selectedImages.size() == 2){
-                        secondImage.setImage(imageView.getImage());
-                        // Applica l'effetto di scurimento
-                        BoxBlur boxBlur = new BoxBlur();
-                        boxBlur.setWidth(4); // Modifica la larghezza dello sfocato
-                        boxBlur.setHeight(4); // Modifica l'altezza dello sfocato
-                        boxBlur.setIterations(2); // Modifica il numero di iterazioni dello sfocato
-                        imageView.getStyleClass().clear();
-                        imageView.setEffect(boxBlur);
-                        imageView.setOnMouseClicked(null);
-                    }
-                    if(selectedImages.size() == 1){
-                        firstImage.setImage(imageView.getImage());
-                        BoxBlur boxBlur = new BoxBlur();
-                        boxBlur.setWidth(4); // Modifica la larghezza dello sfocato
-                        boxBlur.setHeight(4); // Modifica l'altezza dello sfocato
-                        boxBlur.setIterations(2); // Modifica il numero di iterazioni dello sfocato
-                        imageView.getStyleClass().clear();
-                        imageView.setEffect(boxBlur);
-                        imageView.setOnMouseClicked(null);
-                    }
-                    if(selectedImages.size() == 3){
-                        thirdImage.setImage(imageView.getImage());
-                        BoxBlur boxBlur = new BoxBlur();
-                        boxBlur.setWidth(4); // Modifica la larghezza dello sfocato
-                        boxBlur.setHeight(4); // Modifica l'altezza dello sfocato
-                        boxBlur.setIterations(2); // Modifica il numero di iterazioni dello sfocato
-                        imageView.getStyleClass().clear();
-                        imageView.setEffect(boxBlur);
-                        imageView.setOnMouseClicked(null);
-                }
+            try {
+                sendTileSelected(boardGridPane.getRowIndex(imageView), boardGridPane.getColumnIndex(imageView));
+            } catch (IllegalMoveException e) {
+                throw new RuntimeException(e);
             }
         });
     }
+
+
+    public Choice sendTileSelected(int row, int column) throws IllegalMoveException {
+        Choice choice = ChoiceFactory.createChoice(new Player(currentPlayerNickname), "SELECT_TILE " + row + " " + column);
+        return choice;
+    }
+
 
     /**
      * Method bound to the button "Confirm" that will send the request to the server after the user has selected the tiles to draw from the board
@@ -663,29 +635,52 @@ public class GUIApplication extends Application {
         secondImage.setImage(null);
         thirdImage.setImage(null);
 
+        BoxBlur boxBlur = new BoxBlur();
+        boxBlur.setWidth(4); // Modifica la larghezza dello sfocato
+        boxBlur.setHeight(4); // Modifica l'altezza dello sfocato
+        boxBlur.setIterations(2); // Modifica il numero di iterazioni dello sfocato
+
+        resetButton.setVisible(false);
+        if(selectedTiles.size() > 0){
+            //Button reset visibility
+            resetButton.setVisible(true);
+        } else
+
         if(selectedTiles.size() == 1){
-            Image image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(0).getRow() + 1, selectedTiles.get(0).getColumn() + 1).getImage();
-            firstImage.setImage(image);
-            removeTileFromBoard(selectedTiles.get(0).getRow() +1, selectedTiles.get(0).getColumn() + 1);
+            ImageView image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(0).getRow() + 1, selectedTiles.get(0).getColumn() + 1);
+            firstImage.setImage(image.getImage());
+            image.getStyleClass().clear();
+            image.setEffect(boxBlur);
+            image.setOnMouseClicked(null);
 
         } else if (selectedTiles.size() == 2) {
-            Image image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(0).getRow() + 1, selectedTiles.get(0).getColumn() + 1).getImage();
-            firstImage.setImage(image);
-            removeTileFromBoard(selectedTiles.get(0).getRow() +1, selectedTiles.get(0).getColumn() + 1);
-            image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(1).getRow() + 1, selectedTiles.get(1).getColumn() + 1).getImage();
-            secondImage.setImage(image);
-            removeTileFromBoard(selectedTiles.get(1).getRow() +1, selectedTiles.get(1).getColumn() + 1);
+            ImageView image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(0).getRow() + 1, selectedTiles.get(0).getColumn() + 1);
+            firstImage.setImage(image.getImage());
+            image.getStyleClass().clear();
+            image.setEffect(boxBlur);
+            image.setOnMouseClicked(null);
+            image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(1).getRow() + 1, selectedTiles.get(1).getColumn() + 1);
+            secondImage.setImage(image.getImage());
+            image.getStyleClass().clear();
+            image.setEffect(boxBlur);
+            image.setOnMouseClicked(null);
 
         } else if (selectedTiles.size() == 3) {
-            Image image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(0).getRow() + 1, selectedTiles.get(0).getColumn() + 1).getImage();
-            firstImage.setImage(image);
-            removeTileFromBoard(selectedTiles.get(0).getRow() +1, selectedTiles.get(0).getColumn() + 1);
-            image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(1).getRow() + 1, selectedTiles.get(1).getColumn() + 1).getImage();
-            secondImage.setImage(image);
-            removeTileFromBoard(selectedTiles.get(1).getRow() +1, selectedTiles.get(1).getColumn() + 1);
-            image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(2).getRow() + 1, selectedTiles.get(2).getColumn() + 1).getImage();
-            thirdImage.setImage(image);
-            removeTileFromBoard(selectedTiles.get(2).getRow() +1, selectedTiles.get(2).getColumn() + 1);
+            ImageView image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(0).getRow() + 1, selectedTiles.get(0).getColumn() + 1);
+            firstImage.setImage(image.getImage());
+            image.getStyleClass().clear();
+            image.setEffect(boxBlur);
+            image.setOnMouseClicked(null);
+            image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(1).getRow() + 1, selectedTiles.get(1).getColumn() + 1);
+            secondImage.setImage(image.getImage());
+            image.getStyleClass().clear();
+            image.setEffect(boxBlur);
+            image.setOnMouseClicked(null);
+            image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(2).getRow() + 1, selectedTiles.get(2).getColumn() + 1);
+            thirdImage.setImage(image.getImage());
+            image.getStyleClass().clear();
+            image.setEffect(boxBlur);
+            image.setOnMouseClicked(null);
 
         }
     }

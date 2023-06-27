@@ -1,5 +1,6 @@
 package GC_11.view.Lobby;
 
+import GC_11.network.message.LobbyViewMessage;
 import GC_11.view.GUI.GUIApplication;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -88,10 +89,17 @@ public class LobbyGUIView extends Application {
         confirmName.setOnAction(event -> sendNumberOfPlayer());
     }
 
+    public void updatePlayerList(LobbyViewMessage message) {
+        List<String> players = message.getPlayersNames();
+        listPlayers.setText("");
+        for(String player : players)
+            listPlayers.appendText(player + "\n");
+    }
+
     public void changeScene(Stage primaryStage){
         GUIApplication guiApplication = new GUIApplication();
         try {
-            guiApplication.start(new Stage());
+            guiApplication.start(primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
