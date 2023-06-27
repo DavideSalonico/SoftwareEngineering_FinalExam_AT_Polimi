@@ -426,7 +426,8 @@ public class GUIApplication extends Application {
 
         imageView.setOnMouseClicked(event -> {
             try {
-                sendTileSelected(boardGridPane.getRowIndex(imageView), boardGridPane.getColumnIndex(imageView));
+                createChoice("SELECT_TILE " + boardGridPane.getRowIndex(imageView) + " " + boardGridPane.getColumnIndex(imageView));
+
             } catch (IllegalMoveException e) {
                 throw new RuntimeException(e);
             }
@@ -434,41 +435,27 @@ public class GUIApplication extends Application {
     }
 
 
-    public Choice sendTileSelected(int row, int column) throws IllegalMoveException {
-        Choice choice = ChoiceFactory.createChoice(new Player(currentPlayerNickname), "SELECT_TILE " + row + " " + column);
-        return choice;
+
+
+    public void getChoice(){
+
     }
-
-
-    /**
-     * Method bound to the button "Confirm" that will send the request to the server after the user has selected the tiles to draw from the board
-     */
-    public void selectionTilesConfirmed(){
-        if(selectedImages.size() == 0){
-            System.out.println("Select at least one tile !");
-        }else{
-            System.out.println("Request to server...");
-            // Make the request to the server
-        }
-    }
-
 
     int columnSelected = 0;
     /**
      * Method bound to every button of the column selector that will set the columnSelected variable to the column selected
      * @param event to get the id of the button pressed
      */
-    public String selectColumn(ActionEvent event){
+    public void selectColumn(ActionEvent event) throws IllegalMoveException {
         if(selectedImages.size() == tilesOrdered.size() && selectedImages.size() != 0){
             setError("");
             Button button = (Button) event.getSource();
-            columnSelected = columnSelector.getButtons().indexOf(button) + 1;
+            columnSelected = columnSelector.getButtons().indexOf(button);
             System.out.println("PICK_COLUMN: " + columnSelected);
             columnSelector.setDisable(true);
-            return "PICK_COLUMN: " + columnSelected;
+            createChoice("PICK_COLUMN: " + columnSelected);
         }else {
             setError("Select and order all the tiles first !");
-            return "Select all the tiles first !";
         }
     }
 
@@ -726,7 +713,7 @@ public class GUIApplication extends Application {
     /**
      * Method bound to the button "Confirm" that will send the request to the server after the user has selected the column where to place the tile
      */
-    public String confirmTilesOrder(){
+    public String confirmTilesOrder() throws IllegalMoveException {
         if(selectedImages.size() != 0){
             System.out.println(chooseOrder());
 
@@ -734,11 +721,19 @@ public class GUIApplication extends Application {
                 node.setOnMouseClicked(null);
                 node.getStyleClass().clear();
             }
-            return chooseOrder();
+            createChoice(chooseOrder());
         }
         setError("You have to select at least one tile and order it!");
         return "You have to select at least one tile!";
     }
+
+    public void createChoice(String input) throws IllegalMoveException {
+        Choice choice = ChoiceFactory.createChoice(new Player(currentPlayerNickname), input);
+        this.client.notifyServer(choice);
+    }
+
+
+
 
     /**
      * Method that update all the chat at every update received from the server
