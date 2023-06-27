@@ -16,24 +16,6 @@ public interface ServerRMI extends Remote, Server {
     void register(Client client) throws RemoteException;
 
     /**
-     * update the model of the game with the choice of the client
-     *
-     * @param client
-     * @param choice
-     * @throws RemoteException
-     */
-    void updateGame(Client client, Choice choice) throws RemoteException;
-
-    /**
-     * update the model of the lobby with the choice of the client
-     *
-     * @param client
-     * @param choice
-     * @throws RemoteException
-     */
-    void updateLobby(Client client, Choice choice) throws RemoteException;
-
-    /**
      * notify the clients that the game is updated
      *
      * @throws RemoteException

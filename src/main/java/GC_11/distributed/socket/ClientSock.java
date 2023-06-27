@@ -55,7 +55,7 @@ public class ClientSock implements PropertyChangeListener, Client {
         this.port = port;
         this.ip = ip;
         this.graphicInterface=gInterface;
-        this.view = new GameCLI(null,this);
+        this.view = new GameCLI(null,this); //TODO: change this to the right view
 
         try {
             System.out.println("Connecting to server on port " + port);

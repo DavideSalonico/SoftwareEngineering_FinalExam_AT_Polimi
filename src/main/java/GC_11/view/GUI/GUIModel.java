@@ -16,29 +16,22 @@ import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 
 public class GUIModel extends View {
-
-    private Choice playerChoice;
     private Client client;
-    private ClientSock clientSock;
     private String nickname;
-    private PropertyChangeListener listener;
-
-    public GUIView view;
+    public GUIView guiView;
 
 
     /**
      * Every view is bound at only one player, it helps to manage every input that the controller receive
      */
 
-    public GUIModel(String nickname, Client client) {
+    public GUIModel(Client client) {
         super();
-        this.nickname = nickname;
         this.client = client;
-        Application.launch(GUIView.class);
     }
 
-    public void setPlayerChoice(Choice c) {
-        this.playerChoice = c;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public void setModelView(GameViewMessage modelView) {
@@ -68,11 +61,11 @@ public class GUIModel extends View {
     @Override
     public void show() {
         if (this.modelView.isError()) {
-            view.setError(this.modelView.getExceptionMessage());
+            guiView.setError(this.modelView.getExceptionMessage());
         }else{
-            view.setError("");
+            guiView.setError("");
             try {
-                this.view.updatePlayer(modelView.getBoard(),modelView.getPlayer(modelView.getCurrentPlayer()));
+                this.guiView.updatePlayer(modelView.getBoard(),modelView.getPlayer(modelView.getCurrentPlayer()));
             } catch (ColumnIndexOutOfBoundsException e) {
                 throw new RuntimeException(e); //TODO handle this exception
             }
@@ -107,7 +100,7 @@ public class GUIModel extends View {
     @Override
     public Choice getPlayerChoice() {
             try {
-                String input = view.chooseOrder(); // chooseOrder() returns a string that represents the choice of the player but it is called by the view BUTTON
+                String input = guiView.chooseOrder(); // chooseOrder() returns a string that represents the choice of the player but it is called by the view BUTTON
                 return ChoiceFactory.createChoice(this.modelView.getPlayer(this.nickname), input);
             } catch (IllegalMoveException e) {
                 System.err.println("Invalid CHOICE, Please retake.");

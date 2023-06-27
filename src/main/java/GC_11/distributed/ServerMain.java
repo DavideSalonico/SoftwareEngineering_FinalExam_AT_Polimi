@@ -108,25 +108,6 @@ public class ServerMain implements PropertyChangeListener {
 
     }
 
-
-    /**
-     * Notifies all clients with the given gameViewMessage.
-     * Adjusts the message for each client and sends it through the corresponding server type.
-     */
-
-    public void notifyClientsLobby() {
-
-            if (serverRMI.getClients().size()>0) {
-                serverRMI.notifyClientsLobby(new LobbyViewMessage(this.controller.getLobby()));
-            }
-            if (serverSocket.getSocketMap().size()>0){
-                this.serverSocket.notifyCLientsLobby(new LobbyViewMessage(this.controller.getLobby()));
-            } else {
-                System.out.println("Unable to notify lobby because no clients are connected");
-            }
-
-    }
-
     /**
      * Asks the first player for the maximum number of players in the lobby.
      * Updates the lobby's maximum players value.

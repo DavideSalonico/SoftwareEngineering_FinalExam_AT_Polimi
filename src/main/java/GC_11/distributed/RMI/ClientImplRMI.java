@@ -54,9 +54,7 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
             this.view = new GameCLI(this.nickname, this);
         }
         else{
-            // creare la logica della lobby GUI per il momento uso la CLI
-            this.view = new GUIModel(this.nickname, this);
-            Application.launch(GUIView.class);
+            this.view = new GUIModel(this);
         }
     }
 

@@ -24,13 +24,7 @@ import java.util.List;
 
 public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Serializable {
 
-    private Controller gameController;
-
     private Game gameModel;
-
-    private Lobby lobbyModel;
-
-    private int maxPlayer;
     private List<Client> clients = new ArrayList<>();
 
     private ServerMain serverMain;
@@ -82,20 +76,6 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
         clients.add(client);
         serverMain.addConnection(client.getNickname(), this);
 
-    }
-
-    @Override
-    public void updateGame(Client client, Choice choice) throws RemoteException{
-        //PropertyChangeEvent evt = new PropertyChangeEvent(client, "choice made", null, choice);
-        System.out.println(client.getNickname() + ": " + choice.getType());
-        //this.gameController.propertyChange(evt);
-        this.serverMain.makeAMove(choice);
-    }
-
-    @Override
-    public void updateLobby(Client client, Choice choice) throws RemoteException {
-        PropertyChangeEvent evt = new PropertyChangeEvent(client, "choice made", null, choice);
-        this.gameController.propertyChange(evt);
     }
 
     public synchronized void notifyClients(PropertyChangeEvent evt) {
