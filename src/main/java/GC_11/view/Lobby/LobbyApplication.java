@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class LobbyGUIView extends Application {
+public class LobbyApplication extends Application {
 
     public Button confirmName;
     public TextField clientNickname;
@@ -26,6 +26,10 @@ public class LobbyGUIView extends Application {
 
     public TextArea errorArea;
     public Label text;
+
+    public LobbyApplication(){
+        new Thread(()->Application.launch(LobbyApplication.class)).start();
+    }
 
     public void initialize() {
         confirmName.setDisable(true);

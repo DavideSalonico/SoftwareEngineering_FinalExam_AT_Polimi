@@ -7,6 +7,7 @@ import GC_11.network.message.GameViewMessage;
 import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
 import GC_11.network.message.LobbyViewMessage;
+import GC_11.view.Lobby.LobbyApplication;
 import GC_11.view.View;
 
 import java.beans.PropertyChangeEvent;
@@ -15,6 +16,7 @@ public class GUI extends View {
     private Client client;
     private String nickname;
     public GUIApplication guiApplication;
+    public LobbyApplication lobbyApplication;
 
 
     /**
@@ -24,7 +26,8 @@ public class GUI extends View {
     public GUI(Client client) {
         super();
         this.client = client;
-        this.guiApplication = new GUIApplication();
+        this.lobbyApplication = new LobbyApplication();
+        //this.guiApplication = new GUIApplication();
     }
 
     public void setNickname(String nickname) {
