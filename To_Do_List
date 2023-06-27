@@ -121,6 +121,12 @@ Appunti sulla GUI:
 
 
 
+- FAI controller della Lobby e del Game
+- Metti ad FXML qualsiasi metodo associato ai componenti della View
+- Ogni metodo esterno di aggiornamento di View devi mettere PLATFORM.RUNLATER() perchè è un thread esterno che deve aggiornare la GUI
+    usa lambda expression, PLATFORM.RUNLATER(()->{metodoDaEseguire();});
+- Classe application contiene solo solo start()
+
 
 
 

@@ -11,7 +11,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Lobby implements PropertyChangeListener {
+public class Lobby {
     private int maxPlayers = 1;
     private List<String> playersNames = new ArrayList<String>();
     private PropertyChangeListener listener;
@@ -25,6 +25,12 @@ public class Lobby implements PropertyChangeListener {
     public synchronized void addPlayer(String playerName) throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
         if (playersNames.size() < maxPlayers && !playersNames.contains(playerName)) {
             playersNames.add(playerName);
+            PropertyChangeEvent evt = new PropertyChangeEvent(
+                    this,
+                    "EXCEPTION",
+                    null,
+                    new LobbyViewMessage(this, null));
+            //this.listener.propertyChange(evt);
         } else if (this.isFull()) {
             throw new ExceededNumberOfPlayersException();
         } else if (this.nameAlreadyTaken(playerName)) {
@@ -66,16 +72,7 @@ public class Lobby implements PropertyChangeListener {
                 "EXCEPTION",
                 null,
                 new LobbyViewMessage(this, e));
-        //TODO: CREA LOBBY VIEW FATTA BENE
         this.listener.propertyChange(evt);
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        this.listener.propertyChange(new PropertyChangeEvent(this,
-                "lobbyModel",
-                null,
-                this));
     }
 
     public void setListener(PropertyChangeListener listener) {

@@ -12,6 +12,7 @@ public enum ChoiceType {
     PONG,
     ADD_PLAYER,
     SET_MAX_NUMBER,
+    LOAD_GAME,
     SHOW_CHAT;
 
     public static String askParams(String input) {

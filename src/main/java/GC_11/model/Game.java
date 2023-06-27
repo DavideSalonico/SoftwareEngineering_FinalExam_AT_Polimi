@@ -1,6 +1,7 @@
 package GC_11.model;
 
 import GC_11.controller.JsonReader;
+import GC_11.controller.JsonWriter;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.model.common.*;
 import GC_11.network.message.GameViewMessage;
@@ -274,6 +275,7 @@ public class Game implements PropertyChangeListener, Serializable {
                 null,
                 new GameViewMessage(this, null));
         listener.propertyChange(e);
+        JsonWriter.saveGame(this);
     }
 
     public void triggerException(Exception e) {

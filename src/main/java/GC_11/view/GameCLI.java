@@ -3,8 +3,6 @@ package GC_11.view;
 //TODO: 2) cambiare il metodo run con quello aggiornato di dave
 
 import GC_11.distributed.Client;
-import GC_11.distributed.socket.ClientSock;
-import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.IllegalMoveException;
 import GC_11.model.Message;
 import GC_11.model.Player;
@@ -15,10 +13,10 @@ import GC_11.network.choices.ChoiceType;
 import GC_11.network.message.GameViewMessage;
 import GC_11.network.message.LobbyViewMessage;
 
-import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
@@ -42,48 +40,6 @@ public class GameCLI extends View {
         this.client = client;
     }
 
-    /*@Override
-    public synchronized void run(){
-        Choice choice;
-         show();
-            System.out.println("\n\nIT IS THE TURN OF: " + this.modelView.getCurrentPlayer());
-            if (this.modelView.getCurrentPlayer().equals(this.nickname)) {
-                choice = getPlayerChoice();
-                System.out.println("scelta fatta");
-                try {
-                    this.sendChoice(choice);
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e); //TODO: handle this exception
-                }
-            }
-            else {
-                    this.printChat();
-                    Scanner s = new Scanner(System.in);
-                    while (true) {
-                        System.out.println("Do you want to send a message? (yes/no)");
-                        String input = s.nextLine();
-                        if(input.equals("yes")) {
-                            try {
-                                input = ChoiceType.askParams("SEND_MESSAGE");
-                                choice = ChoiceFactory.createChoice(this.modelView.getPlayer(this.nickname), input);
-                                System.out.println();
-                                try {
-                                    this.sendChoice(choice);
-                                } catch (RemoteException e) {
-                                    throw new RuntimeException(e); //TODO: handle this exception
-                                }
-                                break;
-                            } catch (IllegalMoveException e) {
-                                System.err.println("Invalid type: " + input + " Please retake." + e.getMessage());
-                            }
-                        }else if(input.equals("no"))
-                            System.out.println("OK!");
-                            break;
-                    }
-            }
-    }
-
-     */
     @Override
     public void askNickname() {
         System.out.println("Hi, welcome to MyShelfie. Please insert your nickname: ");
@@ -103,7 +59,7 @@ public class GameCLI extends View {
         Scanner s = new Scanner(System.in);
         String maxNumber = s.nextLine();
         try{
-            int max = parseInt(maxNumber);
+            parseInt(maxNumber);
         }catch (NumberFormatException e){
             System.out.println("Please insert a number");
             askMaxNumber();
@@ -113,6 +69,18 @@ public class GameCLI extends View {
             } catch (RemoteException | IllegalMoveException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @Override
+    public void askLoadGame() {
+        System.out.println("Do you want to load a previous game? (yes/no)");
+        Scanner s = new Scanner(System.in);
+        String answer = s.nextLine();
+        try {
+            this.client.notifyServer(ChoiceFactory.createChoice(null, "LOAD_GAME " + answer));
+        } catch (RemoteException | IllegalMoveException e) {
+            e.printStackTrace();
         }
     }
 
@@ -148,18 +116,14 @@ public class GameCLI extends View {
         }
     }
 
-
     @Override
-    public void show() {
+    public void show(){
         if (this.modelView.isError()) {
             System.out.println(this.modelView.getExceptionMessage());
         }
         else {
             //Player current = this.modelView.getCurrentPlayer();
             System.out.println("*****************************************************");
-
-            //Printing Board
-            this.modelView.getBoard().print();
 
             //Printing CommonGoalCards
             int i = 1;
@@ -184,11 +148,28 @@ public class GameCLI extends View {
                     p.getPersonalGoal().print();
                 }
             }
-            System.out.println("\n\nIT IS THE TURN OF: " + this.modelView.getCurrentPlayer());
-            if (this.modelView.getCurrentPlayer().equals(this.nickname)) {
-                this.printOptions();
-            }else
-                System.out.println("\nMake a move: [SHOW_CHAT,SEND_MESSAGE]");
+
+            //Printing Board
+            this.modelView.getBoard().print();
+
+            if(!this.modelView.isEndGame()){
+                System.out.println("\n\nIT IS THE TURN OF: " + this.modelView.getCurrentPlayer());
+                if (this.modelView.getCurrentPlayer().equals(this.nickname)) {
+                    this.printOptions();
+                }else
+                    System.out.println("\nMake a move: [SHOW_CHAT,SEND_MESSAGE]");
+            }
+            //Case game is finished
+            else{
+                System.out.println("\n\nTHE GAME IS FINISHED");
+                System.out.println("THE WINNER IS: " + this.modelView.getWinner());
+                try {
+                    TimeUnit.SECONDS.sleep(20);
+                } catch (InterruptedException e) {
+                    System.exit(1);
+                }
+                System.exit(0);
+            }
         }
     }
 
@@ -215,7 +196,7 @@ public class GameCLI extends View {
             }
         }
         alreadyReading= false;
-        System.out.println("scelta fatta");
+        System.out.println("Choice made: " + choice.getType());
         try {
             this.sendChoice(choice);
         } catch (RemoteException e) {
@@ -232,6 +213,9 @@ public class GameCLI extends View {
     private void printOptions(){
         System.out.println("\nOptions available: " +
                 Arrays.stream(ChoiceType.values())
+                        .filter(choice -> choice != ChoiceType.PONG &&
+                                choice != ChoiceType.ADD_PLAYER &&
+                                choice != ChoiceType.SET_MAX_NUMBER)
                         .map(ChoiceType::name)
                         .collect(
                                 Collectors.joining(",", "[", "]")));

@@ -5,6 +5,8 @@ import GC_11.exceptions.*;
 import GC_11.model.*;
 import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceType;
+import GC_11.network.message.AskLoadGame;
+import GC_11.network.message.GameViewMessage;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -28,6 +30,8 @@ public class Controller implements PropertyChangeListener {
     private Lobby lobby;
     private ChoiceType lastChoice = ChoiceType.RESET_TURN;
     private ServerMain server;
+
+    private boolean setOldGameAvailable = false;
 
     /**
      * Generic constructor of Controller with only the model
@@ -222,6 +226,7 @@ public class Controller implements PropertyChangeListener {
         if(end){
             this.model.setLastTurn(true);
         }
+        JsonWriter.saveGame(this.model);
     }
 
     private int paramsToColumnIndex(List<String> parameters) throws IllegalMoveException {
@@ -329,10 +334,42 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void startGame(){
-        this.model = new Game(this.lobby.getPlayers(), this.server);
+        // Check if players' name are the same in the JSON file
+        List<String> playersInJsonFile = JsonWriter.getNicknames();
+        // If the number of players is the same
+        boolean equals = true;
+        if (playersInJsonFile.size() == lobby.getPlayers().size()){
+
+            // For every player's nickname in the JsonFile check if it's present in the lobby
+            for (String playerNickname : playersInJsonFile){
+                // If it's not present in the lobby, set equals to false
+                if (!lobby.getPlayers().contains(playerNickname)){
+                    equals = false;
+                }
+            }
+        }
+        // If the players' nicknames matches, ask the first player if he wants to load the game
+        if (equals)
+        {
+            this.setOldGameAvailable=true;
+            this.server.notifyClient(new AskLoadGame(), this.lobby.getPlayers().get(0));
+        }
+        else{
+            this.model = new Game(this.lobby.getPlayers(), this.server);
+            this.server.notifyClients(new GameViewMessage(this.model, null));
+        }
+
     }
 
     public ServerMain getServer() {
         return this.server;
+    }
+
+    public void setOldGameAvailable(boolean b){
+        this.setOldGameAvailable=b;
+    }
+
+    public void setGame(Game model){
+        this.model=model;
     }
 }
