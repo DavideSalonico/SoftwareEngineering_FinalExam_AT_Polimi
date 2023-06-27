@@ -230,7 +230,7 @@ public class ServerClientHandler implements Runnable {
         }
         //this.readThread.interrupt();
         //this.server.notifyDisconnectionAllSockets(this.clientSocket, this);
-        this.server.getServerMain().removeConnection(this.nickname);
+        //this.server.getServerMain().removeConnection(this.nickname);
 
     }
 

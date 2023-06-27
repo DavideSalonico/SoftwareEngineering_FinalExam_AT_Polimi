@@ -201,6 +201,9 @@ public class GameCLI extends View {
     private void printOptions(){
         System.out.println("\nOptions available: " +
                 Arrays.stream(ChoiceType.values())
+                        .filter(choice -> choice != ChoiceType.PONG &&
+                                choice != ChoiceType.ADD_PLAYER &&
+                                choice != ChoiceType.SET_MAX_NUMBER)
                         .map(ChoiceType::name)
                         .collect(
                                 Collectors.joining(",", "[", "]")));
