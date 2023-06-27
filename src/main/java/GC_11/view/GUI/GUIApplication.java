@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -436,6 +437,8 @@ public class GUIApplication extends Application {
 
             } catch (IllegalMoveException e) {
                 throw new RuntimeException(e);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
             }
         });
     }
@@ -452,7 +455,7 @@ public class GUIApplication extends Application {
      * Method bound to every button of the column selector that will set the columnSelected variable to the column selected
      * @param event to get the id of the button pressed
      */
-    public void selectColumn(ActionEvent event) throws IllegalMoveException {
+    public void selectColumn(ActionEvent event) throws IllegalMoveException, RemoteException {
         if(selectedImages.size() == tilesOrdered.size() && selectedImages.size() != 0){
             setError("");
             Button button = (Button) event.getSource();
@@ -719,7 +722,7 @@ public class GUIApplication extends Application {
     /**
      * Method bound to the button "Confirm" that will send the request to the server after the user has selected the column where to place the tile
      */
-    public String confirmTilesOrder() throws IllegalMoveException {
+    public String confirmTilesOrder() throws IllegalMoveException, RemoteException {
         if(selectedImages.size() != 0){
             System.out.println(chooseOrder());
 
@@ -733,7 +736,7 @@ public class GUIApplication extends Application {
         return "You have to select at least one tile!";
     }
 
-    public void createChoice(String input) throws IllegalMoveException {
+    public void createChoice(String input) throws IllegalMoveException, RemoteException {
         Choice choice = ChoiceFactory.createChoice(new Player(currentPlayerNickname), input);
         this.client.notifyServer(choice);
     }
