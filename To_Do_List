@@ -10,7 +10,7 @@ TO DO LIST:
 4) Far vedere tutti i nickname dei giocatori e i loro punteggi posizionandoli affiancati alle rispettive Shelf
 
 5) Capire come eseguire una corretta astrazione della GUI suddividendola correttamente tra file FXML (sceneBuilder), CSS,
-    Controller e Classe per lanciare la GUI (al momento tutto concentrata in GUIView)
+    Controller e Classe per lanciare la GUI (al momento tutto concentrata in GUIApplication)
 
 6) Gestire gli eventi relativi al click da parte di un utente
 
