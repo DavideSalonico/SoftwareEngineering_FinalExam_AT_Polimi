@@ -3,7 +3,7 @@ package GC_11.model;
 import GC_11.controller.JsonReader;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.model.common.*;
-import GC_11.network.GameViewMessage;
+import GC_11.network.message.GameViewMessage;
 import GC_11.util.CircularList;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,15 +24,15 @@ public class Game implements PropertyChangeListener, Serializable {
     private List<CommonGoalCard> commonGoals;
     private Player currentPlayer;
     private boolean endGame;
+    private boolean lastTurn;
     private String endPlayer;
     private Board board;
     private Chat chat;
     public transient PropertyChangeListener listener;
 
     public Game(@NotNull List<String> playerNames, PropertyChangeListener listener) {
-
         Random random = new Random();
-        this.players = new CircularList<>();//int[] idArray = random.ints(playerNames.size(), 1, 12).distinct().toArray(); // TODO RISOLVERE IL PROBLEMA DELLE CARTE PERSONALI
+        this.players = new CircularList<>();
         int[] idArray = generateSetOfRandomNumber(playerNames.size(), 0, 11);
         for (int i = 0; i < playerNames.size(); i++) {
             System.out.println("int i = " + i);
@@ -48,6 +48,7 @@ public class Game implements PropertyChangeListener, Serializable {
         }
         this.currentPlayer = this.players.get(0);
         this.endGame = false;
+        this.lastTurn = false;
         this.commonGoals = new ArrayList<CommonGoalCard>();
         this.board = new Board(players.size());
         this.board.setListener(this);
@@ -88,9 +89,13 @@ public class Game implements PropertyChangeListener, Serializable {
         this.commonGoals.get(1).getWinningPlayers().addAll(winningPlayers2);
         this.commonGoals.get(0).setListener(this);
         this.commonGoals.get(1).setListener(this);
-
     }
 
+    /**
+     * Return the current player from a given nickname
+     * @param nickname the nickname of the current player
+     * @return the player with the given nickname
+     */
     private Player getCurrentPlayer(String nickname){
         for(Player p : players){
             if(p.getNickname().equals(nickname))
@@ -99,6 +104,11 @@ public class Game implements PropertyChangeListener, Serializable {
         return null;
     }
 
+    /**
+     * Method to generate the common goals cards
+     * @param i the index of the common goal card
+     * @return the corresponding common goal card
+     */
     private CommonGoalCard loadCommon(int i) {
         switch (i) {
             case 0:
@@ -131,6 +141,10 @@ public class Game implements PropertyChangeListener, Serializable {
 
     }
 
+    /**
+     * Method to get the list of players
+     * @return the list of players
+     */
     public CircularList<Player> getPlayers() {
         return players;
     }
@@ -143,6 +157,10 @@ public class Game implements PropertyChangeListener, Serializable {
         return commonGoals.get(i);
     }
 
+    /**
+     * Method to get the list of common goals
+     * @return the list of common goals
+     */
     public List<CommonGoalCard> getCommonGoal() {
         return commonGoals;
     }
@@ -151,28 +169,40 @@ public class Game implements PropertyChangeListener, Serializable {
         commonGoals.set(index, c);
     }
 
+    /**
+     * @return the current player
+     */
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
+
 
     public Player getPlayers(int i) {
         return players.get(i);
     }
 
+    /**
+     * Set the next player as current player
+     * @return true if the last turn is started, false otherwise
+     */
     public boolean setNextCurrent() {
         this.currentPlayer = this.players.get(this.players.indexOf(this.currentPlayer) + 1);
-        if(this.currentPlayer.getNickname().equals(this.endPlayer)){
+        if(this.currentPlayer.getNickname().equals(this.players.get(0).getNickname()) && this.lastTurn){
             return true;
         }
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "CHANGED_CURRENT_PLAYER",
                 null,
-                new GameViewMessage(this, null, null));
+                new GameViewMessage(this, null));
         this.listener.propertyChange(evt);
         System.out.println("Set next current player: " + this.currentPlayer.getNickname());
         return false;
     }
+
+    /**
+     * Method to get the last Turn
+     */
 
     public boolean isEndGame() {
         return this.endGame;
@@ -189,6 +219,9 @@ public class Game implements PropertyChangeListener, Serializable {
 
     }
 
+    /**
+     * Method to get the endPlayer
+     */
     public String getEndPlayer() {
         return endPlayer;
     }
@@ -235,19 +268,31 @@ public class Game implements PropertyChangeListener, Serializable {
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        listener.propertyChange(evt);
+        PropertyChangeEvent e = new PropertyChangeEvent(
+                evt.getSource(),
+                evt.getPropertyName(),
+                null,
+                new GameViewMessage(this, null));
+        listener.propertyChange(e);
     }
 
-    public void triggerException(Exception e) throws RemoteException {
+    public void triggerException(Exception e) {
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "EXCEPTION TRIGGERED",
                 null,
-                e);
+                new GameViewMessage(this, e));
         this.listener.propertyChange(evt);
         System.out.println("Triggered exception\n" + e.getMessage());
     }
 
+    /**
+     * Method to generate a set of random numbers
+     * @param size the size of the set
+     * @param min the minimum value of the set
+     * @param max the maximum value of the set
+     * @return
+     */
     private int[] generateSetOfRandomNumber(int size, int min, int max) {
         Random random = new Random();
         Set<Integer> generatedNumbers = new HashSet<>();
@@ -264,6 +309,10 @@ public class Game implements PropertyChangeListener, Serializable {
         return generatedNumbers.stream().mapToInt(Integer::intValue).toArray();
     }
 
+    /**
+     * Method to get the chat
+     * @return the chat
+     */
     public Chat getChat() {
         return chat;
     }
@@ -273,9 +322,15 @@ public class Game implements PropertyChangeListener, Serializable {
                 this,
                 "END GAME",
                 null,
-                null);
+                new GameViewMessage(this, null));
         this.listener.propertyChange(evt);
     }
 
-
+    /**
+     * Method to set the last turn
+     * @param b true if it's the last turn, false otherwise
+     */
+    public void setLastTurn(boolean b) {
+        this.lastTurn = b;
+    }
 }

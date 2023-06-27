@@ -16,12 +16,12 @@ class CommonGoalCard2Test {
 
     CommonGoalCard2 carta = new CommonGoalCard2();
     Player player = new Player();
-    Tile blue = new Tile(TileColor.BLUE);
-    Tile cyan = new Tile(TileColor.CYAN);
-    Tile green = new Tile(TileColor.GREEN);
-    Tile yellow = new Tile(TileColor.YELLOW);
-    Tile purple = new Tile(TileColor.PURPLE);
-    Tile white = new Tile(TileColor.WHITE);
+    Tile blue = new Tile(TileColor.BLUE, 0);
+    Tile cyan = new Tile(TileColor.CYAN, 0);
+    Tile green = new Tile(TileColor.GREEN, 0);
+    Tile yellow = new Tile(TileColor.YELLOW, 0);
+    Tile purple = new Tile(TileColor.PURPLE, 0);
+    Tile white = new Tile(TileColor.WHITE, 0);
 
     List<Tile> blues = Arrays.asList(blue,blue,blue);
     List<Tile> cyans = Arrays.asList(cyan,cyan,cyan);

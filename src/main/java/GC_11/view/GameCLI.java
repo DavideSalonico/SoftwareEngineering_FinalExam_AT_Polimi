@@ -2,16 +2,17 @@ package GC_11.view;
 //TODO: 1) Implementare COME LA SCELTA DEL GIOCAGORE VA AL SERVER E QUINDI AL CONTROLLER E POI AL GAME
 //TODO: 2) cambiare il metodo run con quello aggiornato di dave
 
-import GC_11.distributed.ClientRMI;
+import GC_11.distributed.Client;
 import GC_11.distributed.socket.ClientSock;
 import GC_11.exceptions.IllegalMoveException;
-import GC_11.network.GameViewMessage;
 import GC_11.model.Message;
 import GC_11.model.Player;
 import GC_11.model.common.CommonGoalCard;
 import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
 import GC_11.network.choices.ChoiceType;
+import GC_11.network.message.GameViewMessage;
+import GC_11.network.message.LobbyViewMessage;
 
 import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
@@ -21,39 +22,36 @@ import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
 
-public class GameCLI extends ViewGame {
+public class GameCLI extends View {
 
-    // private final Choice controllerChoice;
-    private ClientRMI client;
-    private ClientSock clientSock;
+    private Client client;
 
-    // private final Outcome outcome;
+    private boolean firstTime = true;
+
 
     /**
      * Every view is bound at only one player, it helps to manage every input that the controller receive
      */
 
-    public GameCLI(String nickname, ClientRMI client) {
+    public GameCLI(String nickname, Client client) {
         super();
         this.nickname = nickname;
         this.client = client;
     }
 
-    public GameCLI(String nickname,ClientSock client) {
-        super();
-        this.nickname = nickname;
-        this.clientSock = client;
-    }
-
     @Override
-    public synchronized void run() throws RemoteException {
+    public synchronized void run(){
         Choice choice;
          show();
             System.out.println("\n\nIT IS THE TURN OF: " + this.modelView.getCurrentPlayer());
             if (this.modelView.getCurrentPlayer().equals(this.nickname)) {
                 choice = getPlayerChoice();
                 System.out.println("scelta fatta");
-                this.sendChoice(choice);
+                try {
+                    this.sendChoice(choice);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e); //TODO: handle this exception
+                }
             }
             else {
                     this.printChat();
@@ -66,7 +64,11 @@ public class GameCLI extends ViewGame {
                                 input = ChoiceType.askParams("SEND_MESSAGE");
                                 choice = ChoiceFactory.createChoice(this.modelView.getPlayer(this.nickname), input);
                                 System.out.println();
-                                this.sendChoice(choice);
+                                try {
+                                    this.sendChoice(choice);
+                                } catch (RemoteException e) {
+                                    throw new RuntimeException(e); //TODO: handle this exception
+                                }
                                 break;
                             } catch (IllegalMoveException e) {
                                 System.err.println("Invalid type: " + input + " Please retake." + e.getMessage());
@@ -77,6 +79,71 @@ public class GameCLI extends ViewGame {
                     }
             }
     }
+
+    @Override
+    public void askNickname() {
+        System.out.println("Hi, welcome to MyShelfie. Please insert your nickname: ");
+        Scanner s = new Scanner(System.in);
+        String nickname = s.nextLine();
+        try {
+            this.client.notifyServer(ChoiceFactory.createChoice(null, "ADD_PLAYER " + nickname));
+            this.nickname = nickname;
+        } catch (RemoteException | IllegalMoveException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void askMaxNumber() {
+        System.out.println("Please insert the max number of players: ");
+        Scanner s = new Scanner(System.in);
+        String maxNumber = s.nextLine();
+        try{
+            int max = parseInt(maxNumber);
+        }catch (NumberFormatException e){
+            System.out.println("Please insert a number");
+            askMaxNumber();
+        }finally {
+            try {
+                this.client.notifyServer(ChoiceFactory.createChoice(null, "SET_MAX_NUMBER " + maxNumber));
+            } catch (RemoteException | IllegalMoveException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void printLobby(LobbyViewMessage lobbyViewMessage) {
+
+        if (firstTime) {
+            int count = 1;
+            System.out.println("#############################\n\nthe game is about to start !!! \nthere will be " + lobbyViewMessage.getMaxPlayers() + " players!\n");
+            for (String p : lobbyViewMessage.getPlayersNames()) {
+                System.out.println(count + ": " + p);
+                count++;
+            }
+            firstTime = false;
+        } else {
+            System.out.println(lobbyViewMessage.getPlayersNames().size() + ": " + lobbyViewMessage.getPlayersNames().get(lobbyViewMessage.getPlayersNames().size() - 1));
+        }
+    }
+
+    @Override
+    public String getNickname() {
+        return this.nickname;
+    }
+
+    @Override
+    public void setModelView(GameViewMessage modelView) {
+        this.modelView = modelView;
+        run();
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+
+    }
+
 
     @Override
     public void show() {
@@ -154,15 +221,8 @@ public class GameCLI extends ViewGame {
     }
 
     public void sendChoice(Choice choice) throws RemoteException {
-        PropertyChangeEvent evt = new PropertyChangeEvent(
-                this,
-                "CHOICE",
-                null,
-                choice);
-        if (this.client!=null)              //TODO: Implementare un'interfaccia client che permetta di chiamare lo stesso metodo sia socket che RMI
-            this.client.notifyServer(evt);
-        else
-            this.clientSock.notifyServer(evt);
+        if (this.client!=null)
+            this.client.notifyServer(choice);
     }
 
     private void printOptions(){

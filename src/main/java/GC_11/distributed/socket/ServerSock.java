@@ -1,16 +1,19 @@
 package GC_11.distributed.socket;
 
 
+import GC_11.distributed.Server;
 import GC_11.distributed.ServerMain;
-import GC_11.network.GameViewMessage;
-import GC_11.network.LobbyViewMessage;
-import GC_11.network.MessageView;
+import GC_11.network.choices.Choice;
+import GC_11.network.message.GameViewMessage;
+import GC_11.network.message.LobbyViewMessage;
+import GC_11.network.message.MessageView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -23,7 +26,7 @@ import java.util.concurrent.Executors;
  * The class responsible for handling socket connections in the server.
  * Implements the PropertyChangeListener interface to listen for property changes.
  */
-public class ServerSock implements PropertyChangeListener {
+public class ServerSock implements PropertyChangeListener, Server {
 
     private final int port;
     private ServerSocket serverSocket;
@@ -165,18 +168,34 @@ public class ServerSock implements PropertyChangeListener {
         socketMap.get(clientNickname).sendMessageViewToClient(messageView);
     }
 
-    public int askMaxNumber() {
 
-        String clientNickname =this.socketMap.entrySet().iterator().next().getKey();
-
-        return socketMap.get(clientNickname).askMaxNumber();
+    @Override
+    public void receiveMessage(Choice choice) {
+        this.serverMain.makeAMove(choice);
     }
 
-    public boolean askLoading() {
-        String clientNickname =this.socketMap.entrySet().iterator().next().getKey();
-        return socketMap.get(clientNickname).askLoading();
+    @Override
+    public void sendMessage(MessageView msg, String nickname) {
+        for (ServerClientHandler sch : serverClientHandlerList){
+            if (sch.getNickname().equals(nickname)){
+                sch.sendMessageViewToClient(msg);
+            }
+        }
     }
 
+    @Override
+    public void askMaxNumber() throws RemoteException {
+        this.serverClientHandlerList.get(0).askMaxNumber();
+    }
 
+    @Override
+    public void notifyDisconnectionToClients() {
+
+    }
+
+    @Override
+    public void sendHeartbeat() {
+
+    }
 }
 

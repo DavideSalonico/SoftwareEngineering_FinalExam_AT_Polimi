@@ -4,6 +4,7 @@ import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.exceptions.PlayerNotInListException;
 import GC_11.model.Game;
+import GC_11.network.message.LobbyViewMessage;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -24,29 +25,6 @@ public class Lobby implements PropertyChangeListener {
     public synchronized void addPlayer(String playerName) throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
         if (playersNames.size() < maxPlayers && !playersNames.contains(playerName)) {
             playersNames.add(playerName);
-            if(playersNames.size() == 1){
-                PropertyChangeEvent evt = new PropertyChangeEvent(
-                        this,
-                        "FIRST PLAYER",
-                        null,
-                        playerName);
-                this.listener.propertyChange(evt);
-            }
-            else if(this.isFull()){
-                PropertyChangeEvent evt = new PropertyChangeEvent(
-                        this,
-                        "LAST PLAYER",
-                        null,
-                        playerName);
-                this.listener.propertyChange(evt);
-            }else{
-                PropertyChangeEvent evt = new PropertyChangeEvent(
-                        this,
-                        "ADDED PLayer",
-                        null,
-                        playerName);
-                this.listener.propertyChange(evt);
-            }
         } else if (this.isFull()) {
             throw new ExceededNumberOfPlayersException();
         } else if (this.nameAlreadyTaken(playerName)) {
@@ -87,7 +65,8 @@ public class Lobby implements PropertyChangeListener {
                 this,
                 "EXCEPTION",
                 null,
-                e);
+                new LobbyViewMessage(this, e));
+        //TODO: CREA LOBBY VIEW FATTA BENE
         this.listener.propertyChange(evt);
     }
 

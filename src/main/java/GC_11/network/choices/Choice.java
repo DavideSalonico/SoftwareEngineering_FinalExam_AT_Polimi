@@ -1,9 +1,8 @@
 package GC_11.network.choices;
 
 import GC_11.controller.Controller;
-import GC_11.exceptions.ColumnIndexOutOfBoundsException;
-import GC_11.exceptions.IllegalMoveException;
-import GC_11.exceptions.NotEnoughFreeSpacesException;
+import GC_11.distributed.ServerMain;
+import GC_11.exceptions.*;
 import GC_11.model.Player;
 import GC_11.view.View;
 
@@ -23,7 +22,7 @@ public abstract class Choice implements Serializable {
         this.params = params;
     }
 
-    public abstract void executeOnServer(Controller controller) throws RemoteException;
+    public abstract void executeOnServer(Controller controller) throws RemoteException, ExceededNumberOfPlayersException, NameAlreadyTakenException;
 
     public void executeOnClient(View view)
             throws IllegalMoveException, ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {

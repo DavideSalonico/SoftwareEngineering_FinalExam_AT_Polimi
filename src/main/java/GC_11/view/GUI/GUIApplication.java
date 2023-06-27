@@ -2,7 +2,7 @@ package GC_11.view.GUI;
 
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.model.*;
-import GC_11.network.GameViewMessage;
+import GC_11.network.message.GameViewMessage;
 import GC_11.util.PlayerView;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -28,19 +28,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GUIView extends Application {
+public class GUIApplication extends Application {
 
     public enum State {
         YOUR_TURN, WAITING, SELECTING_TILES, SELECTING_COLUMN, END
     }
-    public State currentState;
     public String currentPlayerNickname;
 
-    // ISTANZA MODEL CONTENUTA TEMPORANEAMENTE, POI CAPIRE COME RICEVERLA IN MANIERA DINAMICA
     public Game model;
     public Pane root;
     public GridPane mainGrid;
-    public String clientNickName = "Pippo";  // TEMPORANEAMENTE FISSO A PIPPO DA RIMUOVERE (deve essere ricevuto dal server)
+    public String clientNickName = "Pippo";
     public Text clientPoints;
     public ImageView personalGoal;
     public ImageView ICommonGoalCard;
@@ -95,6 +93,11 @@ public class GUIView extends Application {
     Map<Integer, Image> purpleTiles = new HashMap<>();
     Map<Integer, Image> cyanTiles = new HashMap<>();
 
+    public GUIApplication(){
+        //Careful to errors
+        new Thread(()->Application.launch(GUIApplication.class)).start();
+    }
+
 
     /**
      * This method is used to load the images of the tiles that will be used to create the GUI.
@@ -121,7 +124,7 @@ public class GUIView extends Application {
 
 
     /**
-     * Initializes the GUIView automatically when the game starts, all the basic images are loaded and the game is created using
+     * Initializes the GUIApplication automatically when the game starts, all the basic images are loaded and the game is created using
      * the instance of the GameView that we receive from the server.
      */
 
@@ -224,7 +227,7 @@ public class GUIView extends Application {
         loadTilesImages();
 
 
-        // Mi creo temporaneamente un modello di gioco per inizializzare bene la view
+        // I temporarily create a game model to initialize the view
         List<String> tmpPlayerNames = new ArrayList<String>();
         tmpPlayerNames.add("Pippo");
         tmpPlayerNames.add("Pluto");

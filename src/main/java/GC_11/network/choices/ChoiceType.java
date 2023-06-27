@@ -9,6 +9,9 @@ public enum ChoiceType {
     CHOOSE_ORDER,
     SEND_MESSAGE,
     RESET_TURN,
+    PONG,
+    ADD_PLAYER,
+    SET_MAX_NUMBER,
     SHOW_CHAT;
 
     public static String askParams(String input) {

@@ -14,21 +14,14 @@ public class PersonalGoalCard implements Serializable {
     private int id;
     private List<Triplet> goalList;
 
-    /**
-     * There is only one way to construct a Personal Card, it needs triplets of Tiles
-     */
-    public PersonalGoalCard(List<Triplet> read) {
-
-        //final int randomNumber = new Random().nextInt(13);
-        goalList = new ArrayList<Triplet>();
-        this.goalList = read;
-
-        // Read from a file one of the 12 personalGoalCards
-    }
-
     public PersonalGoalCard(int id, List<Triplet> goalList) {
         this.id = id;
-        this.goalList = goalList;
+        this.goalList = new ArrayList<Triplet>(goalList);
+    }
+
+    public PersonalGoalCard(PersonalGoalCard p){
+        this.id = p.getId();
+        this.goalList = new ArrayList<Triplet>(p.getGoalList());
     }
 
     public PersonalGoalCard() {

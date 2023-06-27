@@ -48,6 +48,12 @@ public class ChoiceFactory {
             case SEND_MESSAGE -> {
                 return new SendMessageChoice(player, params, type);
             }
+            case ADD_PLAYER -> {
+                return new AddNicknameChoice(player, params, type);
+            }
+            case SET_MAX_NUMBER -> {
+                return new SetMaxNumberChoice(player, params, type);
+            }
         }
         return null;
     }

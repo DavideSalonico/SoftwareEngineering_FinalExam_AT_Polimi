@@ -1,12 +1,13 @@
-package GC_11.network;
+package GC_11.network.message;
 
 
+import GC_11.distributed.Client;
 import GC_11.model.*;
 import GC_11.model.common.CommonGoalCard;
-import GC_11.network.MessageView;
 import GC_11.util.CircularList;
 
 import java.beans.PropertyChangeEvent;
+import java.rmi.RemoteException;
 import java.util.*;
 
 /**
@@ -32,7 +33,6 @@ public class GameViewMessage extends MessageView {
     private Map<Set<String>, List<Message>> privateChats = new HashMap<>();
     private Map<String, List<Message>> filteredPvtChats = new HashMap<>();
     private String message;
-    private PropertyChangeEvent evt;
 
 
 
@@ -45,7 +45,7 @@ public class GameViewMessage extends MessageView {
      * @param model     Game model
      * @param exception caught during the game
      */
-    public GameViewMessage(Game model, Exception exception, PropertyChangeEvent evt) {
+    public GameViewMessage(Game model, Exception exception) {
         if (exception != null) {
             this.error = true;
             this.exceptionMessage = exception.getMessage();
@@ -54,19 +54,38 @@ public class GameViewMessage extends MessageView {
         for (Player p : model.getPlayers()) {
             this.players.add(new Player(p));
         }
-        this.commonGoals = model.getCommonGoal(); //TODO passarle per valore e non copiare l'oggetto
+        this.commonGoals = new ArrayList<>(model.getCommonGoal());
         this.currentPlayer = model.getCurrentPlayer().getNickname();
         this.endGame = model.isEndGame();
         if(model.getEndPlayer() != null) this.endPlayer = model.getEndPlayer();
         this.board = new Board(model.getBoard());
         this.mainChat = new ArrayList<>(model.getChat().getMainChat());
         this.privateChats = new HashMap<>(model.getChat().getPvtChats());
-        this.evt = evt;
     }
 
     // Solo per inviare messaggi testuali da server al client
     public GameViewMessage(String message){
         this.message=message;
+    }
+
+    public GameViewMessage(GameViewMessage gameViewMessage) {
+        super();
+        this.error = gameViewMessage.error;
+        this.exceptionMessage = gameViewMessage.exceptionMessage;
+        this.exception = new Exception(gameViewMessage.exception);
+        for (Player p : gameViewMessage.getPlayers()) {
+            this.players.add(new Player(p));
+        }
+        this.commonGoals = gameViewMessage.getCommonGoalCards();
+
+        this.currentPlayer = gameViewMessage.getCurrentPlayer();
+        this.endGame = gameViewMessage.isEndGame();
+        if(gameViewMessage.getEndPlayer() != null)
+            this.endPlayer = gameViewMessage.getEndPlayer();
+        this.board = new Board(gameViewMessage.getBoard());
+        this.mainChat = new ArrayList<>(gameViewMessage.getMainChat());
+        this.privateChats = new HashMap<>(gameViewMessage.getPrivateChats());
+        this.filteredPvtChats = new HashMap<>();
     }
 
     public Board getBoard() {
@@ -170,5 +189,47 @@ public class GameViewMessage extends MessageView {
 
     public void setMainChat(List<Message> mainChat) {
         this.mainChat = mainChat;
+    }
+
+    @Override
+    public void executeOnClient(Client client) {
+        try {
+            client.getView().setModelView(this);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public MessageView sanitize(String key) {
+        GameViewMessage copy = new GameViewMessage(this);
+
+        for (Player p : copy.getPlayers()) {
+            if (!p.getNickname().equals(key)){
+                p.setPersonalGoal(null);
+                for(Map.Entry<Set<String>, List<Message>> entry : copy.getPrivateChats().entrySet()){
+                    if(!entry.getKey().contains(p.getNickname())){
+                        entry.getValue().clear();
+                    }
+                    else{
+                        for(String str : entry.getKey()){
+                            if(!str.equals(key)){
+                                copy.getFilteredPvtChats().put(str, entry.getValue());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return copy;
+    }
+
+    public boolean isEndGame() {
+        return endGame;
+    }
+
+    public String getEndPlayer() {
+    	return endPlayer;
     }
 }

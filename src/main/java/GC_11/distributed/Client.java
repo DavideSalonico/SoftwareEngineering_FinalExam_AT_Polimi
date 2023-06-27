@@ -1,17 +1,23 @@
 package GC_11.distributed;
 
-import GC_11.network.GameViewMessage;
-import GC_11.model.Player;
+import GC_11.network.message.MessageView;
+import GC_11.network.choices.Choice;
 import GC_11.view.View;
 
-import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
-public abstract class Client implements Remote, PropertyChangeListener {
+public interface Client extends Remote, Serializable {
+    void receiveFromServer(MessageView message) throws RemoteException;
 
-    View view;
-    Player player;
+    void notifyServer(Choice choice) throws RemoteException;
 
-    public abstract void update(GameViewMessage view);
+    String getNickname() throws RemoteException;
 
+    int askMaxNumber() throws RemoteException;
+
+    View getView() throws RemoteException;
+
+    void notifyDisconnection() throws RemoteException;
 }

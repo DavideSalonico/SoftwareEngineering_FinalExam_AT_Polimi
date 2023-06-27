@@ -25,7 +25,7 @@ import static java.lang.Math.min;
  * Card read from JSON file
  */
 public class Controller implements PropertyChangeListener {
-    // Controller receive directly from Server an Object Choice which contains Player reference, type and params
+    // Controller receive directly from ServerRMI an Object Choice which contains Player reference, type and params
     public Choice choice;
     public JsonReader reader;
     private Game model;
@@ -46,7 +46,6 @@ public class Controller implements PropertyChangeListener {
         this.lobby.setListener(this.server);
     }
 
-
     /**
      *Get of game attribute
      *
@@ -62,7 +61,7 @@ public class Controller implements PropertyChangeListener {
 
 
     /**
-     * Set and Get of Choice attribute, which will be updated by Server
+     * Set and Get of Choice attribute, which will be updated by ServerRMI
      *
      * @param choice
      */
@@ -86,10 +85,13 @@ public class Controller implements PropertyChangeListener {
     public void update(Choice choice) throws RemoteException {
         this.choice = choice;
 
-        if (!checkTurn() && !choice.getType().equals(ChoiceType.SEND_MESSAGE)) {
-            this.model.triggerException(new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer().getNickname() + "'s turn"));
-            return;
+        if(model != null){
+            if (!checkTurn() && !choice.getType().equals(ChoiceType.SEND_MESSAGE)) {
+                this.model.triggerException(new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer().getNickname() + "'s turn"));
+                return;
+            }
         }
+
 
         try {
             checkExpectedMove();
@@ -98,7 +100,13 @@ public class Controller implements PropertyChangeListener {
             return;
         }
 
-        choice.executeOnServer(this);
+        try {
+            choice.executeOnServer(this); //TODO: exception handling
+        } catch (ExceededNumberOfPlayersException e) {
+            throw new RuntimeException(e);
+        } catch (NameAlreadyTakenException e) {
+            throw new RuntimeException(e);
+        }
 
         if (!choice.getType().equals(ChoiceType.PICK_COLUMN) && !choice.getType().equals(ChoiceType.SEND_MESSAGE))
             this.lastChoice = this.choice.getType();
@@ -216,7 +224,7 @@ public class Controller implements PropertyChangeListener {
         }
 
         if(end){
-            this.model.setEndPlayer(this.model.getCurrentPlayer().getNickname());
+            this.model.setLastTurn(true);
         }
     }
 
@@ -328,13 +336,7 @@ public class Controller implements PropertyChangeListener {
         this.model = new Game(this.lobby.getPlayers(), this.server);
     }
 
-    public void startGame(Game model){
-        this.model = model;
-        model.setListener(this.server);
-    }
-
-
-    public void setGame(Game loadedGame) {
-        this.model = loadedGame;
+    public ServerMain getServer() {
+        return this.server;
     }
 }

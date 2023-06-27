@@ -1,9 +1,10 @@
 package GC_11.distributed.socket;
 
+import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.IllegalMoveException;
+import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.model.Player;
-import GC_11.network.GameViewMessage;
-import GC_11.network.LobbyViewMessage;
+import GC_11.network.message.*;
 import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
 
@@ -59,27 +60,40 @@ public class ServerClientHandler implements Runnable {
         }
         this.connected = true;
         connectionSetup();
-        if (connected)
+        if(connected){
             readThread.start();
+        }
 
     }
 
     private void connectionSetup() {
 
         if (connected) {
-            GameViewMessage msg = new GameViewMessage("Hi! Welcome to the game! Please, insert your nickname:");
-            sendMessageViewToClient(msg);
-            String reply = null;
-            try {
-                reply = (String) inputStream.readObject();
-            } catch (IOException | ClassNotFoundException e) {
-                System.err.println("Unable to read nickname");
-                closeConnection();
-                return;
+            Choice reply = null;
+            boolean ok = false;
+            while(!ok){
+                NicknameMessage msg = new NicknameMessage();
+                sendMessageViewToClient(msg);
+                try {
+                    reply = (Choice) inputStream.readObject();
+                    try {
+
+                        reply.executeOnServer(this.server.getServerMain().getController());
+                        ok = true;
+                    } catch (ExceededNumberOfPlayersException | NameAlreadyTakenException e) {
+                        LobbyViewMessage errMsg = new LobbyViewMessage(this.server.getServerMain().getController().getLobby(), e);
+                        sendMessageViewToClient(errMsg);
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                } catch (IOException | ClassNotFoundException e) {
+                    System.err.println("Client Disconnected. Unable to read nickname");
+                    closeConnection();
+                    return;
+                }
             }
-            this.nickname = reply;
+            this.nickname = reply.getParams().get(0);
             this.server.getSocketMap().put(this.nickname, this);
-            this.server.getServerMain().addConnection(this.nickname, "SOCKET");
+            this.server.getServerMain().addConnection(this.nickname, this.server);
         }
 
     }
@@ -92,8 +106,7 @@ public class ServerClientHandler implements Runnable {
             System.out.println("Thread read started");
             while (connected)
                 try {
-                    receiveMessageFromClient();
-                    //receiveChoiceFromClient();
+                    receiveChoiceFromClient();
                 } catch (IOException | ClassNotFoundException | IllegalMoveException e) {
 
                     closeConnection();
@@ -136,16 +149,12 @@ public class ServerClientHandler implements Runnable {
      * @throws ClassNotFoundException If the class of the serialized object cannot be found.
      */
 
-    public String receiveMessageFromClient() throws IOException, ClassNotFoundException, IllegalMoveException {
-        String clientMessage = null;
+    public void receiveChoiceFromClient() throws IOException, ClassNotFoundException, IllegalMoveException {
         Choice clientChoice;
         if (connected) {
             try {
-                clientMessage = (String) inputStream.readObject();
-                if (this.nickname != null && !this.nickname.isEmpty() && this.server.getServerMain().getClientsMap().size() > 1) {
-                    clientChoice = ChoiceFactory.createChoice(new Player(this.nickname), clientMessage);
-                    this.server.getServerMain().makeAMove(clientChoice);
-                }
+                clientChoice = (Choice) inputStream.readObject();
+                this.server.receiveMessage(clientChoice);
             } catch (IOException e) {
                 System.out.println("Error during receiving message from client");
                 closeConnection();
@@ -154,15 +163,8 @@ public class ServerClientHandler implements Runnable {
                 System.out.println("Error during deserialization of message from client");
                 closeConnection();
                 throw new ClassNotFoundException();
-            } catch (IllegalMoveException e) {
-                System.out.println("Error during reading message from client");
-                closeConnection();
-                throw new IllegalMoveException();
-            } finally {
-                return clientMessage;
             }
         }
-        return clientMessage;
     }
 
 
@@ -188,7 +190,7 @@ public class ServerClientHandler implements Runnable {
      *
      * @param messageView The MessageView object to send.
      */
-    public void sendMessageViewToClient(GameViewMessage messageView) {
+    public void sendMessageViewToClient(MessageView messageView) {
         if (connected) {
             try {
                 outputStream.writeObject(messageView);
@@ -226,27 +228,10 @@ public class ServerClientHandler implements Runnable {
         } catch (IOException e) {
             System.err.println("Unable to close socket");
         }
-        this.readThread.interrupt();
+        //this.readThread.interrupt();
         //this.server.notifyDisconnectionAllSockets(this.clientSocket, this);
         this.server.getServerMain().removeConnection(this.nickname);
 
-    }
-
-
-    /**
-     * Notifies the client of disconnection.
-     *
-     * @param socket The disconnected socket.
-     */
-    public void notifyDisconnection(Socket socket) {
-        String alert = "Socket " + socket.getInetAddress() + ":" + socket.getPort() + " has disconnected";
-        try {
-            outputStream.writeObject(alert);
-            outputStream.reset();
-            outputStream.flush();
-        } catch (IOException e) {
-            System.err.println("Unable to notify socket disconnection");
-        }
     }
 
 
@@ -268,27 +253,14 @@ public class ServerClientHandler implements Runnable {
         return this.nickname;
     }
 
-    public int askMaxNumber() {
 
-        int maxPlayers = -1;
-        GameViewMessage msg = new GameViewMessage("Inserire il numero massimo di giocatori");
-        sendMessageViewToClient(msg);
+    public void askMaxNumber() {
+        sendMessageViewToClient(new MaxNumberMessage());
         try {
-            maxPlayers = Integer.parseInt(receiveMessageFromClient());
-            while (maxPlayers <= 1 || maxPlayers >= 5) {
-                msg.setMessage("Il numero di giocatori deve essere compreso tra 2 e 4");
-                sendMessageViewToClient(msg);
-                maxPlayers = Integer.parseInt(receiveMessageFromClient());
-            }
-        } catch (NumberFormatException e) {
-            msg.setMessage("Inserire un numero");
-            sendMessageViewToClient(msg);
-        } catch (IOException | ClassNotFoundException | IllegalMoveException e) {
-            System.err.println("Unable to receive message from client");
-            this.connected = false;
+            receiveChoiceFromClient();
+        } catch (IOException | IllegalMoveException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
-
-        return maxPlayers;
     }
 
     public boolean askLoading() {

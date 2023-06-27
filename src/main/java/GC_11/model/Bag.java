@@ -14,15 +14,24 @@ public class Bag implements Serializable {
         this.listener = listener;
     }
 
-    //The listener must be the Board,TODO: change Board builder
     transient PropertyChangeListener listener;
 
 
+    /**
+     * Copy constructor. Create a new Bag with the same tiles of the bag passed as parameter
+     *
+     * @param bag
+     */
     public Bag(Bag bag) {
         this.tiles = bag.getTiles();
         this.listener = bag.listener;
     }
 
+    /**
+     * Getter of the tiles
+     *
+     * @return tiles
+     */
     private List<Tile> getTiles() {
         return this.tiles;
     }
