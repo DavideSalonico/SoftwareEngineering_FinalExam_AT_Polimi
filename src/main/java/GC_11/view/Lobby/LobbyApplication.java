@@ -81,7 +81,7 @@ public class LobbyApplication extends Application {
         waitingRoom();
     }
 
-    public void confirmNickname() {
+    public String confirmNickname() {
         confirmName.setDisable(true);
         chooseNumberPlayers.setVisible(true);
         clientNickname.setVisible(false);
@@ -92,9 +92,8 @@ public class LobbyApplication extends Application {
             confirmName.setDisable(newValue == null);
         });
 
-        //manda il nickname al server
-
         confirmName.setOnAction(event -> sendNumberOfPlayer());
+        return clientNickname.getText();
     }
 
     public void updatePlayerList(LobbyViewMessage message) {
@@ -104,15 +103,15 @@ public class LobbyApplication extends Application {
             listPlayers.appendText(player + "\n");
     }
 
-    public void changeScene(Stage primaryStage) throws RemoteException {
+    public GUIApplication changeScene(Stage primaryStage) throws RemoteException {
         GUIApplication guiApplication = new GUIApplication();
-        this.client.getView().setGuiApplication(guiApplication);
 
         try {
             guiApplication.start(primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return guiApplication;
     }
     @Override
     public void start(Stage primaryStage) throws Exception {
