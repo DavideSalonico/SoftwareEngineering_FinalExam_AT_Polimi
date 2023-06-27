@@ -7,19 +7,25 @@ import GC_11.network.choices.ChoiceFactory;
 import GC_11.network.message.GameViewMessage;
 import GC_11.network.message.LobbyViewMessage;
 import GC_11.view.Lobby.LobbyApplication;
+import GC_11.view.Lobby.LobbyController;
 import GC_11.view.View;
 
 import java.rmi.RemoteException;
 
 import static java.lang.Integer.parseInt;
+import static java.lang.Thread.sleep;
 
 public class GUI extends View {
     private Client client;
     private String nickname;
     public GUIApplication guiApplication;
     public LobbyApplication lobbyApplication;
+    public static LobbyController lobbyController;
     private boolean inGame;
 
+    public static  void setController(LobbyController controller){
+        GUI.lobbyController = controller;
+    }
 
     /**
      * Every view is bound at only one player, it helps to manage every input that the controller receive
@@ -28,7 +34,22 @@ public class GUI extends View {
         super();
         this.client = client;
         this.inGame = false;
+
+
         this.lobbyApplication = new LobbyApplication();
+        lobbyApplication.setClient(client);
+        lobbyApplication.via();
+
+        //this.lobbyController = new LobbyController();
+        while(lobbyController == null){
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        this.lobbyController.setClient(client);
     }
 
     public void setNickname(String nickname) {
@@ -60,7 +81,7 @@ public class GUI extends View {
     @Override
     public void askNickname() {
         try {
-            Thread.sleep(20000);
+            sleep(20000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

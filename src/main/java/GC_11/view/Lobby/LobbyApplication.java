@@ -5,6 +5,7 @@ import GC_11.exceptions.IllegalMoveException;
 import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
 import GC_11.network.message.LobbyViewMessage;
+import GC_11.view.GUI.GUI;
 import GC_11.view.GUI.GUIApplication;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -34,7 +35,11 @@ public class LobbyApplication extends Application {
     private Client client;
 
     public LobbyApplication(){
-      //  this.client = client;
+        //this.client = client;
+
+    }
+
+    public void via(){
         Thread thread = new Thread(() -> Application.launch(LobbyApplication.class));
         thread.start();
 
@@ -155,8 +160,10 @@ public class LobbyApplication extends Application {
 
         }
         Scene scene = new Scene(pane);
-
-        //LobbyController controller = loader.getController();
+        LobbyController controller = new LobbyController();
+        // controller = loader.getController();
+        loader.setController(controller);
+        GUI.lobbyController = controller;
 
         primaryStage.getIcons().add(new Image("file:src/resources/GraphicalResources/Publisher material/Icon 50x50px.png"));
         primaryStage.setResizable(false);
