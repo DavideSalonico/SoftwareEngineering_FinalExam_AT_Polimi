@@ -101,11 +101,11 @@ public class LobbyApplication extends Application {
             listPlayers.appendText(player + "\n");
     }
 
-    public GUIApplication changeScene(Stage primaryStage) throws RemoteException {
+    public GUIApplication changeScene() throws RemoteException {
         GUIApplication guiApplication = new GUIApplication();
 
         try {
-            guiApplication.start(primaryStage);
+            guiApplication.start(this.primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
