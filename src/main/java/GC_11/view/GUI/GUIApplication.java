@@ -1,5 +1,6 @@
 package GC_11.view.GUI;
 
+import GC_11.distributed.Client;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.IllegalMoveException;
 import GC_11.model.*;
@@ -37,6 +38,7 @@ public class GUIApplication extends Application {
         YOUR_TURN, WAITING, SELECTING_TILES, SELECTING_COLUMN, END
     }
     public String currentPlayerNickname;
+    private Client client;
 
     public Game model;
     public Pane root;
@@ -97,6 +99,10 @@ public class GUIApplication extends Application {
     public GUIApplication(){
         //Careful to errors
         new Thread(()->Application.launch(GUIApplication.class)).start();
+    }
+
+    public void setClient(Client client){
+        this.client = client;
     }
 
 

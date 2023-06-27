@@ -100,7 +100,7 @@ public class ServerMain implements PropertyChangeListener {
         else if(clientMap.size() > 1 && clientMap.size() == this.controller.getLobby().getMaxPlayers()){
             // Start the game
             this.getController().startGame();
-            notifyClients(new GameViewMessage(this.controller.getGame(), null));
+            //notifyClients(new GameViewMessage(this.controller.getGame(), null));
         }else{
             // Notify all clients that a new player has joined the lobby
             notifyClients(new LobbyViewMessage(this.controller.getLobby()));
@@ -126,6 +126,7 @@ public class ServerMain implements PropertyChangeListener {
         }
     }
 
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
 
@@ -134,7 +135,7 @@ public class ServerMain implements PropertyChangeListener {
         notifyClients(msg);
     }
 
-    private void notifyClients(MessageView msg) {
+    public void notifyClients(MessageView msg) {
         for(Map.Entry<String,Server> entry : clientMap.entrySet()){
 
             MessageView msgCopy = msg.sanitize(entry.getKey());
@@ -171,5 +172,13 @@ public class ServerMain implements PropertyChangeListener {
 
     public void isAlive(String s) {
         //TODO
+    }
+
+    public void notifyClient(MessageView messageView, String s) {
+        try {
+            this.clientMap.get(s).sendMessage(messageView, s);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 }
