@@ -28,7 +28,6 @@ public class GUI extends View {
     /**
      * Every view is bound at only one player, it helps to manage every input that the controller receive
      */
-
     public GUI(Client client) {
         super();
         this.client = client;
