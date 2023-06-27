@@ -72,13 +72,11 @@ public class LobbyApplication extends Application {
         showPlayers(players);
     }
 
-    public void sendNumberOfPlayer(){
+    public int sendNumberOfPlayer(){
         int numberOfPlayers = Integer.parseInt((String) chooseNumberPlayers.getValue());
         System.out.println(numberOfPlayers);
-
-        //SEND NUMBER OF PLAYERS TO SERVER
-
         waitingRoom();
+        return numberOfPlayers;
     }
 
     public String confirmNickname() {
