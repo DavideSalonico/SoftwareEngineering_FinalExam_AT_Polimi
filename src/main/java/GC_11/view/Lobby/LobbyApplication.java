@@ -32,7 +32,14 @@ public class LobbyApplication extends Application {
 
     public LobbyApplication(){
       //  this.client = client;
-        new Thread(()->Application.launch(LobbyApplication.class)).start();
+        Thread thread = new Thread(() -> Application.launch(LobbyApplication.class));
+        thread.start();
+
+        try {
+            thread.join(); // Attendere la terminazione del thread
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void initialize() {
