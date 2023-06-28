@@ -9,7 +9,10 @@ import GC_11.view.View;
 public class GUI extends View {
 
     private Client client;
-    private String nickname;
+    public static String nickname;
+    public static int maxNumber = 0;
+    public static String typeOfConnection;
+    public static String IPaddress;
     public GUIApplication guiApplication;
     public static GUIController gameController;
     public static LobbyController lobbyController;
@@ -27,6 +30,13 @@ public class GUI extends View {
 
         this.guiApplication = new GUIApplication();
 
+        while (lobbyController == null){
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
         this.lobbyController.setClient(client);
     }
 
@@ -37,9 +47,6 @@ public class GUI extends View {
         GUI.gameController = controller;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
 
     public void setInGame(boolean inGame) {
         this.inGame = inGame;
@@ -61,36 +68,31 @@ public class GUI extends View {
 
     @Override
     public void askNickname() {
-        System.out.println("DIGIT Nickname required: ");
+        System.out.println("DIGIT YOUR NICKNAME:");
 
+        while (this.nickname == null){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
-        /*String nickname = this.lobbyApplication.confirmNickname();
-        try {
-            this.client.notifyServer(ChoiceFactory.createChoice(null, "ADD_PLAYER " + nickname));
-            this.nickname = nickname;
-        } catch (RemoteException | IllegalMoveException e) {
-            e.printStackTrace();
-        }*/
     }
 
     @Override
     public void askMaxNumber() {
-        System.out.println("MaxNumberPlayer required: ");
 
+        System.out.println("MaxNumberPlayer required: " + "nickname attuale : " + this.nickname);
 
-        /*String number = this.lobbyController.sendNumberOfPlayer();
-        try{
-            parseInt(number);
-        }catch (NumberFormatException e){
-            System.out.println("Please insert a number");
-            askMaxNumber();
-        }finally {
+        while (this.maxNumber == 0){
             try {
-                this.client.notifyServer(ChoiceFactory.createChoice(null, "SET_MAX_NUMBER " + number));
-            } catch (RemoteException | IllegalMoveException e) {
-                e.printStackTrace();
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-        }*/
+        }
+
     }
 
     @Override
@@ -100,7 +102,7 @@ public class GUI extends View {
 
     @Override
     public void printLobby(LobbyViewMessage lobbyViewMessage) {
-        this.lobbyController.updatePlayerList(lobbyViewMessage);
+        this.lobbyController.showPlayers(lobbyViewMessage.getPlayersNames());
     }
 
     @Override

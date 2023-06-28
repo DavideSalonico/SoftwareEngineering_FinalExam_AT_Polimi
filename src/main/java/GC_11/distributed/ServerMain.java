@@ -2,7 +2,7 @@ package GC_11.distributed;
 
 import GC_11.controller.Controller;
 
-import GC_11.distributed.rmi.ServerRMIImpl;
+import GC_11.distributed.RMI.ServerRMIImpl;
 import GC_11.distributed.socket.ServerSock;
 
 import GC_11.network.message.GameViewMessage;
