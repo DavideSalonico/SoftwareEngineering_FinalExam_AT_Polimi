@@ -17,6 +17,12 @@ public abstract class View {
     public abstract void askMaxNumber();
     public abstract void askLoadGame();
     public abstract void printLobby(LobbyViewMessage lobbyViewMessage);
-    public abstract String getNickname();
+    public String getNickname(){
+        return nickname;
+    };
     public abstract void update(GameViewMessage modelView);
+
+    protected void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }

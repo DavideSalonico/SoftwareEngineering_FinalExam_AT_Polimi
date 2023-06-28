@@ -18,9 +18,9 @@ public class GUI extends View {
     public static GUIController gameController;
     public static LobbyController lobbyController;
     public static ConnectionController connectionController;
-    private boolean inGame;
+    private boolean inGame = false;
 
-
+    public int i = 0;
 
     /**
      * Every view is bound at only one player, it helps to manage every input that the controller receive
@@ -103,6 +103,7 @@ public class GUI extends View {
 
     }
 
+    // DEFINIRE Per la persistenza della connessione riesumando la partita
     @Override
     public void askLoadGame() {
         //TODO QUESTO E' IL METODO CHE VIENE CHIAMATO QUANDO SI VUOLE CARICARE UNA PARTITA. VIENE INVIATO AL PRIMO GIOCATORE E NECESSITA DI UNA RISPOSTA SI O NO (OPPURE YES) PER LA CHOICE GIUSTA CHIEDERE A MATTIA
@@ -120,17 +121,15 @@ public class GUI extends View {
 
     @Override
     public void update(GameViewMessage modelView) {
-        /*if(!this.inGame){
-            try {
-                this.guiApplication = this.lobbyController.changeScene();
-                this.guiApplication.init(modelView);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e); //TODO handle
-            }
+        if(!this.inGame){
+            this.lobbyController.changeSceneToGame();
+            this.gameController.init(modelView);
+            if(i == modelView.getPlayers().size())
+                setInGame(true);
+        }else{
+            this.setModelView(modelView);
+            show();
         }
-        setInGame(true);
-        this.setModelView(modelView);
-        show();
-    */}
+    }
 
 }

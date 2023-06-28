@@ -8,6 +8,7 @@ import GC_11.view.GUI.GUI;
 import GC_11.view.GUI.GUIApplication;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
@@ -147,6 +148,16 @@ public class LobbyController {
             e.printStackTrace();
         }
         return guiApplication;
+    }
+
+    public void changeSceneToGame() {
+        Platform.setImplicitExit(false);
+        Platform.runLater(() -> {
+            Scene gameScene = new Scene(GUIApplication.gameLaod);
+            gameScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+            GUIApplication.mainStage.setScene(gameScene);
+        });
+
     }
 
 }

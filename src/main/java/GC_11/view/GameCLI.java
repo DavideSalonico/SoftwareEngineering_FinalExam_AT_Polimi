@@ -2,7 +2,9 @@ package GC_11.view;
 //TODO: 1) Implementare COME LA SCELTA DEL GIOCAGORE VA AL SERVER E QUINDI AL CONTROLLER E POI AL GAME
 //TODO: 2) cambiare il metodo run con quello aggiornato di dave
 
+import GC_11.ClientApp;
 import GC_11.distributed.Client;
+import GC_11.distributed.ClientFactory;
 import GC_11.exceptions.IllegalMoveException;
 import GC_11.model.Message;
 import GC_11.model.Player;
@@ -15,6 +17,7 @@ import GC_11.network.message.LobbyViewMessage;
 
 import java.rmi.RemoteException;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -22,9 +25,6 @@ import java.util.stream.Collectors;
 import static java.lang.Integer.parseInt;
 
 public class GameCLI extends View {
-
-    private Client client;
-
     private boolean firstTime = true;
     private Object lock = new Object();
     private boolean alreadyReading = false;
@@ -34,10 +34,34 @@ public class GameCLI extends View {
      * Every view is bound at only one player, it helps to manage every input that the controller receive
      */
 
-    public GameCLI(String nickname, Client client) {
+    public GameCLI() {
         super();
-        this.nickname = nickname;
-        this.client = client;
+        init();
+    }
+
+    public void init(){
+        boolean flag = true;
+        String choiceNetwork = null;
+        Scanner inputLine = new Scanner(System.in);
+        System.out.println(
+                        "███╗   ███╗██╗   ██╗    ███████╗██╗  ██╗███████╗██╗     ███████╗██╗███████╗\n" +
+                        "████╗ ████║╚██╗ ██╔╝    ██╔════╝██║  ██║██╔════╝██║     ██╔════╝██║██╔════╝\n" +
+                        "██╔████╔██║ ╚████╔╝     ███████╗███████║█████╗  ██║     █████╗  ██║█████╗  \n" +
+                        "██║╚██╔╝██║  ╚██╔╝      ╚════██║██╔══██║██╔══╝  ██║     ██╔══╝  ██║██╔══╝  \n" +
+                        "██║ ╚═╝ ██║   ██║       ███████║██║  ██║███████╗███████╗██║     ██║███████╗\n" +
+                        "╚═╝     ╚═╝   ╚═╝       ╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚═╝     ╚═╝╚══════╝\n" +
+                        "                                                                           \n");
+        while(flag) {
+            System.out.println("do you prefer to play RMI or SOCKET?");
+            choiceNetwork = inputLine.nextLine();
+            if(Objects.equals(choiceNetwork, "RMI") || Objects.equals(choiceNetwork, "SOCKET")){
+                flag = false;
+            }
+        }
+        System.out.println("Please insert server IP address: ");
+        Scanner s = new Scanner(System.in);
+        String serverIp = s.nextLine();
+        ClientApp.client = ClientFactory.createClient(serverIp, choiceNetwork);
     }
 
     @Override
@@ -45,8 +69,9 @@ public class GameCLI extends View {
         System.out.println("Hi, welcome to MyShelfie. Please insert your nickname: ");
         Scanner s = new Scanner(System.in);
         String nickname = s.nextLine();
+        ClientApp.view.setNickname(nickname);
         try {
-            this.client.notifyServer(ChoiceFactory.createChoice(null, "ADD_PLAYER " + nickname));
+            ClientApp.client.notifyServer(ChoiceFactory.createChoice(null, "ADD_PLAYER " + nickname));
             this.nickname = nickname;
         } catch (RemoteException | IllegalMoveException e) {
             e.printStackTrace();
@@ -65,7 +90,7 @@ public class GameCLI extends View {
             askMaxNumber();
         }finally {
             try {
-                this.client.notifyServer(ChoiceFactory.createChoice(null, "SET_MAX_NUMBER " + maxNumber));
+                ClientApp.client.notifyServer(ChoiceFactory.createChoice(null, "SET_MAX_NUMBER " + maxNumber));
             } catch (RemoteException | IllegalMoveException e) {
                 e.printStackTrace();
             }
@@ -78,7 +103,7 @@ public class GameCLI extends View {
         Scanner s = new Scanner(System.in);
         String answer = s.nextLine();
         try {
-            this.client.notifyServer(ChoiceFactory.createChoice(null, "LOAD_GAME " + answer));
+            ClientApp.client.notifyServer(ChoiceFactory.createChoice(null, "LOAD_GAME " + answer));
         } catch (RemoteException | IllegalMoveException e) {
             e.printStackTrace();
         }
@@ -206,8 +231,8 @@ public class GameCLI extends View {
     }
 
     public void sendChoice(Choice choice) throws RemoteException {
-        if (this.client!=null)
-            this.client.notifyServer(choice);
+        if (ClientApp.client!=null)
+            ClientApp.client.notifyServer(choice);
     }
 
     private void printOptions(){

@@ -159,8 +159,6 @@ public class GUIController {
     Map<Integer, Image> purpleTiles = new HashMap<>();
     Map<Integer, Image> cyanTiles = new HashMap<>();
 
-    public String clientNickName = "Pippo";
-
 
     /**
      * This method is used to load the images of the tiles that will be used to create the GUI.
@@ -192,12 +190,8 @@ public class GUIController {
      */
     public void updateView(GameViewMessage message){
         Platform.runLater(() ->{
-            // Update Board and PlayerShelf with his point
-            try {
+            // Update Board and PlayerShelf with his points
                 updatePlayer(message.getBoard(), message.getPlayer(message.getCurrentPlayer()));
-            } catch (ColumnIndexOutOfBoundsException e) {
-                throw new RuntimeException(e);
-            }
 
             // Update the chat
             updateChat(message.getFilteredPvtChats(), message.getMainChat());
@@ -329,7 +323,7 @@ public class GUIController {
      * @param player to update
      * @throws ColumnIndexOutOfBoundsException if the player is not found
      */
-    public void updatePlayer(Board board, Player player) throws ColumnIndexOutOfBoundsException {
+    public void updatePlayer(Board board, Player player) {
         PlayerView playerView = getPlayerViewFromNickname(player.getNickname());
         if (playerView != null) {
             refreshBoard(board);
@@ -344,10 +338,15 @@ public class GUIController {
      * @param shelf GridPane reference
      * @throws ColumnIndexOutOfBoundsException if the player is not found
      */
-    public void updateShelf(Player player, GridPane shelf) throws ColumnIndexOutOfBoundsException {
+    public void updateShelf(Player player, GridPane shelf) {
         for (int i = 1; i < 6; i++) {  //COLUMNS
             for (int j = 1; j < 7; j++) {  //ROWS
-                Tile t = player.getShelf().getTile(j, i);
+                Tile t = null;
+                try {
+                    t = player.getShelf().getTile(j, i);
+                } catch (ColumnIndexOutOfBoundsException e) {
+                    throw new RuntimeException(e);
+                }
                 int id = t.getId() + 1;
                 TileColor tileColor = t.getColor();
                 ImageView image = switch (tileColor) {
@@ -682,10 +681,10 @@ public class GUIController {
         loadTilesImages();
 
         // Put first Player's nickname into the chair on GUI
-        Tooltip firstPlayer = new Tooltip("First PLAYER : " + gameViewMessage.getPlayer(gameViewMessage.getCurrentPlayer()));
+        Tooltip firstPlayer = new Tooltip("First PLAYER : " + gameViewMessage.getPlayer(gameViewMessage.getCurrentPlayer()).getNickname());
         Tooltip.install(firstPlayerToken, firstPlayer);
 
-        //Get common goal cards from the model
+        //Get common goal cards from the GameViewMessage
         String pathCommonI = "src/resources/GraphicalResources/common goal cards/" + gameViewMessage.getCommonGoalCard(0).getId() + ".jpg";
         String pathCommonII = "src/resources/GraphicalResources/common goal cards/" + gameViewMessage.getCommonGoalCard(1).getId() + ".jpg";
         Image commonI = new Image("file:" + pathCommonI);
@@ -696,8 +695,8 @@ public class GUIController {
         ICommonGoalCard.setDisable(false);
         IICommonGoalCard.setDisable(false);
         //Get the Common Goal text and show only when user go with the mouse over the card
-        textCommonI = new Tooltip(model.getCommonGoal(0).getText());
-        textCommonII = new Tooltip(model.getCommonGoal(1).getText());
+        textCommonI = new Tooltip(gameViewMessage.getCommonGoalCard(0).getText());
+        textCommonII = new Tooltip(gameViewMessage.getCommonGoalCard(1).getText());
         Tooltip.install(ICommonGoalCard, textCommonI);
         Tooltip.install(IICommonGoalCard, textCommonII);
         ICommonGoalCard.getStyleClass().add("selected-image");
@@ -705,7 +704,7 @@ public class GUIController {
 
         //Initialize the other players and the main player (client)
         for (int i = 0; i < gameViewMessage.getPlayers().size(); i++) {
-            if (!gameViewMessage.getPlayers().get(i).getNickname().equals(clientNickName)) {
+            if (!gameViewMessage.getPlayers().get(i).getNickname().equals(GUI.nickname)) {
                 others.add(gameViewMessage.getPlayers().get(i));
             } else {
                 clientPoints.setText("YOUR POINTS : " + gameViewMessage.getPlayers().get(i).getPoints());
@@ -778,123 +777,6 @@ public class GUIController {
         // Load all the images of the tiles
         loadTilesImages();
 
-
-        // I temporarily create a game model to initialize the view
-        List<String> tmpPlayerNames = new ArrayList<String>();
-        tmpPlayerNames.add("Pippo");
-        tmpPlayerNames.add("Pluto");
-        tmpPlayerNames.add("Paperino");
-        //tmpPlayerNames.add("Giuseppe");
-        model = new Game(tmpPlayerNames, null);
-
-
-
-        // Put first Player's nickname into the chair on GUI    RIMUOVI
-        Tooltip firstPlayer = new Tooltip("First PLAYER : " + model.getCurrentPlayer().getNickname());
-        Tooltip.install(firstPlayerToken, firstPlayer);
-
-        //Get common goal cards from the model    RIMUOVI
-        String pathCommonI = "src/resources/GraphicalResources/common goal cards/" + model.getCommonGoal(0).getId() + ".jpg";
-        String pathCommonII = "src/resources/GraphicalResources/common goal cards/" + model.getCommonGoal(1).getId() + ".jpg";
-        Image commonI = new Image("file:" + pathCommonI);
-        Image commonII = new Image("file:" + pathCommonII);
-        // Set common goal cards images on existing javafx objects
-        ICommonGoalCard.setImage(commonI);
-        IICommonGoalCard.setImage(commonII);
-        ICommonGoalCard.setDisable(false);
-        IICommonGoalCard.setDisable(false);
-        //Get the Common Goal text and show only when user go with the mouse over the card
-        textCommonI = new Tooltip(model.getCommonGoal(0).getText());
-        textCommonII = new Tooltip(model.getCommonGoal(1).getText());
-        Tooltip.install(ICommonGoalCard, textCommonI);
-        Tooltip.install(IICommonGoalCard, textCommonII);
-        ICommonGoalCard.getStyleClass().add("selected-image");
-        IICommonGoalCard.getStyleClass().add("selected-image");
-
-
-        // RIMUOVI
-        for (int i = 0; i < model.getPlayers().size(); i++) {
-            if (!model.getPlayers().get(i).getNickname().equals(clientNickName)) {
-                others.add(model.getPlayers().get(i));
-            } else {
-                clientPoints.setText("YOUR POINTS : " + model.getPlayers().get(i).getPoints());
-
-                // OGNI TANTO MI TORNA PERSONAL GOAL NULL, CONTROLLARE!!!
-                personalGoal.setImage(new Image("file:src/resources/GraphicalResources/personal goal cards/Personal_Goals" + model.getPlayers().get(i).getPersonalGoal().getId() + ".png"));
-            }
-        }
-
-        // Versione con 4 giocatori    RIMUOVI TUTTO
-        if (others.size() == 3) {
-            otherPlayers.add(new PlayerView(player1Name, player1Points, playerShelf1));
-            otherPlayers.add(new PlayerView(player2Name, player2Points, playerShelf2));
-            otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
-        }
-        // Versione con 3 giocatori
-        else if (others.size() == 2) {
-            otherPlayers.add(new PlayerView(player1Name, player1Points, playerShelf1));
-            otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
-
-            clearCellContent(mainGrid,1,2);
-            clearCellContent(mainGrid,2,2);
-
-
-        } else if (others.size() == 1) {
-            otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
-
-            //remove the shelf of the player in the center (statically placed by the FXML)
-            clearCellContent(mainGrid,1,2);
-            clearCellContent(mainGrid,2,2);
-
-            clearCellContent(mainGrid,1,1);
-            clearCellContent(mainGrid,2,1);
-
-        }
-
-
-
-
-        //RIMUOVI
-        // Initialize the other players with the data received from the server binding the GUI elements to each player's data
-        for (int i = 0; i < others.size(); i++) {
-            otherPlayers.get(i).initialize(others.get(i));
-        }
-
-        // RIMUOVI, serviva solo per provare
-        // TEST : Fill the shelf with the tiles randomly DA (RIMUOVERE)
-        for (int i = 1; i < 6; i++) {
-            for (int j = 1; j < 7; j++) {
-                ImageView imageView1 = new ImageView(purpleTiles.get(1));
-                ImageView imageView2 = new ImageView(yellowTiles.get(1));
-                ImageView imageView3 = new ImageView(whiteTiles.get(1));
-                ImageView imageView4 = new ImageView(blueTiles.get(1));
-
-                imageView1.setFitHeight(23);
-                imageView1.setFitWidth(23);
-
-                imageView2.setFitHeight(23);
-                imageView2.setFitWidth(23);
-
-                imageView3.setFitHeight(23);
-                imageView3.setFitWidth(23);
-
-                imageView4.setFitHeight(45);
-                imageView4.setFitWidth(45);
-
-                playerShelf1.add(imageView1, i, j);
-                playerShelf2.add(imageView2, i, j);
-                playerShelf3.add(imageView3, i, j);
-                mainShelfGridPane.add(imageView4, i, j);
-            }
-        }
-
-        // PROVO A CAMBIARE UNA TILE per provare
-        ImageView search = getImageViewFromGridPane(playerShelf1, 1, 1);
-        search.setImage(null);
-        search.setImage(yellowTiles.get(1));
-
-        //Initialize Board with the data received from the server
-        refreshBoard(model.getBoard());
 
     }
 
