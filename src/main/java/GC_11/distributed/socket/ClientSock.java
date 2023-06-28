@@ -1,5 +1,6 @@
 package GC_11.distributed.socket;
 
+import GC_11.ClientApp;
 import GC_11.distributed.Client;
 import GC_11.network.message.MessageView;
 import GC_11.network.choices.Choice;
@@ -72,11 +73,6 @@ public class ClientSock implements PropertyChangeListener, Client {
 
     public void notifyServer(Choice choice){
         sendMessageToServer(choice);
-    }
-
-    @Override
-    public String getNickname() throws RemoteException {
-        return this.view.getNickname(); //TODO
     }
 
     public void sendMessageToServer(Choice choice) {
@@ -178,6 +174,11 @@ public class ClientSock implements PropertyChangeListener, Client {
 
     public View getView() {
         return view;
+    }
+
+    @Override
+    public String getNickname() throws RemoteException {
+        return ClientApp.view.getNickname();
     }
 
     public void notifyServer(PropertyChangeEvent evt) {

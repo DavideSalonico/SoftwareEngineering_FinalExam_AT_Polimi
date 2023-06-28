@@ -1,6 +1,6 @@
 package GC_11.distributed;
 
-import GC_11.distributed.RMI.ClientImplRMI;
+import GC_11.distributed.rmi.ClientImplRMI;
 import GC_11.distributed.socket.ClientSock;
 
 import java.rmi.NotBoundException;
@@ -22,7 +22,9 @@ public class ClientFactory {
             }
         }
         else if(connectionProtocol.equals("SOCKET")) {
-            return new ClientSock(serverIp, 4322);
+            ClientSock client = new ClientSock(serverIp, 4322);
+            client.startClient();
+            return client;
         }
         return null;
     }
