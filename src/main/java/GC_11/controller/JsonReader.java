@@ -10,16 +10,27 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * JsonReader is a utility class that provides methods to read data from JSON files.
+ */
 public class JsonReader {
     private List<Triplet> read;
     private List<Player> players;
     private static JSONParser parser = new JSONParser();
 
+    /**
+     * Constructs a JsonReader object with the specified list of players.
+     *
+     * @param players the list of players
+     */
     public JsonReader(List<Player> players) {
         this.players = players;
         JSONParser parser = new JSONParser();
     }
 
+    /**
+     * Constructs a JsonReader object.
+     */
     public JsonReader() {
         this.parser = new JSONParser();
     }
@@ -30,7 +41,6 @@ public class JsonReader {
      * @param index is the integer that represent a random number between 0 and 11
      * @return the personal goal card with that specific id saved in a JSON file
      */
-
     public static PersonalGoalCard readPersonalGoalCard(int index) {
         try (Reader inputFile = new FileReader("src//main//resources//PersonalGoalCards.JSON")) {
             JSONArray cards = (JSONArray) parser.parse(inputFile);
@@ -62,6 +72,13 @@ public class JsonReader {
         }
     }
 
+
+    /**
+     * Reads the prohibited coordinates based on the number of players from a JSON file.
+     *
+     * @param numberOfPlayers the number of players
+     * @return a list of prohibited coordinates
+     */
     public static List<Coordinate> readCoordinate(int numberOfPlayers) {
 
         // Try to read the file, otherwise throw an exception
@@ -100,10 +117,10 @@ public class JsonReader {
 
 
     /**
-     * This function return a List<Coordinate> from a JSONArray which contain JSONObject with the prohibited coordinates for that specific number of players
+     * Extracts coordinates from a JSONArray and returns a list of Coordinate objects.
      *
-     * @param jsonCoordinates is the JSONArray for a specific number of players
-     * @return a List<Coordinate>
+     * @param jsonCoordinates the JSONArray containing the coordinates
+     * @return a list of Coordinate objects
      */
     private static List<Coordinate> extractCoordinates(JSONArray jsonCoordinates) {
 

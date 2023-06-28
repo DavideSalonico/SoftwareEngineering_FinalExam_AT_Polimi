@@ -2,6 +2,9 @@ package GC_11.network.choices;
 
 import java.util.Scanner;
 
+/**
+ * ChoiceType is an enumeration representing the types of choices that can be made directly or indirectly by players.
+ */
 public enum ChoiceType {
     SELECT_TILE,
     DESELECT_TILE,
@@ -15,6 +18,12 @@ public enum ChoiceType {
     LOAD_GAME,
     SHOW_CHAT;
 
+    /**
+     * Asks for additional parameters based on the choice type.
+     *
+     * @param input the choice type as a string.
+     * @return the choice type with the additional parameters.
+     */
     public static String askParams(String input) {
         Scanner s = new Scanner(System.in);
         String params;
@@ -23,8 +32,6 @@ public enum ChoiceType {
                 System.out.println("Insert the coordinates of the tile you want to select");
                 params = s.nextLine();
                 return input + " " + params;
-            case "DESELECT_TILE":
-                return input;
             case "PICK_COLUMN":
                 System.out.println("Insert the column you want to pick");
                 params = s.nextLine();
@@ -39,10 +46,6 @@ public enum ChoiceType {
                 System.out.println("Insert the message you want to send");
                 params = params + " " +s.nextLine();
                 return input + " " + params;
-            case "SHOW_CHAT":
-                    return input;
-            case "RESET_TURN":
-                return input;
             default:
                 return input;
         }

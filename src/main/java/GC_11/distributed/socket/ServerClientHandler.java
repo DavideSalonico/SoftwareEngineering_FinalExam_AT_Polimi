@@ -120,13 +120,6 @@ public class ServerClientHandler implements Runnable {
     });
 
 
-    /**
-     * Receives a lobby message from the client.
-     *
-     * @return The received lobby message.
-     * @throws IOException            If an I/O error occurs.
-     * @throws ClassNotFoundException If the class of the serialized object cannot be found.
-     */
 
     public void sendLobbyViewMessage(LobbyViewMessage msg) {
         try {
@@ -139,15 +132,6 @@ public class ServerClientHandler implements Runnable {
     }
 
 
-    /**
-     * Receives a message from the client.
-     * It always gets a String from the client. If the name is set and there is more than 1 client in the map
-     * it creates a Choice and notify it to the main server
-     *
-     * @return The received message.
-     * @throws IOException            If an I/O error occurs.
-     * @throws ClassNotFoundException If the class of the serialized object cannot be found.
-     */
 
     public void receiveChoiceFromClient() throws IOException, ClassNotFoundException, IllegalMoveException {
         Choice clientChoice;
