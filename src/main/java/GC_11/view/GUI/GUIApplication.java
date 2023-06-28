@@ -63,6 +63,7 @@ public class GUIApplication extends Application {
         connection.setLocation(new URL("file:///" + System.getProperty("user.dir") + "\\src\\main\\java\\GC_11\\view\\GUI\\connection.fxml"));
         connectionLoad = connection.<Pane>load();
         connectionController = connection.getController();
+        GUI.connectionController = connectionController;
 
 
 

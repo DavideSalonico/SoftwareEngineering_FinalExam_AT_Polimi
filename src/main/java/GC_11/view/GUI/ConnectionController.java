@@ -1,14 +1,13 @@
 package GC_11.view.GUI;
 
 import GC_11.distributed.ClientFactory;
-import com.sun.javafx.binding.StringFormatter;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.Scene;
 
 public class ConnectionController {
 
@@ -50,6 +49,7 @@ public class ConnectionController {
 
         createChoice(addressText.getText());
 
+        changeSceneToLobby();
         // eventuale cambio scena credo
     }
 
@@ -71,13 +71,16 @@ public class ConnectionController {
 
 
     public void changeSceneToLobby() {
+        System.out.println("ho provato a cambiare scena");
+        Platform.setImplicitExit(false);
         Platform.runLater(() -> {
-            try {
-                GUIApplication.mainStage.setScene(new Scene(GUIApplication.lobbyLoad));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            GUIApplication.mainStage.setScene(new Scene(GUIApplication.lobbyLoad));
+
+            System.out.println("Lobby scene FATTOOOO");
         });
+
+
+
     }
 
     public void setError(String error) {

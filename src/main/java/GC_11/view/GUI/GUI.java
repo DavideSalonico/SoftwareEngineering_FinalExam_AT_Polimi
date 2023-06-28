@@ -6,6 +6,7 @@ import GC_11.network.message.LobbyViewMessage;
 import GC_11.view.Lobby.LobbyController;
 import GC_11.view.View;
 
+
 public class GUI extends View {
 
     public static Client client;
@@ -16,6 +17,7 @@ public class GUI extends View {
     public GUIApplication guiApplication;
     public static GUIController gameController;
     public static LobbyController lobbyController;
+    public static ConnectionController connectionController;
     private boolean inGame;
 
 
@@ -70,11 +72,14 @@ public class GUI extends View {
 
     @Override
     public void askNickname() {
+        guiApplication.connectionController.changeSceneToLobby();
+
         System.out.println("DIGIT YOUR NICKNAME:");
 
         while (this.nickname == null){
             try {
-                Thread.sleep(1000);
+                System.out.println("waiting for nickname");
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
