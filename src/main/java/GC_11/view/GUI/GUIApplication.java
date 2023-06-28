@@ -17,10 +17,12 @@ public class GUIApplication extends Application {
 
     private static volatile boolean javaFxLaunched = false;
     public static Stage primaryStage;
+    public static Pane connectionLoad;
     public static Pane lobbyLoad;
     public static Pane gameLaod;
     public static Parent endGameLoad;
 
+    public static ConnectionController connectionController;
     public static GUIController gameController;
     public static LobbyController lobbyController;
 
@@ -57,7 +59,14 @@ public class GUIApplication extends Application {
         lobbyController = loaderLobby.getController();
         GUI.setLobbyController(lobbyController);
 
-        Scene scene = new Scene(gameLaod);
+        FXMLLoader connection = new FXMLLoader();
+        connection.setLocation(new URL("file:///" + System.getProperty("user.dir") + "\\src\\main\\java\\GC_11\\view\\GUI\\connection.fxml"));
+        connectionLoad = connection.<Pane>load();
+        connectionController = connection.getController();
+
+
+
+        Scene scene = new Scene(connectionLoad);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.getIcons().add(new Image("file:src/resources/GraphicalResources/Publisher material/Icon 50x50px.png"));
         primaryStage.setResizable(false);
