@@ -11,8 +11,8 @@ import java.rmi.RemoteException;
 import java.util.*;
 
 /**
- * This class give all the information about the Game specialized for a particular Player given by parameter
- * Use marker 'transiet' if we don't want to serialize the attribute
+ * Represents a message containing all the information about the game, specialized for a particular player.
+ * It contains various attributes representing the game state, such as players, common goals, current player, etc.
  */
 public class GameViewMessage extends MessageView {
 
@@ -75,11 +75,20 @@ public class GameViewMessage extends MessageView {
 
     }
 
-    // Solo per inviare messaggi testuali da server al client
+    /**
+     * send a message to the client.
+     *
+     * @param message the message to sent.
+     */
     public GameViewMessage(String message){
         this.message=message;
     }
 
+    /**
+     * Constructs a GameViewMessage object based on another GameViewMessage object.
+     *
+     * @param gameViewMessage The GameViewMessage object to copy.
+     */
     public GameViewMessage(GameViewMessage gameViewMessage) {
         super();
         this.error = gameViewMessage.error;
@@ -103,52 +112,81 @@ public class GameViewMessage extends MessageView {
         this.filteredPvtChats = new HashMap<>();
     }
 
+    /**
+     * Returns the board of the game.
+     *
+     * @return The game board.
+     */
     public Board getBoard() {
         return this.board;
     }
 
-
+    /**
+     * Returns the list of players in the game.
+     *
+     * @return The list of players.
+     */
     public CircularList<Player> getPlayers() {
         return this.players;
     }
 
+    /**
+     * Returns the nickname of the current player.
+     *
+     * @return The nickname of the current player.
+     */
     public String getCurrentPlayer() { return this.currentPlayer; }
 
+    /**
+     * Returns the list of common goal cards in the game.
+     *
+     * @return The list of common goal cards.
+     */
     public List<CommonGoalCard> getCommonGoalCards() {
         return this.commonGoals;
     }
 
     /**
-     * CommonGoalCard Getter method
+     * CommonGoalCard Getter method.
      *
-     * @param index or 0 or 1
-     * @return CommonGoalCard at position 'index'
+     * @param index or 0 or 1.
+     * @return CommonGoalCard at position 'index'.
      */
     public CommonGoalCard getCommonGoalCard(int index) {
         return this.commonGoals.get(index);
     }
 
+    /**
+     * Checks if there was an error in the game.
+     *
+     * @return True if there was an error, false otherwise.
+     */
     public boolean isError() {
         return this.error;
     }
 
+    /**
+     * Returns the winner of the game.
+     *
+     * @return The player who won the game.
+     */
     public Player getWinner() {
     	return this.winner;
     }
 
     /**
-     * Exception's message setter from object Exception
+     * Exception's message setter from object Exception.
      *
-     * @param e generic exception caught
+     * @param e generic exception caught.
      */
     public void setExceptionMessage(Exception e) {
         this.exceptionMessage = e.getMessage();
     }
 
     /**
-     * Exception's message setter directly from String
+     * Exception's message setter directly from String.
      *
-     * @param mess Error message string
+     * @param mess Error message string.
      */
     public void setExceptionMessage(String mess) {
         this.exceptionMessage = mess;
@@ -156,14 +194,20 @@ public class GameViewMessage extends MessageView {
 
 
     /**
-     * Exception message getter
+     * Exception message getter.
      *
-     * @return error message string
+     * @return error message string.
      */
     public String getExceptionMessage() {
         return this.exceptionMessage;
     }
 
+    /**
+     * Returns a player object based on the provided client nickname.
+     *
+     * @param clientNickName The client nickname.
+     * @return The player object corresponding to the client nickname.
+     */
     public Player getPlayer(String clientNickName) {
         for (Player p : this.getPlayers()) {
             if (p.getNickname().equals(clientNickName)) return new Player(p);
@@ -171,45 +215,101 @@ public class GameViewMessage extends MessageView {
         return null;   //ATTENZIONE A QUESTO NULL non gestito
     }
 
+    /**
+     * Returns the exception caught during the game.
+     *
+     * @return The exception object.
+     */
     public Exception getException() {
         return exception;
     }
 
+    /**
+     * Returns the message associated with the game view.
+     *
+     * @return The message string.
+     */
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Sets the message associated with the game view.
+     *
+     * @param message The message string.
+     */
     public void setMessage(String message) {
     	this.message = message;
     }
 
+    /**
+     * Sets the exception caught during the game.
+     *
+     * @param exception The exception object.
+     */
     public void setException(Exception exception) {
         this.exception = exception;
     }
 
+    /**
+     * Returns the main chat messages of the game.
+     *
+     * @return The list of main chat messages.
+     */
     public List<Message> getMainChat() {
         return mainChat;
     }
+
+    /**
+     * Returns the private chat messages of the game.
+     *
+     * @return The map of private chat messages.
+     */
     public Map<Set<String>, List<Message>> getPrivateChats() {
         return privateChats;
     }
 
+    /**
+     * Returns the filtered private chat messages of the game.
+     *
+     * @return The map of filtered private chat messages.
+     */
     public Map<String, List<Message>> getFilteredPvtChats() {
         return filteredPvtChats;
     }
 
+    /**
+     * Sets the filtered private chat messages of the game.
+     *
+     * @param filteredPvtChats The map of filtered private chat messages.
+     */
     public void setFilteredPvtChats(Map<String, List<Message>> filteredPvtChats) {
         this.filteredPvtChats = filteredPvtChats;
     }
 
+    /**
+     * Sets the private chat messages of the game.
+     *
+     * @param privateChats The map of private chat messages.
+     */
     public void setPrivateChats(Map<Set<String>, List<Message>> privateChats) {
         this.privateChats = privateChats;
     }
 
+    /**
+     * Sets the main chat messages of the game.
+     *
+     * @param mainChat The list of main chat messages.
+     */
     public void setMainChat(List<Message> mainChat) {
         this.mainChat = mainChat;
     }
 
+    /**
+     * Executes the game view update on the client.
+     *
+     * @param client The client to update with the game view.
+     */
     @Override
     public void executeOnClient(Client client){
         try {
@@ -219,6 +319,13 @@ public class GameViewMessage extends MessageView {
         }
     }
 
+    /**
+     * Sanitizes the game view message for a specific receiver.
+     * It removes sensitive information from the game view that should not be visible to other players.
+     *
+     * @param receiver The nickname of the receiver.
+     * @return A sanitized copy of the game view message.
+     */
     @Override
     public MessageView sanitize(String receiver) {
         GameViewMessage copy = new GameViewMessage(this);
@@ -243,10 +350,20 @@ public class GameViewMessage extends MessageView {
         return copy;
     }
 
+    /**
+     * Checks if the game has ended.
+     *
+     * @return True if the game has ended, false otherwise.
+     */
     public boolean isEndGame() {
         return endGame;
     }
 
+    /**
+     * Returns the nickname of the player who caused the game to end.
+     *
+     * @return The nickname of the player who caused the game to end.
+     */
     public String getEndPlayer() {
     	return endPlayer;
     }
