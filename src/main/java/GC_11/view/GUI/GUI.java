@@ -1,27 +1,22 @@
 package GC_11.view.GUI;
 
 import GC_11.distributed.Client;
-import GC_11.exceptions.ColumnIndexOutOfBoundsException;
-import GC_11.exceptions.IllegalMoveException;
-import GC_11.network.choices.ChoiceFactory;
 import GC_11.network.message.GameViewMessage;
 import GC_11.network.message.LobbyViewMessage;
 import GC_11.view.Lobby.LobbyApplication;
 import GC_11.view.Lobby.LobbyController;
 import GC_11.view.View;
 
-import java.rmi.RemoteException;
-
-import static java.lang.Integer.parseInt;
-import static java.lang.Thread.sleep;
-
 public class GUI extends View {
+
     private Client client;
     private String nickname;
     public GUIApplication guiApplication;
     public LobbyApplication lobbyApplication;
     public static LobbyController lobbyController;
     private boolean inGame;
+
+    public final Object lock = new Object();
 
     public static  void setController(LobbyController controller){
         GUI.lobbyController = controller;
@@ -37,10 +32,7 @@ public class GUI extends View {
 
 
         this.lobbyApplication = new LobbyApplication();
-        lobbyApplication.setClient(client);
-        lobbyApplication.via();
 
-        //this.lobbyController = new LobbyController();
         while(lobbyController == null){
 
             try {
@@ -49,6 +41,8 @@ public class GUI extends View {
                 throw new RuntimeException(e);
             }
         }
+
+        this.lobbyController.setLock(this.lock);
         this.lobbyController.setClient(client);
     }
 
@@ -67,23 +61,25 @@ public class GUI extends View {
     @Override
     public void show() {
         if (this.modelView.isError()) {
-            guiApplication.setError(this.modelView.getExceptionMessage());
+            //guiApplication.setError(this.modelView.getExceptionMessage());
         }else{
-            guiApplication.setError("");
-            try {
-                this.guiApplication.updatePlayer(modelView.getBoard(),modelView.getPlayer(modelView.getCurrentPlayer()));
-            } catch (ColumnIndexOutOfBoundsException e) {
-                throw new RuntimeException(e); //TODO handle this exception
-            }
+            //guiApplication.setError("");
+            //this.guiApplication.updatePlayer(modelView.getBoard(),modelView.getPlayer(modelView.getCurrentPlayer()));
         }
     }
 
     @Override
     public void askNickname() {
-        try {
-            sleep(20000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        System.out.println("askNickname required: ");
+
+        synchronized (lock) {
+            try {
+                System.out.println("Thread addormentato");
+                lock.wait(); // Il thread si addormenta e rilascia il lock
+                System.out.println("Thread risvegliato");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         /*String nickname = this.lobbyApplication.confirmNickname();
@@ -97,7 +93,19 @@ public class GUI extends View {
 
     @Override
     public void askMaxNumber() {
-        String number = this.lobbyApplication.sendNumberOfPlayer();
+        System.out.println("MaxNumberPlayer required: ");
+
+        synchronized (lock) {
+            try {
+                System.out.println("Thread addormentato");
+                lock.wait(); // Il thread si addormenta e rilascia il lock
+                System.out.println("Thread risvegliato");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        /*String number = this.lobbyController.sendNumberOfPlayer();
         try{
             parseInt(number);
         }catch (NumberFormatException e){
@@ -109,7 +117,7 @@ public class GUI extends View {
             } catch (RemoteException | IllegalMoveException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
     @Override
@@ -119,7 +127,7 @@ public class GUI extends View {
 
     @Override
     public void printLobby(LobbyViewMessage lobbyViewMessage) {
-        this.lobbyApplication.updatePlayerList(lobbyViewMessage);
+        this.lobbyController.updatePlayerList(lobbyViewMessage);
     }
 
     @Override
@@ -129,9 +137,9 @@ public class GUI extends View {
 
     @Override
     public void update(GameViewMessage modelView) {
-        if(!this.inGame){
+        /*if(!this.inGame){
             try {
-                this.guiApplication = this.lobbyApplication.changeScene();
+                this.guiApplication = this.lobbyController.changeScene();
                 this.guiApplication.init(modelView);
             } catch (RemoteException e) {
                 throw new RuntimeException(e); //TODO handle
@@ -140,6 +148,6 @@ public class GUI extends View {
         setInGame(true);
         this.setModelView(modelView);
         show();
-    }
+    */}
 
 }

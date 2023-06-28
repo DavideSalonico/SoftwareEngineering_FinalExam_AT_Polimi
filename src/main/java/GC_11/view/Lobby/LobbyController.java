@@ -6,6 +6,7 @@ import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
 import GC_11.network.message.LobbyViewMessage;
 import GC_11.view.GUI.GUIApplication;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -17,8 +18,9 @@ import java.util.List;
 public class LobbyController {
     public Stage primaryStage;
 
-    public Client client;
+    public static Client client;
 
+    public Object lock;
     @FXML
     private ChoiceBox<String> chooseNumberPlayers;
 
@@ -38,13 +40,15 @@ public class LobbyController {
     private Label text;
 
 
-    public LobbyController(){
-    }
 
+    public void setLock(Object lock) {
+        this.lock = lock;
+    }
     public void setClient(Client client) {
-        this.client = client;
+        Platform.runLater(() -> this.client = client);
     }
 
+    @FXML
     public void initialize() {
         confirmName.setDisable(true);
         clientNickname.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -53,10 +57,12 @@ public class LobbyController {
         chooseNumberPlayers.getItems().addAll("2", "3", "4");
     }
 
+    @FXML
     public void setError(String error) {
         errorArea.setText(error);
     }
 
+    @FXML
     public void showPlayers(List<String> players) {
         chooseNumberPlayers.setVisible(false);
         text.setVisible(false);
@@ -70,6 +76,7 @@ public class LobbyController {
         setError("Waiting for other players...");
     }
 
+    @FXML
     public void waitingRoom(){
 
         //OTTIENI LISTA PLAYER DA GAMEVIEWMESSAGE
@@ -83,23 +90,26 @@ public class LobbyController {
     }
 
     @FXML
-    public String sendNumberOfPlayer(){
+    public void sendNumberOfPlayer(){
         int numberOfPlayers = Integer.parseInt((String) chooseNumberPlayers.getValue());
         System.out.println(numberOfPlayers);
         waitingRoom();
-        return chooseNumberPlayers.getValue().toString();
+        createChoice("SET_MAX_NUMBER "+chooseNumberPlayers.getValue().toString());
     }
 
     @FXML
     public void createChoice(String s) {
         Choice choice;
+
         try {
             choice = ChoiceFactory.createChoice(null, s);
         } catch (IllegalMoveException e) {
             throw new RuntimeException(e);
         }
         try {
+            System.out.println("Sending choice: " + choice + " client: " + client.toString());
             client.notifyServer(choice);
+            notifyAll();
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -119,10 +129,11 @@ public class LobbyController {
 
         confirmName.setOnAction(event -> sendNumberOfPlayer());
         createChoice("ADD_PLAYER " +clientNickname.getText());
-        notifyAll();
+        //notifyAll();
     }
 
     //USA platform.runLater
+    @FXML
     public void updatePlayerList(LobbyViewMessage message) {
         List<String> players = message.getPlayersNames();
         listPlayers.setText("");
@@ -130,6 +141,7 @@ public class LobbyController {
             listPlayers.appendText(player + "\n");
     }
 
+    @FXML
     public GUIApplication changeScene() throws RemoteException {
         GUIApplication guiApplication = new GUIApplication();
         //guiApplication.setClient(this.client);
