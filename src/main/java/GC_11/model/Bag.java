@@ -17,7 +17,7 @@ public class Bag implements Serializable {
 
     private List<Tile> tiles; // 132 tiles, 22 x 6
 
-    transient PropertyChangeListener listener;
+    private transient PropertyChangeListener listener;
 
     /**
      * Setter of the listener
@@ -43,7 +43,7 @@ public class Bag implements Serializable {
      *
      * @return all the tiles in the bag
      */
-    private List<Tile> getTiles() {
+    public List<Tile> getTiles() {
         return this.tiles;
     }
 
@@ -92,7 +92,7 @@ public class Bag implements Serializable {
         return tiles.isEmpty();
     }
 
-    // DA SISTEMARE : Si può fare semplicemente con il metodo remove(tile)
+    // DA SISTEMARE: Si può fare semplicemente con il metodo remove(tile)
     public void removeTile(Tile tile) {
         boolean removed = false;
         for (int i = 0; i < tiles.size() && !removed; i++)
@@ -103,16 +103,19 @@ public class Bag implements Serializable {
     }
 
     /**
-     * Remove all tiles contained in t from tiles
+     * Remove out a list of tiles from the bag
+     * Notify the listener that the game is ended
      *
      */
     public void removeListOfTile(List<Tile> t) {
 
+        this.tiles.removeAll(t);
+
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "END_GAME_SET",
-                this.tiles,
-                this.tiles.retainAll(t));
+                null,
+                this.tiles);
 
         this.listener.propertyChange(evt);
     }
@@ -123,7 +126,7 @@ public class Bag implements Serializable {
      * @param tc is the color of the tiles that I want to count
      * @return Number of tiles in 'tc' coloration
      */
-    private int countTiles(TileColor tc) {
+    public int countTiles(TileColor tc) {
         int count = 0;
         for (Tile t : tiles)
             if (t.getColor() == tc)
