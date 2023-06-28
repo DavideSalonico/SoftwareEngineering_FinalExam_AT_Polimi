@@ -128,16 +128,6 @@ public class LobbyController {
 
     }
 
-    //USA platform.runLater
-    /*@FXML
-    public void updatePlayerList(LobbyViewMessage message) {
-        Platform.runLater(() ->{
-            List<String> players = message.getPlayersNames();
-            listPlayers.setText("");
-            for(String player : players)
-                listPlayers.appendText(player + "\n");
-        });
-    }*/
 
     @FXML
     public GUIApplication changeScene() throws RemoteException {
