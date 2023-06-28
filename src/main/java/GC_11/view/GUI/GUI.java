@@ -8,7 +8,7 @@ import GC_11.view.View;
 
 public class GUI extends View {
 
-    private Client client;
+    public static Client client;
     public static String nickname;
     public static int maxNumber = 0;
     public static String typeOfConnection;
@@ -23,28 +23,31 @@ public class GUI extends View {
     /**
      * Every view is bound at only one player, it helps to manage every input that the controller receive
      */
-    public GUI(Client client) {
+    public GUI() {
         super();
-        this.client = client;
-        this.inGame = false;
-
         this.guiApplication = new GUIApplication();
 
-        while (lobbyController == null){
+
+        //this.client = client;
+
+        /*while (lobbyController == null){
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
-        this.lobbyController.setClient(client);
+        this.lobbyController.setClient(client);*/
     }
 
+
+
+
     public static  void setLobbyController(LobbyController controller){
-        GUI.lobbyController = controller;
+        lobbyController = controller;
     }
     public static void setGameController(GUIController controller){
-        GUI.gameController = controller;
+        gameController = controller;
     }
 
 

@@ -2,15 +2,11 @@ package GC_11.distributed.rmi;
 
 import GC_11.distributed.Client;
 import GC_11.distributed.ServerRMI;
-import GC_11.network.message.GameViewMessage;
 import GC_11.network.message.MessageView;
 import GC_11.network.choices.Choice;
 import GC_11.view.*;
 import GC_11.view.GUI.GUI;
-import GC_11.view.GUI.GUIApplication;
-import javafx.application.Application;
 
-import java.beans.PropertyChangeEvent;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -31,7 +27,7 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
             this.view = new GameCLI(this.nickname, this);
         }
         else{
-            this.view = new GUI(this);
+            this.view = new GUI();
         }
     }
 

@@ -1,5 +1,7 @@
 package GC_11.view.GUI;
 
+import GC_11.distributed.ClientFactory;
+import com.sun.javafx.binding.StringFormatter;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,9 +26,12 @@ public class ConnectionController {
 
     @FXML
     private Button confirmIP;
+
+    String typeOfConnection;
     @FXML
     void chooseRMI(ActionEvent event) {
         createChoice("RMI");
+        typeOfConnection = "RMI";
         addressText.setDisable(false);
         confirmIP.setDisable(false);
 
@@ -34,12 +39,15 @@ public class ConnectionController {
     @FXML
     void chooseSocket(ActionEvent event) {
         createChoice("SOCKET");
+        typeOfConnection = "SOCKET";
         addressText.setDisable(false);
         confirmIP.setDisable(false);
     }
 
     @FXML
     public void confirmIP(ActionEvent event) {
+        GUI.client = ClientFactory.createClient(addressText.getText(), typeOfConnection);
+
         createChoice(addressText.getText());
 
         // eventuale cambio scena credo
