@@ -335,7 +335,10 @@ public class Controller implements PropertyChangeListener {
 
     public void startGame(){
         // Check if players' name are the same in the JSON file
-        List<String> playersInJsonFile = JsonWriter.getNicknames();
+        this.model = new Game(this.lobby.getPlayers(), this.server);
+        this.server.notifyClients(new GameViewMessage(this.model, null));
+        // TODO: QUESTO E' QUELLO BUGGATO COL JSONWRITE. QUELLO GIUSTO E' SUL BRANCH DISCONNETIONS DI TIA
+        /*List<String> playersInJsonFile = JsonWriter.getNicknames();
         // If the number of players is the same
         boolean equals = true;
         if (playersInJsonFile.size() == lobby.getPlayers().size()){
@@ -357,7 +360,7 @@ public class Controller implements PropertyChangeListener {
         else{
             this.model = new Game(this.lobby.getPlayers(), this.server);
             this.server.notifyClients(new GameViewMessage(this.model, null));
-        }
+        }*/
 
     }
 
