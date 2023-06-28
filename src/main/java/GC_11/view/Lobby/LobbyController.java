@@ -102,7 +102,7 @@ public class LobbyController {
             throw new RuntimeException(e);
         }
         try {
-            System.out.println("Sending choice: " + choice );
+            System.out.println("Sending choice: " + choice + "client : " + GUI.client.toString());
             GUI.client.notifyServer(choice);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
