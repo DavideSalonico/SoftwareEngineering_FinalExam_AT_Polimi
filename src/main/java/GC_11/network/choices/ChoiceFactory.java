@@ -7,8 +7,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+/**
+ * ChoiceFactory is a factory class for creating different types of choices based on player input.
+ */
 public class ChoiceFactory {
 
+    /**
+     * Creates a choice based on the player and input string.
+     *
+     * @param player the player associated with the choice.
+     * @param input  the input string representing the choice.
+     * @return the created choice.
+     * @throws IllegalMoveException if the move is illegal.
+     */
     public static Choice createChoice(Player player, String input) throws IllegalMoveException {
         List<String> tmp = new ArrayList<String>();
 
