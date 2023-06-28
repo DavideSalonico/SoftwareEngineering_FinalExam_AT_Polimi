@@ -76,14 +76,10 @@ public class ConnectionController {
 
 
     public void changeSceneToLobby() {
-        System.out.println("ho provato a cambiare scena");
         Platform.setImplicitExit(false);
         Platform.runLater(() -> {
             GUIApplication.mainStage.setScene(new Scene(GUIApplication.lobbyLoad));
-            System.out.println("Lobby scene FATTOOOO");
         });
-
-
 
     }
 
