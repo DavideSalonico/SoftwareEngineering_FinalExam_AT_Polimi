@@ -16,7 +16,7 @@ import java.net.URL;
 public class GUIApplication extends Application {
 
     private static volatile boolean javaFxLaunched = false;
-    public static Stage primaryStage;
+    public static Stage mainStage;
     public static Pane connectionLoad;
     public static Pane lobbyLoad;
     public static Pane gameLaod;
@@ -66,8 +66,9 @@ public class GUIApplication extends Application {
 
 
 
-        Scene scene = new Scene(gameLaod);
+        Scene scene = new Scene(lobbyLoad);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        mainStage = primaryStage;
         primaryStage.getIcons().add(new Image("file:src/resources/GraphicalResources/Publisher material/Icon 50x50px.png"));
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);

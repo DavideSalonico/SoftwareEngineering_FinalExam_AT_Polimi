@@ -5,6 +5,7 @@ import GC_11.exceptions.IllegalMoveException;
 import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
 import GC_11.network.message.LobbyViewMessage;
+import GC_11.view.GUI.GUI;
 import GC_11.view.GUI.GUIApplication;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -104,7 +105,6 @@ public class LobbyController {
         try {
             System.out.println("Sending choice: " + choice + " client: " + client.toString());
             client.notifyServer(choice);
-            notifyAll();
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -112,7 +112,6 @@ public class LobbyController {
 
     @FXML
     public void confirmNickname() {
-        Platform.runLater(() ->{
             confirmName.setDisable(true);
             chooseNumberPlayers.setVisible(true);
             clientNickname.setVisible(false);
@@ -125,7 +124,8 @@ public class LobbyController {
 
             confirmName.setOnAction(event -> sendNumberOfPlayer());
             createChoice("ADD_PLAYER " +clientNickname.getText());
-        });
+            GUI.nickname = clientNickname.getText();
+
     }
 
     //USA platform.runLater

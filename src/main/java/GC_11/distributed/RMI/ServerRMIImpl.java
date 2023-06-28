@@ -1,13 +1,11 @@
-package GC_11.distributed.rmi;
+package GC_11.distributed.RMI;
 
-import GC_11.controller.Controller;
 import GC_11.distributed.Client;
 import GC_11.distributed.ServerMain;
 import GC_11.distributed.ServerRMI;
 import GC_11.model.Game;
-import GC_11.network.message.*;
-import GC_11.model.Lobby;
 import GC_11.network.choices.Choice;
+import GC_11.network.message.*;
 
 import java.beans.PropertyChangeEvent;
 import java.io.Serializable;

@@ -3,6 +3,7 @@ package GC_11.view.GUI;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -61,6 +62,15 @@ public class ConnectionController {
     }
 
 
+    public void changeSceneToLobby() {
+        Platform.runLater(() -> {
+            try {
+                GUIApplication.mainStage.setScene(new Scene(GUIApplication.lobbyLoad));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
 
     public void setError(String error) {
         Platform.runLater(() -> errorLabel.setText(error));

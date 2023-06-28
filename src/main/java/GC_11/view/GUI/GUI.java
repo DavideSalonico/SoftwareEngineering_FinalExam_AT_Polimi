@@ -9,7 +9,7 @@ import GC_11.view.View;
 public class GUI extends View {
 
     private Client client;
-    private String nickname;
+    public static String nickname;
     public GUIApplication guiApplication;
     public static GUIController gameController;
     public static LobbyController lobbyController;
@@ -27,6 +27,13 @@ public class GUI extends View {
 
         this.guiApplication = new GUIApplication();
 
+        while (lobbyController == null){
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
         this.lobbyController.setClient(client);
     }
 
@@ -37,9 +44,6 @@ public class GUI extends View {
         GUI.gameController = controller;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
 
     public void setInGame(boolean inGame) {
         this.inGame = inGame;
@@ -61,8 +65,13 @@ public class GUI extends View {
 
     @Override
     public void askNickname() {
-        System.out.println("DIGIT Nickname required: ");
+        System.out.println("DIGIT YOUR NICKNAME:");
 
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         /*String nickname = this.lobbyApplication.confirmNickname();
         try {
@@ -75,8 +84,13 @@ public class GUI extends View {
 
     @Override
     public void askMaxNumber() {
-        System.out.println("MaxNumberPlayer required: ");
+        System.out.println("MaxNumberPlayer required: " + "nickname attuale : " + this.nickname);
 
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         /*String number = this.lobbyController.sendNumberOfPlayer();
         try{
