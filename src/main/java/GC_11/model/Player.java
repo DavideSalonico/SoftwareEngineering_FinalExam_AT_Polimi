@@ -2,6 +2,7 @@ package GC_11.model;
 
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.NotEnoughFreeSpacesException;
+import GC_11.util.ControlMatrix;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

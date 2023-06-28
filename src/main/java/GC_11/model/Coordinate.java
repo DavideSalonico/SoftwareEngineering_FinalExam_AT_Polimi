@@ -2,6 +2,9 @@ package GC_11.model;
 
 import java.io.Serializable;
 
+/**
+ * Class that represents a coordinate in the board
+ */
 public class Coordinate implements Serializable {
 
     private int row;

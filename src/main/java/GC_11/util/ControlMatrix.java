@@ -1,4 +1,4 @@
-package GC_11.model;
+package GC_11.util;
 
 import java.io.Serializable;
 
