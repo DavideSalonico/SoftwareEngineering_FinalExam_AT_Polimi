@@ -9,6 +9,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.Scene;
 
+import java.rmi.RemoteException;
+
 public class ConnectionController {
 
     @FXML
@@ -46,10 +48,13 @@ public class ConnectionController {
     @FXML
     public void confirmIP(ActionEvent event) {
         GUI.client = ClientFactory.createClient(addressText.getText(), typeOfConnection);
-
         createChoice(addressText.getText());
-
-        changeSceneToLobby();
+        try {
+            GUI.client.startClient();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+        //changeSceneToLobby();
         // eventuale cambio scena credo
     }
 
@@ -75,7 +80,6 @@ public class ConnectionController {
         Platform.setImplicitExit(false);
         Platform.runLater(() -> {
             GUIApplication.mainStage.setScene(new Scene(GUIApplication.lobbyLoad));
-
             System.out.println("Lobby scene FATTOOOO");
         });
 

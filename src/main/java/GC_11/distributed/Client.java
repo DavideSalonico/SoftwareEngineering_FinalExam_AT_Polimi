@@ -20,4 +20,6 @@ public interface Client extends Remote, Serializable {
     View getView() throws RemoteException;
 
     void notifyDisconnection() throws RemoteException;
+
+    void startClient() throws RemoteException;
 }

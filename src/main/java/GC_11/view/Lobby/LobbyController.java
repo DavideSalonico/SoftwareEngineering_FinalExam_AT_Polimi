@@ -122,10 +122,10 @@ public class LobbyController {
         createChoice("ADD_PLAYER " + clientNickname.getText());
         GUI.nickname = clientNickname.getText();
 
-        confirmName.setDisable(true);
+        /*confirmName.setDisable(true);
         chooseNumberPlayers.setVisible(true);
         clientNickname.setVisible(false);
-        text.setText("Scegli il numero di giocatori");
+        text.setText("Scegli il numero di giocatori");*/
 
     }
 

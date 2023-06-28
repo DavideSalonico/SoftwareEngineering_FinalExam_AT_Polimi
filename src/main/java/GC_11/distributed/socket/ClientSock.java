@@ -163,8 +163,6 @@ public class ClientSock implements PropertyChangeListener, Client {
     public void startClient() {
         System.out.println("ClientSocket running");
         readGameViewThread.start();
-
-
     }
 
     private void closeConnection() {
