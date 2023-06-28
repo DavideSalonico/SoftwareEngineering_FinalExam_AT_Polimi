@@ -12,9 +12,6 @@ public class CommonGoalCard3 extends CommonGoalCard {
             "The tiles of one group can be different from those of another group.";
     public int id = 3;
 
-    public int getId() {
-        return id;
-    }
 
     ControlMatrix matrix = new ControlMatrix();
 
@@ -60,7 +57,4 @@ public class CommonGoalCard3 extends CommonGoalCard {
         }
     }
 
-    public String getText() {
-        return this.text;
-    }
 }

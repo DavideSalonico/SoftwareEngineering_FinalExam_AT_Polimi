@@ -11,9 +11,6 @@ public class CommonGoalCard2 extends CommonGoalCard {
     private final String text = "Five tiles of the same type forming a diagonal.";
     public int id = 2;
 
-    public int getId() {
-        return id;
-    }
 
 // this code verifies if there are 5 tiles of the same type forming a diagonal. The check is made with 2 counters that
 // counts how many tiles on a diagonal have the same color of the tile on the top left of the diagonal, for counter1,
@@ -47,8 +44,5 @@ public class CommonGoalCard2 extends CommonGoalCard {
         }
     }
 
-    public String getText() {
-        return this.text;
-    }
 
 }

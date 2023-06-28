@@ -14,9 +14,6 @@ public class CommonGoalCard4 extends CommonGoalCard {
     public int id = 4;
 
 
-    public int getId() {
-        return id;
-    }
 
     //this code verifies if there are at least 4 line with 5 tiles and maximum 3 different tile types.
     // it uses a set to count the number of different
@@ -51,7 +48,4 @@ public class CommonGoalCard4 extends CommonGoalCard {
 
     }
 
-    public String getText() {
-        return this.text;
-    }
 }
