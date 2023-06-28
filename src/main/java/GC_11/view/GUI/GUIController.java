@@ -185,8 +185,24 @@ public class GUIController {
         }
     }
 
+
+    /**
+     * This is the main method that the client call every time he gets some updates from the server.
+     * @param message is GameViewMessage instance which contains all the information about the current state of the game.
+     */
     public void updateView(GameViewMessage message){
-        //TODO: update the view with the data received from the server
+        Platform.runLater(() ->{
+            // Update Board and PlayerShelf with his point
+            try {
+                updatePlayer(message.getBoard(), message.getPlayer(message.getCurrentPlayer()));
+            } catch (ColumnIndexOutOfBoundsException e) {
+                throw new RuntimeException(e);
+            }
+
+            // Update the chat
+            updateChat(message.getFilteredPvtChats(), message.getMainChat());
+
+        });
     }
 
 
@@ -213,7 +229,6 @@ public class GUIController {
             gridPane.getChildren().removeAll(nodesToRemove);
         });
     }
-
 
 
 
@@ -658,6 +673,10 @@ public class GUIController {
         refreshBoard(model.getBoard());
     }
 
+    /**
+     * Method called at the beginning of the game to load all components of the GUI that we need to show in this particular game instance
+     * @param gameViewMessage
+     */
     public void init(GameViewMessage gameViewMessage) {
         // Load all the images of the tiles
         loadTilesImages();
@@ -764,7 +783,7 @@ public class GUIController {
         List<String> tmpPlayerNames = new ArrayList<String>();
         tmpPlayerNames.add("Pippo");
         tmpPlayerNames.add("Pluto");
-        //tmpPlayerNames.add("Paperino");
+        tmpPlayerNames.add("Paperino");
         //tmpPlayerNames.add("Giuseppe");
         model = new Game(tmpPlayerNames, null);
 

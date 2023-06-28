@@ -46,6 +46,7 @@ public class GUIApplication extends Application {
 
         gameLaod = loader.<Pane>load();
         gameController = loader.getController();
+        GUI.setGameController(gameController);
 
 
 
@@ -54,7 +55,7 @@ public class GUIApplication extends Application {
 
         lobbyLoad = loaderLobby.<Pane>load();
         lobbyController = loaderLobby.getController();
-
+        GUI.setLobbyController(lobbyController);
 
         Scene scene = new Scene(gameLaod);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
