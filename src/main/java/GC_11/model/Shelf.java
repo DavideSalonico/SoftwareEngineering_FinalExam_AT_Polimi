@@ -16,6 +16,10 @@ public class Shelf implements Serializable {
     //Player must register
     public transient PropertyChangeListener listener;
 
+    /**
+     * Constructs a new Shelf object.
+     * Initializes the myShelf matrix with empty tiles.
+     */
     public Shelf() {
         myShelf = new Tile[6][5];
         for (int r = 0; r < 6; r++) {
@@ -26,9 +30,9 @@ public class Shelf implements Serializable {
     }
 
     /**
-     * Duplicate method
+     * Constructs a new Shelf object by duplicating another Shelf instance.
      *
-     * @param shelf is the original instance
+     * @param shelf The original Shelf instance to duplicate.
      */
     public Shelf(Shelf shelf) {
         this.myShelf = new Tile[6][5];
@@ -39,13 +43,20 @@ public class Shelf implements Serializable {
         }
     }
 
+    /**
+     * Returns the myShelf matrix.
+     *
+     * @return The matrix representing the shelf.
+     */
     private Tile[][] getMyShelf() {
         return this.myShelf;
     }
 
     /**
-     * @param column indicates the column of which I want to know the number of fre spaces
-     * @return an integer indicating how namy more Tiles can be added in the selected column
+     * Calculates the number of free spaces in the selected column.
+     *
+     * @param column The column for which to count the number of free spaces.
+     * @return The number of free spaces in the column.
      */
     private int freeSpaces(int column) {
         int free = 0;
@@ -58,12 +69,13 @@ public class Shelf implements Serializable {
     }
 
     /**
-     * This method permit to insert a list of Tiles in the desired column
+     * Inserts a list of tiles into the desired column of the shelf.
      *
-     * @param tileList is the list of Tiles to be inserted
-     * @param column   is the number of the column (starting from 0)
-     * @throws NotEnoughFreeSpacesException    when there is not enough space in the selected column to insert the tiles
-     * @throws ColumnIndexOutOfBoundsException when the column index is out of bound
+     * @param tileList The list of tiles to be inserted.
+     * @param column   The column number (starting from 0) where the tiles should be inserted.
+     * @return True if the shelf is full after the tiles are inserted, false otherwise.
+     * @throws NotEnoughFreeSpacesException    If there is not enough space in the selected column to insert the tiles.
+     * @throws ColumnIndexOutOfBoundsException If the column index is out of bounds.
      */
     public boolean addTiles(List<Tile> tileList, int column) throws NotEnoughFreeSpacesException, ColumnIndexOutOfBoundsException {
         if (column < 0 || column >= 5) {
@@ -86,11 +98,12 @@ public class Shelf implements Serializable {
     }
 
     /**
-     * @param line   indicates the line to check
-     * @param column indicates the column ti check
-     * @return the tile in the position required
-     * @throws ColumnIndexOutOfBoundsException when the position required
-     *                                         is outside the matrix of the shelf
+     * Returns the tile at the specified position in the shelf.
+     *
+     * @param line   The row index of the tile.
+     * @param column The column index of the tile.
+     * @return The tile at the specified position.
+     * @throws ColumnIndexOutOfBoundsException If the specified position is outside the shelf matrix bounds.
      */
     public Tile getTile(int line, int column) throws ColumnIndexOutOfBoundsException {
         if (line < 0 || line >= 6 || column < 0 || column >= 5) {
@@ -101,9 +114,9 @@ public class Shelf implements Serializable {
     }
 
     /**
-     * this method is used to check if a shelf is complete
+     * Checks if the shelf is completely filled with tiles.
      *
-     * @return a boolean which indicates if all the Tiles in the Shelf are occupied
+     * @return True if all the tiles in the shelf are occupied, false otherwise.
      */
     public boolean isFull() {
         for (int i = 0; i < 5; i++) {
@@ -112,6 +125,11 @@ public class Shelf implements Serializable {
         return true;
     }
 
+    /**
+     * Calculates the maximum number of free vertical spaces in the shelf.
+     *
+     * @return The maximum number of free vertical spaces in any column of the shelf.
+     */
     public int maxFreeVerticalSpaces() {
         int max = 0;
         for (int j = 0; j < 5; j++) {
@@ -124,6 +142,9 @@ public class Shelf implements Serializable {
         return max;
     }
 
+    /**
+     * Prints the contents of the shelf.
+     */
     public void print() {
         for (int i = 0; i < 6; i++) {
             System.out.print("|");
@@ -138,6 +159,14 @@ public class Shelf implements Serializable {
         System.out.println(" 0  1  2  3  4 ");
     }
 
+    /**
+     * Sets the tile at the specified position in the shelf.
+     *
+     * @param line   The row index of the position.
+     * @param column The column index of the position.
+     * @param tile   The tile to set at the specified position.
+     * @throws ColumnIndexOutOfBoundsException If the specified position is outside the shelf matrix bounds.
+     */
     public void setTile(int line, int column, Tile tile) throws ColumnIndexOutOfBoundsException {
         if (line < 0 || line >= 6 || column < 0 || column >= 5) {
             throw new ColumnIndexOutOfBoundsException(-1);
@@ -146,6 +175,11 @@ public class Shelf implements Serializable {
         }
     }
 
+    /**
+     * Sets the listener for the shelf.
+     *
+     * @param listener The PropertyChangeListener to set as the listener for the shelf.
+     */
     public void setListener(PropertyChangeListener listener) {
         this.listener = listener;
     }
