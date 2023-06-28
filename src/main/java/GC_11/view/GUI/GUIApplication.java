@@ -56,12 +56,14 @@ public class GUIApplication extends Application {
         lobbyController = loaderLobby.getController();
 
 
-        Scene scene = new Scene(lobbyLoad);
+        Scene scene = new Scene(gameLaod);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.getIcons().add(new Image("file:src/resources/GraphicalResources/Publisher material/Icon 50x50px.png"));
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
+
+
 
 
     }
