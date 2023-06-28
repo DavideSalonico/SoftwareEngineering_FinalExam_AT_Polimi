@@ -11,8 +11,8 @@ public class CommonGoalCard1 extends CommonGoalCard {
     public CommonGoalCard1() {
         super();
         this.id = 1;
-        this.text = "Four groups each containing at least" +
-                "4 tiles of the same type." +
+        this.text = "Six groups each containing at least" +
+                "2 tiles of the same type." +
                 "The tiles of one group can be different from those of another group.";
     }
 
@@ -36,7 +36,7 @@ public class CommonGoalCard1 extends CommonGoalCard {
                 }
             }
         }
-        if (counterGroups >= 4) {
+        if (counterGroups >= 6) {
             givePoints(player);
         }
     }

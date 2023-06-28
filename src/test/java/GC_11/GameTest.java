@@ -1,6 +1,7 @@
 package GC_11;
 
 import GC_11.controller.JsonReader;
+import GC_11.controller.JsonWriter;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.NotEnoughFreeSpacesException;
 import GC_11.model.*;
@@ -112,15 +113,16 @@ public class GameTest {
     }
 
     @Test
+    public void testGameFromJason(){
+        JsonWriter.loadGame();
+
+    }
+
+    @Test
     public void testCalculateCommonPoints() throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
         game.getCommonGoal().clear();
-        game.getCommonGoal().add(new CommonGoalCard1());
-        game.getCommonGoal().add(new CommonGoalCard2());
-
-        System.out.println(game.getCommonGoal(0).getId());
-        System.out.println(game.getCommonGoal(1).getId());
-        System.out.println(game.getCommonGoal(0).getText());
-        System.out.println(game.getCommonGoal(1).getText());
+        game.getCommonGoal().add(new CommonGoalCard3());
+        game.getCommonGoal().add(new CommonGoalCard5());
 
 
         game.getPlayers().get(0).insertTiles(Arrays.asList(green,green,green,green), 0);
@@ -130,36 +132,31 @@ public class GameTest {
         game.calculateCommonPoints();
         assertEquals(8,game.getPlayers().get(0).getPointsCommonGoals());
 
+        game.setNextCurrent();
         game.getPlayers().get(1).insertTiles(Arrays.asList(green,green,green,green), 0);
         game.getPlayers().get(1).insertTiles(Arrays.asList(blue,blue,blue,blue), 1);
         game.getPlayers().get(1).insertTiles(Arrays.asList(white,white,white,white), 2);
         game.getPlayers().get(1).insertTiles(Arrays.asList(green,green,green,green), 3);
         game.calculateCommonPoints();
-        assertEquals(8,game.getPlayers().get(0).getPointsCommonGoals());
+        assertEquals(6,game.getPlayers().get(1).getPointsCommonGoals());
 
-        for (CommonGoalCard commonGoalCard : game.getCommonGoal()) {
-            assertTrue(commonGoalCard.getWinningPlayers().isEmpty());
-        }
-
-        // Set a winning player for the first common goal
-        CommonGoalCard commonGoal1 = new CommonGoalCard1();
-        commonGoal1.getWinningPlayers().add(game.getPlayers().get(0));
-        game.setCommonGoal(0, commonGoal1);
-
+        game.setNextCurrent();
+        game.getPlayers().get(2).insertTiles(Arrays.asList(green,green,green,green), 0);
+        game.getPlayers().get(2).insertTiles(Arrays.asList(blue,blue,blue,blue), 1);
+        game.getPlayers().get(2).insertTiles(Arrays.asList(white,white,white,white), 2);
+        game.getPlayers().get(2).insertTiles(Arrays.asList(green,green,green,green), 3);
         game.calculateCommonPoints();
+        assertEquals(4,game.getPlayers().get(2).getPointsCommonGoals());
 
-        assertTrue(game.getCommonGoal(0).getWinningPlayers().contains(game.getPlayers().get(0)));
-        assertFalse(game.getCommonGoal(1).getWinningPlayers().contains(game.getPlayers().get(0)));
-
-        // Set a winning player for the second common goal
-        CommonGoalCard commonGoal2 = new CommonGoalCard2();
-        commonGoal2.getWinningPlayers().add(game.getPlayers().get(1));
-        game.setCommonGoal(1, commonGoal2);
-
+        game.getCommonGoal(1).getWinningPlayers().add(game.getPlayers().get(1));
+        game.getCommonGoal(1).getWinningPlayers().add(game.getPlayers().get(2));
+        game.getCommonGoal(1).getWinningPlayers().add(new Player());
+        game.setNextCurrent();
+        game.getPlayers().get(0).insertTiles(Arrays.asList(green,green), 0);
+        game.getPlayers().get(0).insertTiles(Arrays.asList(green,green,green,green,green,green), 4);
         game.calculateCommonPoints();
+        assertEquals(10,game.getPlayers().get(0).getPointsCommonGoals());
 
-        assertTrue(game.getCommonGoal(0).getWinningPlayers().contains(game.getPlayers().get(0)));
-        assertTrue(game.getCommonGoal(1).getWinningPlayers().contains(game.getPlayers().get(1)));
     }
 
     @Test
