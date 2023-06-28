@@ -159,6 +159,7 @@ public class GUIController {
     Map<Integer, Image> purpleTiles = new HashMap<>();
     Map<Integer, Image> cyanTiles = new HashMap<>();
 
+    public GameViewMessage gameViewMessage;
 
     /**
      * This method is used to load the images of the tiles that will be used to create the GUI.
@@ -189,10 +190,13 @@ public class GUIController {
      * @param message is GameViewMessage instance which contains all the information about the current state of the game.
      */
     public void updateView(GameViewMessage message){
+        this.gameViewMessage = message;
         Platform.runLater(() ->{
             // Update Board and PlayerShelf with his points
-                updatePlayer(message.getBoard(), message.getPlayer(message.getCurrentPlayer()));
+            updatePlayer(message.getBoard(), message.getPlayer(message.getCurrentPlayer()));
 
+
+            setSelectedTiles(message.getBoard().getSelectedTiles());
             // Update the chat
             updateChat(message.getFilteredPvtChats(), message.getMainChat());
 
@@ -291,16 +295,16 @@ public class GUIController {
      */
     @FXML
     public void selectColumn(ActionEvent event) throws IllegalMoveException, RemoteException {
-        if(selectedImages.size() == tilesOrdered.size() && selectedImages.size() != 0){
+        //if(selectedImages.size() == tilesOrdered.size() && selectedImages.size() != 0){
             setError("");
             Button button = (Button) event.getSource();
             columnSelected = columnSelector.getButtons().indexOf(button);
             System.out.println("PICK_COLUMN: " + columnSelected);
             columnSelector.setDisable(true);
             createChoice("PICK_COLUMN: " + columnSelected);
-        }else {
-            setError("Select and order all the tiles first !");
-        }
+        //}else {
+         //   setError("Select and order all the tiles first !");
+        //}
     }
 
 
@@ -329,6 +333,7 @@ public class GUIController {
             refreshBoard(board);
             updateShelf(player, playerView.getShelf());
             updatePoints(player, playerView.getPoints());
+
         }
     }
 
@@ -486,10 +491,10 @@ public class GUIController {
         if(selectedTiles.size() > 0){
             //Button reset visibility
             resetButton.setVisible(true);
-        } else
+        }
 
         if(selectedTiles.size() == 1){
-            ImageView image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(0).getRow() + 1, selectedTiles.get(0).getColumn() + 1);
+            ImageView image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(0).getRow() , selectedTiles.get(0).getColumn() );
             firstImage.setImage(image.getImage());
             image.getStyleClass().clear();
             image.setEffect(boxBlur);
@@ -549,26 +554,25 @@ public class GUIController {
 
     public String chooseOrder(){
         String input = "CHOOSE_ORDER ";
-        if(tilesOrdered.size() == selectedImages.size() && tilesOrdered.size() != 0){
+        //if(tilesOrdered.size() == selectedImages.size() && tilesOrdered.size() != 0){
             setError("");
             for( int i = 0; i < tilesOrdered.size(); i++){
                 input = input  + tilesOrder[i] + " ";
             }
             columnSelector.setDisable(false);
             return input;
-        } else {
-            columnSelector.setDisable(true);
-            setError("First of all, order every tile selected!!");
-            return "First of all, order every tile selected!!";  // Genera eccezione da gestire
-        }
+        //} else {
+            //columnSelector.setDisable(true);
+            //setError("First of all, order every tile selected!!");
+        //}
     }
 
     /**
      * Method bound to the button "Confirm" that will send the request to the server after the user has selected the column where to place the tile
      */
     @FXML
-    public String confirmTilesOrder() throws IllegalMoveException, RemoteException {
-        if(selectedImages.size() != 0){
+    public void confirmTilesOrder() throws IllegalMoveException, RemoteException {
+        //if(selectedImages.size() != 0){
             System.out.println(chooseOrder());
 
             for (Node node : boardGridPane.getChildren()) {
@@ -576,17 +580,15 @@ public class GUIController {
                 node.getStyleClass().clear();
             }
             createChoice(chooseOrder());
-        }
-        setError("You have to select at least one tile and order it!");
-        return "You have to select at least one tile!";
+
+        //("You have to select at least one tile and order it!");
+
     }
 
     public void createChoice(String input) throws IllegalMoveException, RemoteException {
-        Choice choice = ChoiceFactory.createChoice(new Player(currentPlayerNickname), input);
-        this.client.notifyServer(choice);
+        Choice choice = ChoiceFactory.createChoice(gameViewMessage.getPlayer(gameViewMessage.getCurrentPlayer()), input);
+        GUI.client.notifyServer(choice);
     }
-
-
 
 
     /**
@@ -679,76 +681,80 @@ public class GUIController {
     public void init(GameViewMessage gameViewMessage) {
         // Load all the images of the tiles
         loadTilesImages();
+        this.gameViewMessage = gameViewMessage;
+        try {
+            // Put first Player's nickname into the chair on GUI
+            Tooltip firstPlayer = new Tooltip("First PLAYER : " + gameViewMessage.getPlayer(gameViewMessage.getCurrentPlayer()).getNickname());
+            Tooltip.install(firstPlayerToken, firstPlayer);
 
-        // Put first Player's nickname into the chair on GUI
-        Tooltip firstPlayer = new Tooltip("First PLAYER : " + gameViewMessage.getPlayer(gameViewMessage.getCurrentPlayer()).getNickname());
-        Tooltip.install(firstPlayerToken, firstPlayer);
+            //Get common goal cards from the GameViewMessage
+            String pathCommonI = "src/resources/GraphicalResources/common goal cards/" + gameViewMessage.getCommonGoalCard(0).getId() + ".jpg";
+            String pathCommonII = "src/resources/GraphicalResources/common goal cards/" + gameViewMessage.getCommonGoalCard(1).getId() + ".jpg";
+            Image commonI = new Image("file:" + pathCommonI);
+            Image commonII = new Image("file:" + pathCommonII);
+            // Set common goal cards images on existing javafx objects
+            ICommonGoalCard.setImage(commonI);
+            IICommonGoalCard.setImage(commonII);
+            ICommonGoalCard.setDisable(false);
+            IICommonGoalCard.setDisable(false);
+            //Get the Common Goal text and show only when user go with the mouse over the card
+            textCommonI = new Tooltip(gameViewMessage.getCommonGoalCard(0).getText());
+            textCommonII = new Tooltip(gameViewMessage.getCommonGoalCard(1).getText());
+            Tooltip.install(ICommonGoalCard, textCommonI);
+            Tooltip.install(IICommonGoalCard, textCommonII);
+            ICommonGoalCard.getStyleClass().add("selected-image");
+            IICommonGoalCard.getStyleClass().add("selected-image");
 
-        //Get common goal cards from the GameViewMessage
-        String pathCommonI = "src/resources/GraphicalResources/common goal cards/" + gameViewMessage.getCommonGoalCard(0).getId() + ".jpg";
-        String pathCommonII = "src/resources/GraphicalResources/common goal cards/" + gameViewMessage.getCommonGoalCard(1).getId() + ".jpg";
-        Image commonI = new Image("file:" + pathCommonI);
-        Image commonII = new Image("file:" + pathCommonII);
-        // Set common goal cards images on existing javafx objects
-        ICommonGoalCard.setImage(commonI);
-        IICommonGoalCard.setImage(commonII);
-        ICommonGoalCard.setDisable(false);
-        IICommonGoalCard.setDisable(false);
-        //Get the Common Goal text and show only when user go with the mouse over the card
-        textCommonI = new Tooltip(gameViewMessage.getCommonGoalCard(0).getText());
-        textCommonII = new Tooltip(gameViewMessage.getCommonGoalCard(1).getText());
-        Tooltip.install(ICommonGoalCard, textCommonI);
-        Tooltip.install(IICommonGoalCard, textCommonII);
-        ICommonGoalCard.getStyleClass().add("selected-image");
-        IICommonGoalCard.getStyleClass().add("selected-image");
+            //Initialize the other players and the main player (client)
+            for (int i = 0; i < gameViewMessage.getPlayers().size(); i++) {
+                if (!gameViewMessage.getPlayers().get(i).getNickname().equals(GUI.nickname)) {
+                    others.add(gameViewMessage.getPlayers().get(i));
+                } else {
+                    clientPoints.setText("YOUR POINTS : " + gameViewMessage.getPlayers().get(i).getPoints());
 
-        //Initialize the other players and the main player (client)
-        for (int i = 0; i < gameViewMessage.getPlayers().size(); i++) {
-            if (!gameViewMessage.getPlayers().get(i).getNickname().equals(GUI.nickname)) {
-                others.add(gameViewMessage.getPlayers().get(i));
-            } else {
-                clientPoints.setText("YOUR POINTS : " + gameViewMessage.getPlayers().get(i).getPoints());
-
-                // OGNI TANTO MI TORNA PERSONAL GOAL NULL, CONTROLLARE!!!
-                personalGoal.setImage(new Image("file:src/resources/GraphicalResources/personal goal cards/Personal_Goals" + gameViewMessage.getPlayers().get(i).getPersonalGoal().getId() + ".png"));
+                    // OGNI TANTO MI TORNA PERSONAL GOAL NULL, CONTROLLARE!!!
+                    //personalGoal.setImage(new Image("file:src/resources/GraphicalResources/personal goal cards/Personal_Goals" + gameViewMessage.getPlayers().get(i).getPersonalGoal().getId() + ".png"));
+                }
             }
+
+            // Versione con 4 giocatori
+            if (others.size() == 3) {
+                otherPlayers.add(new PlayerView(player1Name, player1Points, playerShelf1));
+                otherPlayers.add(new PlayerView(player2Name, player2Points, playerShelf2));
+                otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
+            }
+            // Versione con 3 giocatori
+            else if (others.size() == 2) {
+                otherPlayers.add(new PlayerView(player1Name, player1Points, playerShelf1));
+                otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
+
+                clearCellContent(mainGrid, 1, 2);
+                clearCellContent(mainGrid, 2, 2);
+
+
+            } else if (others.size() == 1) {
+                otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
+
+                //remove the shelf of the player in the center (statically placed by the FXML)
+                clearCellContent(mainGrid, 1, 2);
+                clearCellContent(mainGrid, 2, 2);
+
+                clearCellContent(mainGrid, 1, 1);
+                clearCellContent(mainGrid, 2, 1);
+
+            }
+
+            // Initialize the other players with the data received from the server binding the GUI elements to each player's data
+            for (int i = 0; i < others.size(); i++) {
+                otherPlayers.get(i).initialize(others.get(i));
+            }
+
+            //Initialize Board with the data received from the server
+            refreshBoard(gameViewMessage.getBoard());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error in init method at line " + e.getStackTrace()[0].getLineNumber());
         }
-
-        // Versione con 4 giocatori
-        if (others.size() == 3) {
-            otherPlayers.add(new PlayerView(player1Name, player1Points, playerShelf1));
-            otherPlayers.add(new PlayerView(player2Name, player2Points, playerShelf2));
-            otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
-        }
-        // Versione con 3 giocatori
-        else if (others.size() == 2) {
-            otherPlayers.add(new PlayerView(player1Name, player1Points, playerShelf1));
-            otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
-
-            clearCellContent(mainGrid,1,2);
-            clearCellContent(mainGrid,2,2);
-
-
-        } else if (others.size() == 1) {
-            otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
-
-            //remove the shelf of the player in the center (statically placed by the FXML)
-            clearCellContent(mainGrid,1,2);
-            clearCellContent(mainGrid,2,2);
-
-            clearCellContent(mainGrid,1,1);
-            clearCellContent(mainGrid,2,1);
-
-        }
-
-        // Initialize the other players with the data received from the server binding the GUI elements to each player's data
-        for (int i = 0; i < others.size(); i++) {
-            otherPlayers.get(i).initialize(others.get(i));
-        }
-
-        //Initialize Board with the data received from the server
-        refreshBoard(gameViewMessage.getBoard());
-
 
     }
     @FXML

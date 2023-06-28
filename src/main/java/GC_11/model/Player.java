@@ -56,7 +56,7 @@ public class Player implements PropertyChangeListener, Serializable {
         this.nickname = p.getNickname();
         this.shelf = new Shelf(p.getShelf());
         this.shelf.setListener(this);
-        this.personalGoal = new PersonalGoalCard(p.getPersonalGoal());
+        if(p != null) this.personalGoal = new PersonalGoalCard(p.getPersonalGoal());
         this.pointsCommonGoals = p.getPointsCommonGoals();
         this.pointsPersonalGoal = p.getPointsPersonalGoal();
         this.pointsAdjacency = p.getPointsAdjacency();

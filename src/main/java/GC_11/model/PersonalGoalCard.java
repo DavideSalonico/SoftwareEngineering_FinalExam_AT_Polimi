@@ -33,8 +33,10 @@ public class PersonalGoalCard implements Serializable {
      * @param p The PersonalGoalCard instance to be copied.
      */
     public PersonalGoalCard(PersonalGoalCard p){
-        this.id = p.getId();
-        this.goalList = new ArrayList<Triplet>(p.getGoalList());
+        if(p != null){
+            this.id = p.getId();
+            this.goalList = new ArrayList<Triplet>(p.getGoalList());
+        }
     }
 
     /**

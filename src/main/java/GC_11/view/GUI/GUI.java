@@ -124,8 +124,8 @@ public class GUI extends View {
         if(!this.inGame){
             this.lobbyController.changeSceneToGame();
             this.gameController.init(modelView);
-            if(i == modelView.getPlayers().size())
-                setInGame(true);
+
+            setInGame(true);
         }else{
             this.setModelView(modelView);
             show();

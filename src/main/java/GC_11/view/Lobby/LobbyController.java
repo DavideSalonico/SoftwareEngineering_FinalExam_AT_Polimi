@@ -90,7 +90,7 @@ public class LobbyController {
         int numberOfPlayers = Integer.parseInt((String) chooseNumberPlayers.getValue());
         System.out.println(numberOfPlayers);
         //waitingRoom();
-        createChoice("SET_MAX_NUMBER "+chooseNumberPlayers.getValue().toString());
+        createChoice("SET_MAX_NUMBER "+chooseNumberPlayers.getValue());
         GUI.maxNumber = Integer.parseInt((String) chooseNumberPlayers.getValue());
     }
 
