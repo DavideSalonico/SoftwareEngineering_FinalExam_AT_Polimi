@@ -1,58 +1,95 @@
 package GC_11;
 
-
-import GC_11.model.Board;
-import GC_11.model.Coordinate;
-import GC_11.model.Tile;
-import GC_11.model.TileColor;
+import GC_11.exceptions.IllegalMoveException;
+import GC_11.model.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static junit.framework.Assert.*;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.List;
 
-public class BoardTest {
+class BoardTest {
+  private Board board;
+  private ListenerVoid listener=new ListenerVoid();
 
+  @BeforeEach
+  void setUp() {
+    board = new Board(2);
+    board.setListener(listener);
+  }
 
-  /*  @Test
-    void checkRightInit() {
+  @Test
+  void testSetTile() {
+    Tile tile = new Tile(TileColor.PURPLE, 5);
+    board.setTile(0, 0, tile);
+    Assertions.assertEquals(tile, board.getTile(0, 0));
+  }
 
-        List<Coordinate> coordinateProibite = GC_11.Controller.JsonReader.readCoordinate(2);
-        Board board = new Board(coordinateProibite);
+  @Test
+  void testDrawTile() throws IllegalMoveException {
+    Tile tile = board.drawTile(1, 4);
+    Assertions.assertEquals(TileColor.EMPTY, board.getTile(1, 4).getColor());
+  }
 
-        for(int r =0; r<9;r++){
-            for(int c =0; c<9;c++){
-                Tile t = board.getTile(r,c);
-                    boolean proibita = false;
-                    for(int i=0; i<coordinateProibite.size();i++){
-                        if(coordinateProibite.get(i).getRow() == r && coordinateProibite.get(i).getColumn()==c){
-                            proibita = true;
-                        }
-                }
-                    if(proibita){
-                        System.out.println(r + " " + c + ": proibita");
-                    }
-                    else{
-                        System.out.println(r + " " + c + ": non proibita");
-                    }
+  @Test
+  void testSelectTile() throws IllegalMoveException {
+    board.selectTile(1, 4);
+    Assertions.assertEquals(1, board.getSelectedTiles().size());
+    Assertions.assertTrue((new Coordinate(1, 4)).isEquals(board.getSelectedTiles().get(0)));
+    board.selectTile(1, 5);
+    Assertions.assertEquals(2, board.getSelectedTiles().size());
+    Assertions.assertTrue((new Coordinate(1, 5)).isEquals(board.getSelectedTiles().get(1)));
+    Assertions.assertThrows(IllegalMoveException.class, () -> board.selectTile(1, 5));
+    Assertions.assertEquals(2, board.getSelectedTiles().size());
+  }
 
-            }
-        }
+  @Test
+  void testChangeOrder() throws IllegalMoveException {
+    board.selectTile(1, 4);
+    board.selectTile(1, 5);
+    List<Integer> positions = new ArrayList<>();
+    positions.add(1);
+    positions.add(0);
+    board.changeOrder(positions);
+    List<Coordinate> selectedTiles = board.getSelectedTiles();
+    Assertions.assertTrue((new Coordinate(1, 5)).isEquals(board.getSelectedTiles().get(0)));
+    Assertions.assertTrue((new Coordinate(1, 4)).isEquals(board.getSelectedTiles().get(1)));
+  }
 
-        // Check if the board is correctly initialized according to the number of players.
+  @Test
+  void testRefillBoard() {
+    board.refillBoard();
+    Assertions.assertNotNull(board.getTile(0, 0));
+    Assertions.assertNotNull(board.getTile(1, 1));
+    Assertions.assertNotNull(board.getTile(2, 2));
+    // ...
+  }
 
-    }
-*/
-    @Test
-    void checkTiledRemoved(){
+  @Test
+  void testDeselectTile() throws IllegalMoveException {
+    board.selectTile(1, 4);
+    board.selectTile(1, 5);
+    board.deselectTile();
+    Assertions.assertEquals(1, board.getSelectedTiles().size());
+    Assertions.assertTrue((new Coordinate(1, 4)).isEquals(board.getSelectedTiles().get(0)));
+    board.deselectTile();
+    Assertions.assertEquals(0, board.getSelectedTiles().size());
+    Assertions.assertThrows(IllegalMoveException.class, board::deselectTile);
+  }
 
-        // Check if a tile is actually removed after being drawn by a player
-    }
+  @Test
+  void testGetBag() {
+    Bag bag = board.getBag();
+    Assertions.assertNotNull(bag);
+  }
 
-    @Test
-    void checkRefill(){
-
-        // Check if the board is correctly refilled
-    }
-
-
+  @Test
+  void testPrint() {
+    board.print();
+    // Check console output
+  }
 }
+
