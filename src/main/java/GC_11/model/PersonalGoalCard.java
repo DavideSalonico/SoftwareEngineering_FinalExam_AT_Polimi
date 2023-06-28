@@ -6,33 +6,57 @@ import java.util.List;
 
 
 /**
- * We will create an instance of PersonalGoalCard in the "Player" class, but the actor who will call his constructor is going to be a Controller's class,
- * it's a Serializable class
+ * The PersonalGoalCard class represents a personal goal card in a game. It contains an ID and a list of goal triplets.
+ * It provides methods for accessing and manipulating the goal list, printing the card, and getting the ID.
  */
 public class PersonalGoalCard implements Serializable {
 
     private int id;
     private List<Triplet> goalList;
 
+    /**
+     * Constructs a PersonalGoalCard object with the specified ID and goal list.
+     *
+     * @param id       The ID of the personal goal card.
+     * @param goalList The list of goal triplets for the card.
+     *
+     * @see Triplet
+     */
     public PersonalGoalCard(int id, List<Triplet> goalList) {
         this.id = id;
         this.goalList = new ArrayList<Triplet>(goalList);
     }
 
+    /**
+     * Constructs a copy of the PersonalGoalCard object.
+     *
+     * @param p The PersonalGoalCard instance to be copied.
+     */
     public PersonalGoalCard(PersonalGoalCard p){
         this.id = p.getId();
         this.goalList = new ArrayList<Triplet>(p.getGoalList());
     }
 
+    /**
+     * Constructs a default PersonalGoalCard object with ID -1 and a null goal list.
+     */
     public PersonalGoalCard() {
         this.id = -1;
         this.goalList = null;
     }
 
+    /**
+     * Returns the list of goal triplets for the personal goal card.
+     *
+     * @return The list of goal triplets.
+     */
     public List<Triplet> getGoalList() {
         return goalList;
     }
 
+    /**
+     * Prints the personal goal card as a matrix, representing the colored tiles for each goal.
+     */
     public void print() {
         String[][] matrix = new String[6][5];
         for (Triplet goal : this.getGoalList()) {
@@ -52,6 +76,11 @@ public class PersonalGoalCard implements Serializable {
         System.out.println(" 0  1  2  3  4 ");
     }
 
+    /**
+     * Returns the ID of the personal goal card.
+     *
+     * @return The ID of the personal goal card.
+     */
     public int getId() {
         return id;
     }
