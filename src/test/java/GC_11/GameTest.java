@@ -116,13 +116,25 @@ public class GameTest {
         game.getCommonGoal().clear();
         game.getCommonGoal().add(new CommonGoalCard1());
         game.getCommonGoal().add(new CommonGoalCard2());
+
+        System.out.println(game.getCommonGoal(0).getId());
+        System.out.println(game.getCommonGoal(1).getId());
+        System.out.println(game.getCommonGoal(0).getText());
+        System.out.println(game.getCommonGoal(1).getText());
+
+
         game.getPlayers().get(0).insertTiles(Arrays.asList(green,green,green,green), 0);
         game.getPlayers().get(0).insertTiles(Arrays.asList(blue,blue,blue,blue), 1);
         game.getPlayers().get(0).insertTiles(Arrays.asList(white,white,white,white), 2);
         game.getPlayers().get(0).insertTiles(Arrays.asList(green,green,green,green), 3);
-        System.out.println(game.getCurrentPlayer().getNickname());
         game.calculateCommonPoints();
+        assertEquals(8,game.getPlayers().get(0).getPointsCommonGoals());
 
+        game.getPlayers().get(1).insertTiles(Arrays.asList(green,green,green,green), 0);
+        game.getPlayers().get(1).insertTiles(Arrays.asList(blue,blue,blue,blue), 1);
+        game.getPlayers().get(1).insertTiles(Arrays.asList(white,white,white,white), 2);
+        game.getPlayers().get(1).insertTiles(Arrays.asList(green,green,green,green), 3);
+        game.calculateCommonPoints();
         assertEquals(8,game.getPlayers().get(0).getPointsCommonGoals());
 
         for (CommonGoalCard commonGoalCard : game.getCommonGoal()) {

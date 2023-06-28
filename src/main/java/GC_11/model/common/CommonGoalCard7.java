@@ -7,9 +7,13 @@ import GC_11.model.TileColor;
 
 public class CommonGoalCard7 extends CommonGoalCard {
 
-    private final String text = "Two groups each containing 4 tiles of the same type in a 2x2 square. " +
-            "The tiles of one square can be different from those of the other square.";
-    public int id = 7;
+    public CommonGoalCard7() {
+        super();
+        this.id = 7;
+        this.text = "Two groups each containing 4 tiles of the same type in a 2x2 square. " +
+                "The tiles of one square can be different from those of the other square.";
+    }
+
 
     ControlMatrix matrix = new ControlMatrix();
 

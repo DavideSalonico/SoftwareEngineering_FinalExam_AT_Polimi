@@ -7,9 +7,12 @@ import GC_11.model.TileColor;
 
 public class CommonGoalCard2 extends CommonGoalCard {
 
+    public CommonGoalCard2() {
+        super();
+        this.id = 2;
+        this.text = "Five tiles of the same type forming a diagonal.";
+    }
 
-    private final String text = "Five tiles of the same type forming a diagonal.";
-    public int id = 2;
 
 
 // this code verifies if there are 5 tiles of the same type forming a diagonal. The check is made with 2 counters that

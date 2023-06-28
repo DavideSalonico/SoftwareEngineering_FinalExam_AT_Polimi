@@ -9,9 +9,12 @@ import java.util.List;
 
 public class CommonGoalCard11 extends CommonGoalCard {
 
-    private final String text = "Eight tiles of the same type. " +
-            "There’s no restriction about the position of these tiles.";
-    public int id = 11;
+    public CommonGoalCard11() {
+        super();
+        this.id = 11;
+        this.text = "Eight tiles of the same type. " +
+                "There’s no restriction about the position of these tiles.";
+    }
 
 
     /**

@@ -6,9 +6,11 @@ import GC_11.model.TileColor;
 
 public class CommonGoalCard10 extends CommonGoalCard {
 
-    private final String text = "Five tiles of the same type forming an X.";
-    public int id = 10;
-
+    public CommonGoalCard10() {
+        super();
+        this.id = 10;
+        this.text = "Five tiles of the same type forming an X.";
+    }
 
     /**
      * This method check if the common goal of the card has been achieved and in this case adds points to the player
