@@ -11,8 +11,19 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a choice made by a player to choose the order of tiles.
+ */
 public class ChooseOrderChoice extends Choice {
 
+    /**
+     * Constructs a ChooseOrderChoice object.
+     *
+     * @param player The player making the choice.
+     * @param params The parameters for the choice.
+     * @param type   The type of the choice.
+     * @throws IllegalMoveException If the choice is illegal.
+     */
     public ChooseOrderChoice(Player player, List<String> params, ChoiceType type) throws IllegalMoveException {
         super(player, params, type);
 
@@ -31,6 +42,12 @@ public class ChooseOrderChoice extends Choice {
             if (checker < 0 || checker > 2) throw new IllegalMoveException();
     }
 
+    /**
+     * Executes the choice on the server-side controller.
+     *
+     * @param controller The controller instance.
+     * @throws RemoteException If a remote error occurs.
+     */
     @Override
     public void executeOnServer(Controller controller) throws RemoteException {
         controller.chooseOrder(params);
