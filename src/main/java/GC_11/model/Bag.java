@@ -6,16 +6,27 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Bag class. It contains all the tiles of the game. It is used to draw out tiles
+ * and to refill the board.
+ *
+ * @see Tile
+ * @see Board
+ */
 public class Bag implements Serializable {
 
     private List<Tile> tiles; // 132 tiles, 22 x 6
 
+    transient PropertyChangeListener listener;
+
+    /**
+     * Setter of the listener
+     *
+     * @param listener
+     */
     public void setListener(PropertyChangeListener listener) {
         this.listener = listener;
     }
-
-    transient PropertyChangeListener listener;
-
 
     /**
      * Copy constructor. Create a new Bag with the same tiles of the bag passed as parameter
