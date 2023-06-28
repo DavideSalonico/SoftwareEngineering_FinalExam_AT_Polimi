@@ -14,10 +14,6 @@ public class CommonGoalCard8 extends CommonGoalCard {
     public int id = 8;
 
 
-    public int getId() {
-        return id;
-    }
-
     /**
      * This method check if the common goal of the card has been achieved and in this case adds points to the player
      *
@@ -45,7 +41,4 @@ public class CommonGoalCard8 extends CommonGoalCard {
 
     }
 
-    public String getText() {
-        return this.text;
-    }
 }

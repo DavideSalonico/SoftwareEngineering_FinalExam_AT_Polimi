@@ -13,9 +13,6 @@ public class CommonGoalCard9 extends CommonGoalCard {
             " One column can show the same or a different combination of another column.";
     public int id = 9;
 
-    public int getId() {
-        return id;
-    }
 
     /**
      * This method check if the common goal of the card has been achieved and in this case adds points to the player
@@ -46,7 +43,4 @@ public class CommonGoalCard9 extends CommonGoalCard {
 
     }
 
-    public String getText() {
-        return this.text;
-    }
 }
