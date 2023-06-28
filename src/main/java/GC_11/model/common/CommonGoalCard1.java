@@ -1,7 +1,7 @@
 package GC_11.model.common;
 
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
-import GC_11.model.ControlMatrix;
+import GC_11.util.ControlMatrix;
 import GC_11.model.Player;
 import GC_11.model.TileColor;
 

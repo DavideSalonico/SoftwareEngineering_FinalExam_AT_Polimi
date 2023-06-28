@@ -2,6 +2,7 @@ package GC_11.model;
 
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.NotEnoughFreeSpacesException;
+import GC_11.util.ControlMatrix;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -9,7 +10,10 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Player's class, all serializable attributes except for ControlMatrix and the Listener of the class
+ * The Player class represents a player in the game. It contains various attributes related to the player, including
+ * their nickname, points for common goals, points for personal goals, points for adjacency, personal goal card,
+ * and shelf. The class implements the PropertyChangeListener interface and provides methods for accessing and modifying
+ * player-related information.
  */
 public class Player implements PropertyChangeListener, Serializable {
     private String nickname;
@@ -19,22 +23,19 @@ public class Player implements PropertyChangeListener, Serializable {
     private PersonalGoalCard personalGoal;
     private Shelf shelf;
 
-    //ControlMatrix and Listener don't need to be Serialized
-    private transient ControlMatrix matrix = new ControlMatrix();
+    private ControlMatrix matrix = new ControlMatrix();
 
     //Game must register
     public transient PropertyChangeListener listener;
 
 
-    public void setListener(PropertyChangeListener listener) {
-        this.listener = listener;
-    }
+
 
     /**
-     * Main constructor of Player
+     * Constructs a Player object with the specified nickname and personal goal card.
      *
-     * @param nickname     of the Player, received by Controller
-     * @param personalCard generated in random way and given by JsonReader
+     * @param nickname     The nickname of the player.
+     * @param personalCard The personal goal card assigned to the player.
      */
     public Player(String nickname, PersonalGoalCard personalCard) {
         this.nickname = nickname;
@@ -46,6 +47,11 @@ public class Player implements PropertyChangeListener, Serializable {
         this.pointsAdjacency = 0;
     }
 
+    /**
+     * Constructs a copy of the Player object.
+     *
+     * @param p The Player instance to be copied.
+     */
     public Player(Player p){
         this.nickname = p.getNickname();
         this.shelf = new Shelf(p.getShelf());
@@ -56,6 +62,11 @@ public class Player implements PropertyChangeListener, Serializable {
         this.pointsAdjacency = p.getPointsAdjacency();
     }
 
+    /**
+     * Constructs a Player object with the specified nickname and default shelf.
+     *
+     * @param nickname The nickname of the player.
+     */
     public Player(String nickname) {
         this.nickname = nickname;
         this.shelf = new Shelf();
@@ -70,6 +81,20 @@ public class Player implements PropertyChangeListener, Serializable {
         this.personalGoal = new PersonalGoalCard();
     }
 
+    /**
+     * set the listener of the player
+     *
+     * @param listener the listener to set
+     */
+    public void setListener(PropertyChangeListener listener) {
+        this.listener = listener;
+    }
+
+    /**
+     * Returns the personal goal card assigned to the player.
+     *
+     * @return The personal goal card.
+     */
     public PersonalGoalCard getPersonalGoal() {
         return this.personalGoal;
     }
@@ -79,45 +104,44 @@ public class Player implements PropertyChangeListener, Serializable {
      *
      * @return The nickname of the player
      */
-
     public String getNickname() {
         return nickname;
     }
 
     /**
-     * Get 'point' method
+     * Returns the total points of the player, including points for common goals, personal goals, and adjacency.
      *
-     * @return The points of the player
+     * @return The total points of the player.
      */
     public int getPoints() {
         return this.pointsAdjacency + this.pointsPersonalGoal + this.pointsCommonGoals;
     }
 
     /**
-     * Get 'pointsAdjacency' method
+     * Returns the points for adjacency of the player.
      *
-     * @return The pointsAdjacency of the player
+     * @return The points for adjacency.
      */
     public int getPointsAdjacency() {
         return this.pointsAdjacency;
     }
 
     /**
-     * This method add Points to a specif Player
+     * Adds points for common goals to the player's common goal points.
      *
-     * @param n is the number of points that is summed to the current number of points
+     * @param n The number of points to add.
      */
-
-
     public void addPointsCommonGoals(int n) {
         this.pointsCommonGoals += n;
     }
 
     /**
-     * This method insert the tiles in the column and by the order chosen by the player
+     * Inserts tiles into the player's shelf in the specified column and order.
      *
-     * @param tilesOrder is the list of the tiles in the order that the player want to insert them into the shelf
-     * @param column     is the columns in which the player want to insert the insert
+     * @param tilesOrder The list of tiles in the desired order of insertion.
+     * @param column     The column in which to insert the tiles.
+     * @throws ColumnIndexOutOfBoundsException  If the column index is out of bounds.
+     * @throws NotEnoughFreeSpacesException     If there are not enough free spaces in the shelf.
      */
     public void insertTiles(List<Tile> tilesOrder, int column) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
         if (column < 0 || column > 5) {
@@ -127,12 +151,10 @@ public class Player implements PropertyChangeListener, Serializable {
     }
 
     /**
-     * This method calculate the personal point checking how many personal goal are right
+     * Updates the points for the player's personal goal based on the correct number of tiles.
      *
-     * @return the number of points according to the right number of tiles
-     * @throws ColumnIndexOutOfBoundsException
+     * @throws ColumnIndexOutOfBoundsException If a column index is out of bounds.
      */
-
     public void updatesPointsPersonalGoal() throws ColumnIndexOutOfBoundsException {
         this.pointsPersonalGoal = 0;
         int totalRight = 0;
@@ -175,6 +197,12 @@ public class Player implements PropertyChangeListener, Serializable {
         return shelf;
     }
 
+    /**
+     * Checks if the current player is equal to the given player.
+     *
+     * @param currentPlayer The player to compare with.
+     * @return True if the players are equal, false otherwise.
+     */
     public boolean equals(Player currentPlayer) {
         return (this.nickname.equals(currentPlayer.getNickname()) && (this.pointsAdjacency + this.pointsPersonalGoal + this.pointsCommonGoals) == currentPlayer.getPoints());
     }
@@ -184,6 +212,11 @@ public class Player implements PropertyChangeListener, Serializable {
         this.listener.propertyChange(evt);
     }
 
+    /**
+     * Calculates and assigns points for adjacency to the player.
+     *
+     * @throws ColumnIndexOutOfBoundsException If a column index is out of bounds.
+     */
     public void calculateAndGiveAdjacencyPoint() throws ColumnIndexOutOfBoundsException {
         this.pointsAdjacency = 0;
         matrix.reset();
@@ -218,6 +251,15 @@ public class Player implements PropertyChangeListener, Serializable {
         }
     }
 
+    /**
+     * Recursive helper method used to calculate the number of adjacent tiles of the same color starting from a given position.
+     *
+     * @param l     The row index of the current position.
+     * @param c     The column index of the current position.
+     * @param color The color of the tiles being checked for adjacency.
+     * @return The number of adjacent tiles of the same color, including the current tile.
+     * @throws ColumnIndexOutOfBoundsException If the given row or column index is out of bounds.
+     */
     private int verify(int l, int c, TileColor color) throws ColumnIndexOutOfBoundsException {
 
         if (l > 5 || c > 4 || l < 0 || c < 0) {
@@ -237,14 +279,29 @@ public class Player implements PropertyChangeListener, Serializable {
         }
     }
 
+    /**
+     * Sets the personal goal card for the player.
+     *
+     * @param p The personal goal card to set.
+     */
     public void setPersonalGoal(PersonalGoalCard p) {
         this.personalGoal = p;
     }
 
+    /**
+     * Returns the points for common goals of the player.
+     *
+     * @return The points for common goals.
+     */
     public int getPointsCommonGoals() {
         return this.pointsCommonGoals;
     }
 
+    /**
+     * Returns the points for personal goals of the player.
+     *
+     * @return The points for personal goals.
+     */
     public int getPointsPersonalGoal() {
         return this.pointsPersonalGoal;
     }

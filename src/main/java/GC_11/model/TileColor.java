@@ -20,6 +20,11 @@ public enum TileColor implements Serializable {
 
     private static final Random RANDOM = new Random();
 
+    /**
+     * Returns a list of TileColor that includes only the colors of the tiles (excluding PROHIBITED and EMPTY).
+     *
+     * @return a List<TileColor> containing only the colors
+     */
     public static List<TileColor> getColors() {
         return colors();
     }
@@ -71,6 +76,12 @@ public enum TileColor implements Serializable {
         }
     }
 
+    /**
+     * Converts a TileColor object into a corresponding string for visual representation.
+     *
+     * @param tc a TileColor object
+     * @return the corresponding string for visual representation
+     */
     public static String ColorToString(TileColor tc) {
         switch (tc) {
             case WHITE:
