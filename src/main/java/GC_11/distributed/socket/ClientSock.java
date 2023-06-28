@@ -1,8 +1,6 @@
 package GC_11.distributed.socket;
 
 import GC_11.distributed.Client;
-import GC_11.network.message.GameViewMessage;
-import GC_11.network.message.LobbyViewMessage;
 import GC_11.network.message.MessageView;
 import GC_11.network.choices.Choice;
 import GC_11.view.GameCLI;
@@ -16,7 +14,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.rmi.RemoteException;
-import java.util.Scanner;
 
 public class ClientSock implements PropertyChangeListener, Client {
     String ip;
@@ -55,7 +52,7 @@ public class ClientSock implements PropertyChangeListener, Client {
         this.port = port;
         this.ip = ip;
         this.graphicInterface=gInterface;
-        this.view = new GameCLI(null,this); //TODO: change this to the right view
+        this.view = new GameCLI(); //TODO: change this to the right view
 
         try {
             System.out.println("Connecting to server on port " + port);

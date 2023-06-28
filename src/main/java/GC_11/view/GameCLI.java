@@ -34,10 +34,13 @@ public class GameCLI extends View {
      * Every view is bound at only one player, it helps to manage every input that the controller receive
      */
 
-    public GameCLI(String nickname, Client client) {
+    public GameCLI() {
         super();
-        this.nickname = nickname;
-        this.client = client;
+        init();
+    }
+
+    public void init(){
+
     }
 
     @Override
