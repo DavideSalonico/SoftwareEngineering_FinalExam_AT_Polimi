@@ -58,7 +58,6 @@ public class LobbyController {
 
     @FXML
     public void showPlayers(List<String> players) {
-        Platform.runLater( () -> {
             chooseNumberPlayers.setVisible(false);
             text.setVisible(false);
             listPlayers.setVisible(true);
@@ -69,7 +68,7 @@ public class LobbyController {
                 listPlayers.appendText(player + "\n");
 
             setError("Waiting for other players...");
-        });
+
     }
 
     @FXML
