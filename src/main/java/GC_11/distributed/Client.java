@@ -13,13 +13,14 @@ public interface Client extends Remote, Serializable {
 
     void notifyServer(Choice choice) throws RemoteException;
 
-    String getNickname() throws RemoteException;
-
     int askMaxNumber() throws RemoteException;
 
     View getView() throws RemoteException;
 
+    public String getNickname() throws RemoteException;
+
     void notifyDisconnection() throws RemoteException;
 
     void startClient() throws RemoteException;
+
 }
