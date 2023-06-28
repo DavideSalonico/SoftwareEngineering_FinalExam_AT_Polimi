@@ -37,7 +37,7 @@
             <Font name="System Bold Italic" size="12.0" />
          </font>
       </Label>
-      <Button fx:id="rmiButton" layoutX="150.0" layoutY="167.0" mnemonicParsing="false" onAction="#changeSceneToLobby" prefHeight="25.0" prefWidth="58.0" text="RMI">
+      <Button fx:id="rmiButton" layoutX="150.0" layoutY="167.0" mnemonicParsing="false" onAction="#chooseRMI" prefHeight="25.0" prefWidth="58.0" text="RMI">
          <effect>
             <DropShadow />
          </effect>
