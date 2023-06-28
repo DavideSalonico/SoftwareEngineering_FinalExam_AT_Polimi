@@ -22,7 +22,7 @@
       </ImageView>
       <ImageView fitHeight="105.0" fitWidth="353.0" layoutX="80.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../resources/GraphicalResources/Publisher%20material/Title%202000x618px.png" />
+            <Image url="@../../../../../resources/GraphicalResources/Publisher material/Title 2000x618px.png" />
          </image>
          <effect>
             <DropShadow />

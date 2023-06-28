@@ -66,7 +66,7 @@ public class GUIApplication extends Application {
 
 
 
-        Scene scene = new Scene(connectionLoad);
+        Scene scene = new Scene(gameLaod);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.getIcons().add(new Image("file:src/resources/GraphicalResources/Publisher material/Icon 50x50px.png"));
         primaryStage.setResizable(false);

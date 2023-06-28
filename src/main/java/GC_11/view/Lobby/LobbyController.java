@@ -20,7 +20,6 @@ public class LobbyController {
 
     public static Client client;
 
-    public Object lock;
     @FXML
     private ChoiceBox<String> chooseNumberPlayers;
 
@@ -40,10 +39,6 @@ public class LobbyController {
     private Label text;
 
 
-
-    public void setLock(Object lock) {
-        this.lock = lock;
-    }
     public void setClient(Client client) {
         Platform.runLater(() -> this.client = client);
     }
@@ -57,23 +52,24 @@ public class LobbyController {
         chooseNumberPlayers.getItems().addAll("2", "3", "4");
     }
 
-    @FXML
     public void setError(String error) {
-        errorArea.setText(error);
+        Platform.runLater(() -> errorArea.setText(error));
     }
 
     @FXML
     public void showPlayers(List<String> players) {
-        chooseNumberPlayers.setVisible(false);
-        text.setVisible(false);
-        listPlayers.setVisible(true);
-        confirmName.setVisible(false);
-        clientNickname.setVisible(false);
+        Platform.runLater( () -> {
+            chooseNumberPlayers.setVisible(false);
+            text.setVisible(false);
+            listPlayers.setVisible(true);
+            confirmName.setVisible(false);
+            clientNickname.setVisible(false);
 
-        for(String player : players)
-            listPlayers.appendText(player + "\n");
+            for(String player : players)
+                listPlayers.appendText(player + "\n");
 
-        setError("Waiting for other players...");
+            setError("Waiting for other players...");
+        });
     }
 
     @FXML
@@ -93,11 +89,10 @@ public class LobbyController {
     public void sendNumberOfPlayer(){
         int numberOfPlayers = Integer.parseInt((String) chooseNumberPlayers.getValue());
         System.out.println(numberOfPlayers);
-        waitingRoom();
+        //waitingRoom();
         createChoice("SET_MAX_NUMBER "+chooseNumberPlayers.getValue().toString());
     }
 
-    @FXML
     public void createChoice(String s) {
         Choice choice;
 
@@ -117,28 +112,31 @@ public class LobbyController {
 
     @FXML
     public void confirmNickname() {
-        confirmName.setDisable(true);
-        chooseNumberPlayers.setVisible(true);
-        clientNickname.setVisible(false);
-        text.setText("Scegli il numero di giocatori");
+        Platform.runLater(() ->{
+            confirmName.setDisable(true);
+            chooseNumberPlayers.setVisible(true);
+            clientNickname.setVisible(false);
+            text.setText("Scegli il numero di giocatori");
 
-        chooseNumberPlayers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            // Mostra il bottone di conferma solo se è selezionata un'opzione
-            confirmName.setDisable(newValue == null);
+            chooseNumberPlayers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                // Mostra il bottone di conferma solo se è selezionata un'opzione
+                confirmName.setDisable(newValue == null);
+            });
+
+            confirmName.setOnAction(event -> sendNumberOfPlayer());
+            createChoice("ADD_PLAYER " +clientNickname.getText());
         });
-
-        confirmName.setOnAction(event -> sendNumberOfPlayer());
-        createChoice("ADD_PLAYER " +clientNickname.getText());
-        //notifyAll();
     }
 
     //USA platform.runLater
     @FXML
     public void updatePlayerList(LobbyViewMessage message) {
-        List<String> players = message.getPlayersNames();
-        listPlayers.setText("");
-        for(String player : players)
-            listPlayers.appendText(player + "\n");
+        Platform.runLater(() ->{
+            List<String> players = message.getPlayersNames();
+            listPlayers.setText("");
+            for(String player : players)
+                listPlayers.appendText(player + "\n");
+        });
     }
 
     @FXML
