@@ -2,7 +2,6 @@ package GC_11.model;
 
 import GC_11.controller.JsonReader;
 import GC_11.exceptions.IllegalMoveException;
-import GC_11.network.message.GameViewMessage;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -305,7 +304,6 @@ public class Board implements PropertyChangeListener, Serializable {
     /**
      * Method to change the order of the selected Tiles
      */
-
     public void changeOrder(List<Integer> positions) throws IllegalMoveException {
         if (positions.size() != this.selectedTiles.size())
             throw new IllegalMoveException("Position numbers are not the same of selected tiles!");
@@ -353,7 +351,7 @@ public class Board implements PropertyChangeListener, Serializable {
     }
 
     /**
-     * Deselct the last selected Tile
+     * Deselect the last Tile in the selectedTiles list
      * @throws IllegalMoveException
      */
     public void deselectTile() throws IllegalMoveException {

@@ -22,7 +22,7 @@ public class Bag implements Serializable {
     /**
      * Setter of the listener
      *
-     * @param listener
+     * @param listener is the listener
      */
     public void setListener(PropertyChangeListener listener) {
         this.listener = listener;
@@ -31,7 +31,7 @@ public class Bag implements Serializable {
     /**
      * Copy constructor. Create a new Bag with the same tiles of the bag passed as parameter
      *
-     * @param bag
+     * @param bag is the bag to copy
      */
     public Bag(Bag bag) {
         this.tiles = bag.getTiles();
@@ -41,7 +41,7 @@ public class Bag implements Serializable {
     /**
      * Getter of the tiles
      *
-     * @return tiles
+     * @return all the tiles in the bag
      */
     private List<Tile> getTiles() {
         return this.tiles;
@@ -71,14 +71,14 @@ public class Bag implements Serializable {
     /**
      * Appends all the tiles, which was previously in the board before the refill, in the array-List at the end of "tiles"
      *
-     * @param t
+     * @param tiles is the list of tiles to insert
      */
-    public void insertAllTile(List<Tile> t) {
+    public void insertAllTile(List<Tile> tiles) {
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "INSERTED_TILES",
                 this.tiles,
-                this.tiles.addAll(t));
+                this.tiles.addAll(tiles));
 
         this.listener.propertyChange(evt);
     }
