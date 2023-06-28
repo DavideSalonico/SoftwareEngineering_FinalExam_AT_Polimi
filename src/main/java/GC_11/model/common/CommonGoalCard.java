@@ -17,8 +17,9 @@ public abstract class CommonGoalCard implements Serializable {
 
     private List<Player> winningPlayers = new ArrayList<>();
     //TODO: to change based on CommonGoalCard number
-    private static String text = "sample common goal card text";
-    private static int id;
+    protected String text = "sample common goal card text";
+
+    protected int id;
     private PropertyChangeListener listener;
 
     /**
@@ -41,12 +42,12 @@ public abstract class CommonGoalCard implements Serializable {
         int point = 10 - 2 * winningPlayers.size();
         player.addPointsCommonGoals(point);
 
-        PropertyChangeEvent evt = new PropertyChangeEvent(
+        /*PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
                 "CHANGED_WINNING_PLAYERS",
                 oldWinning,
                 this.winningPlayers);
-        this.listener.propertyChange(evt);
+        this.listener.propertyChange(evt);*/
     }
 
     /**

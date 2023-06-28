@@ -9,9 +9,12 @@ import java.util.Set;
 
 public class CommonGoalCard8 extends CommonGoalCard {
 
-    private final String text = "Two lines each formed by 5 different types of tiles." +
-            " One line can show the same or a different combination of the other line.";
-    public int id = 8;
+    public CommonGoalCard8() {
+        super();
+        this.id = 8;
+        this.text ="Two lines each formed by 5 different types of tiles." +
+                " One line can show the same or a different combination of the other line." ;
+    }
 
 
     /**

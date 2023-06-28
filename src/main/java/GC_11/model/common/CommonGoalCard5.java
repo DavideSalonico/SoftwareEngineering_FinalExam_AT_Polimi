@@ -6,8 +6,11 @@ import GC_11.model.TileColor;
 
 public class CommonGoalCard5 extends CommonGoalCard {
 
-    private final String text = "Four tiles of the same type in the four corners of the bookshelf.";
-    public int id = 5;
+    public CommonGoalCard5() {
+        super();
+        this.id = 5;
+        this.text = "Four tiles of the same type in the four corners of the bookshelf.";
+    }
 
     @Override
     public void check(Player player) throws ColumnIndexOutOfBoundsException {

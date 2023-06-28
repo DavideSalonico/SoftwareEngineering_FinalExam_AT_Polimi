@@ -9,8 +9,11 @@ import java.util.Set;
 
 public class CommonGoalCard6 extends CommonGoalCard {
 
-    private final String text = "Two columns each formed by 6 different types of tiles.";
-    public int id = 6;
+    public CommonGoalCard6() {
+        super();
+        this.id = 6;
+        this.text = "Two columns each formed by 6 different types of tiles.";
+    }
 
 
     /**
