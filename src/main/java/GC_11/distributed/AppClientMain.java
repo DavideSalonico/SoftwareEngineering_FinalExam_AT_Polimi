@@ -1,4 +1,4 @@
-package GC_11.distributed;
+/*package GC_11.distributed;
 
 import GC_11.distributed.rmi.ClientImplRMI;
 import GC_11.distributed.socket.ClientSock;
@@ -57,7 +57,7 @@ public class AppClientMain {
     private static void clientRMISetup(String choiceInterface, String serverIp)throws RemoteException, NotBoundException{
         Registry registry = LocateRegistry.getRegistry(serverIp,1099);
         ServerRMI serverRMI = (ServerRMI) registry.lookup("server");
-        ClientImplRMI client = new ClientImplRMI(serverRMI, null, choiceInterface);
+        ClientImplRMI client = new ClientImplRMI(serverRMI);
         try {
             serverRMI.register(client);
         } catch (RemoteException e) {
@@ -70,3 +70,4 @@ public class AppClientMain {
         client.startClient();
     }
 }
+*/

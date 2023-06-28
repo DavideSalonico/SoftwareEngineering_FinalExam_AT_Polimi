@@ -1,13 +1,15 @@
 package GC_11.network.message;
 
 
+import GC_11.ClientApp;
 import GC_11.distributed.Client;
-import GC_11.model.*;
+import GC_11.model.Board;
+import GC_11.model.Game;
+import GC_11.model.Message;
+import GC_11.model.Player;
 import GC_11.model.common.CommonGoalCard;
 import GC_11.util.CircularList;
 
-import java.beans.PropertyChangeEvent;
-import java.rmi.RemoteException;
 import java.util.*;
 
 /**
@@ -312,11 +314,7 @@ public class GameViewMessage extends MessageView {
      */
     @Override
     public void executeOnClient(Client client){
-        try {
-            client.getView().update(this);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+        ClientApp.view.update(this);
     }
 
     /**

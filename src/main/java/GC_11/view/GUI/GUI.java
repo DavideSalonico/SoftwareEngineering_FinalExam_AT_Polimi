@@ -6,9 +6,10 @@ import GC_11.network.message.LobbyViewMessage;
 import GC_11.view.Lobby.LobbyController;
 import GC_11.view.View;
 
+
 public class GUI extends View {
 
-    private Client client;
+    public static Client client;
     public static String nickname;
     public static int maxNumber = 0;
     public static String typeOfConnection;
@@ -16,6 +17,7 @@ public class GUI extends View {
     public GUIApplication guiApplication;
     public static GUIController gameController;
     public static LobbyController lobbyController;
+    public static ConnectionController connectionController;
     private boolean inGame;
 
 
@@ -23,28 +25,30 @@ public class GUI extends View {
     /**
      * Every view is bound at only one player, it helps to manage every input that the controller receive
      */
-    public GUI(Client client) {
+    public GUI() {
         super();
-        this.client = client;
-        this.inGame = false;
-
         this.guiApplication = new GUIApplication();
 
-        while (lobbyController == null){
+
+        //this.client = client;
+
+        /*while (lobbyController == null){
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
-        this.lobbyController.setClient(client);
+        this.lobbyController.setClient(client);*/
     }
 
+
+
     public static  void setLobbyController(LobbyController controller){
-        GUI.lobbyController = controller;
+        lobbyController = controller;
     }
     public static void setGameController(GUIController controller){
-        GUI.gameController = controller;
+        gameController = controller;
     }
 
 
@@ -68,11 +72,14 @@ public class GUI extends View {
 
     @Override
     public void askNickname() {
+        guiApplication.connectionController.changeSceneToLobby();
+
         System.out.println("DIGIT YOUR NICKNAME:");
 
         while (this.nickname == null){
             try {
-                Thread.sleep(1000);
+                System.out.println("waiting for nickname");
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
