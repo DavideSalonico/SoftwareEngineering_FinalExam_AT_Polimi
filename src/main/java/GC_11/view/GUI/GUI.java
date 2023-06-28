@@ -90,6 +90,7 @@ public class GUI extends View {
     @Override
     public void askMaxNumber() {
 
+        lobbyController.changeToSetNumber();
         System.out.println("MaxNumberPlayer required: " + "nickname attuale : " + this.nickname);
 
         while (this.maxNumber == 0){

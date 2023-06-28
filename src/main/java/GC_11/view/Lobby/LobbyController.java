@@ -128,6 +128,13 @@ public class LobbyController {
 
     }
 
+    public void changeToSetNumber(){
+        confirmName.setDisable(true);
+        chooseNumberPlayers.setVisible(true);
+        clientNickname.setVisible(false);
+        text.setText("Scegli il numero di giocatori");
+    }
+
 
     @FXML
     public GUIApplication changeScene() throws RemoteException {
