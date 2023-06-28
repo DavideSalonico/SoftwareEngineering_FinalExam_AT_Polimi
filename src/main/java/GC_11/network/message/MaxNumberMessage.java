@@ -1,8 +1,7 @@
 package GC_11.network.message;
 
+import GC_11.ClientApp;
 import GC_11.distributed.Client;
-
-import java.rmi.RemoteException;
 
 /**
  * Represents a message for requesting the maximum number of players from the client.
@@ -32,11 +31,7 @@ public class MaxNumberMessage extends MessageView{
      */
     @Override
     public void executeOnClient(Client client) {
-        try {
-            client.getView().askMaxNumber();
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+        ClientApp.view.askMaxNumber();
     }
 
     /**

@@ -42,7 +42,6 @@ public class GUI extends View {
 
 
 
-
     public static  void setLobbyController(LobbyController controller){
         lobbyController = controller;
     }
