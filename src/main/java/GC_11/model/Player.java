@@ -145,7 +145,7 @@ public class Player implements PropertyChangeListener, Serializable {
      */
     public void insertTiles(List<Tile> tilesOrder, int column) throws ColumnIndexOutOfBoundsException, NotEnoughFreeSpacesException {
         if (column < 0 || column > 5) {
-            throw new IndexOutOfBoundsException("Wrong column index received");
+            throw new ColumnIndexOutOfBoundsException(column);
         }
         shelf.addTiles(tilesOrder, column);
     }

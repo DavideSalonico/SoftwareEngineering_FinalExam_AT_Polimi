@@ -34,7 +34,6 @@ public class GUIApplication extends Application {
         }
     }
 
-
     /**
      * Method that will be called when the game starts
      * @param primaryStage Stage reference
@@ -74,8 +73,6 @@ public class GUIApplication extends Application {
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
-
-
 
 
     }

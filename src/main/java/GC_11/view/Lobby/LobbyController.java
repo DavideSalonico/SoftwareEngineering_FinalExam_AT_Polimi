@@ -58,7 +58,6 @@ public class LobbyController {
 
     @FXML
     public void showPlayers(List<String> players) {
-        Platform.runLater( () -> {
             chooseNumberPlayers.setVisible(false);
             text.setVisible(false);
             listPlayers.setVisible(true);
@@ -69,7 +68,7 @@ public class LobbyController {
                 listPlayers.appendText(player + "\n");
 
             setError("Waiting for other players...");
-        });
+
     }
 
     @FXML
@@ -103,7 +102,7 @@ public class LobbyController {
             throw new RuntimeException(e);
         }
         try {
-            System.out.println("Sending choice: " + choice );
+            System.out.println("Sending choice: " + choice + "client : " + GUI.client.toString());
             GUI.client.notifyServer(choice);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
@@ -129,16 +128,6 @@ public class LobbyController {
 
     }
 
-    //USA platform.runLater
-    /*@FXML
-    public void updatePlayerList(LobbyViewMessage message) {
-        Platform.runLater(() ->{
-            List<String> players = message.getPlayersNames();
-            listPlayers.setText("");
-            for(String player : players)
-                listPlayers.appendText(player + "\n");
-        });
-    }*/
 
     @FXML
     public GUIApplication changeScene() throws RemoteException {
