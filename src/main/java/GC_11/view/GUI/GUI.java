@@ -6,17 +6,18 @@ import GC_11.network.message.LobbyViewMessage;
 import GC_11.view.Lobby.LobbyController;
 import GC_11.view.View;
 
+import java.io.Serializable;
 
-public class GUI extends View {
+
+public class GUI extends View implements Serializable {
     public static String nickname;
-    public static int maxNumber = 0;
-    public GUIApplication guiApplication;
-    public static GUIController gameController;
-    public static LobbyController lobbyController;
-    public static ConnectionController connectionController;
-    private boolean inGame = false;
-
-    public int i = 0;
+    transient public static int maxNumber = 0;
+    transient public GUIApplication guiApplication;
+    transient public static GUIController gameController;
+    transient public static LobbyController lobbyController;
+    transient public static ConnectionController connectionController;
+    transient private boolean inGame = false;
+    transient public int i = 0;
 
     /**
      * Every view is bound at only one player, it helps to manage every input that the controller receive
@@ -80,12 +81,10 @@ public class GUI extends View {
                 throw new RuntimeException(e);
             }
         }
-
     }
 
     @Override
     public void askMaxNumber() {
-
         lobbyController.changeToSetNumber();
         System.out.println("MaxNumberPlayer required: " + "nickname attuale : " + this.nickname);
 

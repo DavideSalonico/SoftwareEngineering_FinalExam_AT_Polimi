@@ -73,8 +73,6 @@ public class GameViewMessage extends MessageView {
             this.mainChat = new ArrayList<>();
             this.privateChats = new HashMap<>();
         }
-        // TODO VEDERE SE COSI VA BENE
-
     }
 
     /**
@@ -214,7 +212,7 @@ public class GameViewMessage extends MessageView {
         for (Player p : this.getPlayers()) {
             if (p.getNickname().equals(clientNickName)) return new Player(p);
         }
-        return null;   //ATTENZIONE A QUESTO NULL non gestito
+        return null;
     }
 
     /**
