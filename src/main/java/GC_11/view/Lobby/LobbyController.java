@@ -7,6 +7,7 @@ import GC_11.network.choices.Choice;
 import GC_11.network.choices.ChoiceFactory;
 import GC_11.view.GUI.GUI;
 import GC_11.view.GUI.GUIApplication;
+import GC_11.view.View;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -107,20 +108,21 @@ public class LobbyController {
             throw new RuntimeException(e);
         }
         try {
-            System.out.println("Sending choice: " + choice + "client : " + ClientApp.client.toString());
+            System.out.println("Sending choice: ");
+            while(ClientApp.client == null) {
+                System.out.println("Waiting for client...");
+                Thread.sleep(100);
+            }
             ClientApp.client.notifyServer(choice);
-        } catch (RemoteException e) {
+        } catch (RemoteException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
     @FXML
     public void confirmNickname() {
-
-
-
+        ClientApp.view.setNickname(clientNickname.getText());
         createChoice("ADD_PLAYER " + clientNickname.getText());
-        GUI.nickname = clientNickname.getText();
         confirmName.setVisible(false);
 
         sendNumberOfPlayers.setVisible(true);

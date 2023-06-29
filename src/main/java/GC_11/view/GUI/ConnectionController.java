@@ -30,7 +30,6 @@ public class ConnectionController {
     String typeOfConnection;
     @FXML
     void chooseRMI(ActionEvent event) {
-        createChoice("RMI");
         typeOfConnection = "RMI";
         addressText.setDisable(false);
         confirmIP.setDisable(false);
@@ -38,7 +37,6 @@ public class ConnectionController {
     }
     @FXML
     void chooseSocket(ActionEvent event) {
-        createChoice("SOCKET");
         typeOfConnection = "SOCKET";
         addressText.setDisable(false);
         confirmIP.setDisable(false);
@@ -46,16 +44,10 @@ public class ConnectionController {
 
     @FXML
     public void confirmIP(ActionEvent event) {
-        Platform.runLater( ()  -> {
-            ClientApp.client = ClientFactory.createClient(addressText.getText(), typeOfConnection);
-            createChoice(addressText.getText());
-        });
+        ClientApp.client = ClientFactory.createClient(addressText.getText(), typeOfConnection);
+        //createChoice(addressText.getText());
     }
 
-    public void createChoice(String s){
-
-        // SEND to server the string s
-    }
     @FXML
     public void initialize() {
         addressText.setDisable(true);
