@@ -14,7 +14,6 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class LobbyController {
@@ -75,31 +74,18 @@ public class LobbyController {
 
     @FXML
     public void showPlayers(List<String> players) {
-            chooseNumberPlayers.setVisible(false);
-            text.setVisible(false);
-            listPlayers.setVisible(true);
-            confirmName.setVisible(false);
-            clientNickname.setVisible(false);
-            sendNumberOfPlayers.setVisible(false);
+        chooseNumberPlayers.setVisible(false);
+        text.setVisible(false);
+        listPlayers.setVisible(true);
+        confirmName.setVisible(false);
+        clientNickname.setVisible(false);
+        sendNumberOfPlayers.setVisible(false);
 
-            for(String player : players)
-                listPlayers.appendText(player + "\n");
+        for (String player : players)
+            listPlayers.appendText(player + "\n");
 
-            setError("Waiting for other players...");
+        setError("Waiting for other players...");
 
-    }
-
-    @FXML
-    public void waitingRoom(){
-
-        //OTTIENI LISTA PLAYER DA GAMEVIEWMESSAGE
-
-        // TEMPORANEO
-        List<String> players = new ArrayList<>();
-        players.add("player1");
-        players.add("player2");
-        players.add("player3");
-        showPlayers(players);
     }
 
     @FXML
