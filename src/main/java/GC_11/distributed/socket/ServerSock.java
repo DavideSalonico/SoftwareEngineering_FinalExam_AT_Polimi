@@ -103,14 +103,6 @@ public class ServerSock implements PropertyChangeListener, Server {
         }
     }
 
-
-
-    public void notifyCLientsLobby(LobbyViewMessage lobbyViewMessage) {
-       for(ServerClientHandler sch : serverClientHandlerList){
-           sch.sendLobbyViewMessage(lobbyViewMessage);
-       }
-    }
-
     /**
      * Notifies a specific client with the given message view.
      *
@@ -157,17 +149,6 @@ public class ServerSock implements PropertyChangeListener, Server {
     public ServerMain getServerMain() {
         return serverMain;
     }
-
-    /**
-     * Notifies a specific client with the given message view.
-     *
-     * @param clientNickname The nickname of the client to notify.
-     * @param messageView    The message view to send to the client.
-     */
-    public void notifyClient(String clientNickname, GameViewMessage messageView) {
-        socketMap.get(clientNickname).sendMessageViewToClient(messageView);
-    }
-
 
     @Override
     public void receiveMessage(Choice choice) {

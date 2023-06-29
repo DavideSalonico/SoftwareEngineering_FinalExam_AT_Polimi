@@ -121,18 +121,6 @@ public class ServerClientHandler implements Runnable {
 
 
 
-    public void sendLobbyViewMessage(LobbyViewMessage msg) {
-        try {
-            outputStream.writeObject(msg);
-            outputStream.flush();
-            outputStream.reset();
-        } catch (IOException e) {
-            System.err.println("Unable to send lobby message");
-        }
-    }
-
-
-
     public void receiveChoiceFromClient() throws IOException, ClassNotFoundException, IllegalMoveException {
         Choice clientChoice;
         if (connected) {
@@ -140,11 +128,9 @@ public class ServerClientHandler implements Runnable {
                 clientChoice = (Choice) inputStream.readObject();
                 this.server.receiveMessage(clientChoice);
             } catch (IOException e) {
-                System.out.println("Error during receiving message from client");
                 closeConnection();
                 throw new IOException();
             } catch (ClassNotFoundException e) {
-                System.out.println("Error during deserialization of message from client");
                 closeConnection();
                 throw new ClassNotFoundException();
             }
@@ -152,22 +138,6 @@ public class ServerClientHandler implements Runnable {
     }
 
 
-    /**
-     * Sends a message to the client.
-     *
-     * @param s The message to send.
-     */
-    public void sendMessageToClient(String s) {
-        try {
-            outputStream.writeObject(s);
-            outputStream.flush();
-            outputStream.reset();
-        } catch (IOException e) {
-            System.out.println("Error during sending message to client");
-            closeConnection();
-
-        }
-    }
 
     /**
      * Sends a MessageView object to the client.
@@ -181,7 +151,6 @@ public class ServerClientHandler implements Runnable {
                 outputStream.flush();
                 outputStream.reset();
             } catch (IOException e) {
-                System.out.println("Error during sending gameView to client");
                 closeConnection();
             }
         }
@@ -195,27 +164,26 @@ public class ServerClientHandler implements Runnable {
      * The server will then notify all the other clients of the disconnection.
      */
     private void closeConnection() {
-        this.connected = false;
-        System.out.println("Closing socket: " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
-        try {
-            inputStream.close();
-        } catch (IOException e) {
-            System.err.println("Unable to close input stream");
+        if (connected){
+            this.connected = false;
+            System.out.println("Closing socket: " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                System.err.println("Unable to close input stream");
+            }
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                System.err.println("Unable to close output stream");
+            }
+            try {
+                clientSocket.close();
+            } catch (IOException e) {
+                System.err.println("Unable to close socket");
+            }
         }
-        try {
-            outputStream.close();
-        } catch (IOException e) {
-            System.err.println("Unable to close output stream");
-        }
-        try {
-            clientSocket.close();
-        } catch (IOException e) {
-            System.err.println("Unable to close socket");
-        }
-        //this.readThread.interrupt();
-        //this.server.notifyDisconnectionAllSockets(this.clientSocket, this);
-        //this.server.getServerMain().removeConnection(this.nickname);
-
+        this.server.getServerMain().removeConnection(this.nickname);
     }
 
 

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 class BoardTest {
@@ -39,9 +40,9 @@ class BoardTest {
     board.selectTile(1, 4);
     Assertions.assertEquals(1, board.getSelectedTiles().size());
     Assertions.assertTrue((new Coordinate(1, 4)).isEquals(board.getSelectedTiles().get(0)));
-    board.selectTile(1, 5);
+    board.selectTile(1, 3);
     Assertions.assertEquals(2, board.getSelectedTiles().size());
-    Assertions.assertTrue((new Coordinate(1, 5)).isEquals(board.getSelectedTiles().get(1)));
+    Assertions.assertTrue((new Coordinate(1, 3)).isEquals(board.getSelectedTiles().get(1)));
     Assertions.assertThrows(IllegalMoveException.class, () -> board.selectTile(1, 5));
     Assertions.assertEquals(2, board.getSelectedTiles().size());
   }
@@ -49,13 +50,13 @@ class BoardTest {
   @Test
   void testChangeOrder() throws IllegalMoveException {
     board.selectTile(1, 4);
-    board.selectTile(1, 5);
+    board.selectTile(1, 3);
     List<Integer> positions = new ArrayList<>();
     positions.add(1);
     positions.add(0);
     board.changeOrder(positions);
     List<Coordinate> selectedTiles = board.getSelectedTiles();
-    Assertions.assertTrue((new Coordinate(1, 5)).isEquals(board.getSelectedTiles().get(0)));
+    Assertions.assertTrue((new Coordinate(1, 3)).isEquals(board.getSelectedTiles().get(0)));
     Assertions.assertTrue((new Coordinate(1, 4)).isEquals(board.getSelectedTiles().get(1)));
   }
 
@@ -71,7 +72,7 @@ class BoardTest {
   @Test
   void testDeselectTile() throws IllegalMoveException {
     board.selectTile(1, 4);
-    board.selectTile(1, 5);
+    board.selectTile(1, 3);
     board.deselectTile();
     Assertions.assertEquals(1, board.getSelectedTiles().size());
     Assertions.assertTrue((new Coordinate(1, 4)).isEquals(board.getSelectedTiles().get(0)));
@@ -91,5 +92,13 @@ class BoardTest {
     board.print();
     // Check console output
   }
+
+  @Test
+  void testResetTurn() throws IllegalMoveException {
+    board.selectTile(1, 3);
+    board.resetTurn();
+    Assertions.assertEquals(0, board.getSelectedTiles().size());
+  }
+
 }
 

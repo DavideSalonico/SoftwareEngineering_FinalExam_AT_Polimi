@@ -64,6 +64,11 @@ public class GameCLI extends View {
     }
 
     @Override
+    public void notifyDisconnection() {
+        System.out.println("Game unavailable because server is down or someone disconnected");
+    }
+
+    @Override
     public void askNickname() {
         System.out.println("Hi, welcome to MyShelfie. Please insert your nickname: ");
         Scanner s = new Scanner(System.in);

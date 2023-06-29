@@ -4,6 +4,7 @@ import GC_11.ClientApp;
 import GC_11.distributed.Client;
 import GC_11.distributed.ServerRMI;
 import GC_11.network.choices.Choice;
+import GC_11.network.message.GameViewMessage;
 import GC_11.network.message.MessageView;
 import GC_11.view.View;
 
@@ -43,7 +44,7 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
 
     @Override
     public View getView() {
-        return this.view;
+        return ClientApp.view;
     }
 
     @Override
@@ -67,7 +68,7 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
                 try {
                     serverRMI.receiveMessage(choice);
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    ClientApp.view.notifyDisconnection();
                 }
             }).start();
     }

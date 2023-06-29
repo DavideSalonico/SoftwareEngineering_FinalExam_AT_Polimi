@@ -23,10 +23,6 @@ public class JsonReader {
      *
      * @param players the list of players
      */
-    public JsonReader(List<Player> players) {
-        this.players = players;
-        JSONParser parser = new JSONParser();
-    }
 
     /**
      * Constructs a JsonReader object.

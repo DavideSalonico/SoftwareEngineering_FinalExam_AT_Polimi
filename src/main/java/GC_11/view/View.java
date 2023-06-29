@@ -24,7 +24,9 @@ public abstract class View {
 
     public abstract void init();
 
-    protected void setNickname(String nickname) {
+    public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    public abstract void notifyDisconnection();
 }
