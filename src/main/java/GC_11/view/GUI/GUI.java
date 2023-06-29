@@ -1,6 +1,5 @@
 package GC_11.view.GUI;
 
-import GC_11.distributed.Client;
 import GC_11.network.message.GameViewMessage;
 import GC_11.network.message.LobbyViewMessage;
 import GC_11.view.Lobby.LobbyController;
