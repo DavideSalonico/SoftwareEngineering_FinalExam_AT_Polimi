@@ -1,95 +1,114 @@
-/*package GC_11;
+package GC_11;
 
-
-import GC_11.model.Lobby;
 import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.NameAlreadyTakenException;
 import GC_11.exceptions.PlayerNotInListException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import GC_11.model.Lobby;
+import GC_11.network.message.LobbyViewMessage;
+import org.junit.Before;
+import org.junit.Test;
 
-import static junit.framework.Assert.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class LobbyTest {
-    private String p1;
-    private String p2;
-    private String p3;
-    private String p4;
 
-    @BeforeEach
-    public void setup(){
-        p1 = "Mattia";
-        p2 = "Jaskaran";
-        p3 = "Davide";
-        p4 = "Lorenzo";
+    private Lobby lobby;
+    private MockPropertyChangeListener listener;
+
+    @Before
+    public void setUp() {
+        lobby = new Lobby();
+        listener = new MockPropertyChangeListener();
+        lobby.setListener(listener);
     }
 
     @Test
-    public void testRemovePlayer() throws ExceededNumberOfPlayersException, NameAlreadyTakenException, PlayerNotInListException {
-        Lobby lobby=new Lobby();
-        lobby.addPlayer(p1);
-        lobby.addPlayer(p2);
-        lobby.addPlayer(p3);
-
-        lobby.removePlayer(p1);
-        assertFalse( lobby.hasPlayer(p1));
+    public void testInitialMaxPlayers() {
+        assertEquals(1, lobby.getMaxPlayers());
     }
 
+    @Test
+    public void testSetMaxPlayers() {
+        lobby.setMaxPlayers(4);
+        assertEquals(4, lobby.getMaxPlayers());
+    }
 
     @Test
+    public void testAddPlayer() throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
+        lobby.addPlayer("Player1");
+        assertTrue(lobby.getPlayers().contains("Player1"));
+    }
+
+    @Test(expected = ExceededNumberOfPlayersException.class)
+    public void testAddPlayerExceededNumberOfPlayers() throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
+        lobby.setMaxPlayers(2);
+        lobby.addPlayer("Player1");
+        lobby.addPlayer("Player2");
+        lobby.addPlayer("Player3");  // This should throw an ExceededNumberOfPlayersException
+    }
+
+    @Test(expected = NameAlreadyTakenException.class)
+    public void testAddPlayerNameAlreadyTaken() throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
+        lobby.addPlayer("Player1");
+        lobby.setMaxPlayers(3);
+        lobby.addPlayer("Player1");  // This should throw a NameAlreadyTakenException
+    }
+
+    @Test
+    public void testRemovePlayer() throws PlayerNotInListException, ExceededNumberOfPlayersException, NameAlreadyTakenException {
+        lobby.addPlayer("Player1");
+        lobby.removePlayer("Player1");
+        assertFalse(lobby.getPlayers().contains("Player1"));
+    }
+
+    @Test(expected = PlayerNotInListException.class)
+    public void testRemovePlayerNotInList() throws PlayerNotInListException {
+        lobby.removePlayer("Player1");  // This should throw a PlayerNotInListException
+    }
+
+    @Test
+    public void testIsFull() throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
+        assertFalse(lobby.isFull());
+
+        lobby.addPlayer("Player1");
+        assertTrue(lobby.isFull());
+
+        lobby.setMaxPlayers(2);
+        assertFalse(lobby.isFull());
+
+        lobby.addPlayer("Player2");
+        assertTrue(lobby.isFull());
+    }
+
+   /* @Test
     public void testHasPlayer() throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
-        Lobby lobby = new Lobby();
-        lobby.addPlayer(p1);
-        lobby.addPlayer(p2);
-        assertEquals(lobby.getPlayers().contains(p1),lobby.hasPlayer(p1));
-        assertEquals(lobby.getPlayers().contains(p3),lobby.hasPlayer(p3));
+        assertFalse(lobby.hasPlayer("Player1"));
 
-    }
+        lobby.addPlayer("Player1");
+        assertTrue(lobby.hasPlayer("Player1"));
+    }*/
 
     @Test
-    public void testNumOfPlayers() throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
-        Lobby lobby = new Lobby();
-        String p1 = "Marco";
-        lobby.addPlayer(p1);
-        lobby.addPlayer(p2);
-        assertEquals(2, lobby.getPlayers().size());
+    public void testTriggerException() {
+        Exception exception = new Exception("Test Exception");
+        lobby.triggerException(exception);
+        assertEquals(exception, listener.getEvent().getNewValue());
     }
 
-    @Test
-    public void testNoDuplicateInPlayerList() throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
-        Lobby lobby = new Lobby();
-        lobby.addPlayer(p1);
-        lobby.addPlayer(p1);
-        assertEquals(1,lobby.getPlayers().size());
+    private static class MockPropertyChangeListener implements PropertyChangeListener {
+        private PropertyChangeEvent event;
+
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            event = evt;
+        }
+
+        public PropertyChangeEvent getEvent() {
+            return event;
+        }
     }
-
-    @Test void testGetLobbyNumber(){
-        Lobby lobby0 = new Lobby();
-        assertEquals(0,lobby0.getLobbyID());
-        Lobby lobby1 = new Lobby();
-        assertEquals(1,lobby1.getLobbyID());
-
-    }
-
-    @Test
-    public void checkIsFull() throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
-        Lobby lobby = new Lobby();
-        lobby.addPlayer(p1);
-        assertEquals(lobby.getMaxPlayers()==lobby.getPlayers().size(), lobby.isFull());
-        lobby.addPlayer(p2);
-        assertEquals(lobby.getMaxPlayers()==lobby.getPlayers().size(), lobby.isFull());
-    }
-
-    @Test
-    public void testNameAlreadyTaken() throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
-        Lobby lobby = new Lobby();
-        lobby.addPlayer(p1);
-        lobby.addPlayer(p4);
-        assertTrue(lobby.nameAlreadyTaken(p4));
-    }
-
-    public void testCreateNewGame(){
-
-    }
-
-}*/
+}
