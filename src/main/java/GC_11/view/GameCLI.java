@@ -112,15 +112,8 @@ public class GameCLI extends View {
     public void printLobby(LobbyViewMessage lobbyViewMessage) {
 
         if (firstTime) {
-            int count = 1;
-            System.out.println("#############################\n\nthe game is about to start !!! \nthere will be " + lobbyViewMessage.getMaxPlayers() + " players!\n");
-            for (String p : lobbyViewMessage.getPlayersNames()) {
-                System.out.println(count + ": " + p);
-                count++;
-            }
+            System.out.println("#############################\n\nthe game is about to start !!! \nwaits for other players to join\n\n#############################");
             firstTime = false;
-        } else {
-            System.out.println(lobbyViewMessage.getPlayersNames().size() + ": " + lobbyViewMessage.getPlayersNames().get(lobbyViewMessage.getPlayersNames().size() - 1));
         }
     }
 
