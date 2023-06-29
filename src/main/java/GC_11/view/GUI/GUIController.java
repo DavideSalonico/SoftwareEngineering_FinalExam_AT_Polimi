@@ -1,7 +1,6 @@
 package GC_11.view.GUI;
 
 import GC_11.ClientApp;
-import GC_11.distributed.Client;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.IllegalMoveException;
 import GC_11.model.*;
@@ -145,7 +144,6 @@ public class GUIController {
     private Button thirdTile;
 
     public String currentPlayerNickname;
-    private Client client;
 
     // Initialize otherPlayers using PlayerView class as a container for the player's nickname, points and shelf (related to javafx objects)
     List<PlayerView> otherPlayers = new ArrayList<>();
@@ -259,15 +257,6 @@ public class GUIController {
         return null; // Restituisce null se l'ImageView non è stata trovata
     }
 
-    /**
-     * Method that removes the tile from the board given the row and column index
-     * @param row line
-     * @param column column
-     */
-    public void removeTileFromBoard(Integer row, Integer column) {
-        ImageView image = getImageViewFromGridPane(boardGridPane, row, column);
-        image = null;
-    }
 
 
     private List<ImageView> selectedImages = new ArrayList<>();
@@ -294,16 +283,17 @@ public class GUIController {
      */
     @FXML
     public void selectColumn(ActionEvent event) throws IllegalMoveException, RemoteException {
-        //if(selectedImages.size() == tilesOrdered.size() && selectedImages.size() != 0){
-            setError("");
-            Button button = (Button) event.getSource();
-            columnSelected = columnSelector.getButtons().indexOf(button) -1;
-            System.out.println("PICK_COLUMN " + columnSelected);
-            columnSelector.setDisable(true);
+        setError("");
+        Button button = (Button) event.getSource();
+        columnSelected = columnSelector.getButtons().indexOf(button);
+        System.out.println("PICK_COLUMN " + columnSelected);
+        //columnSelector.setDisable(true);
+        if (columnSelected > -1)
             createChoice("PICK_COLUMN " + columnSelected);
-        //}else {
-         //   setError("Select and order all the tiles first !");
-        //}
+
+        secondTile.setText("");
+        firstTile.setText("");
+        thirdTile.setText("");
     }
 
 
@@ -328,17 +318,15 @@ public class GUIController {
      */
     public void updatePlayer(Board board, Player player) {
         PlayerView playerView = getPlayerViewFromNickname(player.getNickname());
+        if(player.getNickname().equals(ClientApp.view.getNickname())){
+            updateClientPoints(player);
+            updateClientShelf(player);
+        }
+
         if (playerView != null) {
             refreshBoard(board);
             updateShelf(player, playerView.getShelf());
             updatePoints(player, playerView.getPoints());
-        }else{
-            updateClientPoints(player);
-            try {
-                updateClientShelf(player);
-            } catch (ColumnIndexOutOfBoundsException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 
@@ -349,8 +337,8 @@ public class GUIController {
      * @throws ColumnIndexOutOfBoundsException if the player is not found
      */
     public void updateShelf(Player player, GridPane shelf) {
-        for (int i = 1; i < 6; i++) {  //COLUMNS
-            for (int j = 1; j < 7; j++) {  //ROWS
+        for (int i = 0; i < 5; i++) {  //COLUMNS
+            for (int j = 0; j < 6; j++) {  //ROWS
                 Tile t = null;
                 try {
                     t = player.getShelf().getTile(j, i);
@@ -370,9 +358,12 @@ public class GUIController {
                 };
 
                 if(image != null) {
-                    image.setFitHeight(35);
-                    image.setFitWidth(35);
-                    shelf.add(image, i, j);
+                    image.setFitHeight(23);
+                    image.setFitWidth(23);
+                    shelf.add(image, i+1, j+1);
+                }else {
+                    clearCellContent(shelf, j + 1, i + 1);
+
                 }
             }
         }
@@ -393,10 +384,15 @@ public class GUIController {
      * @param player to update
      * @throws ColumnIndexOutOfBoundsException
      */
-    public void updateClientShelf(Player player) throws ColumnIndexOutOfBoundsException {
-        for (int i = 1; i < 6; i++) {  //COLUMNS
-            for (int j = 1; j < 7; j++) {  //ROWS
-                Tile t = player.getShelf().getTile(j, i);
+    public void updateClientShelf(Player player) {
+        for (int i = 0; i < 5; i++) {  //COLUMNS
+            for (int j = 0; j < 6; j++) {  //ROWS
+                Tile t = null;
+                try {
+                    t = player.getShelf().getTile(j, i);
+                } catch (ColumnIndexOutOfBoundsException e) {
+                    setError(e.getMessage());
+                }
                 int id = t.getId() + 1;
                 TileColor tileColor = t.getColor();
                 ImageView image = switch (tileColor) {
@@ -412,7 +408,7 @@ public class GUIController {
                 if(image != null) {
                     image.setFitHeight(44);  //Other players shelf size is 29x29!
                     image.setFitWidth(44);
-                    mainShelfGridPane.add(image, i, j);  //Add the image to specif Shelf
+                    mainShelfGridPane.add(image, i+1, j+1);  //Add the image to specif Shelf
                 }
             }
         }
@@ -458,6 +454,8 @@ public class GUIController {
                     image.setFitWidth(34);
                     boardGridPane.add(image, j, i);
 
+                }else {
+                    clearCellContent(boardGridPane, i, j);
                 }
             }
         }
@@ -472,9 +470,12 @@ public class GUIController {
         Tab selectedTab = tabPane.getSelectionModel().getSelectedItem();
         AnchorPane selectedAnchorPane = (AnchorPane) selectedTab.getContent();
         TextArea selectedChatArea = (TextArea) selectedAnchorPane.lookup(".text-area");
-        selectedChatArea.appendText(currentPlayerNickname + " : " + chatTextField.getText() + "\n");
+
+
+        createChoice("SEND_MESSAGE " + selectedTab.getText() + " " +chatTextField.getText());
+
         chatTextField.setText("Enter a message...");
-        // MANDA MESSAGGIO AL SERVER
+
     }
 
 
@@ -576,15 +577,15 @@ public class GUIController {
      * Method bound to the button "Confirm" that will send the request to the server after the user has selected the column where to place the tile
      */
     @FXML
-    public void confirmTilesOrder() throws IllegalMoveException, RemoteException {
+    public void confirmTilesOrder() {
         //if(selectedImages.size() != 0){
             System.out.println(chooseOrder());
 
-            for (Node node : boardGridPane.getChildren()) {
+            /*for (Node node : boardGridPane.getChildren()) {
                 node.setOnMouseClicked(null);
                 node.getStyleClass().clear();
-            }
-            createChoice(chooseOrder());
+            }*/
+        createChoice(chooseOrder());
 
         //("You have to select at least one tile and order it!");
 
@@ -592,7 +593,7 @@ public class GUIController {
 
     public void createChoice(String input) {
         try {
-            Choice choice = ChoiceFactory.createChoice(gameViewMessage.getPlayer(gameViewMessage.getCurrentPlayer()), input);
+            Choice choice = ChoiceFactory.createChoice(gameViewMessage.getPlayer(ClientApp.client.getNickname()), input);
             ClientApp.client.notifyServer(choice);
         }catch (RemoteException | IllegalMoveException e){
             setError("Exception : " + e.getMessage());
@@ -610,6 +611,15 @@ public class GUIController {
         for(String playerName : pvtChat.keySet()){
             tabNames.add(playerName);
         }
+        try {
+            for (Player player : gameViewMessage.getPlayers()) {
+                if (!tabNames.contains(player.getNickname()) && !player.getNickname().equals(ClientApp.client.getNickname())) {
+                    tabNames.add(player.getNickname());
+                }
+            }
+        }catch (RemoteException e){
+            setError("Exception : " + e.getMessage());
+        }
 
         for(String tabName : tabNames){
             if(!tabPane.getTabs().contains(tabName)){
@@ -623,14 +633,15 @@ public class GUIController {
                 textArea.setWrapText(true);
                 textArea.setPrefHeight(160);
                 textArea.setPrefWidth(160);
-                fillChat(textArea, pvtChat.get(tabName));
+                if(pvtChat.get(tabName) != null)
+                    fillChat(textArea, pvtChat.get(tabName));
                 anchorPane.getChildren().add(textArea);
                 tab.setContent(anchorPane);
             }
         }
 
         // Manage to create the global chat
-        Tab tab = new Tab("Global Chat");
+        Tab tab = new Tab("Everyone");
         tabPane.getTabs().add(tab);
         tabPane.getSelectionModel().select(tab);
         AnchorPane anchorPane = new AnchorPane();
@@ -710,7 +721,7 @@ public class GUIController {
 
             //Initialize the other players and the main player (client)
             for (int i = 0; i < gameViewMessage.getPlayers().size(); i++) {
-                if (!gameViewMessage.getPlayers().get(i).getNickname().equals(GUI.nickname)) {
+                if (!gameViewMessage.getPlayers().get(i).getNickname().equals(ClientApp.view.getNickname())) {
                     others.add(gameViewMessage.getPlayers().get(i));
                 } else {
                     clientPoints.setText("YOUR POINTS : " + gameViewMessage.getPlayers().get(i).getPoints());
@@ -758,6 +769,8 @@ public class GUIController {
             e.printStackTrace();
             System.out.println("Error in init method at line " + e.getStackTrace()[0].getLineNumber());
         }
+
+        updateView(gameViewMessage);
 
     }
     @FXML

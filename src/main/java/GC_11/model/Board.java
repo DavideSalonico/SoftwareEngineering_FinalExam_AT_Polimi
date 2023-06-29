@@ -202,7 +202,7 @@ public class Board implements PropertyChangeListener, Serializable {
                 if (this.selectedTiles.get(0).getRow() == this.selectedTiles.get(1).getRow()) {
                     int max = this.selectedTiles.stream().mapToInt(Coordinate::getColumn).max().orElseThrow(NoSuchElementException::new);
                     int min = this.selectedTiles.stream().mapToInt(Coordinate::getColumn).min().orElseThrow(NoSuchElementException::new);
-                    if (c == min - 1 || c == max + 1) {
+                    if (c == min - 1 || c == max + 1 && l == this.selectedTiles.get(0).getRow()) {
                         this.selectedTiles.add(new Coordinate(l, c));
                         PropertyChangeEvent evt = new PropertyChangeEvent(
                                 this,
@@ -215,7 +215,7 @@ public class Board implements PropertyChangeListener, Serializable {
                 } else {
                     int max = this.selectedTiles.stream().mapToInt(Coordinate::getRow).max().orElseThrow(NoSuchElementException::new);
                     int min = this.selectedTiles.stream().mapToInt(Coordinate::getRow).min().orElseThrow(NoSuchElementException::new);
-                    if (l == min - 1 || l == max + 1) {
+                    if (l == min - 1 || l == max + 1 && c == this.selectedTiles.get(0).getColumn()) {
                         this.selectedTiles.add(new Coordinate(l, c));
                         PropertyChangeEvent evt = new PropertyChangeEvent(
                                 this,

@@ -32,7 +32,7 @@ public class PlayerView {
      * @param player the player object containing the player's data
      */
     public void initialize(Player player) {
-        clientNickName.setText("Player : " + player.getNickname());
+        clientNickName.setText(player.getNickname());
         points.setText("Points : " + player.getPoints());
 
     }
