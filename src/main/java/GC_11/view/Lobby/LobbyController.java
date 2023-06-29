@@ -1,5 +1,6 @@
 package GC_11.view.Lobby;
 
+import GC_11.ClientApp;
 import GC_11.distributed.Client;
 import GC_11.exceptions.IllegalMoveException;
 import GC_11.network.choices.Choice;
@@ -18,8 +19,6 @@ import java.util.List;
 
 public class LobbyController {
     public Stage primaryStage;
-
-    public static Client client;
 
     @FXML
     private ChoiceBox<String> chooseNumberPlayers;
@@ -44,7 +43,7 @@ public class LobbyController {
 
 
     public void setClient(Client client) {
-        Platform.runLater(() -> this.client = client);
+        Platform.runLater(() -> ClientApp.client = client);
     }
 
     @FXML
@@ -116,8 +115,8 @@ public class LobbyController {
             throw new RuntimeException(e);
         }
         try {
-            System.out.println("Sending choice: " + choice + "client : " + GUI.client.toString());
-            GUI.client.notifyServer(choice);
+            System.out.println("Sending choice: " + choice + "client : " + ClientApp.client.toString());
+            ClientApp.client.notifyServer(choice);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }

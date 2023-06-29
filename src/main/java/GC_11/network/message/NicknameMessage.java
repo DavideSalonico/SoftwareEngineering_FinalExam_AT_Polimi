@@ -33,7 +33,7 @@ public class NicknameMessage extends MessageView{
      */
     @Override
     public void executeOnClient(Client client) throws RemoteException {
-        client.getView().askNickname();
+        ClientApp.view.askNickname();
     }
 
     /**
