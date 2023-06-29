@@ -157,6 +157,8 @@ public class GameTest {
         game.calculateCommonPoints();
         assertEquals(10,game.getPlayers().get(0).getPointsCommonGoals());
 
+        List<String> players = JsonWriter.getNicknames();
+        assertTrue(players.contains("Player1"));
     }
 
     @Test
