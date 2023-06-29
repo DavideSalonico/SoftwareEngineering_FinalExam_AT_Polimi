@@ -16,9 +16,11 @@ import javafx.stage.Stage;
 import java.rmi.RemoteException;
 import java.util.List;
 
+/**
+ * Lobby Controller, it manages the lobby GUI with reference to the lobby FXML's Components
+ */
 public class LobbyController {
     public Stage primaryStage;
-
     @FXML
     private ChoiceBox<String> chooseNumberPlayers;
 
@@ -47,6 +49,10 @@ public class LobbyController {
     @FXML
     private Button declineLoad;
 
+    /**
+     * Method that sets the client
+     * @param client
+     */
     public void setClient(Client client) {
         Platform.runLater(() -> ClientApp.client = client);
     }
