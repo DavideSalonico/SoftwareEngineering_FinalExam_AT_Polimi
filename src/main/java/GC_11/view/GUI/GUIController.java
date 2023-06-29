@@ -1,6 +1,6 @@
 package GC_11.view.GUI;
 
-import GC_11.distributed.Client;
+import GC_11.ClientApp;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.IllegalMoveException;
 import GC_11.model.*;
@@ -144,7 +144,6 @@ public class GUIController {
     private Button thirdTile;
 
     public String currentPlayerNickname;
-    private Client client;
 
     // Initialize otherPlayers using PlayerView class as a container for the player's nickname, points and shelf (related to javafx objects)
     List<PlayerView> otherPlayers = new ArrayList<>();
@@ -593,7 +592,7 @@ public class GUIController {
     public void createChoice(String input) {
         try {
             Choice choice = ChoiceFactory.createChoice(gameViewMessage.getPlayer(gameViewMessage.getCurrentPlayer()), input);
-            GUI.client.notifyServer(choice);
+            ClientApp.client.notifyServer(choice);
         }catch (RemoteException | IllegalMoveException e){
             setError("Exception : " + e.getMessage());
         }
@@ -710,7 +709,7 @@ public class GUIController {
 
             //Initialize the other players and the main player (client)
             for (int i = 0; i < gameViewMessage.getPlayers().size(); i++) {
-                if (!gameViewMessage.getPlayers().get(i).getNickname().equals(GUI.nickname)) {
+                if (!gameViewMessage.getPlayers().get(i).getNickname().equals(ClientApp.view.getNickname())) {
                     others.add(gameViewMessage.getPlayers().get(i));
                 } else {
                     clientPoints.setText("YOUR POINTS : " + gameViewMessage.getPlayers().get(i).getPoints());
