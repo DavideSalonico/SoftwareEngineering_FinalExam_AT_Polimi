@@ -101,7 +101,7 @@ public class GUI extends View {
     // DEFINIRE Per la persistenza della connessione riesumando la partita
     @Override
     public void askLoadGame() {
-        //TODO QUESTO E' IL METODO CHE VIENE CHIAMATO QUANDO SI VUOLE CARICARE UNA PARTITA. VIENE INVIATO AL PRIMO GIOCATORE E NECESSITA DI UNA RISPOSTA SI O NO (OPPURE YES) PER LA CHOICE GIUSTA CHIEDERE A MATTIA
+        this.lobbyController.askLoadOldGame();
     }
 
     @Override

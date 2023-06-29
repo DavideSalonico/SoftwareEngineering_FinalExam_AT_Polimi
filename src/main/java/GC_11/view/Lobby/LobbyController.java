@@ -41,6 +41,12 @@ public class LobbyController {
     @FXML
     private Label text;
 
+    @FXML
+    private Label loadOldGameText;
+    @FXML
+    private Button confirmLoad;
+    @FXML
+    private Button declineLoad;
 
     public void setClient(Client client) {
         Platform.runLater(() -> ClientApp.client = client);
@@ -171,6 +177,29 @@ public class LobbyController {
             GUIApplication.mainStage.setScene(gameScene);
         });
 
+    }
+
+    @FXML
+    public void acceptLoad(){
+        createChoice("LOAD_GAME yes");
+    }
+
+    @FXML
+    public void declineLoad(){
+        createChoice("LOAD_GAME no");
+    }
+    @FXML
+    public void askLoadOldGame(){
+        Platform.runLater(() -> {
+            errorArea.setVisible(false);
+            confirmName.setVisible(false);
+            chooseNumberPlayers.setVisible(false);
+            text.setVisible(false);
+            clientNickname.setVisible(false);
+            loadOldGameText.setVisible(true);
+            confirmLoad.setVisible(true);
+            declineLoad.setVisible(true);
+        });
     }
 
 }

@@ -5,10 +5,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="424.0" prefWidth="412.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GC_11.view.Lobby.LobbyController">
     <children>
@@ -33,5 +35,20 @@
       </Label>
       <ChoiceBox fx:id="chooseNumberPlayers" layoutX="128.0" layoutY="204.0" prefWidth="150.0" visible="false" />
       <Button fx:id="sendNumberOfPlayers" layoutX="182.0" layoutY="253.0" mnemonicParsing="false" onMouseClicked="#sendNumberOfPlayer" text="Send" />
+      <Text fx:id="loadOldGameText" layoutX="88.0" layoutY="331.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Do you want to load an old Game?" visible="false" wrappingWidth="235.875">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+      </Text>
+      <Button fx:id="confirmLoad" layoutX="122.0" layoutY="368.0" mnemonicParsing="false" onMouseClicked="#acceptLoad" text="Yes" visible="false">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+      <Button fx:id="declineLoad" layoutX="248.0" layoutY="368.0" mnemonicParsing="false" onMouseClicked="#declineLoad" text="No" visible="false">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
     </children>
 </Pane>
