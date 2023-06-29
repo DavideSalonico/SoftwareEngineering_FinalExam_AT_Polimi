@@ -579,11 +579,11 @@ public class GUIController {
     @FXML
     public void confirmTilesOrder() {
         //if(selectedImages.size() != 0){
-            System.out.println(chooseOrder());
-            for (Node node : boardGridPane.getChildren()) {
+        System.out.println(chooseOrder());
+            /*for (Node node : boardGridPane.getChildren()) {
                 node.setOnMouseClicked(null);
                 node.getStyleClass().clear();
-            }
+            }*/
         createChoice(chooseOrder());
         firstTile.setText("");
         secondTile.setText("");
