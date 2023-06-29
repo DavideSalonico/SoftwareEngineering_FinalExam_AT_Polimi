@@ -26,7 +26,6 @@ public class AddNicknameChoice extends Choice{
         super(player, params, type);
     }
 
-    // TODO: HANDLE EXCEPTIONS
     /**
      * Executes the choice on the server by adding the player's nickname to the lobby.
      *

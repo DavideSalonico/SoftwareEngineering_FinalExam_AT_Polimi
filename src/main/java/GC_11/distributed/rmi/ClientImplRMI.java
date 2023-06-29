@@ -43,7 +43,7 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
 
     @Override
     public View getView() {
-        return this.view;
+        return ClientApp.view;
     }
 
     @Override

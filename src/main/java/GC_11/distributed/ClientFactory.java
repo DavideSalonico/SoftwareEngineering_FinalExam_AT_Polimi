@@ -20,7 +20,7 @@ public class ClientFactory {
                 serverRMI.register(client);
                 return client ;
             } catch (RemoteException | NotBoundException e) {
-                return null;
+                throw new RuntimeException(e);
             }
         }
         else if(connectionProtocol.equals("SOCKET")) {
