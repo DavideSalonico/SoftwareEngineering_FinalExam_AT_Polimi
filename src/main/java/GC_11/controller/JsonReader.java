@@ -105,6 +105,9 @@ public class JsonReader {
             // If the number of players is 2, add the additional coordinates into the list
             if (numberOfPlayers == 2) {
                 JSONArray twoPlayersCoordintes = (JSONArray) allCoordinates.get("prohibited2Players");
+                JSONArray threePlayersCoordintes = (JSONArray) allCoordinates.get("prohibited3Players");
+
+                coordinatesList.addAll(extractCoordinates(threePlayersCoordintes));
 
                 coordinatesList.addAll(extractCoordinates(twoPlayersCoordintes));
             }

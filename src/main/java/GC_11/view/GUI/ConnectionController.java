@@ -4,12 +4,10 @@ import GC_11.distributed.ClientFactory;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.Scene;
-
-import java.rmi.RemoteException;
 
 public class ConnectionController {
 
@@ -47,15 +45,10 @@ public class ConnectionController {
 
     @FXML
     public void confirmIP(ActionEvent event) {
-        GUI.client = ClientFactory.createClient(addressText.getText(), typeOfConnection);
-        createChoice(addressText.getText());
-        try {
-            GUI.client.startClient();
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-        //changeSceneToLobby();
-        // eventuale cambio scena credo
+        Platform.runLater( ()  -> {
+            GUI.client = ClientFactory.createClient(addressText.getText(), typeOfConnection);
+            createChoice(addressText.getText());
+        });
     }
 
     public void createChoice(String s){

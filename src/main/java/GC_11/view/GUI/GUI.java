@@ -79,7 +79,7 @@ public class GUI extends View {
         while (this.nickname == null){
             try {
                 System.out.println("waiting for nickname");
-                Thread.sleep(5000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
