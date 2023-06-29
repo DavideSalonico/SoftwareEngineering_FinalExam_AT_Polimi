@@ -455,7 +455,7 @@ public class GUIController {
 
                     image.setFitHeight(34);
                     image.setFitWidth(34);
-                    boardGridPane.add(image, i, j);
+                    boardGridPane.add(image, j, i);
 
                 }
             }

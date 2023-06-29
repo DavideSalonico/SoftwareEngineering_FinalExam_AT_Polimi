@@ -19,17 +19,6 @@ public class LoadGameChoice extends Choice{
 
     @Override
     public void executeOnServer(Controller controller) throws RemoteException, ExceededNumberOfPlayersException, NameAlreadyTakenException {
-        controller.setOldGameAvailable(false);
-        Game newGame;
-        if (params.get(0).equalsIgnoreCase("si") || params.get(0).equalsIgnoreCase("yes")){
-            newGame = JsonWriter.loadGame();
-            newGame.getBoard().setListener(newGame);
-            newGame.setListener(controller.getServer());
-        }
-        else{
-             newGame = new Game(controller.getLobby().getPlayers(),controller.getServer());
-        }
-        controller.setGame(newGame);
-        controller.getServer().notifyClients(new GameViewMessage(controller.getGame(),null));
+        controller.selectLoadGame(this.params.get(0));
     }
 }

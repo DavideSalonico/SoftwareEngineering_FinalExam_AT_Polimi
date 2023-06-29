@@ -1,8 +1,8 @@
 package GC_11.distributed;
 
-import GC_11.distributed.rmi.ClientImplRMI;
 import GC_11.distributed.socket.ClientSock;
 
+import GC_11.distributed.rmi.ClientImplRMI;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;

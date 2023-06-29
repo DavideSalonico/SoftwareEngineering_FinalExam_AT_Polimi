@@ -197,6 +197,7 @@ public class Game implements PropertyChangeListener, Serializable {
                 null,
                 new GameViewMessage(this, null));
         this.listener.propertyChange(evt);
+        JsonWriter.saveGame(this);
         System.out.println("Set next current player: " + this.currentPlayer.getNickname());
         return false;
     }
@@ -334,5 +335,9 @@ public class Game implements PropertyChangeListener, Serializable {
      */
     public void setLastTurn(boolean b) {
         this.lastTurn = b;
+    }
+
+    public Boolean getLastTurn() {
+        return this.lastTurn;
     }
 }

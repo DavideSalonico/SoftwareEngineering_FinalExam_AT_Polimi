@@ -49,6 +49,12 @@ public class JsonWriter {
 
             JsonObject json = new JsonObject();   // Oggetto principale
 
+            //Attributes
+
+            json.addProperty("endGame", game.isEndGame());
+            json.addProperty("lastTurn", game.getLastTurn());
+            json.addProperty("lastPlayer",game.getEndPlayer());
+
             // Board
 
             String jsonBoard = gson.toJson(game.getBoard());
@@ -108,6 +114,18 @@ public class JsonWriter {
     public static Game loadGame() {
         try (FileReader reader = new FileReader("src//main//resources//GameView.JSON")) {
             JsonObject game = JsonParser.parseReader(reader).getAsJsonObject();
+
+            //Retrieve Attributes
+
+            boolean endGame = game.get("endGame").getAsBoolean();
+            boolean lastTurn = game.get("lastTurn").getAsBoolean();
+            String endPlayer = null;
+            try{
+                endPlayer = game.get("lastPlayer").getAsString();
+            }
+            catch (NullPointerException e){
+                endPlayer = null;
+            }
 
             // Retrieving and building the board
 
@@ -199,6 +217,11 @@ public class JsonWriter {
             String nickname = currentPlayer.get("nickname").getAsString();
 
             Game loadedGame = new Game(playersList, board1, commonGoalCardsIds, winningPlayersList.get(0), winningPlayersList.get(1), nickname);
+            loadedGame.setEndGame(endGame);
+            loadedGame.setLastTurn(lastTurn);
+            if(endPlayer != null){
+                loadedGame.setEndPlayer(endPlayer);
+            }
             System.out.println("Partita caricata correttamente");
             return loadedGame;
 
@@ -216,7 +239,11 @@ public class JsonWriter {
     public static List<String> getNicknames() {
         List<String> playersNicknames = null;
         try (FileReader reader = new FileReader("src//main//resources//GameView.JSON")) {
-            JsonObject game = JsonParser.parseReader(reader).getAsJsonObject();
+            JsonElement jsonElement = JsonParser.parseReader(reader);
+            if(jsonElement.isJsonNull()){
+                return null;
+            }
+            JsonObject game = jsonElement.getAsJsonObject();
 
             playersNicknames = new ArrayList<String>();
 
@@ -233,8 +260,6 @@ public class JsonWriter {
                 playersNicknames.add(nickname);
             }
 
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

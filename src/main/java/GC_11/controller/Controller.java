@@ -47,9 +47,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     /**
-     *Get of game attribute
-     *
-     *
+     * Get of game attribute
      */
     public Game getGame() {
         return this.model;
@@ -85,7 +83,7 @@ public class Controller implements PropertyChangeListener {
     public void update(Choice choice) throws RemoteException {
         this.choice = choice;
 
-        if(model != null){
+        if (model != null) {
             if (!checkTurn() && !choice.getType().equals(ChoiceType.SEND_MESSAGE)) {
                 this.model.triggerException(new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer().getNickname() + "'s turn"));
                 return;
@@ -115,7 +113,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void resetTurn(List<String> params) throws RemoteException {
-        if (params.size() != 0){
+        if (params.size() != 0) {
             this.model.triggerException(new IllegalMoveException("There shouldn't be options for this command!"));
             return;
         }
@@ -148,7 +146,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void deselectTile(List<String> params) throws RemoteException {
-        if (params.size() != 0){
+        if (params.size() != 0) {
             this.model.triggerException(new IllegalMoveException("There shouldn't be parameters for this command!"));
             return;
         }
@@ -173,11 +171,11 @@ public class Controller implements PropertyChangeListener {
             this.model.triggerException(e);
             return;
         }
-        if (row < 0 || row >= 9 || col < 0 || col >= 9){
+        if (row < 0 || row >= 9 || col < 0 || col >= 9) {
             this.model.triggerException(new IllegalMoveException("Row or column out of bound!"));
             return;
         }
-        if (this.model.getBoard().getSelectedTiles().size() >= min(3, this.model.getCurrentPlayer().getShelf().maxFreeVerticalSpaces())){
+        if (this.model.getBoard().getSelectedTiles().size() >= min(3, this.model.getCurrentPlayer().getShelf().maxFreeVerticalSpaces())) {
             this.model.triggerException(new IllegalMoveException("You can't select more tiles! You've already selected 3 or you don't have enough space in your shelf"));
             return;
         }
@@ -205,16 +203,17 @@ public class Controller implements PropertyChangeListener {
             this.model.getBoard().setTile(c.getRow(), c.getColumn(), new Tile(TileColor.EMPTY, 0));
         }
         try {
-            if(this.model.getCurrentPlayer().getShelf().addTiles(tmp_tiles, column)){
+            if (this.model.getCurrentPlayer().getShelf().addTiles(tmp_tiles, column)) {
                 end = true;
-            };
+            }
+            ;
             this.model.getBoard().resetSelectedTiles();
             //Update points (all of them)
             this.model.calculateCommonPoints();
             this.model.getCurrentPlayer().updatesPointsPersonalGoal();
             this.model.getCurrentPlayer().calculateAndGiveAdjacencyPoint();
             this.model.getBoard().refillBoard();
-            if(this.model.setNextCurrent()){
+            if (this.model.setNextCurrent()) {
                 this.model.setEndGame(true);
                 this.model.triggerEnd();
             }
@@ -223,11 +222,12 @@ public class Controller implements PropertyChangeListener {
             return;
         }
 
-        if(end){
+        if (end) {
             this.model.setLastTurn(true);
         }
-        JsonWriter.saveGame(this.model);
     }
+
+
 
     private int paramsToColumnIndex(List<String> parameters) throws IllegalMoveException {
         if (parameters.size() != 1) throw new IllegalMoveException("There shouldn't be options for this command!");
@@ -238,7 +238,8 @@ public class Controller implements PropertyChangeListener {
             throw new IllegalMoveException("Invalid format. Column number must be an integer!");
         }
         if (column_index < 0 || column_index >= 5) throw new IllegalMoveException("Column index out of bound!");
-        if(this.model.getBoard().getSelectedTiles().size() == 0) throw new IllegalMoveException("You can't make this move! there are no tiles selected");
+        if (this.model.getBoard().getSelectedTiles().size() == 0)
+            throw new IllegalMoveException("You can't make this move! there are no tiles selected");
         return column_index;
 
     }
@@ -258,7 +259,7 @@ public class Controller implements PropertyChangeListener {
             for (int i = 0; i < tilesSize; i++) {
                 ind.set(i, Integer.parseInt(parameters.get(i)));
             }
-        } catch (NumberFormatException|IndexOutOfBoundsException e) {
+        } catch (NumberFormatException | IndexOutOfBoundsException e) {
             this.model.triggerException(new IllegalMoveException("Invalid format!"));
             return;
         }
@@ -292,87 +293,106 @@ public class Controller implements PropertyChangeListener {
             update((Choice) evt.getNewValue());
 
             //this.model.triggerException(e);
-        }
-        catch (RemoteException e) {
+        } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void sendMessage(Player player, List<String> parameters) throws RemoteException {
-        if (parameters.size() != 2){
+        if (parameters.size() != 2) {
             this.model.triggerException(new IllegalMoveException("There should be exactly two parameters for this command!"));
             return;
         }
-        if (parameters.get(0).length() >= 64 || parameters.get(1).length() >= 64){
+        if (parameters.get(0).length() >= 64 || parameters.get(1).length() >= 64) {
             this.model.triggerException(new IllegalMoveException("Message too long"));
             return;
         }
-        if(!this.model.getPlayers().stream().map(i -> i.getNickname()).toList().contains(parameters.get(0)) && !parameters.get(0).equals("Everyone")){
+        if (!this.model.getPlayers().stream().map(i -> i.getNickname()).toList().contains(parameters.get(0)) && !parameters.get(0).equals("Everyone")) {
             this.model.triggerException(new IllegalMoveException("Player not found!"));
             return;
         }
-        if (parameters.get(0).equals(player.getNickname())){
+        if (parameters.get(0).equals(player.getNickname())) {
             this.model.triggerException(new IllegalMoveException("You can't send a message to yourself!"));
             return;
         }
         if (parameters.get(0).equals("Everyone"))
-            this.model.getChat().sendMessageToMainChat(player , parameters.get(1));
+            this.model.getChat().sendMessageToMainChat(player, parameters.get(1));
         else
             this.model.getChat().sendMessageToPrivateChat(player, this.model.getPlayer(parameters.get(0)), parameters.get(1));
     }
 
-    public void insertName(String name){
-        try{
+    public void insertName(String name) {
+        try {
             lobby.addPlayer(name);
         } catch (NameAlreadyTakenException | ExceededNumberOfPlayersException e) {
             lobby.triggerException(e);
         }
     }
 
-    public void setMaxPlayers(int maxPlayers){
+    public void setMaxPlayers(int maxPlayers) {
         this.lobby.setMaxPlayers(maxPlayers);
     }
 
-    public void startGame(){
+    public void startGame() {
         // Check if players' name are the same in the JSON file
-        this.model = new Game(this.lobby.getPlayers(), this.server);
-        this.server.notifyClients(new GameViewMessage(this.model, null));
-        // TODO: QUESTO E' QUELLO BUGGATO COL JSONWRITE. QUELLO GIUSTO E' SUL BRANCH DISCONNETIONS DI TIA
-        /*List<String> playersInJsonFile = JsonWriter.getNicknames();
+        List<String> playersInJsonFile = JsonWriter.getNicknames();
         // If the number of players is the same
-        boolean equals = true;
-        if (playersInJsonFile.size() == lobby.getPlayers().size()){
+        if (playersInJsonFile != null) {
 
-            // For every player's nickname in the JsonFile check if it's present in the lobby
-            for (String playerNickname : playersInJsonFile){
-                // If it's not present in the lobby, set equals to false
-                if (!lobby.getPlayers().contains(playerNickname)){
-                    equals = false;
+            if (playersInJsonFile.size() == lobby.getPlayers().size()) {
+                boolean equals = true;
+                // For every player's nickname in the JsonFile check if it's present in the lobby
+                for (String playerNickname : playersInJsonFile) {
+                    // If it's not present in the lobby, set equals to false
+                    if (!lobby.getPlayers().contains(playerNickname)) {
+                        equals = false;
+                    }
                 }
+                if (equals) {
+                    this.setOldGameAvailable = true;
+                    this.server.notifyClient(new AskLoadGame(), this.lobby.getPlayers().get(0));
+                } else {
+                    this.model = new Game(lobby.getPlayers(), this.server);
+                    this.server.notifyClients(new GameViewMessage(this.model, null));
+                }
+            } else {
+                this.model = new Game(lobby.getPlayers(), this.server);
+                this.server.notifyClients(new GameViewMessage(this.model, null));
             }
-        }
-        // If the players' nicknames matches, ask the first player if he wants to load the game
-        if (equals)
-        {
-            this.setOldGameAvailable=true;
-            this.server.notifyClient(new AskLoadGame(), this.lobby.getPlayers().get(0));
-        }
-        else{
-            this.model = new Game(this.lobby.getPlayers(), this.server);
+            // If the players' nicknames matches, ask the first player if he wants to load the game
+        } else {
+            this.model = new Game(lobby.getPlayers(), this.server);
             this.server.notifyClients(new GameViewMessage(this.model, null));
-        }*/
-
+        }
     }
 
     public ServerMain getServer() {
         return this.server;
     }
 
-    public void setOldGameAvailable(boolean b){
-        this.setOldGameAvailable=b;
+    public void setOldGameAvailable(boolean b) {
+        this.setOldGameAvailable = b;
     }
 
-    public void setGame(Game model){
-        this.model=model;
+    public void setGame(Game model) {
+        this.model = model;
+    }
+
+    public void selectLoadGame(String response) {
+        if (this.setOldGameAvailable) {
+            if (response.equalsIgnoreCase("si") || response.equalsIgnoreCase("yes")) {
+                this.model = JsonWriter.loadGame();
+                if (this.model != null) {
+                    this.model.getBoard().setListener(this.model);
+                    this.model.setListener(this.server);
+                }
+            }
+            else {
+                this.model = new Game(lobby.getPlayers(), this.server);
+            }
+        }
+        this.setOldGameAvailable = false;
+        this.server.notifyClients(new GameViewMessage(this.model, null));
     }
 }
+
