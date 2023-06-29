@@ -145,7 +145,6 @@ public class GUIController {
 
     public String currentPlayerNickname;
     private Client client;
-    public Game model;
 
     // Initialize otherPlayers using PlayerView class as a container for the player's nickname, points and shelf (related to javafx objects)
     List<PlayerView> otherPlayers = new ArrayList<>();
@@ -190,17 +189,22 @@ public class GUIController {
      * @param message is GameViewMessage instance which contains all the information about the current state of the game.
      */
     public void updateView(GameViewMessage message){
-        this.gameViewMessage = message;
-        Platform.runLater(() ->{
-            // Update Board and PlayerShelf with his points
-            updatePlayer(message.getBoard(), message.getPlayer(message.getCurrentPlayer()));
+        try {
+            this.gameViewMessage = message;
+            Platform.runLater(() -> {
+                // Update Board and PlayerShelf with his points
+                for (Player player : message.getPlayers()) {
+                    updatePlayer(message.getBoard(), player);
+                }
 
+                setSelectedTiles(message.getBoard().getSelectedTiles());
+                // Update the chat
+                updateChat(message.getFilteredPvtChats(), message.getMainChat());
 
-            setSelectedTiles(message.getBoard().getSelectedTiles());
-            // Update the chat
-            updateChat(message.getFilteredPvtChats(), message.getMainChat());
-
-        });
+            });
+        } catch (Exception e) {
+            System.out.println("Error in updateView :" + e.getMessage());
+        }
     }
 
 
@@ -274,14 +278,8 @@ public class GUIController {
         final String SELECTED_STYLE_CLASS = "selected-tile";
 
         imageView.setOnMouseClicked(event -> {
-            try {
-                createChoice("SELECT_TILE " + boardGridPane.getRowIndex(imageView) + " " + boardGridPane.getColumnIndex(imageView));
+            createChoice("SELECT_TILE " + (boardGridPane.getRowIndex(imageView) -1) + " " + (boardGridPane.getColumnIndex(imageView)-1));
 
-            } catch (IllegalMoveException e) {
-                throw new RuntimeException(e);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
         });
     }
 
@@ -298,10 +296,10 @@ public class GUIController {
         //if(selectedImages.size() == tilesOrdered.size() && selectedImages.size() != 0){
             setError("");
             Button button = (Button) event.getSource();
-            columnSelected = columnSelector.getButtons().indexOf(button);
-            System.out.println("PICK_COLUMN: " + columnSelected);
+            columnSelected = columnSelector.getButtons().indexOf(button) -1;
+            System.out.println("PICK_COLUMN " + columnSelected);
             columnSelector.setDisable(true);
-            createChoice("PICK_COLUMN: " + columnSelected);
+            createChoice("PICK_COLUMN " + columnSelected);
         //}else {
          //   setError("Select and order all the tiles first !");
         //}
@@ -333,7 +331,13 @@ public class GUIController {
             refreshBoard(board);
             updateShelf(player, playerView.getShelf());
             updatePoints(player, playerView.getPoints());
-
+        }else{
+            updateClientPoints(player);
+            try {
+                updateClientShelf(player);
+            } catch (ColumnIndexOutOfBoundsException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -405,8 +409,8 @@ public class GUIController {
                 };
 
                 if(image != null) {
-                    image.setFitHeight(50);  //Other players shelf size is 29x29!
-                    image.setFitWidth(50);
+                    image.setFitHeight(44);  //Other players shelf size is 29x29!
+                    image.setFitWidth(44);
                     mainShelfGridPane.add(image, i, j);  //Add the image to specif Shelf
                 }
             }
@@ -494,7 +498,7 @@ public class GUIController {
         }
 
         if(selectedTiles.size() == 1){
-            ImageView image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(0).getRow() , selectedTiles.get(0).getColumn() );
+            ImageView image = getImageViewFromGridPane(boardGridPane, selectedTiles.get(0).getRow() +1, selectedTiles.get(0).getColumn() +1);
             firstImage.setImage(image.getImage());
             image.getStyleClass().clear();
             image.setEffect(boxBlur);
@@ -585,9 +589,13 @@ public class GUIController {
 
     }
 
-    public void createChoice(String input) throws IllegalMoveException, RemoteException {
-        Choice choice = ChoiceFactory.createChoice(gameViewMessage.getPlayer(gameViewMessage.getCurrentPlayer()), input);
-        GUI.client.notifyServer(choice);
+    public void createChoice(String input) {
+        try {
+            Choice choice = ChoiceFactory.createChoice(gameViewMessage.getPlayer(gameViewMessage.getCurrentPlayer()), input);
+            GUI.client.notifyServer(choice);
+        }catch (RemoteException | IllegalMoveException e){
+            setError("Exception : " + e.getMessage());
+        }
     }
 
 
@@ -653,12 +661,6 @@ public class GUIController {
     @FXML
     public void resetButtonAction(){
         resetButton.setVisible(false);
-        List<String> tmpPlayerNames = new ArrayList<String>();
-        tmpPlayerNames.add("Pippo");
-        tmpPlayerNames.add("Pluto");
-        tmpPlayerNames.add("Paperino");
-        tmpPlayerNames.add("Giuseppe");
-        model = new Game(tmpPlayerNames, null);
 
         selectedImages.clear();
         tilesOrdered.clear();
@@ -671,7 +673,7 @@ public class GUIController {
         setError("");
         columnSelector.setDisable(true);
 
-        refreshBoard(model.getBoard());
+        createChoice("RESET_TURN");
     }
 
     /**
