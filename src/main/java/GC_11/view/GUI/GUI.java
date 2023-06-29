@@ -54,6 +54,10 @@ public class GUI extends View {
         this.inGame = inGame;
     }
 
+    /**
+     * Method that will set the modelView in a static variable so it can be used by the client to update the GUI
+     * @param modelView
+     */
     public void setModelView(GameViewMessage modelView) {
         this.modelView = modelView;
     }
