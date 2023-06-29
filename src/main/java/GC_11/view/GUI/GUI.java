@@ -24,20 +24,7 @@ public class GUI extends View {
         super();
         this.guiApplication = new GUIApplication();
 
-
-        //this.client = client;
-
-        /*while (lobbyController == null){
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        this.lobbyController.setClient(client);*/
     }
-
-
 
     public static  void setLobbyController(LobbyController controller){
         lobbyController = controller;
@@ -45,7 +32,6 @@ public class GUI extends View {
     public static void setGameController(GUIController controller){
         gameController = controller;
     }
-
 
     public void setInGame(boolean inGame) {
         this.inGame = inGame;
@@ -60,6 +46,9 @@ public class GUI extends View {
         if (this.modelView.isError()) {
             gameController.setError(this.modelView.getExceptionMessage());
         }else{
+            if(this.modelView.isEndGame()){
+                gameController.showEndGame();
+            }
             gameController.setError("");
             gameController.updateView(modelView);
         }
@@ -98,7 +87,6 @@ public class GUI extends View {
 
     }
 
-    // DEFINIRE Per la persistenza della connessione riesumando la partita
     @Override
     public void askLoadGame() {
         this.lobbyController.askLoadOldGame();
@@ -129,6 +117,11 @@ public class GUI extends View {
 
     @Override
     public void init() {
+    }
+
+    //@Override
+    public void notifyDisconnection() {
+        this.gameController.playerDisconnected();
     }
 
 }

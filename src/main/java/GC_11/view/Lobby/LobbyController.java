@@ -132,6 +132,7 @@ public class LobbyController {
 
     }
 
+    @FXML
     public void changeToSetNumber(){
         Platform.runLater( () -> {
             confirmName.setDisable(true);
@@ -142,19 +143,8 @@ public class LobbyController {
     }
 
 
+
     @FXML
-    public GUIApplication changeScene() throws RemoteException {
-        GUIApplication guiApplication = new GUIApplication();
-        //guiApplication.setClient(this.client);
-
-        try {
-            guiApplication.start(this.primaryStage);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return guiApplication;
-    }
-
     public void changeSceneToGame() {
         Platform.setImplicitExit(false);
         Platform.runLater(() -> {
