@@ -14,7 +14,7 @@ import java.util.*;
  */
 public class Chat implements Serializable {
     private List<Message> mainChat;
-    private Map<Set<String>, List<Message>> pvtChats;
+    private Map<Set<String>, ArrayList<Message>> pvtChats;
     private PropertyChangeListener listener;
 
     /**
@@ -63,17 +63,18 @@ public class Chat implements Serializable {
      * @param message  The content of the message.
      */
     public void sendMessageToPrivateChat(Player sender, Player receiver, String message) {
-        Map<Set<String>, List<Message>> oldPvtChats = this.pvtChats;
+        Map<Set<String>, ArrayList<Message>> oldPvtChats = this.pvtChats;
 
         boolean inserted = false;
         for(Set<String> key : this.pvtChats.keySet()) {
             if(key.contains(sender.getNickname()) && key.contains(receiver.getNickname())) {
-                this.pvtChats.get(key).add(new Message(sender.getNickname(), message));
+                ArrayList<Message> tmpChat = this.pvtChats.get(key);
+                tmpChat.add(new Message(sender.getNickname(), message));
                 inserted = true;
             }
         }
         if(!inserted)
-            this.pvtChats.put(new HashSet<>(Arrays.asList(sender.getNickname(), receiver.getNickname())), Arrays.asList(new Message(sender.getNickname(), message)));
+            this.pvtChats.put(new HashSet<>(Arrays.asList(sender.getNickname(), receiver.getNickname())), new ArrayList<>(List.of(new Message(sender.getNickname(), message))));
 
         PropertyChangeEvent evt = new PropertyChangeEvent(
                 this,
@@ -108,7 +109,7 @@ public class Chat implements Serializable {
      *
      * @return The map of private chats.
      */
-    public Map<Set<String>, List<Message>> getPvtChats() {
+    public Map<Set<String>, ArrayList<Message>> getPvtChats() {
         return this.pvtChats;
     }
 

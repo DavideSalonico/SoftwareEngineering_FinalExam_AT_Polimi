@@ -74,7 +74,7 @@ class ChatTest {
 
         chat.sendMessageToPrivateChat(player1, player2, "Private message from Player 1 to Player 2");
 
-        Map<Set<String>, List<Message>> pvtChats = chat.getPvtChats();
+        Map<Set<String>, ArrayList<Message>> pvtChats = chat.getPvtChats();
         assertNotNull(pvtChats);
         assertEquals(1, pvtChats.size());
 
@@ -134,7 +134,7 @@ class ChatTest {
 
     @Test
     void testGetPvtChats() {
-        Map<Set<String>, List<Message>> pvtChats = chat.getPvtChats();
+        Map<Set<String>, ArrayList<Message>> pvtChats = chat.getPvtChats();
         assertNotNull(pvtChats);
         assertEquals(0, pvtChats.size());
 

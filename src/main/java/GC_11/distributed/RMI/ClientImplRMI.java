@@ -1,5 +1,6 @@
-package GC_11.distributed.RMI;
+package GC_11.distributed.rmi;
 
+import GC_11.ClientApp;
 import GC_11.distributed.Client;
 import GC_11.distributed.ServerRMI;
 import GC_11.network.choices.Choice;
@@ -19,10 +20,6 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
 
     public ClientImplRMI(ServerRMI serverRMI) throws RemoteException {
         this.serverRMI=serverRMI;
-    }
-
-    public String getNickname() {
-        return this.getView().getNickname();
     }
 
     public int askMaxNumber() {
@@ -45,6 +42,11 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
     @Override
     public View getView() {
         return this.view;
+    }
+
+    @Override
+    public String getNickname() throws RemoteException {
+        return ClientApp.view.getNickname();
     }
 
     @Override

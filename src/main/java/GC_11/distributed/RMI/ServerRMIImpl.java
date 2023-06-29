@@ -1,5 +1,6 @@
-package GC_11.distributed.RMI;
+package GC_11.distributed.rmi;
 
+import GC_11.ClientApp;
 import GC_11.distributed.Client;
 import GC_11.distributed.ServerMain;
 import GC_11.distributed.ServerRMI;
@@ -69,7 +70,6 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
 
     @Override
     public synchronized void register(Client client) throws RemoteException {
-
         client.receiveFromServer(new NicknameMessage());
         clients.add(client);
         serverMain.addConnection(client.getNickname(), this);

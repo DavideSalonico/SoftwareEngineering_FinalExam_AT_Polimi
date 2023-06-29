@@ -32,7 +32,7 @@ public class GameViewMessage extends MessageView {
     private String endPlayer = null;
     private Board board = null;
     private List<Message> mainChat = new ArrayList<>();
-    private Map<Set<String>, List<Message>> privateChats = new HashMap<>();
+    private Map<Set<String>, ArrayList<Message>> privateChats = new HashMap<>();
     private Map<String, List<Message>> filteredPvtChats = new HashMap<>();
     private String message;
     private Player winner = null;
@@ -267,7 +267,7 @@ public class GameViewMessage extends MessageView {
      *
      * @return The map of private chat messages.
      */
-    public Map<Set<String>, List<Message>> getPrivateChats() {
+    public Map<Set<String>, ArrayList<Message>> getPrivateChats() {
         return privateChats;
     }
 
@@ -294,7 +294,7 @@ public class GameViewMessage extends MessageView {
      *
      * @param privateChats The map of private chat messages.
      */
-    public void setPrivateChats(Map<Set<String>, List<Message>> privateChats) {
+    public void setPrivateChats(Map<Set<String>, ArrayList<Message>> privateChats) {
         this.privateChats = privateChats;
     }
 
@@ -325,21 +325,24 @@ public class GameViewMessage extends MessageView {
      * @return A sanitized copy of the game view message.
      */
     @Override
-    public MessageView sanitize(String receiver) {
+    public synchronized MessageView sanitize(String receiver) {
         GameViewMessage copy = new GameViewMessage(this);
 
         for (Player p : copy.getPlayers()) {
             if (!p.getNickname().equals(receiver))
                 p.setPersonalGoal(null);
         }
-        for(Map.Entry<Set<String>, List<Message>> entry : copy.getPrivateChats().entrySet()){
-            if(!entry.getKey().contains(receiver)){
-                copy.getPrivateChats().remove(entry.getKey());
-            }
-            else{
-                for(String str : entry.getKey()){
-                    if(!str.equals(receiver)){
-                        copy.getFilteredPvtChats().put(str, entry.getValue());
+
+        Iterator<Map.Entry<Set<String>, ArrayList<Message>>> iterator = copy.getPrivateChats().entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Set<String>, ArrayList<Message>> entry = iterator.next();
+            Set<String> chatParticipants = entry.getKey();
+            if (!chatParticipants.contains(receiver)) {
+                iterator.remove();
+            } else {
+                for (String participant : chatParticipants) {
+                    if (!participant.equals(receiver)) {
+                        copy.getFilteredPvtChats().put(participant, entry.getValue());
                     }
                 }
             }
@@ -347,6 +350,7 @@ public class GameViewMessage extends MessageView {
 
         return copy;
     }
+
 
     /**
      * Checks if the game has ended.
