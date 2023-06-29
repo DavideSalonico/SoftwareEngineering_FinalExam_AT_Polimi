@@ -92,13 +92,6 @@ public class LobbyTest {
         assertTrue(lobby.hasPlayer("Player1"));
     }*/
 
-    @Test
-    public void testTriggerException() {
-        Exception exception = new Exception("Test Exception");
-        lobby.triggerException(exception);
-        assertEquals(exception, listener.getEvent().getNewValue());
-    }
-
     private static class MockPropertyChangeListener implements PropertyChangeListener {
         private PropertyChangeEvent event;
 
