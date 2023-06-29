@@ -6,6 +6,10 @@ import GC_11.view.Lobby.LobbyController;
 import GC_11.view.View;
 
 
+/**
+ * GUI class, it manages the GUI with reference to the GUI FXML's Components, receives updates from the server and call
+ * the appropriate methods to update the GUI
+ */
 public class GUI extends View {
     public static String nickname;
     public static int maxNumber = 0;
@@ -18,7 +22,7 @@ public class GUI extends View {
     public int i = 0;
 
     /**
-     * Every view is bound at only one player, it helps to manage every input that the controller receive
+     * Constructor of the GUI, it will launch the GUI as a new Thread
      */
     public GUI() {
         super();
@@ -26,13 +30,26 @@ public class GUI extends View {
 
     }
 
+    /**
+     * Method that will set LobbyController in a static variable so it can be used by the client to update the GUI
+     * @param  controller LobbyController reference
+     */
     public static  void setLobbyController(LobbyController controller){
         lobbyController = controller;
     }
+
+    /**
+     * Method that will set GameController in a static variable so it can be used by the client to update the GUI
+     * @param  controller GameController reference
+     */
     public static void setGameController(GUIController controller){
         gameController = controller;
     }
 
+    /**
+     * Variable to set if the client runs the game for the first time
+     * @param inGame
+     */
     public void setInGame(boolean inGame) {
         this.inGame = inGame;
     }
