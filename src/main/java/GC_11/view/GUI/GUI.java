@@ -131,4 +131,9 @@ public class GUI extends View {
     public void init() {
     }
 
+    @Override
+    public void notifyDisconnection() {
+
+    }
+
 }

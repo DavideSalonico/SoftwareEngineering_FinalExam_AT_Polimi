@@ -91,45 +91,6 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
         System.out.println("\n");
     }
 
-    //TODO: puoi usare lo stesso della GameViewMessage
-    public synchronized void notifyClientsLobby(LobbyViewMessage lobbyViewMessage){
-        for (Client c : clients) {
-            new Thread(() -> {
-                try {
-                    c.receiveFromServer(lobbyViewMessage);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }).start();
-            try {
-                System.out.println(c.getNickname() + " aggiornato");
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-        System.out.println("\n");
-    }
-
-    public void notifyDisconnection(String nickname, GameViewMessage msg){
-        for (Client c : clients) {
-            try {
-                if (!c.getNickname().equals(nickname)) {
-                    new Thread(() -> {
-                        try {
-                            c.receiveFromServer(msg);
-                            System.out.println(c.getNickname() + " aggiornato GAME correctly");
-                        } catch (RemoteException e) {
-                            System.out.println(e.getMessage());
-                        }
-                    }).start();
-                    System.out.println("\n");
-                }
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public synchronized void notifyClient(String nickname, MessageView messageView) throws RemoteException {
         for (Client c : clients) {
             if (c.getNickname().equals(nickname)) {
@@ -138,7 +99,8 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
                         c.receiveFromServer(messageView);
                         System.out.println(c.getNickname() + " aggiornato GAME correctly");
                     } catch (RemoteException e) {
-                        System.out.println(e.getMessage());
+                        //System.out.println(e.getMessage());
+                        this.serverMain.removeConnection(nickname);
                     }
                 }).start();
                 System.out.println("\n");
@@ -156,7 +118,7 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
         try {
             this.notifyClient(nickname,msg);
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            this.serverMain.removeConnection(nickname);
         }
     }
 

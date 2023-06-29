@@ -5,6 +5,7 @@ import GC_11.controller.Controller;
 import GC_11.distributed.rmi.ServerRMIImpl;
 import GC_11.distributed.socket.ServerSock;
 
+import GC_11.network.message.DisconnectionMessage;
 import GC_11.network.message.GameViewMessage;
 import GC_11.network.message.LobbyViewMessage;
 import GC_11.network.choices.Choice;
@@ -139,10 +140,9 @@ public class ServerMain implements PropertyChangeListener {
             try {
                 entry.getValue().sendMessage(msgCopy,entry.getKey());
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                removeConnection(entry.getKey());
             }
         }
-        //JsonWriter.saveGame(new GameViewMessage(this.controller.getGame(), null, null)); //TODO: adapt parameters and uncomment
     }
 
     public void removeConnection(String nickname) {
@@ -150,7 +150,7 @@ public class ServerMain implements PropertyChangeListener {
             System.out.println("REMOVED CONNECTION: " + nickname + " " + this.clientMap.get(nickname));
             this.clientMap.remove(nickname);
             this.controller.getGame().setEndGame(true);
-            GameViewMessage msg = new GameViewMessage(this.controller.getGame(), new Exception("Player " + nickname + " disconnected"));
+            notifyClients(new DisconnectionMessage());
         }
         else{
             System.out.println("Unable to remove connection because nickname is unknown");
@@ -177,4 +177,6 @@ public class ServerMain implements PropertyChangeListener {
             e.printStackTrace();
         }
     }
+
+
 }

@@ -27,4 +27,6 @@ public abstract class View {
     protected void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    public abstract void notifyDisconnection();
 }
