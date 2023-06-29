@@ -143,7 +143,9 @@ public class GUIController {
     @FXML
     private Button thirdTile;
 
-    public String currentPlayerNickname;
+
+    @FXML
+    public Label currentPlayerNicknameLabel;
 
     // Initialize otherPlayers using PlayerView class as a container for the player's nickname, points and shelf (related to javafx objects)
     List<PlayerView> otherPlayers = new ArrayList<>();
@@ -189,8 +191,10 @@ public class GUIController {
      */
     public void updateView(GameViewMessage message){
         try {
-            this.gameViewMessage = message;
+
             Platform.runLater(() -> {
+                this.gameViewMessage = message;
+                currentPlayerNicknameLabel.setText("IT'S "+message.getCurrentPlayer() +  "'S TURN");
                 // Update Board and PlayerShelf with his points
                 for (Player player : message.getPlayers()) {
                     updatePlayer(message.getBoard(), player);
@@ -575,11 +579,11 @@ public class GUIController {
     @FXML
     public void confirmTilesOrder() {
         //if(selectedImages.size() != 0){
-            System.out.println(chooseOrder());
-            for (Node node : boardGridPane.getChildren()) {
+        System.out.println(chooseOrder());
+            /*for (Node node : boardGridPane.getChildren()) {
                 node.setOnMouseClicked(null);
                 node.getStyleClass().clear();
-            }
+            }*/
         createChoice(chooseOrder());
         firstTile.setText("");
         secondTile.setText("");

@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
@@ -33,5 +34,20 @@
       </Label>
       <ChoiceBox fx:id="chooseNumberPlayers" layoutX="128.0" layoutY="204.0" prefWidth="150.0" visible="false" />
       <Button fx:id="sendNumberOfPlayers" layoutX="182.0" layoutY="253.0" mnemonicParsing="false" onMouseClicked="#sendNumberOfPlayer" text="Send" />
+      <Label fx:id="loadOldGameText" layoutX="93.0" layoutY="316.0" text="Do you want to load an old Game?" visible="false">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="confirmLoad" layoutX="122.0" layoutY="368.0" mnemonicParsing="false" onMouseClicked="#acceptLoad" text="Yes" visible="false">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+      <Button fx:id="declineLoad" layoutX="248.0" layoutY="368.0" mnemonicParsing="false" onMouseClicked="#declineLoad" text="No" visible="false">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
     </children>
 </Pane>
