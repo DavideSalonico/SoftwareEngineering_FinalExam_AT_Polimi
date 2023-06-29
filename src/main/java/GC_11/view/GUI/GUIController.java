@@ -293,16 +293,17 @@ public class GUIController {
      */
     @FXML
     public void selectColumn(ActionEvent event) throws IllegalMoveException, RemoteException {
-        //if(selectedImages.size() == tilesOrdered.size() && selectedImages.size() != 0){
-            setError("");
-            Button button = (Button) event.getSource();
-            columnSelected = columnSelector.getButtons().indexOf(button) -1;
-            System.out.println("PICK_COLUMN " + columnSelected);
-            columnSelector.setDisable(true);
+        setError("");
+        Button button = (Button) event.getSource();
+        columnSelected = columnSelector.getButtons().indexOf(button);
+        System.out.println("PICK_COLUMN " + columnSelected);
+        //columnSelector.setDisable(true);
+        if (columnSelected > 0)
             createChoice("PICK_COLUMN " + columnSelected);
-        //}else {
-         //   setError("Select and order all the tiles first !");
-        //}
+
+        secondTile.setText("");
+        firstTile.setText("");
+        thirdTile.setText("");
     }
 
 
@@ -393,8 +394,8 @@ public class GUIController {
      * @throws ColumnIndexOutOfBoundsException
      */
     public void updateClientShelf(Player player) throws ColumnIndexOutOfBoundsException {
-        for (int i = 1; i < 6; i++) {  //COLUMNS
-            for (int j = 1; j < 7; j++) {  //ROWS
+        for (int i = 0; i < 5; i++) {  //COLUMNS
+            for (int j = 0; j < 6; j++) {  //ROWS
                 Tile t = player.getShelf().getTile(j, i);
                 int id = t.getId() + 1;
                 TileColor tileColor = t.getColor();
@@ -411,7 +412,7 @@ public class GUIController {
                 if(image != null) {
                     image.setFitHeight(44);  //Other players shelf size is 29x29!
                     image.setFitWidth(44);
-                    mainShelfGridPane.add(image, i, j);  //Add the image to specif Shelf
+                    mainShelfGridPane.add(image, i+1, j+1);  //Add the image to specif Shelf
                 }
             }
         }
@@ -575,15 +576,15 @@ public class GUIController {
      * Method bound to the button "Confirm" that will send the request to the server after the user has selected the column where to place the tile
      */
     @FXML
-    public void confirmTilesOrder() throws IllegalMoveException, RemoteException {
+    public void confirmTilesOrder() {
         //if(selectedImages.size() != 0){
             System.out.println(chooseOrder());
 
-            for (Node node : boardGridPane.getChildren()) {
+            /*for (Node node : boardGridPane.getChildren()) {
                 node.setOnMouseClicked(null);
                 node.getStyleClass().clear();
-            }
-            createChoice(chooseOrder());
+            }*/
+        createChoice(chooseOrder());
 
         //("You have to select at least one tile and order it!");
 
