@@ -165,7 +165,7 @@ public class GameCLI extends View {
                     p.getPersonalGoal().print();
                 }
             }
-
+            System.out.println("\n\n");
             //Printing Board
             this.modelView.getBoard().print();
 
