@@ -23,7 +23,7 @@
             </image>
         </ImageView>
         <TextArea fx:id="errorArea" editable="false" layoutX="36.0" layoutY="300.0" opacity="0.5" prefHeight="51.0" prefWidth="350.0" text="Errors or messages shown here" />
-      <Button fx:id="confirmName" layoutX="174.0" layoutY="240.0" mnemonicParsing="false" onAction="#confirmNickname" text="Confirm" />
+      <Button fx:id="confirmName" layoutX="174.0" layoutY="240.0" mnemonicParsing="false" onMouseClicked="#confirmNickname" text="Confirm" />
       <TextArea fx:id="listPlayers" editable="false" layoutX="72.0" layoutY="136.0" prefHeight="146.0" prefWidth="255.0" visible="false" />
       <TextField fx:id="clientNickname" layoutX="92.0" layoutY="204.0" prefHeight="25.0" prefWidth="225.0" />
       <Label fx:id="text" layoutX="108.0" layoutY="168.0" text="INSERT YOUR NICKNAME" textFill="#efefef">
@@ -32,5 +32,6 @@
          </font>
       </Label>
       <ChoiceBox fx:id="chooseNumberPlayers" layoutX="128.0" layoutY="204.0" prefWidth="150.0" visible="false" />
+      <Button fx:id="sendNumberOfPlayers" layoutX="182.0" layoutY="253.0" mnemonicParsing="false" onMouseClicked="#sendNumberOfPlayer" text="Send" />
     </children>
 </Pane>

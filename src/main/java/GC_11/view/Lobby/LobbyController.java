@@ -31,6 +31,9 @@ public class LobbyController {
     private Button confirmName;
 
     @FXML
+    private Button sendNumberOfPlayers;
+
+    @FXML
     private TextArea errorArea;
 
     @FXML
@@ -51,6 +54,14 @@ public class LobbyController {
             confirmName.setDisable(newValue.trim().isEmpty());
         });
         chooseNumberPlayers.getItems().addAll("2", "3", "4");
+
+        chooseNumberPlayers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            // Mostra il bottone di conferma solo se è selezionata un'opzione
+            sendNumberOfPlayers.setDisable(newValue == null);
+        });
+
+        sendNumberOfPlayers.setVisible(false);
+        sendNumberOfPlayers.setDisable(true);
     }
 
     public void setError(String error) {
@@ -64,6 +75,7 @@ public class LobbyController {
             listPlayers.setVisible(true);
             confirmName.setVisible(false);
             clientNickname.setVisible(false);
+            sendNumberOfPlayers.setVisible(false);
 
             for(String player : players)
                 listPlayers.appendText(player + "\n");
@@ -92,6 +104,7 @@ public class LobbyController {
         //waitingRoom();
         createChoice("SET_MAX_NUMBER "+chooseNumberPlayers.getValue());
         GUI.maxNumber = Integer.parseInt((String) chooseNumberPlayers.getValue());
+        sendNumberOfPlayers.setVisible(false);
     }
 
     public void createChoice(String s) {
@@ -113,14 +126,13 @@ public class LobbyController {
     @FXML
     public void confirmNickname() {
 
-        chooseNumberPlayers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            // Mostra il bottone di conferma solo se è selezionata un'opzione
-            confirmName.setDisable(newValue == null);
-        });
 
-        confirmName.setOnAction(event -> sendNumberOfPlayer());
+
         createChoice("ADD_PLAYER " + clientNickname.getText());
         GUI.nickname = clientNickname.getText();
+        confirmName.setVisible(false);
+
+        sendNumberOfPlayers.setVisible(true);
 
         /*confirmName.setDisable(true);
         chooseNumberPlayers.setVisible(true);
@@ -130,10 +142,12 @@ public class LobbyController {
     }
 
     public void changeToSetNumber(){
-        confirmName.setDisable(true);
-        chooseNumberPlayers.setVisible(true);
-        clientNickname.setVisible(false);
-        text.setText("Scegli il numero di giocatori");
+        Platform.runLater( () -> {
+            confirmName.setDisable(true);
+            chooseNumberPlayers.setVisible(true);
+            clientNickname.setVisible(false);
+            text.setText("Scegli il numero di giocatori");
+        });
     }
 
 
