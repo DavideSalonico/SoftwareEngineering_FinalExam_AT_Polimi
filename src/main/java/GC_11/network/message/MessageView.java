@@ -3,6 +3,7 @@ package GC_11.network.message;
 import GC_11.distributed.Client;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 
 /**
  * Abstract base class for message views.
@@ -15,7 +16,7 @@ public abstract class MessageView implements Serializable {
      *
      * @param client The client instance.
      */
-    public abstract void executeOnClient(Client client);
+    public abstract void executeOnClient(Client client) throws RemoteException;
 
     /**
      * Sanitizes the message view by removing sensitive information.

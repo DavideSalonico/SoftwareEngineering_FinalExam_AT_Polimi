@@ -1,8 +1,9 @@
 package GC_11.distributed;
 
+import GC_11.ClientApp;
+import GC_11.distributed.rmi.ClientImplRMI;
 import GC_11.distributed.socket.ClientSock;
 
-import GC_11.distributed.rmi.ClientImplRMI;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -15,6 +16,7 @@ public class ClientFactory {
                 Registry registry = LocateRegistry.getRegistry(serverIp,1099);
                 ServerRMI serverRMI = (ServerRMI) registry.lookup("server");
                 ClientImplRMI client = new ClientImplRMI(serverRMI);
+                ClientApp.client = client;
                 serverRMI.register(client);
                 return client ;
             } catch (RemoteException | NotBoundException e) {

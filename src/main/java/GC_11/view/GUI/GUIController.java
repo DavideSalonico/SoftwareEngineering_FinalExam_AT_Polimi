@@ -1,5 +1,6 @@
 package GC_11.view.GUI;
 
+import GC_11.ClientApp;
 import GC_11.distributed.Client;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.IllegalMoveException;
@@ -592,7 +593,7 @@ public class GUIController {
     public void createChoice(String input) {
         try {
             Choice choice = ChoiceFactory.createChoice(gameViewMessage.getPlayer(gameViewMessage.getCurrentPlayer()), input);
-            GUI.client.notifyServer(choice);
+            ClientApp.client.notifyServer(choice);
         }catch (RemoteException | IllegalMoveException e){
             setError("Exception : " + e.getMessage());
         }

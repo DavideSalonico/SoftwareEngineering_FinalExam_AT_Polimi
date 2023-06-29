@@ -1,5 +1,6 @@
 package GC_11.view.GUI;
 
+import GC_11.ClientApp;
 import GC_11.distributed.ClientFactory;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -46,7 +47,7 @@ public class ConnectionController {
     @FXML
     public void confirmIP(ActionEvent event) {
         Platform.runLater( ()  -> {
-            GUI.client = ClientFactory.createClient(addressText.getText(), typeOfConnection);
+            ClientApp.client = ClientFactory.createClient(addressText.getText(), typeOfConnection);
             createChoice(addressText.getText());
         });
     }

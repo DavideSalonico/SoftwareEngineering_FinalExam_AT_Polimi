@@ -15,11 +15,13 @@ import java.util.Scanner;
 public class ClientImplRMI extends UnicastRemoteObject implements Client, Serializable {
 
     private transient View view;
+
     private String nickname;
     private ServerRMI serverRMI;
 
     public ClientImplRMI(ServerRMI serverRMI) throws RemoteException {
         this.serverRMI=serverRMI;
+        view=ClientApp.view;
     }
 
     public int askMaxNumber() {

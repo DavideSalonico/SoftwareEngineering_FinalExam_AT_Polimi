@@ -8,12 +8,8 @@ import GC_11.view.View;
 
 
 public class GUI extends View {
-
-    public static Client client;
     public static String nickname;
     public static int maxNumber = 0;
-    public static String typeOfConnection;
-    public static String IPaddress;
     public GUIApplication guiApplication;
     public static GUIController gameController;
     public static LobbyController lobbyController;
@@ -130,6 +126,10 @@ public class GUI extends View {
             this.setModelView(modelView);
             show();
         }
+    }
+
+    @Override
+    public void init() {
     }
 
 }

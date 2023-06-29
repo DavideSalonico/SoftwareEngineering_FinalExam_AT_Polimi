@@ -22,6 +22,8 @@ public abstract class View {
     };
     public abstract void update(GameViewMessage modelView);
 
+    public abstract void init();
+
     protected void setNickname(String nickname) {
         this.nickname = nickname;
     }

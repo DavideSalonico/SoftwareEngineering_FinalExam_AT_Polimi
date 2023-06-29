@@ -19,14 +19,17 @@ public class ClientApp {
     public static View view;
     public static Client client;
 
-    public static void main (String[] args) throws RemoteException {
+    public static void main(String[] args) throws RemoteException {
         //executorService = Executors.newCachedThreadPool();
         //setDefault();
         if (args.length > 0) {
             if (args[0].equals("GUI")) {
                 view = new GUI();
-            } else
+            } else {
                 view = new GameCLI();
+                view.init();
+
+            }
         }
     }
 }

@@ -3,6 +3,8 @@ package GC_11.network.message;
 import GC_11.ClientApp;
 import GC_11.distributed.Client;
 
+import java.rmi.RemoteException;
+
 /**
  * Represents a message for requesting the nickname from the client.
  */
@@ -30,7 +32,7 @@ public class NicknameMessage extends MessageView{
      * @param client The client instance.
      */
     @Override
-    public void executeOnClient(Client client) {
+    public void executeOnClient(Client client) throws RemoteException {
         ClientApp.view.askNickname();
     }
 

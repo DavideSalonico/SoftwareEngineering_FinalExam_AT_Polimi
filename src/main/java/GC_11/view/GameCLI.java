@@ -36,7 +36,6 @@ public class GameCLI extends View {
 
     public GameCLI() {
         super();
-        init();
     }
 
     public void init(){
