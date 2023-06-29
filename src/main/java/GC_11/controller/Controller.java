@@ -200,13 +200,14 @@ public class Controller implements PropertyChangeListener {
         List<Tile> tmp_tiles = new ArrayList<Tile>();
         for (Coordinate c : this.model.getBoard().getSelectedTiles()) {
             tmp_tiles.add(this.model.getBoard().getTile(c.getRow(), c.getColumn()));
-            this.model.getBoard().setTile(c.getRow(), c.getColumn(), new Tile(TileColor.EMPTY, 0));
         }
         try {
             if (this.model.getCurrentPlayer().getShelf().addTiles(tmp_tiles, column)) {
                 end = true;
             }
-            ;
+            for (Coordinate c : this.model.getBoard().getSelectedTiles()) {
+                this.model.getBoard().setTile(c.getRow(), c.getColumn(), new Tile(TileColor.EMPTY, 0));
+            }
             this.model.getBoard().resetSelectedTiles();
             //Update points (all of them)
             this.model.calculateCommonPoints();
