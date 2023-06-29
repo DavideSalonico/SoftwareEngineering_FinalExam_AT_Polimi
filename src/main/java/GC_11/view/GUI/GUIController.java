@@ -257,15 +257,6 @@ public class GUIController {
         return null; // Restituisce null se l'ImageView non è stata trovata
     }
 
-    /**
-     * Method that removes the tile from the board given the row and column index
-     * @param row line
-     * @param column column
-     */
-    public void removeTileFromBoard(Integer row, Integer column) {
-        ImageView image = getImageViewFromGridPane(boardGridPane, row, column);
-        image = null;
-    }
 
 
     private List<ImageView> selectedImages = new ArrayList<>();
@@ -471,9 +462,10 @@ public class GUIController {
         Tab selectedTab = tabPane.getSelectionModel().getSelectedItem();
         AnchorPane selectedAnchorPane = (AnchorPane) selectedTab.getContent();
         TextArea selectedChatArea = (TextArea) selectedAnchorPane.lookup(".text-area");
-        selectedChatArea.appendText(currentPlayerNickname + " : " + chatTextField.getText() + "\n");
+
         chatTextField.setText("Enter a message...");
-        // MANDA MESSAGGIO AL SERVER
+
+        createChoice("SEND_MESSAGE " + selectedChatArea.getText() + " " +chatTextField.getText());
     }
 
 
@@ -591,7 +583,7 @@ public class GUIController {
 
     public void createChoice(String input) {
         try {
-            Choice choice = ChoiceFactory.createChoice(gameViewMessage.getPlayer(gameViewMessage.getCurrentPlayer()), input);
+            Choice choice = ChoiceFactory.createChoice(gameViewMessage.getPlayer(ClientApp.client.getNickname()), input);
             ClientApp.client.notifyServer(choice);
         }catch (RemoteException | IllegalMoveException e){
             setError("Exception : " + e.getMessage());
@@ -610,6 +602,12 @@ public class GUIController {
             tabNames.add(playerName);
         }
 
+        for(Player remainingPlayer : gameViewMessage.getPlayers()){
+            if(!tabNames.contains(remainingPlayer.getNickname())){
+                tabNames.add(remainingPlayer.getNickname());
+            }
+        }
+
         for(String tabName : tabNames){
             if(!tabPane.getTabs().contains(tabName)){
                 Tab tab = new Tab(tabName);
@@ -622,7 +620,8 @@ public class GUIController {
                 textArea.setWrapText(true);
                 textArea.setPrefHeight(160);
                 textArea.setPrefWidth(160);
-                fillChat(textArea, pvtChat.get(tabName));
+                if(pvtChat.get(tabName) != null)
+                    fillChat(textArea, pvtChat.get(tabName));
                 anchorPane.getChildren().add(textArea);
                 tab.setContent(anchorPane);
             }
@@ -757,6 +756,8 @@ public class GUIController {
             e.printStackTrace();
             System.out.println("Error in init method at line " + e.getStackTrace()[0].getLineNumber());
         }
+
+        updateView(gameViewMessage);
 
     }
     @FXML

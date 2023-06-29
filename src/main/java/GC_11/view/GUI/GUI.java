@@ -79,7 +79,7 @@ public class GUI extends View {
         while (this.nickname == null){
             try {
                 System.out.println("waiting for nickname");
-                Thread.sleep(2000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -95,7 +95,7 @@ public class GUI extends View {
 
         while (this.maxNumber == 0){
             try {
-                Thread.sleep(2000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
