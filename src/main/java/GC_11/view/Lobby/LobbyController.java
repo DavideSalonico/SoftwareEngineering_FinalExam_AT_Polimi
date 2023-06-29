@@ -11,16 +11,15 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Lobby Controller, it manages the lobby GUI with reference to the lobby FXML's Components
  */
 public class LobbyController {
-    public Stage primaryStage;
     @FXML
     private ChoiceBox<String> chooseNumberPlayers;
 
@@ -51,18 +50,19 @@ public class LobbyController {
 
     /**
      * Method that sets the client
-     * @param client
+     * @param  client the client to be set
      */
     public void setClient(Client client) {
         Platform.runLater(() -> ClientApp.client = client);
     }
 
+    /**
+     * Initializes the GUI components and event listeners.
+     */
     @FXML
     public void initialize() {
         confirmName.setDisable(true);
-        clientNickname.textProperty().addListener((observable, oldValue, newValue) -> {
-            confirmName.setDisable(newValue.trim().isEmpty());
-        });
+        clientNickname.textProperty().addListener((observable, oldValue, newValue) -> confirmName.setDisable(newValue.trim().isEmpty()));
         chooseNumberPlayers.getItems().addAll("2", "3", "4");
 
         chooseNumberPlayers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -74,10 +74,20 @@ public class LobbyController {
         sendNumberOfPlayers.setDisable(true);
     }
 
+    /**
+     * Sets an error message in the errorArea component.
+     *
+     * @param error The error message to be displayed.
+     */
     public void setError(String error) {
         Platform.runLater(() -> errorArea.setText(error));
     }
 
+    /**
+     * Displays the list of players in the GUI and sets the appropriate visibility of components.
+     *
+     * @param players The list of players to be displayed.
+     */
     @FXML
     public void showPlayers(List<String> players) {
         chooseNumberPlayers.setVisible(false);
@@ -94,16 +104,24 @@ public class LobbyController {
 
     }
 
+    /**
+     * Retrieves the selected number of players from the chooseNumberPlayers ComboBox and performs necessary actions.
+     */
     @FXML
     public void sendNumberOfPlayer(){
-        int numberOfPlayers = Integer.parseInt((String) chooseNumberPlayers.getValue());
+        int numberOfPlayers = Integer.parseInt(chooseNumberPlayers.getValue());
         System.out.println(numberOfPlayers);
-        //waitingRoom();
+
         createChoice("SET_MAX_NUMBER "+chooseNumberPlayers.getValue());
-        GUI.maxNumber = Integer.parseInt((String) chooseNumberPlayers.getValue());
+        GUI.maxNumber = Integer.parseInt(chooseNumberPlayers.getValue());
         sendNumberOfPlayers.setVisible(false);
     }
 
+    /**
+     * Creates a choice and sends it to the server.
+     *
+     * @param s The string representing the choice to be sent.
+     */
     public void createChoice(String s) {
         Choice choice;
 
@@ -120,24 +138,20 @@ public class LobbyController {
         }
     }
 
+    /**
+     * Sends the nickname to the server and sets the appropriate visibility of components.
+     */
     @FXML
     public void confirmNickname() {
-
-
-
         createChoice("ADD_PLAYER " + clientNickname.getText());
         GUI.nickname = clientNickname.getText();
         confirmName.setVisible(false);
-
         sendNumberOfPlayers.setVisible(true);
-
-        /*confirmName.setDisable(true);
-        chooseNumberPlayers.setVisible(true);
-        clientNickname.setVisible(false);
-        text.setText("Scegli il numero di giocatori");*/
-
     }
 
+    /**
+     * Sets the appropriate visibility of components to allow the user to enter the number of players.
+     */
     @FXML
     public void changeToSetNumber(){
         Platform.runLater( () -> {
@@ -148,28 +162,39 @@ public class LobbyController {
         });
     }
 
-
-
+    /**
+     * Change the scene from lobby to game GUI.
+     */
     @FXML
     public void changeSceneToGame() {
         Platform.setImplicitExit(false);
         Platform.runLater(() -> {
             Scene gameScene = new Scene(GUIApplication.gameLaod);
-            gameScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+            gameScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm());
             GUIApplication.mainStage.setScene(gameScene);
         });
 
     }
 
+    /**
+     * Called when the user accept to Load old game.
+     */
     @FXML
     public void acceptLoad(){
         createChoice("LOAD_GAME yes");
     }
 
+    /**
+     * Called when the user decline to Load old game.
+     */
     @FXML
     public void declineLoad(){
         createChoice("LOAD_GAME no");
     }
+
+    /**
+     * Sets the appropriate visibility of components to allow the user to load an old game.
+     */
     @FXML
     public void askLoadOldGame(){
         Platform.runLater(() -> {
