@@ -337,8 +337,8 @@ public class GUIController {
      * @throws ColumnIndexOutOfBoundsException if the player is not found
      */
     public void updateShelf(Player player, GridPane shelf) {
-        for (int i = 1; i < 6; i++) {  //COLUMNS
-            for (int j = 1; j < 7; j++) {  //ROWS
+        for (int i = 0; i < 5; i++) {  //COLUMNS
+            for (int j = 0; j < 6; j++) {  //ROWS
                 Tile t = null;
                 try {
                     t = player.getShelf().getTile(j, i);
@@ -358,9 +358,9 @@ public class GUIController {
                 };
 
                 if(image != null) {
-                    image.setFitHeight(35);
-                    image.setFitWidth(35);
-                    shelf.add(image, i, j);
+                    image.setFitHeight(23);
+                    image.setFitWidth(23);
+                    shelf.add(image, i+1, j+1);
                 }
             }
         }
@@ -466,9 +466,11 @@ public class GUIController {
         AnchorPane selectedAnchorPane = (AnchorPane) selectedTab.getContent();
         TextArea selectedChatArea = (TextArea) selectedAnchorPane.lookup(".text-area");
 
-        chatTextField.setText("Enter a message...");
 
         createChoice("SEND_MESSAGE " + selectedTab.getText() + " " +chatTextField.getText());
+
+        chatTextField.setText("Enter a message...");
+
     }
 
 
