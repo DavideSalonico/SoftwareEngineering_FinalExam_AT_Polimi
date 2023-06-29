@@ -5,53 +5,59 @@ import GC_11.network.message.LobbyViewMessage;
 import GC_11.view.Lobby.LobbyController;
 import GC_11.view.View;
 
-import java.io.Serializable;
 
-
-public class GUI extends View implements Serializable {
+/**
+ * GUI class, it manages the GUI with reference to the GUI FXML's Components, receives updates from the server and call
+ * the appropriate methods to update the GUI
+ */
+public class GUI extends View {
     public static String nickname;
-    transient public static int maxNumber = 0;
-    transient public GUIApplication guiApplication;
-    transient public static GUIController gameController;
-    transient public static LobbyController lobbyController;
-    transient public static ConnectionController connectionController;
-    transient private boolean inGame = false;
-    transient public int i = 0;
+    public static int maxNumber = 0;
+    public GUIApplication guiApplication;
+    public static GUIController gameController;
+    public static LobbyController lobbyController;
+    public static ConnectionController connectionController;
+    private boolean inGame = false;
+
+    public int i = 0;
 
     /**
-     * Every view is bound at only one player, it helps to manage every input that the controller receive
+     * Constructor of the GUI, it will launch the GUI as a new Thread
      */
     public GUI() {
         super();
         this.guiApplication = new GUIApplication();
 
-
-        //this.client = client;
-
-        /*while (lobbyController == null){
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        this.lobbyController.setClient(client);*/
     }
 
-
-
+    /**
+     * Method that will set LobbyController in a static variable so it can be used by the client to update the GUI
+     * @param  controller LobbyController reference
+     */
     public static  void setLobbyController(LobbyController controller){
         lobbyController = controller;
     }
+
+    /**
+     * Method that will set GameController in a static variable so it can be used by the client to update the GUI
+     * @param  controller GameController reference
+     */
     public static void setGameController(GUIController controller){
         gameController = controller;
     }
 
-
+    /**
+     * Variable to set if the client runs the game for the first time
+     * @param inGame
+     */
     public void setInGame(boolean inGame) {
         this.inGame = inGame;
     }
 
+    /**
+     * Method that will set the modelView in a static variable so it can be used by the client to update the GUI
+     * @param modelView
+     */
     public void setModelView(GameViewMessage modelView) {
         this.modelView = modelView;
     }
@@ -61,6 +67,9 @@ public class GUI extends View implements Serializable {
         if (this.modelView.isError()) {
             gameController.setError(this.modelView.getExceptionMessage());
         }else{
+            if(this.modelView.isEndGame()){
+                gameController.showEndGame();
+            }
             gameController.setError("");
             gameController.updateView(modelView);
         }
@@ -80,10 +89,12 @@ public class GUI extends View implements Serializable {
                 throw new RuntimeException(e);
             }
         }
+
     }
 
     @Override
     public void askMaxNumber() {
+
         lobbyController.changeToSetNumber();
         System.out.println("MaxNumberPlayer required: " + "nickname attuale : " + this.nickname);
 
@@ -97,7 +108,6 @@ public class GUI extends View implements Serializable {
 
     }
 
-    // DEFINIRE Per la persistenza della connessione riesumando la partita
     @Override
     public void askLoadGame() {
         this.lobbyController.askLoadOldGame();
@@ -128,6 +138,11 @@ public class GUI extends View implements Serializable {
 
     @Override
     public void init() {
+    }
+
+    //@Override
+    public void notifyDisconnection() {
+        this.gameController.playerDisconnected();
     }
 
 }

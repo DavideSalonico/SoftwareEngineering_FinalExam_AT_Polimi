@@ -10,6 +10,8 @@ import GC_11.network.message.GameViewMessage;
 import GC_11.util.PlayerView;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -21,12 +23,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.Duration;
+import java.util.*;
 
 public class GUIController {
 
@@ -194,7 +196,10 @@ public class GUIController {
 
             Platform.runLater(() -> {
                 this.gameViewMessage = message;
-                currentPlayerNicknameLabel.setText("IT'S "+message.getCurrentPlayer() +  "'S TURN");
+                if(message.getCurrentPlayer().equals(ClientApp.view.getNickname()))
+                    currentPlayerNicknameLabel.setText("IT'S YOUR TURN!");
+                else
+                    currentPlayerNicknameLabel.setText("IT'S "+message.getCurrentPlayer() +  "'S TURN");
                 // Update Board and PlayerShelf with his points
                 for (Player player : message.getPlayers()) {
                     updatePlayer(message.getBoard(), player);
@@ -802,6 +807,89 @@ public class GUIController {
         loadTilesImages();
 
 
+    }
+
+    public void playerDisconnected(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Player disconnected");
+        alert.setHeaderText("You have been disconnected from the game, it could be a problem with your connection or with the server");
+        alert.setContentText("The game will close in 10 seconds");
+
+        Stage dialogStage = (Stage) alert.getDialogPane().getScene().getWindow();
+        dialogStage.initModality(Modality.APPLICATION_MODAL);
+
+        dialogStage.setOnCloseRequest(event -> System.exit(0));
+
+        alert.showAndWait();
+
+        CountdownService countdownService = new CountdownService();
+        countdownService.setCountdownDuration(Duration.ofSeconds(20));
+        countdownService.start();
+
+        countdownService.messageProperty().addListener((observable, oldValue, newValue) ->
+                currentPlayerNicknameLabel.setText(newValue)
+        );
+
+    }
+
+    public void showEndGame(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Fine del gioco");
+        if (gameViewMessage.getWinner().getNickname().equals(ClientApp.view.getNickname())) {
+            alert.setHeaderText("You win the game!");
+        }
+        else
+            alert.setHeaderText("You lose the game!");
+
+        String finalTable = "The winner is " + gameViewMessage.getWinner().getNickname() + " with " + gameViewMessage.getWinner().getPoints() + " points!" + "\n\n";
+
+        List<Player> sortedPlayer = new ArrayList<>(gameViewMessage.getPlayers());
+        Collections.sort(sortedPlayer, Comparator.comparingInt(Player::getPoints).reversed());StringBuilder sb = new StringBuilder();
+        for (Player person : sortedPlayer) {
+            sb.append("Player: ").append(person.getNickname()).append(", Points: ").append(person.getPoints()).append("\n");
+        }
+
+
+        alert.setContentText("The winner is " + gameViewMessage.getWinner().getNickname() + " with " + gameViewMessage.getWinner().getPoints() + " points!" + "\n" +  sb.toString());
+
+
+        Stage dialogStage = (Stage) alert.getDialogPane().getScene().getWindow();
+        dialogStage.initModality(Modality.APPLICATION_MODAL);
+
+        dialogStage.setOnCloseRequest(event -> System.exit(0));
+
+        alert.showAndWait();
+
+        CountdownService countdownService = new CountdownService();
+        countdownService.setCountdownDuration(Duration.ofSeconds(20));
+        countdownService.start();
+
+        countdownService.messageProperty().addListener((observable, oldValue, newValue) ->
+                currentPlayerNicknameLabel.setText(newValue)
+        );
+    }
+    private class CountdownService extends ScheduledService<Void> {
+        private int countdown;
+
+        public void setCountdownDuration(Duration duration) {
+            countdown = (int) duration.toSeconds();
+        }
+
+        @Override
+        protected Task<Void> createTask() {
+            return new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    while (countdown >= 0) {
+                        updateMessage("Close in : " + countdown + " s");
+                        Thread.sleep(1000);
+                        countdown--;
+                    }
+                    System.exit(0); // Arresta l'applicazione dopo il countdown
+                    return null;
+                }
+            };
+        }
     }
 
 }

@@ -5,17 +5,16 @@ import GC_11.controller.Controller;
 import GC_11.distributed.rmi.ServerRMIImpl;
 import GC_11.distributed.socket.ServerSock;
 
-import GC_11.network.message.GameViewMessage;
-import GC_11.network.message.LobbyViewMessage;
+import GC_11.network.message.*;
 import GC_11.network.choices.Choice;
-
-import GC_11.network.message.MessageView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 
+import java.util.Iterator;
 import java.util.Map;
 
 
@@ -75,6 +74,7 @@ public class ServerMain implements PropertyChangeListener {
     public void startServer() {
         serverSocketThread.start();
         serverRMIThread.start();
+        pinger.start();
     }
 
     /**
@@ -88,7 +88,7 @@ public class ServerMain implements PropertyChangeListener {
         System.out.println("ADDED CONNECTION: " + clientNickname); //TODO fare un metodo getConnectionType
 
 
-        if(clientMap.size() == 1){
+        if (clientMap.size() == 1) {
             // Ask the first player to choose the max number of players
             try {
                 server.askMaxNumber();
@@ -97,7 +97,7 @@ public class ServerMain implements PropertyChangeListener {
             }
         }
         notifyClients(new LobbyViewMessage(this.controller.getLobby()));
-        if(clientMap.size() > 1 && clientMap.size() == this.controller.getLobby().getMaxPlayers()){
+        if (clientMap.size() > 1 && clientMap.size() == this.controller.getLobby().getMaxPlayers()) {
             // Start the game
             this.getController().startGame();
         }
@@ -132,37 +132,43 @@ public class ServerMain implements PropertyChangeListener {
     }
 
     public void notifyClients(MessageView msg) {
-        for(Map.Entry<String,Server> entry : clientMap.entrySet()){
-
-            MessageView msgCopy = msg.sanitize(entry.getKey());
-
+        synchronized (this.clientMap) {
             try {
-                entry.getValue().sendMessage(msgCopy,entry.getKey());
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                for (Map.Entry<String, Server> entry : clientMap.entrySet()) {
+                    MessageView msgCopy = msg.sanitize(entry.getKey());
+                    try {
+                        entry.getValue().sendMessage(msgCopy, entry.getKey());
+                    } catch (RemoteException e) {
+                        removeConnection(entry.getKey());
+                    }
+                }
+            }catch(ConcurrentModificationException ignored){
+
             }
         }
-        //JsonWriter.saveGame(new GameViewMessage(this.controller.getGame(), null, null)); //TODO: adapt parameters and uncomment
     }
 
     public void removeConnection(String nickname) {
-        if (this.clientMap.get(nickname) != null){
-            System.out.println("REMOVED CONNECTION: " + nickname + " " + this.clientMap.get(nickname));
-            this.clientMap.remove(nickname);
-            this.controller.getGame().setEndGame(true);
-            GameViewMessage msg = new GameViewMessage(this.controller.getGame(), new Exception("Player " + nickname + " disconnected"));
-        }
-        else{
+        if (this.clientMap.get(nickname) != null) {
+            System.out.println("REMOVED CONNECTION: " + nickname);
+            if (this.controller.getGame() != null){
+                this.controller.getGame().setEndGame(true);
+            }
+            synchronized (this.clientMap) {
+                this.clientMap.remove(nickname);
+            }
+            notifyClients(new DisconnectionMessage());
+        } else {
             System.out.println("Unable to remove connection because nickname is unknown");
         }
 
     }
 
-    public Controller getController(){
+    public Controller getController() {
         return this.controller;
     }
 
-    public Map getClientsMap(){
+    public Map getClientsMap() {
         return this.clientMap;
     }
 
@@ -177,4 +183,31 @@ public class ServerMain implements PropertyChangeListener {
             e.printStackTrace();
         }
     }
+
+    Thread pinger = new Thread() {
+        @Override
+        public void run() {
+            while (true) {
+                Iterator<Map.Entry<String, Server>> iterator = clientMap.entrySet().iterator();
+                while (iterator.hasNext()) {
+                    try{
+                        Map.Entry<String, Server> entry = iterator.next();
+                        try {
+                            entry.getValue().sendMessage(new PingMessage(), entry.getKey());
+                        } catch (RemoteException e) {
+                            removeConnection(entry.getKey());
+                        }
+                    }
+                    catch(ConcurrentModificationException ignored){
+                    }
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    };
+
 }
