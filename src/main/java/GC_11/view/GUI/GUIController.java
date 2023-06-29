@@ -1,8 +1,6 @@
 package GC_11.view.GUI;
 
 import GC_11.ClientApp;
-import GC_11.ClientApp;
-import GC_11.distributed.Client;
 import GC_11.exceptions.ColumnIndexOutOfBoundsException;
 import GC_11.exceptions.IllegalMoveException;
 import GC_11.model.*;
@@ -290,7 +288,7 @@ public class GUIController {
         columnSelected = columnSelector.getButtons().indexOf(button);
         System.out.println("PICK_COLUMN " + columnSelected);
         //columnSelector.setDisable(true);
-        if (columnSelected > 0)
+        if (columnSelected > -1)
             createChoice("PICK_COLUMN " + columnSelected);
 
         secondTile.setText("");
@@ -320,17 +318,15 @@ public class GUIController {
      */
     public void updatePlayer(Board board, Player player) {
         PlayerView playerView = getPlayerViewFromNickname(player.getNickname());
+        if(player.getNickname().equals(ClientApp.view.getNickname())){
+            updateClientPoints(player);
+            updateClientShelf(player);
+        }
+
         if (playerView != null) {
             refreshBoard(board);
             updateShelf(player, playerView.getShelf());
             updatePoints(player, playerView.getPoints());
-        }else{
-            updateClientPoints(player);
-            try {
-                updateClientShelf(player);
-            } catch (ColumnIndexOutOfBoundsException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 
@@ -385,10 +381,15 @@ public class GUIController {
      * @param player to update
      * @throws ColumnIndexOutOfBoundsException
      */
-    public void updateClientShelf(Player player) throws ColumnIndexOutOfBoundsException {
+    public void updateClientShelf(Player player) {
         for (int i = 0; i < 5; i++) {  //COLUMNS
             for (int j = 0; j < 6; j++) {  //ROWS
-                Tile t = player.getShelf().getTile(j, i);
+                Tile t = null;
+                try {
+                    t = player.getShelf().getTile(j, i);
+                } catch (ColumnIndexOutOfBoundsException e) {
+                    setError(e.getMessage());
+                }
                 int id = t.getId() + 1;
                 TileColor tileColor = t.getColor();
                 ImageView image = switch (tileColor) {
@@ -467,7 +468,7 @@ public class GUIController {
 
         chatTextField.setText("Enter a message...");
 
-        createChoice("SEND_MESSAGE " + selectedChatArea.getText() + " " +chatTextField.getText());
+        createChoice("SEND_MESSAGE " + selectedTab.getText() + " " +chatTextField.getText());
     }
 
 
@@ -630,7 +631,7 @@ public class GUIController {
         }
 
         // Manage to create the global chat
-        Tab tab = new Tab("Global Chat");
+        Tab tab = new Tab("Everyone");
         tabPane.getTabs().add(tab);
         tabPane.getSelectionModel().select(tab);
         AnchorPane anchorPane = new AnchorPane();
