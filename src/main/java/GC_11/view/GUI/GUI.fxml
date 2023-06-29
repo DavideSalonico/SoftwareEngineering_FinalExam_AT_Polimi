@@ -148,7 +148,7 @@
                               <DropShadow />
                            </effect>
                                 </ImageView>
-                        <Button fx:id="confirmSelection" mnemonicParsing="false" onMouseClicked="#confirmTilesOrder" prefHeight="26.0" prefWidth="115.0" text="CONFIRM SELECTION" textFill="WHITE" translateX="-10.0" translateY="-10.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                        <Button fx:id="confirmSelection" mnemonicParsing="false" onMouseClicked="#confirmTilesOrder" prefHeight="26.0" prefWidth="115.0" text="CONFIRM ORDER" textFill="WHITE" translateX="-10.0" translateY="-10.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                            <effect>
                               <DropShadow />
                            </effect>

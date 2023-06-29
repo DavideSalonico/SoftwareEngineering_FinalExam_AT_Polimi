@@ -199,6 +199,7 @@ public class GUIController {
                 setSelectedTiles(message.getBoard().getSelectedTiles());
                 // Update the chat
                 updateChat(message.getFilteredPvtChats(), message.getMainChat());
+                tilesOrdered = new ArrayList<>();
 
             });
         } catch (Exception e) {
@@ -542,7 +543,7 @@ public class GUIController {
     int [] tilesOrder = new int[3];
     @FXML
     public void setTileOrder(ActionEvent event){
-        if(tilesOrdered.size() < 3)
+        if(gameViewMessage.getBoard().getSelectedTiles().size() <= 3)
             if(event.getSource() == firstTile && !tilesOrdered.contains((Integer) 0) && firstImage.getImage() != null){
                 tilesOrder[0] = tilesOrdered.size();
                 tilesOrdered.add(0);
@@ -560,17 +561,12 @@ public class GUIController {
 
     public String chooseOrder(){
         String input = "CHOOSE_ORDER ";
-        //if(tilesOrdered.size() == selectedImages.size() && tilesOrdered.size() != 0){
-            setError("");
-            for( int i = 0; i < tilesOrdered.size(); i++){
-                input = input  + tilesOrder[i] + " ";
-            }
-            columnSelector.setDisable(false);
-            return input;
-        //} else {
-            //columnSelector.setDisable(true);
-            //setError("First of all, order every tile selected!!");
-        //}
+        setError("");
+        for (int i = 0; i < tilesOrdered.size(); i++) {
+            input = input + tilesOrder[i] + " ";
+        }
+        columnSelector.setDisable(false);
+        return input;
     }
 
     /**
@@ -580,14 +576,15 @@ public class GUIController {
     public void confirmTilesOrder() {
         //if(selectedImages.size() != 0){
             System.out.println(chooseOrder());
-
-            /*for (Node node : boardGridPane.getChildren()) {
+            for (Node node : boardGridPane.getChildren()) {
                 node.setOnMouseClicked(null);
                 node.getStyleClass().clear();
-            }*/
+            }
         createChoice(chooseOrder());
+        firstTile.setText("");
+        secondTile.setText("");
+        thirdTile.setText("");
 
-        //("You have to select at least one tile and order it!");
 
     }
 
@@ -695,6 +692,7 @@ public class GUIController {
     public void init(GameViewMessage gameViewMessage) {
         // Load all the images of the tiles
         loadTilesImages();
+
         this.gameViewMessage = gameViewMessage;
         try {
             // Put first Player's nickname into the chair on GUI
@@ -726,8 +724,8 @@ public class GUIController {
                 } else {
                     clientPoints.setText("YOUR POINTS : " + gameViewMessage.getPlayers().get(i).getPoints());
 
-                    // OGNI TANTO MI TORNA PERSONAL GOAL NULL, CONTROLLARE!!!
-                    //personalGoal.setImage(new Image("file:src/resources/GraphicalResources/personal goal cards/Personal_Goals" + gameViewMessage.getPlayers().get(i).getPersonalGoal().getId() + ".png"));
+
+                    personalGoal.setImage(new Image("file:src/resources/GraphicalResources/personal goal cards/Personal_Goals" + (gameViewMessage.getPlayers().get(i).getPersonalGoal().getId()+1) + ".png"));
                 }
             }
 
@@ -770,6 +768,7 @@ public class GUIController {
             System.out.println("Error in init method at line " + e.getStackTrace()[0].getLineNumber());
         }
 
+        //updateChat(gameViewMessage.getFilteredPvtChats(), gameViewMessage.getMainChat());
         updateView(gameViewMessage);
 
     }
@@ -780,7 +779,6 @@ public class GUIController {
         chatTextField.setOnMouseClicked(event -> {
             chatTextField.setText(""); // Seleziona tutto il testo del TextField
         });
-
 
         //Column Selector invisible
         columnSelector.setDisable(true);
