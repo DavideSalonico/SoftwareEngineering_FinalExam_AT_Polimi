@@ -361,6 +361,9 @@ public class GUIController {
                     image.setFitHeight(23);
                     image.setFitWidth(23);
                     shelf.add(image, i+1, j+1);
+                }else {
+                    clearCellContent(shelf, j + 1, i + 1);
+
                 }
             }
         }
@@ -451,6 +454,8 @@ public class GUIController {
                     image.setFitWidth(34);
                     boardGridPane.add(image, j, i);
 
+                }else {
+                    clearCellContent(boardGridPane, i, j);
                 }
             }
         }
@@ -606,11 +611,14 @@ public class GUIController {
         for(String playerName : pvtChat.keySet()){
             tabNames.add(playerName);
         }
-
-        for(Player remainingPlayer : gameViewMessage.getPlayers()){
-            if(!tabNames.contains(remainingPlayer.getNickname())){
-                tabNames.add(remainingPlayer.getNickname());
+        try {
+            for (Player player : gameViewMessage.getPlayers()) {
+                if (!tabNames.contains(player.getNickname()) && !player.getNickname().equals(ClientApp.client.getNickname())) {
+                    tabNames.add(player.getNickname());
+                }
             }
+        }catch (RemoteException e){
+            setError("Exception : " + e.getMessage());
         }
 
         for(String tabName : tabNames){
