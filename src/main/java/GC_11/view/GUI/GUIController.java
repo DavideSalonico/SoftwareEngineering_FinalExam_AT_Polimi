@@ -143,7 +143,9 @@ public class GUIController {
     @FXML
     private Button thirdTile;
 
-    public String currentPlayerNickname;
+
+    @FXML
+    public Label currentPlayerNicknameLabel;
 
     // Initialize otherPlayers using PlayerView class as a container for the player's nickname, points and shelf (related to javafx objects)
     List<PlayerView> otherPlayers = new ArrayList<>();
@@ -189,8 +191,10 @@ public class GUIController {
      */
     public void updateView(GameViewMessage message){
         try {
-            this.gameViewMessage = message;
+
             Platform.runLater(() -> {
+                this.gameViewMessage = message;
+                currentPlayerNicknameLabel.setText("IT'S "+message.getCurrentPlayer() +  "'S TURN");
                 // Update Board and PlayerShelf with his points
                 for (Player player : message.getPlayers()) {
                     updatePlayer(message.getBoard(), player);
@@ -199,6 +203,7 @@ public class GUIController {
                 setSelectedTiles(message.getBoard().getSelectedTiles());
                 // Update the chat
                 updateChat(message.getFilteredPvtChats(), message.getMainChat());
+                tilesOrdered = new ArrayList<>();
 
             });
         } catch (Exception e) {
@@ -361,6 +366,9 @@ public class GUIController {
                     image.setFitHeight(23);
                     image.setFitWidth(23);
                     shelf.add(image, i+1, j+1);
+                }else {
+                    clearCellContent(shelf, j + 1, i + 1);
+
                 }
             }
         }
@@ -451,6 +459,8 @@ public class GUIController {
                     image.setFitWidth(34);
                     boardGridPane.add(image, j, i);
 
+                }else {
+                    clearCellContent(boardGridPane, i, j);
                 }
             }
         }
@@ -537,7 +547,7 @@ public class GUIController {
     int [] tilesOrder = new int[3];
     @FXML
     public void setTileOrder(ActionEvent event){
-        if(tilesOrdered.size() < 3)
+        if(gameViewMessage.getBoard().getSelectedTiles().size() <= 3)
             if(event.getSource() == firstTile && !tilesOrdered.contains((Integer) 0) && firstImage.getImage() != null){
                 tilesOrder[0] = tilesOrdered.size();
                 tilesOrdered.add(0);
@@ -555,17 +565,12 @@ public class GUIController {
 
     public String chooseOrder(){
         String input = "CHOOSE_ORDER ";
-        //if(tilesOrdered.size() == selectedImages.size() && tilesOrdered.size() != 0){
-            setError("");
-            for( int i = 0; i < tilesOrdered.size(); i++){
-                input = input  + tilesOrder[i] + " ";
-            }
-            columnSelector.setDisable(false);
-            return input;
-        //} else {
-            //columnSelector.setDisable(true);
-            //setError("First of all, order every tile selected!!");
-        //}
+        setError("");
+        for (int i = 0; i < tilesOrdered.size(); i++) {
+            input = input + tilesOrder[i] + " ";
+        }
+        columnSelector.setDisable(false);
+        return input;
     }
 
     /**
@@ -574,15 +579,16 @@ public class GUIController {
     @FXML
     public void confirmTilesOrder() {
         //if(selectedImages.size() != 0){
-            System.out.println(chooseOrder());
-
+        System.out.println(chooseOrder());
             /*for (Node node : boardGridPane.getChildren()) {
                 node.setOnMouseClicked(null);
                 node.getStyleClass().clear();
             }*/
         createChoice(chooseOrder());
+        firstTile.setText("");
+        secondTile.setText("");
+        thirdTile.setText("");
 
-        //("You have to select at least one tile and order it!");
 
     }
 
@@ -606,11 +612,14 @@ public class GUIController {
         for(String playerName : pvtChat.keySet()){
             tabNames.add(playerName);
         }
-
-        for(Player remainingPlayer : gameViewMessage.getPlayers()){
-            if(!tabNames.contains(remainingPlayer.getNickname())){
-                tabNames.add(remainingPlayer.getNickname());
+        try {
+            for (Player player : gameViewMessage.getPlayers()) {
+                if (!tabNames.contains(player.getNickname()) && !player.getNickname().equals(ClientApp.client.getNickname())) {
+                    tabNames.add(player.getNickname());
+                }
             }
+        }catch (RemoteException e){
+            setError("Exception : " + e.getMessage());
         }
 
         for(String tabName : tabNames){
@@ -687,6 +696,7 @@ public class GUIController {
     public void init(GameViewMessage gameViewMessage) {
         // Load all the images of the tiles
         loadTilesImages();
+
         this.gameViewMessage = gameViewMessage;
         try {
             // Put first Player's nickname into the chair on GUI
@@ -718,8 +728,8 @@ public class GUIController {
                 } else {
                     clientPoints.setText("YOUR POINTS : " + gameViewMessage.getPlayers().get(i).getPoints());
 
-                    // OGNI TANTO MI TORNA PERSONAL GOAL NULL, CONTROLLARE!!!
-                    //personalGoal.setImage(new Image("file:src/resources/GraphicalResources/personal goal cards/Personal_Goals" + gameViewMessage.getPlayers().get(i).getPersonalGoal().getId() + ".png"));
+
+                    personalGoal.setImage(new Image("file:src/resources/GraphicalResources/personal goal cards/Personal_Goals" + (gameViewMessage.getPlayers().get(i).getPersonalGoal().getId()+1) + ".png"));
                 }
             }
 
@@ -762,6 +772,7 @@ public class GUIController {
             System.out.println("Error in init method at line " + e.getStackTrace()[0].getLineNumber());
         }
 
+        //updateChat(gameViewMessage.getFilteredPvtChats(), gameViewMessage.getMainChat());
         updateView(gameViewMessage);
 
     }
@@ -772,7 +783,6 @@ public class GUIController {
         chatTextField.setOnMouseClicked(event -> {
             chatTextField.setText(""); // Seleziona tutto il testo del TextField
         });
-
 
         //Column Selector invisible
         columnSelector.setDisable(true);
