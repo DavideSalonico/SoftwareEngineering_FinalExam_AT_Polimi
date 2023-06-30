@@ -47,21 +47,21 @@ public class GUIApplication extends Application {
     public void start(Stage primaryStage) throws IOException {
 
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(new URL("file:///" + System.getProperty("user.dir") + "\\src\\main\\java\\GC_11\\view\\GUI\\GUI.fxml"));
+        loader.setLocation(getClass().getResource("/fxml/GUI.fxml"));
 
         gameLaod = loader.<Pane>load();
         gameController = loader.getController();
         GUI.setGameController(gameController);
 
         FXMLLoader loaderLobby = new FXMLLoader();
-        loaderLobby.setLocation(new URL("file:///" + System.getProperty("user.dir") + "\\src\\main\\java\\GC_11\\view\\Lobby\\LobbyGUI.fxml"));
+        loaderLobby.setLocation(getClass().getResource("/fxml/LobbyGUI.fxml"));
 
         lobbyLoad = loaderLobby.<Pane>load();
         lobbyController = loaderLobby.getController();
         GUI.setLobbyController(lobbyController);
 
         FXMLLoader connection = new FXMLLoader();
-        connection.setLocation(new URL("file:///" + System.getProperty("user.dir") + "\\src\\main\\java\\GC_11\\view\\GUI\\connection.fxml"));
+        connection.setLocation(getClass().getResource("/fxml/Connection.fxml"));
         connectionLoad = connection.<Pane>load();
         connectionController = connection.getController();
         GUI.connectionController = connectionController;

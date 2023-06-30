@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane fx:id="root" prefHeight="720.0" prefWidth="1080.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GC_11.view.GUI.GUIController">
+    <children>
+        <ImageView fitHeight="844.0" fitWidth="808.0" layoutX="145.0" layoutY="-43.0" pickOnBounds="true" preserveRatio="true" scaleX="1.36" scaleY="0.9">
+            <image>
+                <Image url="@GraphicalResources/misc/sfondo parquet.jpg" />
+            </image>
+        </ImageView>
+        <GridPane fx:id="mainGrid" layoutX="10.0" layoutY="21.0" prefHeight="698.0" prefWidth="867.0">
+            <columnConstraints>
+                <ColumnConstraints />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="540.0" minWidth="10.0" prefWidth="368.1999755859375" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="624.0" minWidth="10.0" prefWidth="177.7999755859375" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="624.0" minWidth="10.0" prefWidth="314.60002441406255" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="474.0" minHeight="10.0" prefHeight="440.79999389648435" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="524.0" minHeight="10.0" prefHeight="191.20000610351565" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="435.0" minHeight="10.0" prefHeight="52.19998779296873" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <ImageView fitHeight="360.0" fitWidth="360.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+                    <image>
+                        <Image url="@GraphicalResources/boards/livingroom.png" />
+                    </image>
+               <effect>
+                  <DropShadow height="62.03" radius="42.24" width="108.93" />
+               </effect>
+                </ImageView>
+                <GridPane fx:id="boardGridPane" prefHeight="442.0" prefWidth="477.0" GridPane.columnIndex="1">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="15.0" prefWidth="15.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="35.0" prefWidth="35.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="30.0" prefWidth="35.0" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="300.0" minWidth="33.0" prefWidth="36.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="27.0" prefWidth="37.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="122.0" minWidth="33.0" prefWidth="36.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="34.0" prefWidth="38.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="33.0" prefWidth="36.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="0.0" prefWidth="35.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="35.0" prefWidth="37.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="25.0" prefWidth="30.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints maxHeight="163.0" minHeight="52.0" prefHeight="59.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="163.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="215.0" minHeight="0.0" prefHeight="36.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="156.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="161.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="168.0" minHeight="10.0" prefHeight="35.800006103515614" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="133.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="65.0" minHeight="0.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="86.0" minHeight="4.0" prefHeight="34.399993896484375" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="86.0" minHeight="2.0" prefHeight="36.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="86.0" minHeight="59.0" prefHeight="59.19999999999999" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                </GridPane>
+                <GridPane GridPane.columnIndex="2">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <GridPane prefHeight="220.0" prefWidth="171.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints maxHeight="93.4" minHeight="10.0" prefHeight="82.99999084472657" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="79.0" minHeight="10.0" prefHeight="29.400009155273438" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="51.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="97.0" minHeight="10.0" prefHeight="77.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="97.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <ImageView fx:id="ICommonGoalCard" fitHeight="86.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <image>
+                                        <Image url="@GraphicalResources/common goal cards/3.jpg" />
+                                    </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                                </ImageView>
+                                <ImageView fx:id="IICommonGoalCard" fitHeight="81.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                                    <image>
+                                        <Image url="@GraphicalResources/common goal cards/3.jpg" />
+                                    </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                                </ImageView>
+                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="2° Common Goal Card" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                                    <font>
+                                        <Font name="System Bold Italic" size="10.0" />
+                                    </font>
+                                </Text>
+                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="1° Common Goal Card" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                                    <font>
+                                        <Font name="System Bold Italic" size="10.0" />
+                                    </font>
+                                </Text>
+                            </children>
+                        </GridPane>
+                        <GridPane prefWidth="170.0" GridPane.rowIndex="1">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints maxHeight="122.0" minHeight="10.0" prefHeight="122.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="187.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <ImageView fitHeight="67.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true" translateX="-20.0" GridPane.halignment="RIGHT">
+                                    <image>
+                                        <Image url="@GraphicalResources/misc/Sacchetto Chiuso.png" />
+                                    </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                                </ImageView>
+                                <ImageView fx:id="firstPlayerToken" fitHeight="56.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true" translateX="20.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                                    <image>
+                                        <Image url="@GraphicalResources/misc/firstplayertoken.png" />
+                                    </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                                </ImageView>
+                        <Button fx:id="confirmSelection" mnemonicParsing="false" onMouseClicked="#confirmTilesOrder" prefHeight="26.0" prefWidth="115.0" text="CONFIRM ORDER" textFill="WHITE" translateX="-10.0" translateY="-10.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                           <font>
+                              <Font size="8.0" />
+                           </font></Button>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="BAG" translateX="-40.0" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
+                           <font>
+                              <Font name="System Bold" size="11.0" />
+                           </font>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CHAIR" translateX="25.0" GridPane.valignment="BOTTOM">
+                           <font>
+                              <Font name="System Bold" size="11.0" />
+                           </font>
+                        </Text>
+                            </children>
+                        </GridPane>
+                    </children>
+                </GridPane>
+                <GridPane GridPane.columnIndex="3">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints maxHeight="172.0" minHeight="0.0" prefHeight="21.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="399.0" minHeight="10.0" prefHeight="371.2" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="63.0000061035156" minHeight="10.0" prefHeight="39.19999999999999" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Text fx:id="clientPoints" strokeType="OUTSIDE" strokeWidth="0.0" text="YOUR POINT : " textAlignment="RIGHT" wrappingWidth="157.62671983242035" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                            <font>
+                                <Font name="System Bold Italic" size="13.0" />
+                            </font>
+                        </Text>
+                        <GridPane fx:id="mainShelfGridPane" GridPane.rowIndex="1">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="139.0" minWidth="10.0" prefWidth="39.59998779296875" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="181.0" minWidth="10.0" prefWidth="54.80001220703126" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="142.0" minWidth="10.0" prefWidth="53.79997558593752" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="134.0" minWidth="10.0" prefWidth="56.40001220703127" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="10.0" prefWidth="54.79998779296875" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="82.0" minWidth="10.0" prefWidth="44.400000000000034" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="81.0" minWidth="10.0" prefWidth="17.800048828125" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints maxHeight="43.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="88.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="99.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="104.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="109.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="102.0" minHeight="7.0" prefHeight="47.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="71.0" minHeight="0.0" prefHeight="44.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="61.39999999999998" minHeight="10.0" prefHeight="57.39999999999998" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                        </GridPane>
+                        <ImageView fitHeight="335.0" fitWidth="342.0" pickOnBounds="true" preserveRatio="true" translateX="2.0" GridPane.rowIndex="1">
+                            <image>
+                                <Image url="@GraphicalResources/boards/bookshelf_orth.png" />
+                            </image>
+                     <effect>
+                        <DropShadow height="48.85" radius="20.505000000000003" width="35.17">
+                           <color>
+                              <Color red="0.32870370149612427" green="0.75" blue="0.2638888955116272" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                        </ImageView>
+                  <ImageView fx:id="firstImage" fitHeight="44.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@GraphicalResources/item tiles/Cornici1.3.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="secondImage" fitHeight="42.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="45.0" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@GraphicalResources/item tiles/Gatti1.2.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="thirdImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" translateX="90.0" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@GraphicalResources/item tiles/Trofei1.3.png" />
+                     </image>
+                  </ImageView>
+                  <Button fx:id="firstTile" mnemonicParsing="false" onAction="#setTileOrder" prefHeight="32.0" prefWidth="38.0" text="1" textFill="WHITE" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Button>
+                  <Button fx:id="secondTile" mnemonicParsing="false" onAction="#setTileOrder" prefHeight="40.0" prefWidth="43.0" text="2" textFill="WHITE" translateX="42.0" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Button>
+                  <Button fx:id="thirdTile" mnemonicParsing="false" onAction="#setTileOrder" prefHeight="40.0" prefWidth="38.0" text="3" textFill="WHITE" translateX="90.0" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Button>
+                  <Button fx:id="resetButton" mnemonicParsing="false" onMouseClicked="#resetButtonAction" prefHeight="46.0" prefWidth="34.0" scaleY="0.7" text="X" textFill="WHITE" translateX="135.0" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Button>
+                    </children>
+                </GridPane>
+                <Text fx:id="player1Points" strokeType="OUTSIDE" strokeWidth="0.0" text="Points :" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Bold Italic" size="13.0" />
+               </font></Text>
+                <Text fx:id="player1Name" strokeType="OUTSIDE" strokeWidth="0.0" text="Player :" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
+               <font>
+                  <Font name="System Bold Italic" size="12.0" />
+               </font></Text>
+                <Text fx:id="player2Name" layoutX="224.0" layoutY="724.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player :" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
+               <font>
+                  <Font name="System Bold Italic" size="12.0" />
+               </font></Text>
+                <Text fx:id="player2Points" layoutX="224.0" layoutY="749.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Points :" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Bold Italic" size="13.0" />
+               </font></Text>
+                <Text fx:id="player3Points" layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Points :" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Bold Italic" size="13.0" />
+               </font></Text>
+                <Text fx:id="player3Name" strokeType="OUTSIDE" strokeWidth="0.0" text="Player :" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                    <font>
+                        <Font name="System Bold Italic" size="12.0" />
+                    </font>
+                </Text>
+                <GridPane fx:id="playerShelf1" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="146.40001220703124" minWidth="10.0" prefWidth="113.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="128.2" minWidth="0.0" prefWidth="29.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="126.19998168945312" minWidth="10.0" prefWidth="30.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.79998779296875" minWidth="10.0" prefWidth="25.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="71.20001220703122" minWidth="10.0" prefWidth="28.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="64.20001220703125" minWidth="10.0" prefWidth="27.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.4000244140625" minWidth="8.399999999999977" prefWidth="19.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="146.0" minWidth="10.0" prefWidth="102.00003662109378" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints maxHeight="36.7999755859375" minHeight="10.0" prefHeight="17.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="54.79995956420899" minHeight="8.600003814697274" prefHeight="23.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="65.00003662109376" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="72.00003662109376" minHeight="10.0" prefHeight="21.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="74.80001220703126" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="88.599951171875" minHeight="10.0" prefHeight="23.800048828125" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="88.599951171875" minHeight="10.0" prefHeight="21.39995117187499" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="88.599951171875" minHeight="10.0" prefHeight="16.600012207031256" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="88.599951171875" minHeight="10.0" prefHeight="20.800012207031244" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                </GridPane>
+                <ImageView fx:id="deletableShelf2" fitHeight="171.0" fitWidth="172.0" pickOnBounds="true" preserveRatio="true" translateX="-5.0" translateY="-5.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <image>
+                        <Image url="@GraphicalResources/boards/bookshelf_orth.png" />
+                    </image>
+                </ImageView>
+                <GridPane fx:id="playerShelf2" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="220.0" minWidth="9.0" prefWidth="18.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.40002632141113" minWidth="26.399951171875003" prefWidth="29.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.40002632141113" minWidth="26.199987792968756" prefWidth="26.199987792968756" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.40002632141113" minWidth="24.000024414062494" prefWidth="28.799999999999997" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.40002632141113" minWidth="21.39996337890625" prefWidth="30.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.40002632141113" minWidth="21.0" prefWidth="26.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.40002632141113" minWidth="10.0" prefWidth="22.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints maxHeight="24.799993896484374" minHeight="10.0" prefHeight="20.799993896484374" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="32.000006103515624" minHeight="10.0" prefHeight="22.200012207031246" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="29.79999389648438" minHeight="10.0" prefHeight="26.999987792968753" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="31.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="41.199987792968756" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="41.800024414062506" minHeight="10.0" prefHeight="24.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="41.199987792968756" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="57.80002441406248" minHeight="10.0" prefHeight="30.79998779296875" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                </GridPane>
+                <ImageView fx:id="deletableShelf" fitHeight="176.0" fitWidth="184.0" pickOnBounds="true" preserveRatio="true" translateX="-3.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                    <image>
+                        <Image url="@GraphicalResources/boards/bookshelf_orth.png" />
+                    </image>
+                </ImageView>
+                <GridPane fx:id="playerShelf3" prefHeight="229.0" prefWidth="324.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="10.0" prefWidth="86.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="42.0" minWidth="12.799951171874994" prefWidth="29.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="38.60000000000001" minWidth="25.0" prefWidth="26.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="39.0" minWidth="24.0" prefWidth="29.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="40.800048828125" minWidth="24.7999267578125" prefWidth="31.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="52.800024414062506" minWidth="14.0" prefWidth="24.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.199951171875" minWidth="10.0" prefWidth="92.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="15.600006103515625" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="31.200012207031246" minHeight="10.0" prefHeight="27.599993896484378" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="31.999987792968753" minHeight="10.0" prefHeight="24.199999999999996" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="37.999975585937506" minHeight="10.0" prefHeight="26.79998779296875" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="40.400000000000006" minHeight="10.0" prefHeight="20.400012207031253" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="48.400000000000006" minHeight="10.0" prefHeight="27.799987792968764" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="48.400000000000006" minHeight="10.0" prefHeight="27.80003662109374" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="46.60001220703123" minHeight="10.0" prefHeight="28.59996337890624" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                </GridPane>
+                <ImageView fitHeight="181.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" translateX="-4.0" translateY="-3.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                    <image>
+                        <Image url="@GraphicalResources/boards/bookshelf_orth.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </GridPane>
+        <ImageView fitHeight="136.0" fitWidth="139.0" layoutX="942.0" layoutY="628.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@GraphicalResources/Publisher material/Title 2000x2000px.png" />
+            </image>
+         <effect>
+            <DropShadow />
+         </effect>
+        </ImageView>
+        <ImageView fitHeight="40.0" fitWidth="174.0" layoutX="772.0" layoutY="683.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@GraphicalResources/Logo_Politecnico_Milano .png" />
+            </image>
+         <effect>
+            <DropShadow />
+         </effect>
+        </ImageView>
+        <Text fontSmoothingType="LCD" layoutX="959.0" layoutY="401.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHAT" textAlignment="CENTER" underline="true" wrappingWidth="52.40000000000009">
+            <font>
+                <Font name="System Bold Italic" size="11.0" />
+            </font>
+        </Text>
+        <Button fx:id="sendMessageButton" layoutX="964.0" layoutY="628.0" mnemonicParsing="false" onAction="#sendMessageOnChat" text="Send" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect></Button>
+        <TextField fx:id="chatTextField" layoutX="907.0" layoutY="595.0" prefHeight="26.0" prefWidth="157.0" text="Enter a message....">
+         <effect>
+            <DropShadow />
+         </effect></TextField>
+        <ButtonBar fx:id="columnSelector" layoutX="498.0" layoutY="16.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="31.0" prefWidth="415.0" scaleX="0.65">
+            <buttons>
+                <Button mnemonicParsing="false" onAction="#selectColumn" scaleX="0.5" />
+                <Button mnemonicParsing="false" onAction="#selectColumn" scaleX="0.5" />
+                <Button mnemonicParsing="false" onAction="#selectColumn" scaleX="0.5" />
+                <Button maxHeight="-Infinity" mnemonicParsing="false" onAction="#selectColumn" scaleX="0.5" />
+                <Button minWidth="59.0" mnemonicParsing="false" onAction="#selectColumn" prefHeight="18.0" scaleX="0.5" />
+            </buttons>
+        </ButtonBar>
+        <Text fill="WHITE" fontSmoothingType="LCD" layoutX="916.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Personal Goal Card" underline="true">
+            <font>
+                <Font name="System Bold Italic" size="13.0" />
+            </font>
+        </Text>
+        <ImageView fx:id="personalGoal" fitHeight="192.0" fitWidth="139.0" layoutX="905.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+         <effect>
+            <DropShadow />
+         </effect></ImageView>
+      <Text fx:id="error" fill="#ff8000" layoutX="905.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Error message Label" wrappingWidth="160.00000000000023">
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </Text>
+      <Text layoutX="926.0" layoutY="710.0" strokeType="OUTSIDE" strokeWidth="0.0" text="X">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Text>
+      <TabPane fx:id="tabPane" layoutX="910.0" layoutY="407.0" prefHeight="176.0" prefWidth="151.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Global CHAT">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextArea fx:id="chatTextArea" prefHeight="175.0" prefWidth="176.0" text="MIAOOOO">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </TextArea>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Player 1">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextArea fx:id="chatTextArea1" prefHeight="152.0" prefWidth="160.0" text="BAOOOOO">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </TextArea>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Player 2">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextArea fx:id="chatTextArea2" prefHeight="175.0" prefWidth="160.0" text="BAOOOOO">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </TextArea>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+          <Tab text="Player 3">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextArea fx:id="chatTextArea3" prefHeight="175.0" prefWidth="160.0" text="BAOOOOO">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </TextArea>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+      <Label fx:id="currentPlayerNicknameLabel" alignment="CENTER" layoutX="18.0" layoutY="-4.0" prefHeight="50.0" prefWidth="360.0" text="IT'S YOUR TURN !" textAlignment="CENTER" textFill="WHITE" translateY="10.0">
+         <font>
+            <Font name="System Bold Italic" size="18.0" />
+         </font>
+      </Label>
+    </children>
+</Pane>
