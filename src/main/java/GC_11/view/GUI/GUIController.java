@@ -695,10 +695,10 @@ public class GUIController {
             Tooltip.install(firstPlayerToken, firstPlayer);
 
             //Get common goal cards from the GameViewMessage
-            String pathCommonI = "src/resources/GraphicalResources/common goal cards/" + gameViewMessage.getCommonGoalCard(0).getId() + ".jpg";
-            String pathCommonII = "src/resources/GraphicalResources/common goal cards/" + gameViewMessage.getCommonGoalCard(1).getId() + ".jpg";
-            Image commonI = new Image("file:" + pathCommonI);
-            Image commonII = new Image("file:" + pathCommonII);
+            String pathCommonI = "/fxml/GraphicalResources/common goal cards/" + gameViewMessage.getCommonGoalCard(0).getId() + ".jpg";
+            String pathCommonII = "/fxml/GraphicalResources/common goal cards/" + gameViewMessage.getCommonGoalCard(1).getId() + ".jpg";
+            Image commonI = new Image(getClass().getResource(pathCommonI).toString());
+            Image commonII = new Image(getClass().getResource(pathCommonII).toString());
             // Set common goal cards images on existing javafx objects
             ICommonGoalCard.setImage(commonI);
             IICommonGoalCard.setImage(commonII);
@@ -720,7 +720,7 @@ public class GUIController {
                     clientPoints.setText("YOUR POINTS : " + gameViewMessage.getPlayers().get(i).getPoints());
 
 
-                    personalGoal.setImage(new Image("file:src/resources/GraphicalResources/personal goal cards/Personal_Goals" + (gameViewMessage.getPlayers().get(i).getPersonalGoal().getId()+1) + ".png"));
+                    personalGoal.setImage(new Image(getClass().getResource("/fxml/GraphicalResources/personal goal cards/Personal_Goals" + (gameViewMessage.getPlayers().get(i).getPersonalGoal().getId()+1) + ".png").toString()));
                 }
             }
 
