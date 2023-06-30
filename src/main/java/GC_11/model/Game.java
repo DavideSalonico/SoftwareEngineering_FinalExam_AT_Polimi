@@ -90,6 +90,9 @@ public class Game implements PropertyChangeListener, Serializable {
         this.commonGoals.get(1).getWinningPlayers().addAll(winningPlayers2);
         this.commonGoals.get(0).setListener(this);
         this.commonGoals.get(1).setListener(this);
+        this.chat = new Chat();
+        this.chat.setListener(this);
+
     }
 
     /**
