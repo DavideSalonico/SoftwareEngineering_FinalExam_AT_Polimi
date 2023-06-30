@@ -71,6 +71,13 @@ public class GameCLI extends View {
     @Override
     public void notifyDisconnection() {
         System.out.println("Game unavailable because server is down or someone disconnected");
+        System.out.println("The game will close in 20 seconds");
+        try {
+            TimeUnit.SECONDS.sleep(20);
+        } catch (InterruptedException e) {
+            System.exit(1);
+        }
+        System.exit(0);
     }
 
     @Override
