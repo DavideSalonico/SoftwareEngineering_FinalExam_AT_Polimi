@@ -57,7 +57,7 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
                     Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
                     while (inetAddresses.hasMoreElements()) {
                         InetAddress inetAddress = inetAddresses.nextElement();
-                        if(!isIPV6(inetAddress.getHostAddress()) && !inetAddress.isLoopbackAddress()){
+                        if(!isIPV6(inetAddress.getHostAddress()) && !inetAddress.isLoopbackAddress() && !inetAddress.getHostAddress().startsWith("25")){
                             serverIp=inetAddress.getHostAddress();
                         }
                     }

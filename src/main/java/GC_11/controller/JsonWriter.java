@@ -176,12 +176,29 @@ public class JsonWriter {
                 String nickname = jsonPlayer.get("nickname").toString();
                 nickname = nickname.replace("\"", "");
 
+                int personalGoalPoints = 0;
+                int commonGoalPoints = 0;
+                int adjancentPoints = 0;
+
+                try{
+                    personalGoalPoints = Integer.parseInt(jsonPlayer.get("pointsPersonalGoal").toString());
+                    commonGoalPoints = Integer.parseInt(jsonPlayer.get("pointsCommonGoals").toString());
+                    adjancentPoints = Integer.parseInt(jsonPlayer.get("pointsAdjacency").toString());
+                }
+                catch(NumberFormatException e){
+
+                }
+
 
                 int personalGoalCardId = jsonPersonalGoal.get("id").getAsInt();
 
                 PersonalGoalCard personalGoalCard = JsonReader.readPersonalGoalCard(personalGoalCardId);
 
                 Player player = new Player(nickname, personalGoalCard);
+                player.addPointsCommonGoals(commonGoalPoints);
+                player.setPointsAdjacency(adjancentPoints);
+                player.setPointsPersonalGoal(personalGoalPoints);
+
                 JsonObject jsonShelf = jsonPlayer.get("shelf").getAsJsonObject();
                 JsonArray jsonShelfTiles = jsonShelf.getAsJsonArray("myShelf");
 
