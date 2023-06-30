@@ -1,6 +1,8 @@
-package GC_11.distributed;
+package GC_11;
 
-public class AppServerMain {
+import GC_11.distributed.ServerMain;
+
+public class ServerMainApp {
     public static void main(String[] args) {
         ServerMain serverMain = new ServerMain(4322);
         try {

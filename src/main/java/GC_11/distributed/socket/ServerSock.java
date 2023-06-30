@@ -158,14 +158,5 @@ public class ServerSock implements PropertyChangeListener, Server {
         this.serverClientHandlerList.get(0).askMaxNumber();
     }
 
-    @Override
-    public void notifyDisconnectionToClients() {
-
-    }
-
-    @Override
-    public void sendHeartbeat() {
-
-    }
 }
 
