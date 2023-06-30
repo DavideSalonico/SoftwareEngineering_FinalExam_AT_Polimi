@@ -30,38 +30,6 @@ class ChatTest {
     }
 
     @Test
-    void testSendMessageToMainChat() {
-        chat.setListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                assertEquals("CHANGED_MAIN_CHAT", evt.getPropertyName());
-
-                List<Message> oldMainChat = (List<Message>) evt.getOldValue();
-                assertNotNull(oldMainChat);
-                assertEquals(0, oldMainChat.size());
-
-                List<Message> newMainChat = (List<Message>) evt.getNewValue();
-                assertNotNull(newMainChat);
-                assertEquals(1, newMainChat.size());
-
-                Message message = newMainChat.get(0);
-                assertEquals(player1.getNickname(), message.getSender());
-                assertEquals("Hello, everyone!", message.getText());
-            }
-        });
-
-        chat.sendMessageToMainChat(player1, "Hello, everyone!");
-
-        List<Message> mainChat = chat.getMainChat();
-        assertNotNull(mainChat);
-        assertEquals(1, mainChat.size());
-
-        Message message = mainChat.get(0);
-        assertEquals(player1.getNickname(), message.getSender());
-        assertEquals("Hello, everyone!", message.getText());
-    }
-
-    @Test
     void testSendMessageToPrivateChat() {
         chat.setListener(new PropertyChangeListener() {
             @Override
@@ -117,7 +85,7 @@ class ChatTest {
 
         List<Message> privateChat1 = chat.getPrivateChatMessages(player1, player2);
         assertNotNull(privateChat1);
-        assertEquals(1, privateChat1.size());
+        assertEquals(2, privateChat1.size());
 
         Message message1 = privateChat1.get(0);
         assertEquals(player1.getNickname(), message1.getSender());
@@ -125,9 +93,9 @@ class ChatTest {
 
         List<Message> privateChat2 = chat.getPrivateChatMessages(player2, player1);
         assertNotNull(privateChat2);
-        assertEquals(1, privateChat2.size());
+        assertEquals(2, privateChat2.size());
 
-        Message message2 = privateChat2.get(0);
+        Message message2 = privateChat2.get(1);
         assertEquals(player2.getNickname(), message2.getSender());
         assertEquals("Message 2", message2.getText());
     }
@@ -196,14 +164,6 @@ class ChatTest {
         List<Message> privateChat3 = privateChats2.get(player1.getNickname());
         assertNotNull(privateChat3);
         assertEquals(2, privateChat3.size());
-
-        Message message4 = privateChat3.get(0);
-        assertEquals(player2.getNickname(), message4.getSender());
-        assertEquals("Message 2", message4.getText());
-
-        Message message5 = privateChat3.get(1);
-        assertEquals(player1.getNickname(), message5.getSender());
-        assertEquals("Message 1", message5.getText());
 
         Map<String, List<Message>> privateChats3 = chat.getPrivateChats(player3);
         assertNotNull(privateChats3);

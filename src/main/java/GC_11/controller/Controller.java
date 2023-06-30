@@ -322,14 +322,6 @@ public class Controller implements PropertyChangeListener {
             this.model.getChat().sendMessageToPrivateChat(player, this.model.getPlayer(parameters.get(0)), parameters.get(1));
     }
 
-    public void insertName(String name) {
-        try {
-            lobby.addPlayer(name);
-        } catch (NameAlreadyTakenException | ExceededNumberOfPlayersException e) {
-            lobby.triggerException(e);
-        }
-    }
-
     public void setMaxPlayers(int maxPlayers) {
         this.lobby.setMaxPlayers(maxPlayers);
     }

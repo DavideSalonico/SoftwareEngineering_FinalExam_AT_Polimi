@@ -45,7 +45,7 @@ class CommonGoalCard5Test {
         player.insertTiles(yellows,3);
         player.insertTiles(yellows,3);
         player.insertTiles(blues,4);
-        player.insertTiles(yellows,4);
+        player.insertTiles(blues,4);
 
         System.out.println(player.getPoints());
         assertEquals(player.getPoints(),0);
