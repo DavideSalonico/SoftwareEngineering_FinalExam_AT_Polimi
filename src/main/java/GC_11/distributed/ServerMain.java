@@ -159,9 +159,9 @@ public class ServerMain implements PropertyChangeListener {
             }
             notifyClients(new DisconnectionMessage());
         } else {
-            System.out.println("Unable to remove connection because nickname is unknown");
+            //System.out.println("Unable to remove connection because nickname is unknown");
         }
-
+        System.exit(0);
     }
 
     public Controller getController() {
