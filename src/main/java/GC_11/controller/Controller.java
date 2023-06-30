@@ -64,7 +64,7 @@ public class Controller implements PropertyChangeListener {
     /**
      * Set and Get of Choice attribute, which will be updated by ServerRMI
      *
-     * @param choice
+     * @param choice the choice to be set
      */
     public void setChoice(Choice choice) {
         this.choice = choice;
@@ -190,9 +190,8 @@ public class Controller implements PropertyChangeListener {
     /**
      * Method called when a player wants to select a tile from the board
      * @param parameters the coordinates of the tile to select (row, column)
-     * @throws RemoteException
      */
-    public void selectTile(List<String> parameters) throws RemoteException {
+    public void selectTile(List<String> parameters) {
         if (parameters.size() != 2) {
             this.model.triggerException(new IllegalMoveException("There should be 2 parameters for this command!"));
             return;
@@ -229,11 +228,10 @@ public class Controller implements PropertyChangeListener {
      * Method called when a player wants to insert the tiles in the shelf in the selected column
      * Check if in that column there are enough free spaces to insert the tiles, otherwise triggers an exception and notify the player with the error message.
      * @param parameters the column where the player wants to insert the tiles
-     * @throws RemoteException
      */
-    public void pickColumn(List<String> parameters) throws RemoteException {
+    public void pickColumn(List<String> parameters) {
         boolean end = false;
-        int column = 0;
+        int column;
         try {
             column = paramsToColumnIndex(parameters);
         } catch (IllegalMoveException e) {
@@ -298,9 +296,8 @@ public class Controller implements PropertyChangeListener {
     /**
      * Method called when a player wants to choose the order of the selected tiles
      * @param parameters the order of the tiles
-     * @throws RemoteException
      */
-    public void chooseOrder(List<String> parameters) throws RemoteException {
+    public void chooseOrder(List<String> parameters) {
         //Integer parameters control
         Integer tilesSize = this.model.getBoard().getSelectedTiles().size();
         if (parameters.size() != tilesSize) {
@@ -364,9 +361,8 @@ public class Controller implements PropertyChangeListener {
      *
      * @param player The player sending the message.
      * @param parameters The list of parameters for the command.
-     * @throws RemoteException If a remote exception occurs.
      */
-    public void sendMessage(Player player, List<String> parameters) throws RemoteException {
+    public void sendMessage(Player player, List<String> parameters) {
         if (parameters.size() != 2) {
             this.model.triggerException(new IllegalMoveException("There should be exactly two parameters for this command!"));
             return;
@@ -447,13 +443,7 @@ public class Controller implements PropertyChangeListener {
         return this.server;
     }
 
-    /**
-     * sets the OldGameAvailable boolean.
-     * @param b the new value of the boolean.
-     */
-    public void setOldGameAvailable(boolean b) {
-        this.setOldGameAvailable = b;
-    }
+
 
     /**
      * Sets the game model.

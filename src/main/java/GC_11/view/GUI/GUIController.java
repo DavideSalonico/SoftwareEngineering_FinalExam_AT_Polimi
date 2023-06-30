@@ -21,7 +21,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -44,18 +43,6 @@ public class GUIController {
     private GridPane boardGridPane;
 
     @FXML
-    private TextArea chatTextArea;
-
-    @FXML
-    private TextArea chatTextArea1;
-
-    @FXML
-    private TextArea chatTextArea2;
-
-    @FXML
-    private TextArea chatTextArea3;
-
-    @FXML
     private TextField chatTextField;
 
     @FXML
@@ -63,15 +50,6 @@ public class GUIController {
 
     @FXML
     private ButtonBar columnSelector;
-
-    @FXML
-    private Button confirmSelection;
-
-    @FXML
-    private ImageView deletableShelf;
-
-    @FXML
-    private ImageView deletableShelf2;
 
     @FXML
     private Text error;
@@ -125,16 +103,10 @@ public class GUIController {
     private Button resetButton;
 
     @FXML
-    private Pane root;
-
-    @FXML
     private ImageView secondImage;
 
     @FXML
     private Button secondTile;
-
-    @FXML
-    private Button sendMessageButton;
 
     @FXML
     private TabPane tabPane;
@@ -238,7 +210,7 @@ public class GUIController {
                 Integer rowIndex = GridPane.getRowIndex(node);
                 Integer colIndex = GridPane.getColumnIndex(node);
 
-                if (rowIndex != null && colIndex != null && rowIndex.intValue() == row && colIndex.intValue() == col) {
+                if (rowIndex != null && colIndex != null && rowIndex == row && colIndex == col) {
                     nodesToRemove.add(node);
                 }
             }
@@ -270,7 +242,7 @@ public class GUIController {
             }
         }
 
-        return null; // Restituisce null se l'ImageView non è stata trovata
+        return null; // return null if the ImageView is not found
     }
 
 
@@ -280,12 +252,8 @@ public class GUIController {
      * @param imageView ImageView to set up
      */
     private void setupImageViewSelection(ImageView imageView) {
-        final String SELECTED_STYLE_CLASS = "selected-tile";
 
-        imageView.setOnMouseClicked(event -> {
-            createChoice("SELECT_TILE " + (boardGridPane.getRowIndex(imageView) -1) + " " + (boardGridPane.getColumnIndex(imageView)-1));
-
-        });
+        imageView.setOnMouseClicked(event -> createChoice("SELECT_TILE " + (boardGridPane.getRowIndex(imageView) -1) + " " + (boardGridPane.getColumnIndex(imageView)-1)));
     }
 
 
@@ -295,11 +263,10 @@ public class GUIController {
      * @param event to get the id of the button pressed
      */
     @FXML
-    public void selectColumn(ActionEvent event) throws IllegalMoveException, RemoteException {
+    public void selectColumn(ActionEvent event) {
         setError("");
         Button button = (Button) event.getSource();
         columnSelected = columnSelector.getButtons().indexOf(button);
-        //columnSelector.setDisable(true);
         if (columnSelected > -1)
             createChoice("PICK_COLUMN " + columnSelected);
 
@@ -327,7 +294,6 @@ public class GUIController {
     /**
      * Method that updates Shelf and Points of the player given as parameter
      * @param player to update
-     * @throws ColumnIndexOutOfBoundsException if the player is not found
      */
     public void updatePlayer(Player player) {
         PlayerView playerView = getPlayerViewFromNickname(player.getNickname());
@@ -347,12 +313,11 @@ public class GUIController {
      * Method that updates the Shelf of the player
      * @param player to update
      * @param shelf GridPane reference
-     * @throws ColumnIndexOutOfBoundsException if the player is not found
      */
     public void updateShelf(Player player, GridPane shelf) {
         for (int i = 0; i < 5; i++) {  //COLUMNS
             for (int j = 0; j < 6; j++) {  //ROWS
-                Tile t = null;
+                Tile t;
                 try {
                     t = player.getShelf().getTile(j, i);
                 } catch (ColumnIndexOutOfBoundsException e) {
@@ -396,7 +361,6 @@ public class GUIController {
     /**
      * Method that updates the Board of the client who is using the GUI
      * @param player to update
-     * @throws ColumnIndexOutOfBoundsException
      */
     public void updateClientShelf(Player player) {
         for (int i = 0; i < 5; i++) {  //COLUMNS
@@ -407,6 +371,7 @@ public class GUIController {
                 } catch (ColumnIndexOutOfBoundsException e) {
                     setError(e.getMessage());
                 }
+                assert t != null;
                 int id = t.getId() + 1;
                 TileColor tileColor = t.getColor();
                 ImageView image = switch (tileColor) {
@@ -420,7 +385,7 @@ public class GUIController {
                 };
 
                 if(image != null) {
-                    image.setFitHeight(44);  //Other players shelf size is 29x29!
+                    image.setFitHeight(44);  //Other players shelf size is 34x34!
                     image.setFitWidth(44);
                     mainShelfGridPane.add(image, i+1, j+1);  //Add the image to specif Shelf
                 }
@@ -440,7 +405,7 @@ public class GUIController {
 
     /**
      * Method called when an error occurs, it will set the error label with the error message
-     * @param errorMSG
+     * @param errorMSG message to set
      */
     public void setError(String errorMSG){
         error.setText(errorMSG);
@@ -500,7 +465,7 @@ public class GUIController {
 
     /**
      * Method that make blurred all the Selected Tiles from the board and put them available to be inserted in the shelf, right under the main shelf
-     * @param selectedTiles
+     * @param selectedTiles list of the selected tiles
      */
     public void setSelectedTiles(List <Coordinate> selectedTiles){
         firstImage.setImage(null);
@@ -508,9 +473,9 @@ public class GUIController {
         thirdImage.setImage(null);
 
         BoxBlur boxBlur = new BoxBlur();
-        boxBlur.setWidth(4); // Modifica la larghezza dello sfocato
-        boxBlur.setHeight(4); // Modifica l'altezza dello sfocato
-        boxBlur.setIterations(2); // Modifica il numero di iterazioni dello sfocato
+        boxBlur.setWidth(4); // modify the width of the blur
+        boxBlur.setHeight(4); // modify the height of the blur
+        boxBlur.setIterations(2); // modify the number of iterations (default is 3)
 
         resetButton.setVisible(false);
         if(selectedTiles.size() > 0 && gameViewMessage.getCurrentPlayer().equals(ClientApp.view.getNickname())){
@@ -563,20 +528,20 @@ public class GUIController {
 
     /**
      * Method that set the order of Selected Tiles to be inserted in the shelf, including the graphical animations
-     * @param event
+     * @param event event that trigger the method
      */
     @FXML
     public void setTileOrder(ActionEvent event){
         if(gameViewMessage.getBoard().getSelectedTiles().size() <= 3 && gameViewMessage.getCurrentPlayer().equals(ClientApp.view.getNickname()) ) {
-            if (event.getSource() == firstTile && !tilesOrdered.contains((Integer) 0) && firstImage.getImage() != null) {
+            if (event.getSource() == firstTile && !tilesOrdered.contains(0) && firstImage.getImage() != null) {
                 tilesOrder[0] = tilesOrdered.size();
                 tilesOrdered.add(0);
                 firstTile.setText(String.valueOf(tilesOrder[0]));
-            } else if (event.getSource() == secondTile && !tilesOrdered.contains((Integer) 1) && secondImage.getImage() != null) {
+            } else if (event.getSource() == secondTile && !tilesOrdered.contains(1) && secondImage.getImage() != null) {
                 tilesOrder[1] = tilesOrdered.size();
                 tilesOrdered.add(1);
                 secondTile.setText(String.valueOf(tilesOrder[1]));
-            } else if (event.getSource() == thirdTile && !tilesOrdered.contains((Integer) 2) && thirdImage.getImage() != null) {
+            } else if (event.getSource() == thirdTile && !tilesOrdered.contains(2) && thirdImage.getImage() != null) {
                 tilesOrder[2] = tilesOrdered.size();
                 tilesOrdered.add(2);
                 thirdTile.setText(String.valueOf(tilesOrder[2]));
@@ -589,13 +554,12 @@ public class GUIController {
      * @return the string which will be used to create the Choice and send it to the server
      */
     public String chooseOrder(){
-        String input = "CHOOSE_ORDER ";
+        StringBuilder input = new StringBuilder("CHOOSE_ORDER ");
         setError("");
         for (int i = 0; i < tilesOrdered.size(); i++) {
-            input = input + tilesOrder[i] + " ";
+            input.append(tilesOrder[i]).append(" ");
         }
-        columnSelector.setDisable(false);
-        return input;
+        return input.toString();
     }
 
     /**
@@ -712,14 +676,13 @@ public class GUIController {
         secondTile.setText("");
         thirdTile.setText("");
         setError("");
-        columnSelector.setDisable(true);
 
         createChoice("RESET_TURN");
     }
 
     /**
      * Method called at the beginning of the game to load all components of the GUI that we need to show in this particular game instance
-     * @param gameViewMessage
+     * @param gameViewMessage is the GameViewMessage that contains all the information about the game
      */
     public void init(GameViewMessage gameViewMessage) {
         // Load all the images of the tiles
@@ -811,12 +774,9 @@ public class GUIController {
     @FXML
     public void initialize() {
 
-        chatTextField.setOnMouseClicked(event -> {
-            chatTextField.setText("");
-        });
+        chatTextField.setOnMouseClicked(event -> chatTextField.setText(""));
 
-        //Column Selector invisible
-        columnSelector.setDisable(true);
+
 
         //Button Reset invisible
         resetButton.setVisible(false);
@@ -882,7 +842,7 @@ public class GUIController {
         }
 
 
-        alert.setContentText(finalTable +  sb.toString());
+        alert.setContentText(finalTable + sb);
 
 
         Stage dialogStage = (Stage) alert.getDialogPane().getScene().getWindow();
@@ -921,7 +881,7 @@ public class GUIController {
                         Thread.sleep(1000);
                         countdown--;
                     }
-                    System.exit(0); // Arresta l'applicazione dopo il countdown
+                    System.exit(0); // close the game
                     return null;
                 }
             };
