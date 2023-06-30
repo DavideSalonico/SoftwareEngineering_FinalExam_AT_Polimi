@@ -1,12 +1,14 @@
 package GC_11.distributed.rmi;
 
-import GC_11.ClientApp;
 import GC_11.distributed.Client;
 import GC_11.distributed.ServerMain;
 import GC_11.distributed.ServerRMI;
 import GC_11.model.Game;
 import GC_11.network.choices.Choice;
-import GC_11.network.message.*;
+import GC_11.network.message.GameViewMessage;
+import GC_11.network.message.MaxNumberMessage;
+import GC_11.network.message.MessageView;
+import GC_11.network.message.NicknameMessage;
 
 import java.beans.PropertyChangeEvent;
 import java.io.Serializable;
@@ -38,9 +40,6 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
         this.serverMain = serverMain;
     }
 
-    public List<Client> getClients() {
-        return this.clients;
-    }
 
     /**
      * Method that sets up the RMI server
@@ -143,14 +142,6 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
         this.clients.get(0).receiveFromServer(new MaxNumberMessage());
     }
 
-    @Override
-    public void notifyDisconnectionToClients() {
 
-    }
-
-    @Override
-    public void sendHeartbeat() {
-
-    }
 }
 

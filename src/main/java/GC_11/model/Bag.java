@@ -28,15 +28,7 @@ public class Bag implements Serializable {
         this.listener = listener;
     }
 
-    /**
-     * Copy constructor. Create a new Bag with the same tiles of the bag passed as parameter
-     *
-     * @param bag is the bag to copy
-     */
-    public Bag(Bag bag) {
-        this.tiles = bag.getTiles();
-        this.listener = bag.listener;
-    }
+
 
     /**
      * Getter of the tiles
@@ -51,7 +43,7 @@ public class Bag implements Serializable {
      * Initialization of the Bag (new Game)
      */
     public Bag() {
-        this.tiles = new ArrayList<Tile>();
+        this.tiles = new ArrayList<>();
         for (int i = 0; i < 22; i++) {
             for(TileColor color : TileColor.values()) {
                 if(color != TileColor.EMPTY && color != TileColor.PROHIBITED) {
