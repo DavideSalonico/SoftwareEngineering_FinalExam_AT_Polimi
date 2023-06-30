@@ -32,7 +32,7 @@ Il jar compilato verranno posizionati all'interno della cartella target/.
 Le seguenti istruzioni descrivono come eseguire il client con interfaccia CLI o GUI.
 
 CLI
-Per lanciare Santorini Client CLI digitare da terminale il comando:
+Per lanciare MyShelfie Client CLI digitare da terminale il comando:
 java -jar myshelfie.jar -CLI
 
 GUI
@@ -40,7 +40,7 @@ Per poter lanciare la modalità GUI digitare da terminale il comando:
 java -jar PSP000-1.0-SNAPSHOT-jar-with-dependencies.jar -GUI
 
 MyShelfie Server
-Per lanciare Santorini Server digitare da terminale il comando:
+Per lanciare MyShelfie Server digitare da terminale il comando:
 java -jar PSP000-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 Componenti del gruppo
