@@ -13,7 +13,4 @@ public interface Server extends Remote{
 
     void askMaxNumber() throws RemoteException;
 
-    void notifyDisconnectionToClients() throws RemoteException;
-
-    void sendHeartbeat() throws RemoteException;
 }

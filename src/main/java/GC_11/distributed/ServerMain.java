@@ -1,21 +1,17 @@
 package GC_11.distributed;
 
 import GC_11.controller.Controller;
-
 import GC_11.distributed.rmi.ServerRMIImpl;
 import GC_11.distributed.socket.ServerSock;
-
-import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.IllegalMoveException;
-import GC_11.network.message.*;
 import GC_11.network.choices.Choice;
+import GC_11.network.message.*;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
-
 import java.util.Iterator;
 import java.util.Map;
 
@@ -106,14 +102,6 @@ public class ServerMain implements PropertyChangeListener {
 
     }
 
-    /**
-     * Asks the first player for the maximum number of players in the lobby.
-     * Updates the lobby's maximum players value.
-     */
-
-    public void askMaxPlayers() {
-
-    }
 
 
     public void makeAMove(Choice choice) { //TODO: rename
@@ -158,8 +146,6 @@ public class ServerMain implements PropertyChangeListener {
                 this.clientMap.remove(nickname);
             }
             notifyClients(new DisconnectionMessage());
-        } else {
-            //System.out.println("Unable to remove connection because nickname is unknown");
         }
         System.exit(0);
     }
@@ -168,9 +154,7 @@ public class ServerMain implements PropertyChangeListener {
         return this.controller;
     }
 
-    public Map getClientsMap() {
-        return this.clientMap;
-    }
+
 
     public void isAlive(String s) {
         //TODO

@@ -1,8 +1,5 @@
 package GC_11.distributed;
 
-import GC_11.network.choices.Choice;
-
-import java.beans.PropertyChangeEvent;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -10,15 +7,9 @@ public interface ServerRMI extends Remote, Server {
     /**
      * register the client in the server
      *
-     * @param client
-     * @throws RemoteException
+     * @param client the client to register
+     * @throws RemoteException if the client is already registered
      */
     void register(Client client) throws RemoteException;
 
-    /**
-     * notify the clients that the game is updated
-     *
-     * @throws RemoteException
-     */
-    void notifyClients(PropertyChangeEvent evt) throws RemoteException;
 }

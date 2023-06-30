@@ -5,7 +5,6 @@ import GC_11.distributed.Server;
 import GC_11.distributed.ServerMain;
 import GC_11.network.choices.Choice;
 import GC_11.network.message.GameViewMessage;
-import GC_11.network.message.LobbyViewMessage;
 import GC_11.network.message.MessageView;
 
 import java.beans.PropertyChangeEvent;
@@ -158,14 +157,5 @@ public class ServerSock implements PropertyChangeListener, Server {
         this.serverClientHandlerList.get(0).askMaxNumber();
     }
 
-    @Override
-    public void notifyDisconnectionToClients() {
-
-    }
-
-    @Override
-    public void sendHeartbeat() {
-
-    }
 }
 
