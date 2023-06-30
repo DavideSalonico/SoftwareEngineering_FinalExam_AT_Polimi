@@ -41,7 +41,7 @@ public abstract class Choice implements Serializable {
      * @throws ExceededNumberOfPlayersException    if the number of players exceeds the limit.
      * @throws NameAlreadyTakenException           if a player name is already taken.
      */
-    public abstract void executeOnServer(Controller controller) throws RemoteException, ExceededNumberOfPlayersException, NameAlreadyTakenException;
+    public abstract void executeOnServer(Controller controller) throws RemoteException;
 
     /**
      * Returns the parameters associated with the choice.
