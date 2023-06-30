@@ -18,7 +18,7 @@ public class LoadGameChoice extends Choice{
     }
 
     @Override
-    public void executeOnServer(Controller controller) throws RemoteException, ExceededNumberOfPlayersException, NameAlreadyTakenException {
+    public void executeOnServer(Controller controller) throws RemoteException {
         controller.selectLoadGame(this.params.get(0));
     }
 }

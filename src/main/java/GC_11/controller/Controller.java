@@ -23,7 +23,6 @@ import static java.lang.Math.min;
  * Card read from JSON file
  */
 public class Controller implements PropertyChangeListener {
-    // Controller receive directly from ServerRMI an Object Choice which contains Player reference, type and params
     public Choice choice;
     public JsonReader reader;
     private Game model;
@@ -102,15 +101,12 @@ public class Controller implements PropertyChangeListener {
         try {
             checkExpectedMove();
         } catch (IllegalMoveException e) {
-            this.model.triggerException(e);
+            this.server.triggerPersonalException(e, choice.getPlayer().getNickname());
             return;
         }
 
-        try {
-            choice.executeOnServer(this); //TODO: exception handling
-        } catch (ExceededNumberOfPlayersException | NameAlreadyTakenException e) {
-            throw new RuntimeException(e);
-        }
+        choice.executeOnServer(this);
+
 
         if (!choice.getType().equals(ChoiceType.PICK_COLUMN) && !choice.getType().equals(ChoiceType.SEND_MESSAGE))
             this.lastChoice = this.choice.getType();
@@ -261,6 +257,8 @@ public class Controller implements PropertyChangeListener {
             this.model.setLastTurn(true);
         }
     }
+
+
 
     private int paramsToColumnIndex(List<String> parameters) throws IllegalMoveException {
         if (parameters.size() != 1) throw new IllegalMoveException("There shouldn't be options for this command!");

@@ -13,6 +13,10 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.rmi.UnknownHostException;
 
+
+/**
+ * Controller for the connection scene.
+ */
 public class ConnectionController {
 
     @FXML
@@ -30,14 +34,25 @@ public class ConnectionController {
     @FXML
     private Button confirmIP;
 
-    String typeOfConnection;
+    private String typeOfConnection;
+
+    /**
+     * Sets the type of connection to RMI and enables the address text field and confirm IP button.
+     *
+     * @param event the action event
+     */
     @FXML
     void chooseRMI(ActionEvent event) {
         typeOfConnection = "RMI";
         addressText.setDisable(false);
         confirmIP.setDisable(false);
-
     }
+
+    /**
+     * Sets the type of connection to SOCKET and enables the address text field and confirm IP button.
+     *
+     * @param event the action event
+     */
     @FXML
     void chooseSocket(ActionEvent event) {
         typeOfConnection = "SOCKET";
@@ -45,19 +60,32 @@ public class ConnectionController {
         confirmIP.setDisable(false);
     }
 
+    /**
+     * Creates a client with the specified IP address and connection type.
+     * Displays an error message if the connection fails.
+     *
+     * @param event the action event
+     */
     @FXML
     public void confirmIP(ActionEvent event) {
+        setError("");
         try{
             ClientApp.client = ClientFactory.createClient(addressText.getText(), typeOfConnection);
         } catch (UnknownHostException e) {
-
+            setError("Unable to connect to the server");
         } catch (IOException e) {
-
+            setError("Unable to connect to the server");
         }
 
         //createChoice(addressText.getText());
     }
 
+    /**
+     * Initializes the connection controller.
+     * Disables the address text field and confirm IP button.
+     * Clears the error label.
+     * Sets up an event listener to clear the address text field when clicked.
+     */
     @FXML
     public void initialize() {
         addressText.setDisable(true);
@@ -70,17 +98,24 @@ public class ConnectionController {
         });
     }
 
-
+    /**
+     * Changes the scene to the lobby scene.
+     */
     public void changeSceneToLobby() {
         Platform.setImplicitExit(false);
         Platform.runLater(() -> {
             GUIApplication.mainStage.setScene(new Scene(GUIApplication.lobbyLoad));
         });
-
     }
 
+    /**
+     * Sets the error message to be displayed in the error label.
+     *
+     * @param error the error message
+     */
     public void setError(String error) {
         Platform.runLater(() -> errorLabel.setText(error));
     }
+
 
 }
