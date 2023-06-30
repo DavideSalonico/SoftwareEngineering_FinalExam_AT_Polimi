@@ -421,9 +421,9 @@
          <effect>
             <DropShadow />
          </effect></ImageView>
-      <Text fx:id="error" fill="#ff8000" layoutX="905.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Error message Label" wrappingWidth="160.00000000000023">
+      <Text fx:id="error" fill="#ff8000" layoutX="905.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Error message Label" textAlignment="CENTER" wrappingWidth="160.00000000000023">
          <font>
-            <Font name="System Bold Italic" size="13.0" />
+            <Font name="System Bold Italic" size="12.0" />
          </font>
       </Text>
       <Text layoutX="926.0" layoutY="710.0" strokeType="OUTSIDE" strokeWidth="0.0" text="X">

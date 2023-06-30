@@ -274,7 +274,6 @@ public class GUIController {
     }
 
 
-
     private List<ImageView> selectedImages = new ArrayList<>();
     /**
      * Method that set up the event handler for the ImageView to show it selected when clicked (MAX 3 tiles selected)
@@ -288,8 +287,6 @@ public class GUIController {
 
         });
     }
-
-
 
 
     int columnSelected = 0;
@@ -326,6 +323,7 @@ public class GUIController {
         return null;
     }
 
+
     /**
      * Method that updates Shelf and Points of the player given as parameter
      * @param player to update
@@ -343,6 +341,7 @@ public class GUIController {
             updatePoints(player, playerView.getPoints());
         }
     }
+
 
     /**
      * Method that updates the Shelf of the player
@@ -382,6 +381,7 @@ public class GUIController {
             }
         }
     }
+
 
     /**
      * Method that updates the points of the player
@@ -428,6 +428,7 @@ public class GUIController {
         }
     }
 
+
     /**
      * Method that updates the points of the client who is using the GUI
      * @param player to update
@@ -437,10 +438,19 @@ public class GUIController {
     }
 
 
+    /**
+     * Method called when an error occurs, it will set the error label with the error message
+     * @param errorMSG
+     */
     public void setError(String errorMSG){
         error.setText(errorMSG);
     }
 
+
+    /**
+     * Method that updates the Board of the client who is using the GUI with the updated Board received from the server
+     * @param board updated version of the Board
+     */
     public void refreshBoard(Board board){
         Platform.runLater(() -> {
         boardGridPane.getChildren().clear();
@@ -468,33 +478,28 @@ public class GUIController {
                     image.setFitWidth(34);
                     boardGridPane.add(image, j, i);
 
-                }else {
-                    //clearCellContent(boardGridPane, i, j);
                 }
             }
         }
         });
     }
 
+
     /**
-     * Method that send a message to other players in the chat
+     * Method that send a message to other players in the chat, it creates a Choice, which will be sent to the server
      */
     @FXML
     public void sendMessageOnChat(){
         Tab selectedTab = tabPane.getSelectionModel().getSelectedItem();
         AnchorPane selectedAnchorPane = (AnchorPane) selectedTab.getContent();
         TextArea selectedChatArea = (TextArea) selectedAnchorPane.lookup(".text-area");
-
-
         createChoice("SEND_MESSAGE " + selectedTab.getText() + " " +chatTextField.getText());
-
         chatTextField.setText("Enter a message...");
-
     }
 
 
     /**
-     * Method that remove a tile from the board and put it available to be inserted in the shelf
+     * Method that make blurred all the Selected Tiles from the board and put them available to be inserted in the shelf, right under the main shelf
      * @param selectedTiles
      */
     public void setSelectedTiles(List <Coordinate> selectedTiles){
@@ -552,8 +557,14 @@ public class GUIController {
         }
     }
 
+    // Variables used to set the order of the Selected Tiles to be inserted in the shelf and create the graphical animations
     List <Integer> tilesOrdered = new ArrayList<>();
     int [] tilesOrder = new int[3];
+
+    /**
+     * Method that set the order of Selected Tiles to be inserted in the shelf, including the graphical animations
+     * @param event
+     */
     @FXML
     public void setTileOrder(ActionEvent event){
         if(gameViewMessage.getBoard().getSelectedTiles().size() <= 3 && gameViewMessage.getCurrentPlayer().equals(ClientApp.view.getNickname()) ) {
@@ -573,6 +584,10 @@ public class GUIController {
         }
     }
 
+    /**
+     * Method bound to the button "Confirm Order", it will send the order of tiles selected to the server through the Choice
+     * @return the string which will be used to create the Choice and send it to the server
+     */
     public String chooseOrder(){
         String input = "CHOOSE_ORDER ";
         setError("");
@@ -588,12 +603,20 @@ public class GUIController {
      */
     @FXML
     public void confirmTilesOrder() {
+        if(gameViewMessage.getBoard().getSelectedTiles().size()>0 && tilesOrdered.size() == gameViewMessage.getBoard().getSelectedTiles().size()){
         createChoice(chooseOrder());
         firstTile.setText("");
         secondTile.setText("");
         thirdTile.setText("");
+        }else {
+            setError("You have to select at least one tile first and set the order of selected ones!");
+        }
     }
 
+    /**
+     * Method that create a choice and send it to the server starting from the input string which is the command to be sent
+     * @param input parameter that contains the command to be sent to the server
+     */
     public void createChoice(String input) {
         try {
             Choice choice = ChoiceFactory.createChoice(gameViewMessage.getPlayer(ClientApp.client.getNickname()), input);
@@ -673,6 +696,9 @@ public class GUIController {
     }
 
 
+    /**
+     * Method that make the RESET_TURN choice, set the correct visibility of the components and clear the selected tiles, send the choice to the server
+     */
     @FXML
     public void resetButtonAction(){
         resetButton.setVisible(false);
@@ -735,13 +761,13 @@ public class GUIController {
                 }
             }
 
-            // Versione con 4 giocatori
+            // 4 Players
             if (others.size() == 3) {
                 otherPlayers.add(new PlayerView(player1Name, player1Points, playerShelf1));
                 otherPlayers.add(new PlayerView(player2Name, player2Points, playerShelf2));
                 otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
             }
-            // Versione con 3 giocatori
+            // 3 Players
             else if (others.size() == 2) {
                 otherPlayers.add(new PlayerView(player1Name, player1Points, playerShelf1));
                 otherPlayers.add(new PlayerView(player3Name, player3Points, playerShelf3));
@@ -778,6 +804,10 @@ public class GUIController {
         updateView(gameViewMessage);
 
     }
+
+    /**
+     * Initialize the Game GUI with the static parts
+     */
     @FXML
     public void initialize() {
 
@@ -804,6 +834,9 @@ public class GUIController {
 
     }
 
+    /**
+     * Method that show a window which comunicate to the player that he has been disconnected from the game and close the game
+     */
     public void playerDisconnected(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Player disconnected");
@@ -818,7 +851,7 @@ public class GUIController {
         alert.showAndWait();
 
         CountdownService countdownService = new CountdownService();
-        countdownService.setCountdownDuration(Duration.ofSeconds(20));
+        countdownService.setCountdownDuration(Duration.ofSeconds(10));
         countdownService.start();
 
         countdownService.messageProperty().addListener((observable, oldValue, newValue) ->
@@ -827,6 +860,9 @@ public class GUIController {
 
     }
 
+    /**
+     * Method that show a window which comunicate to the player that the game is ended and show the final table with the points of each player
+     */
     public void showEndGame(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Fine del gioco");
@@ -864,6 +900,10 @@ public class GUIController {
                 currentPlayerNicknameLabel.setText(newValue)
         );
     }
+
+    /**
+     * Support class to show a countdown in the window when the game is ended/ the player is disconnected
+     */
     private class CountdownService extends ScheduledService<Void> {
         private int countdown;
 
