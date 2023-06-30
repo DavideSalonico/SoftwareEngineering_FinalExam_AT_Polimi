@@ -48,7 +48,7 @@ public class GameViewMessage extends MessageView {
     public GameViewMessage(Game model, Exception exception) {
         if (exception != null) {
             this.error = true;
-            this.exceptionMessage = exception.getMessage();
+            this.exceptionMessage = model.getCurrentPlayer().getNickname() + " " + exception.getMessage();
             this.exception = exception;
         }
         Player playerMaxPoints = model.getPlayers().get(0);

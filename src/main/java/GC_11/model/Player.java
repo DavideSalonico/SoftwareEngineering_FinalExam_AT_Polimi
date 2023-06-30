@@ -305,6 +305,13 @@ public class Player implements PropertyChangeListener, Serializable {
     public int getPointsPersonalGoal() {
         return this.pointsPersonalGoal;
     }
+
+    public void setPointsPersonalGoal(int pointsPersonalGoal) {
+        this.pointsPersonalGoal = pointsPersonalGoal;
+    }
+    public void setPointsAdjacency(int pointsAdjacency) {
+        this.pointsAdjacency = pointsAdjacency;
+    }
 }
 
 

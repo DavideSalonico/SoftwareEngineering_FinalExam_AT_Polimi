@@ -84,8 +84,8 @@ public class Game implements PropertyChangeListener, Serializable {
         this.currentPlayer = getCurrentPlayer(currentPlayer);
         this.board = board;
         this.commonGoals = new ArrayList<CommonGoalCard>();
-        this.commonGoals.add(loadCommon(commonGoals[0]));
-        this.commonGoals.add(loadCommon(commonGoals[1]));
+        this.commonGoals.add(loadCommon(commonGoals[0]-1));
+        this.commonGoals.add(loadCommon(commonGoals[1]-1));
         this.commonGoals.get(0).getWinningPlayers().addAll(winningPlayers1);
         this.commonGoals.get(1).getWinningPlayers().addAll(winningPlayers2);
         this.commonGoals.get(0).setListener(this);
