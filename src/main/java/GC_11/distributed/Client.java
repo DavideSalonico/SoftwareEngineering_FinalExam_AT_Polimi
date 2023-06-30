@@ -19,8 +19,5 @@ public interface Client extends Remote, Serializable {
 
     public String getNickname() throws RemoteException;
 
-    void notifyDisconnection() throws RemoteException;
-
     void startClient() throws RemoteException;
-
 }

@@ -177,10 +177,5 @@ public class ClientSock implements PropertyChangeListener, Client {
 
         return -1;
     }
-
-    @Override
-    public void notifyDisconnection() {
-
-    }
 }
 
