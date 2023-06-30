@@ -20,11 +20,20 @@ public class ClientImplRMI extends UnicastRemoteObject implements Client, Serial
     private String nickname;
     private ServerRMI serverRMI;
 
+    /**
+     * Constructor for the ClientImplRMI class.
+     * @param serverRMI The server instance.
+     * @throws RemoteException If the remote object cannot be created.
+     */
     public ClientImplRMI(ServerRMI serverRMI) throws RemoteException {
         this.serverRMI=serverRMI;
         view=ClientApp.view;
     }
 
+    /**
+     * Method called when to ask the first player to insert the number of players.
+     * @return The number of players.
+     */
     public int askMaxNumber() {
         boolean b = true;
         int number = 0;

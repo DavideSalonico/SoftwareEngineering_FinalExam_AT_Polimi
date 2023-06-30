@@ -39,6 +39,9 @@ public class GameCLI extends View {
         super();
     }
 
+    /**
+     * Initialize the CLI
+     */
     public void init() {
         boolean flag = true;
         String choiceNetwork = null;

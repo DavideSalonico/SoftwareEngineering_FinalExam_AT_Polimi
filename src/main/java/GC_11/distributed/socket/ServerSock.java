@@ -114,17 +114,6 @@ public class ServerSock implements PropertyChangeListener, Server {
     }
 
 
-
-
-    public void notifyDisconnection(String nickname, GameViewMessage message){
-        for (Map.Entry<String, ServerClientHandler> e : socketMap.entrySet()) {
-            if(!e.getKey().equals(nickname)){
-                e.getValue().sendMessageViewToClient(message);
-            }
-        }
-    }
-
-
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName() == "newGameView") {

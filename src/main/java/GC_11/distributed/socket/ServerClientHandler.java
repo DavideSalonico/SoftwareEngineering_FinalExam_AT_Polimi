@@ -58,7 +58,7 @@ public class ServerClientHandler implements Runnable {
         }
         this.connected = true;
         connectionSetup();
-        if(connected){
+        if (connected) {
             readThread.start();
         }
 
@@ -69,7 +69,7 @@ public class ServerClientHandler implements Runnable {
         if (connected) {
             Choice reply = null;
             boolean ok = false;
-            while(!ok){
+            while (!ok) {
                 NicknameMessage msg = new NicknameMessage();
                 sendMessageViewToClient(msg);
                 try {
@@ -112,7 +112,13 @@ public class ServerClientHandler implements Runnable {
     });
 
 
-
+    /**
+     * Method that receives a Choice object from the client and sends it to the main server.
+     *
+     * @throws IOException            if the connection is closed
+     * @throws ClassNotFoundException if the class of the object received is not found
+     * @throws IllegalMoveException   if the move is not valid
+     */
     public void receiveChoiceFromClient() throws IOException, ClassNotFoundException, IllegalMoveException {
         Choice clientChoice;
         if (connected) {
@@ -197,7 +203,10 @@ public class ServerClientHandler implements Runnable {
         return this.nickname;
     }
 
-
+    /**
+     * Method that asks the client to choose a number of players sending a MaxNumberMessage.
+     * Number of players is sent only to the first client that connects to the server.
+     */
     public void askMaxNumber() {
         sendMessageViewToClient(new MaxNumberMessage());
         try {

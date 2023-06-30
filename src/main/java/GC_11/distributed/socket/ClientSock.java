@@ -54,12 +54,19 @@ public class ClientSock implements PropertyChangeListener, Client {
         }
     }
 
-
+    /**
+     * Method to notify the server of a choice made by the client.
+     * @param choice The choice made by the client.
+     */
     public void notifyServer(Choice choice){
         sendChoiceToServer(choice);
     }
 
 
+    /**
+     * Method to send a choice to the server.
+     * @param c The choice to be sent.
+     */
     public void sendChoiceToServer(Choice c) {
         try {
             out.writeObject(c);
@@ -71,6 +78,10 @@ public class ClientSock implements PropertyChangeListener, Client {
         }
     }
 
+    /**
+     * Method to receive a generic message (MessageView) from the server.
+     * As it receives a MessageView, executes it on the client.
+     */
     public void receiveFromServer(MessageView message) throws RemoteException {
         receiveGameViewFromServer();
     }
@@ -91,6 +102,11 @@ public class ClientSock implements PropertyChangeListener, Client {
         }
     }
 
+    /**
+     * Thread to open an incoming stream from the server.
+     * It is always listening for incoming messages.
+     * If the connection is lost, it closes the connection.
+     */
     Thread readGameViewThread = new Thread(new Runnable() {
         @Override
         public void run() {
@@ -119,10 +135,14 @@ public class ClientSock implements PropertyChangeListener, Client {
         sendChoiceToServer((Choice) evt.getNewValue());
     }
 
+    /**
+     * Method to start the client.
+     * It starts the thread to listen for incoming messages.
+     */
     public void startClient() {
-        System.out.println("ClientSocket running");
         readGameViewThread.start();
     }
+
 
     private void closeConnection() {
         if (connected){
@@ -131,12 +151,13 @@ public class ClientSock implements PropertyChangeListener, Client {
                 out.close();
                 socket.close();
             } catch (IOException e) {
-                System.out.println("Error during closing connection");
+                //System.out.println("Error during closing connection");
             }
             ClientApp.view.notifyDisconnection();
             connected=false;
         }
     }
+
 
     public void setView(View view) {
         this.view = view;
@@ -153,13 +174,13 @@ public class ClientSock implements PropertyChangeListener, Client {
 
     @Override
     public int askMaxNumber() {
-        //TODO
+
         return -1;
     }
 
     @Override
     public void notifyDisconnection() {
-        //TODO
+
     }
 }
 

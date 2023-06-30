@@ -22,6 +22,10 @@ public class JsonWriter {
     private static JSONParser parser = new JSONParser();
 
 
+    /**
+     * Static method that deletes the game from the JSON file
+     * This method is called when the game is finished (not when the server crashes)
+     */
     public static void deleteGame() {
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = null;
@@ -39,6 +43,11 @@ public class JsonWriter {
         }
     }
 
+    /**
+     * Method used to save the game in a JSON file
+     * Called whenever happens a change in the model
+     * @param game the model to save
+     */
     public static void saveGame(Game game) {
         game = game;
 
@@ -111,6 +120,11 @@ public class JsonWriter {
         }
     }
 
+    /**
+     * Method used to load the game from a JSON file
+     * Called when a player respond to the AskLoadGameMessage
+     * @return the model loaded from the JSON file
+     */
     public static Game loadGame() {
         try (FileReader reader = new FileReader("src//main//resources//GameView.JSON")) {
             JsonObject game = JsonParser.parseReader(reader).getAsJsonObject();
@@ -236,6 +250,12 @@ public class JsonWriter {
         return null;
     }
 
+    /**
+     * Method to read the nicknames in the JSON file
+     * Called in the method start game just before starting the game
+     * to load the nicknames from the JSON file
+     * @return a list of nicknames or null if the JSON file is empty
+     */
     public static List<String> getNicknames() {
         List<String> playersNicknames = null;
         try (FileReader reader = new FileReader("src//main//resources//GameView.JSON")) {
