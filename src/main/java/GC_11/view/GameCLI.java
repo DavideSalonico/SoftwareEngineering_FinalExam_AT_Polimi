@@ -1,6 +1,4 @@
 package GC_11.view;
-//TODO: 1) Implementare COME LA SCELTA DEL GIOCAGORE VA AL SERVER E QUINDI AL CONTROLLER E POI AL GAME
-//TODO: 2) cambiare il metodo run con quello aggiornato di dave
 
 import GC_11.ClientApp;
 import GC_11.distributed.ClientFactory;

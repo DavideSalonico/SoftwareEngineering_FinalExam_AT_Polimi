@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -49,12 +50,12 @@ public class JsonWriter {
     public static void saveGame(Game game) {
         game = game;
 
-        // Creazione gson
+        // gson creation
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         try (FileWriter writer = new FileWriter("src//main//resources//GameView.JSON")) {
 
-            JsonObject json = new JsonObject();   // Oggetto principale
+            JsonObject json = new JsonObject();
 
             //Attributes
 
@@ -111,9 +112,9 @@ public class JsonWriter {
             writer.flush();
 
 
-            System.out.println("File JSON creato correttamente");
+            System.out.println("JSON file created successfully");
         } catch (IOException e) {
-            System.out.println("Errore nella scrittura del file JSON del salvataggio della partita");
+            System.out.println("Error in JSON writer");
             e.printStackTrace();
         }
     }
@@ -251,15 +252,15 @@ public class JsonWriter {
             if(endPlayer != null){
                 loadedGame.setEndPlayer(endPlayer);
             }
-            System.out.println("Partita caricata correttamente");
+            System.out.println("Game loaded correctly");
             return loadedGame;
 
         } catch (FileNotFoundException e) {
-            System.out.println("Errore nell'apertura del file JSON del salvataggio della partita");
+            System.out.println("Error in opening the JSON file of the game");
         } catch (IOException e) {
-            System.out.println("Errore nell'apertura del file JSON del salvataggio della partita");
+            System.out.println("Error in opening the JSON file of the game");
         } catch (ColumnIndexOutOfBoundsException e) {
-            System.out.println("Errore nell'apertura del file JSON del salvataggio della partita");
+            System.out.println("Error in opening the JSON file of the game");
             throw new RuntimeException(e);
         }
         return null;

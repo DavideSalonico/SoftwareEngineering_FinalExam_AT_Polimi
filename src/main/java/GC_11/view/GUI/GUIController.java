@@ -795,7 +795,7 @@ public class GUIController {
     }
 
     /**
-     * Method that show a window which comunicate to the player that he has been disconnected from the game and close the game
+     * Method that show a window which communicate to the player that he has been disconnected from the game and close the game
      */
     public void playerDisconnected(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -821,7 +821,7 @@ public class GUIController {
     }
 
     /**
-     * Method that show a window which comunicate to the player that the game is ended and show the final table with the points of each player
+     * Method that show a window which communicate to the player that the game is ended and show the final table with the points of each player
      */
     public void showEndGame(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

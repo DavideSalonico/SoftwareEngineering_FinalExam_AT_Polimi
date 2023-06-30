@@ -67,7 +67,7 @@ public class LobbyController {
         chooseNumberPlayers.getItems().addAll("2", "3", "4");
 
         chooseNumberPlayers.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            // Mostra il bottone di conferma solo se è selezionata un'opzione
+            // Show the confirm button only if an option is selected
             sendNumberOfPlayers.setDisable(newValue == null);
         });
 
@@ -166,7 +166,7 @@ public class LobbyController {
             confirmName.setDisable(true);
             chooseNumberPlayers.setVisible(true);
             clientNickname.setVisible(false);
-            text.setText("Scegli il numero di giocatori");
+            text.setText("Choose number of players");
         });
     }
 
