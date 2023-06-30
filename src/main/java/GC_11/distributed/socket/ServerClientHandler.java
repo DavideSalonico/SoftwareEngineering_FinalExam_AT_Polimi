@@ -3,10 +3,8 @@ package GC_11.distributed.socket;
 import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.IllegalMoveException;
 import GC_11.exceptions.NameAlreadyTakenException;
-import GC_11.model.Player;
 import GC_11.network.message.*;
 import GC_11.network.choices.Choice;
-import GC_11.network.choices.ChoiceFactory;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -60,7 +58,7 @@ public class ServerClientHandler implements Runnable {
         }
         this.connected = true;
         connectionSetup();
-        if(connected){
+        if (connected) {
             readThread.start();
         }
 
@@ -71,20 +69,14 @@ public class ServerClientHandler implements Runnable {
         if (connected) {
             Choice reply = null;
             boolean ok = false;
-            while(!ok){
+            while (!ok) {
                 NicknameMessage msg = new NicknameMessage();
                 sendMessageViewToClient(msg);
                 try {
                     reply = (Choice) inputStream.readObject();
-                    try {
+                    reply.executeOnServer(this.server.getServerMain().getController());
+                    ok = true;
 
-                        reply.executeOnServer(this.server.getServerMain().getController());
-                        ok = true;
-                    } catch (ExceededNumberOfPlayersException | NameAlreadyTakenException e) {
-                        LobbyViewMessage errMsg = new LobbyViewMessage(this.server.getServerMain().getController().getLobby(), e);
-                        sendMessageViewToClient(errMsg);
-                        System.out.println("Error: " + e.getMessage());
-                    }
                 } catch (IOException | ClassNotFoundException e) {
                     System.err.println("Client Disconnected. Unable to read nickname");
                     closeConnection();
@@ -120,7 +112,13 @@ public class ServerClientHandler implements Runnable {
     });
 
 
-
+    /**
+     * Method that receives a Choice object from the client and sends it to the main server.
+     *
+     * @throws IOException            if the connection is closed
+     * @throws ClassNotFoundException if the class of the object received is not found
+     * @throws IllegalMoveException   if the move is not valid
+     */
     public void receiveChoiceFromClient() throws IOException, ClassNotFoundException, IllegalMoveException {
         Choice clientChoice;
         if (connected) {
@@ -136,7 +134,6 @@ public class ServerClientHandler implements Runnable {
             }
         }
     }
-
 
 
     /**
@@ -157,14 +154,8 @@ public class ServerClientHandler implements Runnable {
 
     }
 
-
-    /**
-     * This method is called when an error occurs during the communication with the client.
-     * Closes the connection with the client. It also notifies the server of the disconnection.
-     * The server will then notify all the other clients of the disconnection.
-     */
     private void closeConnection() {
-        if (connected){
+        if (connected) {
             this.connected = false;
             System.out.println("Closing socket: " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
             try {
@@ -205,7 +196,10 @@ public class ServerClientHandler implements Runnable {
         return this.nickname;
     }
 
-
+    /**
+     * Method that asks the client to choose a number of players sending a MaxNumberMessage.
+     * Number of players is sent only to the first client that connects to the server.
+     */
     public void askMaxNumber() {
         sendMessageViewToClient(new MaxNumberMessage());
         try {
