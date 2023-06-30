@@ -140,21 +140,21 @@ public class GUIController {
      */
     public void loadTilesImages(){
         // Percorsi dei file immagine
-        String blueTilePath = "src/resources/GraphicalResources/item tiles/Cornici1.";
-        String whiteTilePath = "src/resources/GraphicalResources/item tiles/Libri1.";
-        String greenTilePath = "src/resources/GraphicalResources/item tiles/Gatti1.";
-        String yellowTilePath = "src/resources/GraphicalResources/item tiles/Giochi1.";
-        String purpleTilePath = "src/resources/GraphicalResources/item tiles/Piante1.";
-        String cyanTilePath = "src/resources/GraphicalResources/item tiles/Trofei1.";
+        String blueTilePath = "/fxml/GraphicalResources/item tiles/Cornici1.";
+        String whiteTilePath = "/fxml/GraphicalResources/item tiles/Libri1.";
+        String greenTilePath = "/fxml/GraphicalResources/item tiles/Gatti1.";
+        String yellowTilePath = "/fxml/GraphicalResources/item tiles/Giochi1.";
+        String purpleTilePath = "/fxml/GraphicalResources/item tiles/Piante1.";
+        String cyanTilePath = "/fxml/GraphicalResources/item tiles/Trofei1.";
 
 
         for (int i = 1; i <= 3; i++) {
-            blueTiles.put(i, new Image("file:" + blueTilePath + i + ".png"));
-            whiteTiles.put(i, new Image("file:" + whiteTilePath + i + ".png"));
-            greenTiles.put(i, new Image("file:" + greenTilePath + i + ".png"));
-            yellowTiles.put(i, new Image("file:" + yellowTilePath + i + ".png"));
-            purpleTiles.put(i, new Image("file:" + purpleTilePath + i + ".png"));
-            cyanTiles.put(i, new Image("file:" + cyanTilePath + i + ".png"));
+            blueTiles.put(i, new Image( Objects.requireNonNull(getClass().getResource(blueTilePath + i + ".png")).toString()));
+            whiteTiles.put(i, new Image(Objects.requireNonNull(getClass().getResource(whiteTilePath + i + ".png")).toString()));
+            greenTiles.put(i, new Image(Objects.requireNonNull(getClass().getResource(greenTilePath + i + ".png")).toString()));
+            yellowTiles.put(i, new Image(Objects.requireNonNull(getClass().getResource(yellowTilePath + i + ".png")).toString()));
+            purpleTiles.put(i, new Image(Objects.requireNonNull(getClass().getResource(purpleTilePath + i + ".png")).toString()));
+            cyanTiles.put(i, new Image(Objects.requireNonNull(getClass().getResource(cyanTilePath + i + ".png")).toString()));
         }
     }
 
