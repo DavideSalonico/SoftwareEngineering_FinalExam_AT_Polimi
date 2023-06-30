@@ -839,13 +839,14 @@ public class GUIController {
         String finalTable = "The winner is " + gameViewMessage.getWinner().getNickname() + " with " + gameViewMessage.getWinner().getPoints() + " points!" + "\n\n";
 
         List<Player> sortedPlayer = new ArrayList<>(gameViewMessage.getPlayers());
-        Collections.sort(sortedPlayer, Comparator.comparingInt(Player::getPoints).reversed());StringBuilder sb = new StringBuilder();
+        Collections.sort(sortedPlayer, Comparator.comparingInt(Player::getPoints).reversed());
+        StringBuilder sb = new StringBuilder();
         for (Player person : sortedPlayer) {
             sb.append("Player: ").append(person.getNickname()).append(", Points: ").append(person.getPoints()).append("\n");
         }
 
 
-        alert.setContentText("The winner is " + gameViewMessage.getWinner().getNickname() + " with " + gameViewMessage.getWinner().getPoints() + " points!" + "\n" +  sb.toString());
+        alert.setContentText(finalTable +  sb.toString());
 
 
         Stage dialogStage = (Stage) alert.getDialogPane().getScene().getWindow();

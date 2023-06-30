@@ -3,7 +3,6 @@ package GC_11.view.GUI;
 import GC_11.ClientApp;
 import GC_11.distributed.ClientFactory;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -39,11 +38,10 @@ public class ConnectionController {
     /**
      * Sets the type of connection to RMI and enables the address text field and confirm IP button.
      *
-     * @param event the action event
      */
     @FXML
-    void chooseRMI(ActionEvent event) {
-        typeOfConnection = "RMI";
+    void chooseRMI() {
+        typeOfConnection = "SOCKET";
         addressText.setDisable(false);
         confirmIP.setDisable(false);
     }
@@ -51,10 +49,9 @@ public class ConnectionController {
     /**
      * Sets the type of connection to SOCKET and enables the address text field and confirm IP button.
      *
-     * @param event the action event
      */
     @FXML
-    void chooseSocket(ActionEvent event) {
+    void chooseSocket() {
         typeOfConnection = "SOCKET";
         addressText.setDisable(false);
         confirmIP.setDisable(false);
@@ -64,10 +61,9 @@ public class ConnectionController {
      * Creates a client with the specified IP address and connection type.
      * Displays an error message if the connection fails.
      *
-     * @param event the action event
      */
     @FXML
-    public void confirmIP(ActionEvent event) {
+    public void confirmIP() {
         setError("");
         try{
             ClientApp.client = ClientFactory.createClient(addressText.getText(), typeOfConnection);
@@ -77,7 +73,6 @@ public class ConnectionController {
             setError("Unable to connect to the server");
         }
 
-        //createChoice(addressText.getText());
     }
 
     /**
@@ -93,9 +88,7 @@ public class ConnectionController {
 
         errorLabel.setText("");
 
-        addressText.setOnMouseClicked(event -> {
-            addressText.setText("");
-        });
+        addressText.setOnMouseClicked(event -> addressText.setText(""));
     }
 
     /**
@@ -103,9 +96,7 @@ public class ConnectionController {
      */
     public void changeSceneToLobby() {
         Platform.setImplicitExit(false);
-        Platform.runLater(() -> {
-            GUIApplication.mainStage.setScene(new Scene(GUIApplication.lobbyLoad));
-        });
+        Platform.runLater(() -> GUIApplication.mainStage.setScene(new Scene(GUIApplication.lobbyLoad)));
     }
 
     /**
