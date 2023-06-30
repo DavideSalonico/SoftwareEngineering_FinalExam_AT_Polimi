@@ -196,17 +196,22 @@ public class GUIController {
 
             Platform.runLater(() -> {
                 this.gameViewMessage = message;
+                firstTile.setText("");
+                secondTile.setText("");
+                thirdTile.setText("");
                 if(message.getCurrentPlayer().equals(ClientApp.view.getNickname()))
                     currentPlayerNicknameLabel.setText("IT'S YOUR TURN!");
                 else
                     currentPlayerNicknameLabel.setText("IT'S "+message.getCurrentPlayer() +  "'S TURN");
                 // Update Board and PlayerShelf with his points
                 for (Player player : message.getPlayers()) {
-                    updatePlayer(message.getBoard(), player);
+                    updatePlayer(player);
                 }
 
                 setSelectedTiles(message.getBoard().getSelectedTiles());
-                // Update the chat
+                if( message.getBoard().getSelectedTiles().size() == 0)
+                    refreshBoard(message.getBoard());
+
                 updateChat(message.getFilteredPvtChats(), message.getMainChat());
                 tilesOrdered = new ArrayList<>();
 
@@ -326,7 +331,7 @@ public class GUIController {
      * @param player to update
      * @throws ColumnIndexOutOfBoundsException if the player is not found
      */
-    public void updatePlayer(Board board, Player player) {
+    public void updatePlayer(Player player) {
         PlayerView playerView = getPlayerViewFromNickname(player.getNickname());
         if(player.getNickname().equals(ClientApp.view.getNickname())){
             updateClientPoints(player);
@@ -334,7 +339,6 @@ public class GUIController {
         }
 
         if (playerView != null) {
-            refreshBoard(board);
             updateShelf(player, playerView.getShelf());
             updatePoints(player, playerView.getPoints());
         }
@@ -465,7 +469,7 @@ public class GUIController {
                     boardGridPane.add(image, j, i);
 
                 }else {
-                    clearCellContent(boardGridPane, i, j);
+                    //clearCellContent(boardGridPane, i, j);
                 }
             }
         }
@@ -504,7 +508,7 @@ public class GUIController {
         boxBlur.setIterations(2); // Modifica il numero di iterazioni dello sfocato
 
         resetButton.setVisible(false);
-        if(selectedTiles.size() > 0){
+        if(selectedTiles.size() > 0 && gameViewMessage.getCurrentPlayer().equals(ClientApp.view.getNickname())){
             //Button reset visibility
             resetButton.setVisible(true);
         }
@@ -552,20 +556,21 @@ public class GUIController {
     int [] tilesOrder = new int[3];
     @FXML
     public void setTileOrder(ActionEvent event){
-        if(gameViewMessage.getBoard().getSelectedTiles().size() <= 3)
-            if(event.getSource() == firstTile && !tilesOrdered.contains((Integer) 0) && firstImage.getImage() != null){
+        if(gameViewMessage.getBoard().getSelectedTiles().size() <= 3 && gameViewMessage.getCurrentPlayer().equals(ClientApp.view.getNickname()) ) {
+            if (event.getSource() == firstTile && !tilesOrdered.contains((Integer) 0) && firstImage.getImage() != null) {
                 tilesOrder[0] = tilesOrdered.size();
                 tilesOrdered.add(0);
                 firstTile.setText(String.valueOf(tilesOrder[0]));
-            } else if (event.getSource() == secondTile && !tilesOrdered.contains((Integer) 1) && secondImage.getImage() != null){
+            } else if (event.getSource() == secondTile && !tilesOrdered.contains((Integer) 1) && secondImage.getImage() != null) {
                 tilesOrder[1] = tilesOrdered.size();
                 tilesOrdered.add(1);
                 secondTile.setText(String.valueOf(tilesOrder[1]));
-            } else if (event.getSource() == thirdTile && !tilesOrdered.contains((Integer) 2) && thirdImage.getImage() != null){
+            } else if (event.getSource() == thirdTile && !tilesOrdered.contains((Integer) 2) && thirdImage.getImage() != null) {
                 tilesOrder[2] = tilesOrdered.size();
                 tilesOrdered.add(2);
                 thirdTile.setText(String.valueOf(tilesOrder[2]));
             }
+        }
     }
 
     public String chooseOrder(){
