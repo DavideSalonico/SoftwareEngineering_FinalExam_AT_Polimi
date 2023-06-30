@@ -9,7 +9,7 @@ public class IllegalMoveException extends Exception {
      * Constructs an IllegalMoveException with a default error message.
      */
     public IllegalMoveException() {
-        super("Mossa non valida");
+        super("Choice not Valid!");
     }
 
     /**
