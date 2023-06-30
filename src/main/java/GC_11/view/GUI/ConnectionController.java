@@ -65,10 +65,11 @@ public class ConnectionController {
      */
     @FXML
     public void confirmIP(ActionEvent event) {
+        setError("");
         try {
             ClientApp.client = ClientFactory.createClient(addressText.getText(), typeOfConnection);
         } catch (Exception e) {
-            setError("Connection error");
+            setError(e.getMessage());
         }
     }
 
