@@ -28,6 +28,11 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
 
     private ServerMain serverMain;
 
+    /**
+     * Constructor of the class ServerRMIImpl
+     * @param serverMain the ServerMain bound to this ServerRMIImpl
+     * @throws RemoteException if the remote operation fails
+     */
     public ServerRMIImpl(ServerMain serverMain) throws RemoteException {
         super();
         this.serverMain = serverMain;
@@ -37,6 +42,9 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
         return this.clients;
     }
 
+    /**
+     * Method that sets up the RMI server
+     */
     public void setup() {
         try {
 
@@ -49,7 +57,7 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
                     Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
                     while (inetAddresses.hasMoreElements()) {
                         InetAddress inetAddress = inetAddresses.nextElement();
-                        if(!inetAddress.getHostAddress().startsWith("f") && !inetAddress.isLoopbackAddress()){
+                        if(!isIPV6(inetAddress.getHostAddress()) && !inetAddress.isLoopbackAddress()){
                             serverIp=inetAddress.getHostAddress();
                         }
                     }
@@ -91,6 +99,12 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
         System.out.println("\n");
     }
 
+    /**
+     * Method that notifies the client with the given nickname
+     * @param nickname the nickname of the client to notify
+     * @param messageView the message to send to the client
+     * @throws RemoteException if the remote operation fails
+     */
     public synchronized void notifyClient(String nickname, MessageView messageView) throws RemoteException {
         for (Client c : clients) {
             if (c.getNickname().equals(nickname)) {
@@ -106,6 +120,10 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
                 System.out.println("\n");
             }
         }
+    }
+
+    private boolean isIPV6(String ip){
+        return ip.contains(":");
     }
 
     @Override
