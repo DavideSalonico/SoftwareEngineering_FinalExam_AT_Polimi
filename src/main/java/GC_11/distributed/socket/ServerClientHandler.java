@@ -1,10 +1,10 @@
 package GC_11.distributed.socket;
 
-import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.IllegalMoveException;
-import GC_11.exceptions.NameAlreadyTakenException;
-import GC_11.network.message.*;
 import GC_11.network.choices.Choice;
+import GC_11.network.message.MaxNumberMessage;
+import GC_11.network.message.MessageView;
+import GC_11.network.message.NicknameMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -76,7 +76,6 @@ public class ServerClientHandler implements Runnable {
                     reply = (Choice) inputStream.readObject();
                     reply.executeOnServer(this.server.getServerMain().getController());
                     ok = true;
-
                 } catch (IOException | ClassNotFoundException e) {
                     System.err.println("Client Disconnected. Unable to read nickname");
                     closeConnection();
@@ -136,6 +135,7 @@ public class ServerClientHandler implements Runnable {
     }
 
 
+
     /**
      * Sends a MessageView object to the client.
      *
@@ -154,8 +154,14 @@ public class ServerClientHandler implements Runnable {
 
     }
 
+
+    /**
+     * This method is called when an error occurs during the communication with the client.
+     * Closes the connection with the client. It also notifies the server of the disconnection.
+     * The server will then notify all the other clients of the disconnection.
+     */
     private void closeConnection() {
-        if (connected) {
+        if (connected){
             this.connected = false;
             System.out.println("Closing socket: " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
             try {
