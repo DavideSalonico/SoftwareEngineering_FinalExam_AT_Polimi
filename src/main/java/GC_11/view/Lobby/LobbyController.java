@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -97,8 +98,15 @@ public class LobbyController {
         clientNickname.setVisible(false);
         sendNumberOfPlayers.setVisible(false);
 
+        listPlayers.setText("Players in the lobby:\n");
+
+        List <String> uniquePlayers = new ArrayList<>();
         for (String player : players)
-            listPlayers.appendText(player + "\n");
+            if(!uniquePlayers.contains(player))
+                uniquePlayers.add(player);
+
+        for (String player : uniquePlayers)
+            listPlayers.appendText(player + "......\n");
 
         setError("Waiting for other players...");
 

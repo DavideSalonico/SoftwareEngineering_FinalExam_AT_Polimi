@@ -29,7 +29,6 @@ public class GUI extends View {
 
     /**
      * Sets the LobbyController in a static variable to be used by the client to update the GUI.
-     *
      * @param controller the LobbyController reference
      */
     public static void setLobbyController(LobbyController controller) {
@@ -38,7 +37,6 @@ public class GUI extends View {
 
     /**
      * Sets the GameController in a static variable to be used by the client to update the GUI.
-     *
      * @param controller the GameController reference
      */
     public static void setGameController(GUIController controller) {
@@ -47,7 +45,6 @@ public class GUI extends View {
 
     /**
      * Sets whether the client is currently in a game for the first time.
-     *
      * @param inGame true if the client is in first access to game, false otherwise
      */
     public void setInGame(boolean inGame) {
@@ -56,7 +53,6 @@ public class GUI extends View {
 
     /**
      * Sets the modelView in a static variable to be used by the client to update the GUI.
-     *
      * @param modelView the GameViewMessage containing the model view
      */
     public void setModelView(GameViewMessage modelView) {
@@ -80,7 +76,7 @@ public class GUI extends View {
     }
 
     /**
-     * Asks the user to enter a nickname for the game.
+     * Asks the user to enter a nickname for the game, method called automatically by the client when the server invoke it.
      */
     @Override
     public void askNickname() {
@@ -96,7 +92,7 @@ public class GUI extends View {
     }
 
     /**
-     * Asks the user to enter the maximum number of players for the game.
+     * Asks the user to enter the maximum number of players for the game, method called automatically by the client when the server invoke it.
      */
     @Override
     public void askMaxNumber() {
@@ -112,7 +108,7 @@ public class GUI extends View {
     }
 
     /**
-     * Asks the user if they want to load an old game.
+     * Asks the user if they want to load an old game, method called automatically by the client when the server invoke it.
      */
     @Override
     public void askLoadGame() {
@@ -121,7 +117,6 @@ public class GUI extends View {
 
     /**
      * Prints the lobby view based on the received LobbyViewMessage.
-     *
      * @param lobbyViewMessage the LobbyViewMessage containing the lobby view information
      */
     @Override
@@ -131,7 +126,6 @@ public class GUI extends View {
 
     /**
      * Returns the nickname entered by the user.
-     *
      * @return the nickname entered by the user
      */
     @Override
@@ -141,7 +135,6 @@ public class GUI extends View {
 
     /**
      * Updates the GUI based on the received model view.
-     *
      * @param modelView the GameViewMessage containing the updated model view
      */
     @Override
