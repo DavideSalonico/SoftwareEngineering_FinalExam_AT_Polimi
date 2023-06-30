@@ -74,7 +74,6 @@ public class ServerClientHandler implements Runnable {
                 sendMessageViewToClient(msg);
                 try {
                     reply = (Choice) inputStream.readObject();
-
                     reply.executeOnServer(this.server.getServerMain().getController());
                     ok = true;
                 } catch (IOException | ClassNotFoundException e) {
