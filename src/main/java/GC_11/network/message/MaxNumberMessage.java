@@ -44,4 +44,5 @@ public class MaxNumberMessage extends MessageView{
     public MessageView sanitize(String key) {
         return new MaxNumberMessage(this);
     }
+
 }

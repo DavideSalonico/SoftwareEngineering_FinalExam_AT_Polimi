@@ -5,6 +5,7 @@ import GC_11.controller.Controller;
 import GC_11.distributed.rmi.ServerRMIImpl;
 import GC_11.distributed.socket.ServerSock;
 
+import GC_11.exceptions.IllegalMoveException;
 import GC_11.network.message.*;
 import GC_11.network.choices.Choice;
 
@@ -125,8 +126,6 @@ public class ServerMain implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
-        //TODO far costruire i MessageView giusti
         MessageView msg = (MessageView) evt.getNewValue();
         notifyClients(msg);
     }
@@ -210,4 +209,7 @@ public class ServerMain implements PropertyChangeListener {
         }
     };
 
+    public void triggerPersonalException(IllegalMoveException e, String player) {
+        if(player != null) notifyClient(new GameViewMessage(this.controller.getGame(), e), player);
+    }
 }

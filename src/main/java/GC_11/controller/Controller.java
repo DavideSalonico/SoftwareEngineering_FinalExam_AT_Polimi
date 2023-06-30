@@ -85,7 +85,10 @@ public class Controller implements PropertyChangeListener {
 
         if (model != null) {
             if (!checkTurn() && !choice.getType().equals(ChoiceType.SEND_MESSAGE)) {
-                this.model.triggerException(new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer().getNickname() + "'s turn"));
+                String errPlayer;
+                if(choice.getPlayer().getNickname() != null) errPlayer = choice.getPlayer().getNickname();
+                else errPlayer = "";
+                this.server.triggerPersonalException(new IllegalMoveException(errPlayer + " it's not your Turn! Wait, it's " + model.getCurrentPlayer().getNickname() + "'s turn"), choice.getPlayer().getNickname());
                 return;
             }
         }
@@ -112,7 +115,7 @@ public class Controller implements PropertyChangeListener {
             this.lastChoice = ChoiceType.RESET_TURN;
     }
 
-    public void resetTurn(List<String> params) throws RemoteException {
+    public void resetTurn(List<String> params) {
         if (params.size() != 0) {
             this.model.triggerException(new IllegalMoveException("There shouldn't be options for this command!"));
             return;
@@ -145,7 +148,7 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    public void deselectTile(List<String> params) throws RemoteException {
+    public void deselectTile(List<String> params) {
         if (params.size() != 0) {
             this.model.triggerException(new IllegalMoveException("There shouldn't be parameters for this command!"));
             return;
@@ -158,7 +161,7 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    public void selectTile(List<String> parameters) throws RemoteException {
+    public void selectTile(List<String> parameters) {
         if (parameters.size() != 2) {
             this.model.triggerException(new IllegalMoveException("There should be 2 parameters for this command!"));
             return;
@@ -175,8 +178,12 @@ public class Controller implements PropertyChangeListener {
             this.model.triggerException(new IllegalMoveException("Row or column out of bound!"));
             return;
         }
-        if (this.model.getBoard().getSelectedTiles().size() >= min(3, this.model.getCurrentPlayer().getShelf().maxFreeVerticalSpaces())) {
-            this.model.triggerException(new IllegalMoveException("You can't select more tiles! You've already selected 3 or you don't have enough space in your shelf"));
+        if (this.model.getBoard().getSelectedTiles().size() >= this.model.getCurrentPlayer().getShelf().maxFreeVerticalSpaces()) {
+            this.model.triggerException(new IllegalMoveException("You can't select more tiles! You don't have enough space in your shelf"));
+            return;
+        }
+        if (this.model.getBoard().getSelectedTiles().size() >= 3) {
+            this.model.triggerException(new IllegalMoveException("You can't select more tiles! You've already selected 3"));
             return;
         }
 
@@ -245,7 +252,7 @@ public class Controller implements PropertyChangeListener {
 
     }
 
-    public void chooseOrder(List<String> parameters) throws RemoteException {
+    public void chooseOrder(List<String> parameters) {
         //Integer parameters control
         Integer tilesSize = this.model.getBoard().getSelectedTiles().size();
         if (parameters.size() != tilesSize) {
