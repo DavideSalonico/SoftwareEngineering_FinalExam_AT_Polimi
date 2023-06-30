@@ -217,6 +217,7 @@ public class GUIController {
 
             });
         } catch (Exception e) {
+            setError("Error in updateView :" + e.getMessage());
             System.out.println("Error in updateView :" + e.getMessage());
         }
     }
@@ -301,7 +302,6 @@ public class GUIController {
         setError("");
         Button button = (Button) event.getSource();
         columnSelected = columnSelector.getButtons().indexOf(button);
-        System.out.println("PICK_COLUMN " + columnSelected);
         //columnSelector.setDisable(true);
         if (columnSelected > -1)
             createChoice("PICK_COLUMN " + columnSelected);
@@ -588,18 +588,10 @@ public class GUIController {
      */
     @FXML
     public void confirmTilesOrder() {
-        //if(selectedImages.size() != 0){
-        System.out.println(chooseOrder());
-            /*for (Node node : boardGridPane.getChildren()) {
-                node.setOnMouseClicked(null);
-                node.getStyleClass().clear();
-            }*/
         createChoice(chooseOrder());
         firstTile.setText("");
         secondTile.setText("");
         thirdTile.setText("");
-
-
     }
 
     public void createChoice(String input) {
@@ -779,19 +771,18 @@ public class GUIController {
             refreshBoard(gameViewMessage.getBoard());
         } catch (Exception e) {
             e.printStackTrace();
+            setError("Error in init method at line " + e.getStackTrace()[0].getLineNumber());
             System.out.println("Error in init method at line " + e.getStackTrace()[0].getLineNumber());
         }
 
-        //updateChat(gameViewMessage.getFilteredPvtChats(), gameViewMessage.getMainChat());
         updateView(gameViewMessage);
 
     }
     @FXML
     public void initialize() {
 
-        //textField per la chat editabile comodamente
         chatTextField.setOnMouseClicked(event -> {
-            chatTextField.setText(""); // Seleziona tutto il testo del TextField
+            chatTextField.setText("");
         });
 
         //Column Selector invisible
@@ -810,7 +801,6 @@ public class GUIController {
 
         // Load all the images of the tiles
         loadTilesImages();
-
 
     }
 

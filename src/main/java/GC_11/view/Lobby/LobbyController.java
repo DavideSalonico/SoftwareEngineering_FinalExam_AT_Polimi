@@ -109,9 +109,6 @@ public class LobbyController {
      */
     @FXML
     public void sendNumberOfPlayer(){
-        int numberOfPlayers = Integer.parseInt(chooseNumberPlayers.getValue());
-        System.out.println(numberOfPlayers);
-
         createChoice("SET_MAX_NUMBER "+chooseNumberPlayers.getValue());
         GUI.maxNumber = Integer.parseInt(chooseNumberPlayers.getValue());
         sendNumberOfPlayers.setVisible(false);
@@ -131,7 +128,6 @@ public class LobbyController {
             throw new RuntimeException(e);
         }
         try {
-            System.out.println("Sending choice: " + choice + "client : " + ClientApp.client.toString());
             ClientApp.client.notifyServer(choice);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
@@ -143,10 +139,14 @@ public class LobbyController {
      */
     @FXML
     public void confirmNickname() {
-        createChoice("ADD_PLAYER " + clientNickname.getText());
-        GUI.nickname = clientNickname.getText();
-        confirmName.setVisible(false);
-        sendNumberOfPlayers.setVisible(true);
+        //if() {
+            createChoice("ADD_PLAYER " + clientNickname.getText());
+            GUI.nickname = clientNickname.getText();
+            confirmName.setVisible(false);
+            sendNumberOfPlayers.setVisible(true);
+        //}
+        //else
+          //  setError("Nickname already taken");
     }
 
     /**

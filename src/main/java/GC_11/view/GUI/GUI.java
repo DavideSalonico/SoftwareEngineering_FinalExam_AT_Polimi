@@ -79,8 +79,6 @@ public class GUI extends View {
     public void askNickname() {
         guiApplication.connectionController.changeSceneToLobby();
 
-        System.out.println("DIGIT YOUR NICKNAME:");
-
         while (this.nickname == null){
             try {
                 Thread.sleep(500);
@@ -95,7 +93,6 @@ public class GUI extends View {
     public void askMaxNumber() {
 
         lobbyController.changeToSetNumber();
-        System.out.println("MaxNumberPlayer required: " + "nickname attuale : " + this.nickname);
 
         while (this.maxNumber == 0){
             try {
