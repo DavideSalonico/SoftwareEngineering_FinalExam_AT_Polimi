@@ -3,7 +3,6 @@ package GC_11.view;
 //TODO: 2) cambiare il metodo run con quello aggiornato di dave
 
 import GC_11.ClientApp;
-import GC_11.distributed.Client;
 import GC_11.distributed.ClientFactory;
 import GC_11.exceptions.IllegalMoveException;
 import GC_11.model.Message;
@@ -17,9 +16,7 @@ import GC_11.network.message.LobbyViewMessage;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -191,7 +188,19 @@ public class GameCLI extends View {
             //Case game is finished
             else {
                 System.out.println("\n\nTHE GAME IS FINISHED");
-                System.out.println("THE WINNER IS: " + this.modelView.getWinner());
+
+                String finalTable = "The winner is " + modelView.getWinner().getNickname() + " with " + modelView.getWinner().getPoints() + " points!" + "\n\n";
+
+                List<Player> sortedPlayer = new ArrayList<>(modelView.getPlayers());
+                Collections.sort(sortedPlayer, Comparator.comparingInt(Player::getPoints).reversed());
+
+                StringBuilder sb = new StringBuilder();
+                for (Player person : sortedPlayer) {
+                    sb.append("Player: ").append(person.getNickname()).append(", Points: ").append(person.getPoints()).append("\n");
+                }
+
+                System.out.println(finalTable + sb.toString());
+                System.out.println("The game will close in 20 seconds");
                 try {
                     TimeUnit.SECONDS.sleep(20);
                 } catch (InterruptedException e) {
