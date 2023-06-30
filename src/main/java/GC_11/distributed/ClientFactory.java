@@ -4,13 +4,15 @@ import GC_11.ClientApp;
 import GC_11.distributed.rmi.ClientImplRMI;
 import GC_11.distributed.socket.ClientSock;
 
+import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.UnknownHostException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class ClientFactory {
-    public static Client createClient(String serverIp, String connectionProtocol) {
+    public static Client createClient(String serverIp, String connectionProtocol) throws IOException, UnknownHostException {
         if(connectionProtocol.equals("RMI")) {
             try {
                 Registry registry = LocateRegistry.getRegistry(serverIp,1099);
@@ -24,9 +26,17 @@ public class ClientFactory {
             }
         }
         else if(connectionProtocol.equals("SOCKET")) {
-            ClientSock client = new ClientSock(serverIp, 4322);
-            client.startClient();
-            return client;
+            try{
+                ClientSock client = new ClientSock(serverIp, 4322);
+                client.startClient();
+                return client;
+            }
+            catch (UnknownHostException e ){
+                throw e;
+            }
+            catch (IOException e) {
+                throw e;
+            }
         }
         return null;
     }

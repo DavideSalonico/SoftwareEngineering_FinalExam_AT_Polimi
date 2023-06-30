@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
  * Represents a message for requesting the nickname from the client.
  */
 public class NicknameMessage extends MessageView{
+    boolean error = false;
 
     /**
      * Constructs a NicknameMessage object.
@@ -24,6 +25,11 @@ public class NicknameMessage extends MessageView{
      */
     public NicknameMessage(NicknameMessage nicknameMessage) {
         super();
+    }
+
+    public NicknameMessage(boolean b) {
+        super();
+        this.error = b;
     }
 
     /**
@@ -45,5 +51,9 @@ public class NicknameMessage extends MessageView{
     @Override
     public MessageView sanitize(String key) {
         return new NicknameMessage(this);
+    }
+
+    public boolean getError(){
+        return this.error;
     }
 }

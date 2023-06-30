@@ -22,7 +22,6 @@ import static java.lang.Math.min;
  * It receives updates from the server and processes choices made by players during their turns.
  */
 public class Controller implements PropertyChangeListener {
-    // Controller receive directly from ServerRMI an Object Choice which contains Player reference, type and params
     public Choice choice;
     public JsonReader reader;
     private Game model;
@@ -90,10 +89,12 @@ public class Controller implements PropertyChangeListener {
     }
 
     /**
-     * Update the game state based on the player's choice and perform error checking.
-     *
-     * @param choice The player's choice.
-     * @throws RemoteException If a remote communication error occurs.
+     * Method called when a player send a choice.
+     * Checks if the choice is valid and if it's the player's turn.
+     * If the choice is valid, it's executed.
+     * If the choice is not valid, triggers an exception and notify the player with the error message.
+     * @param choice the choice sent by the player
+     * @throws RemoteException if there are connection problems
      */
     public void update(Choice choice) throws RemoteException {
         this.choice = choice;
@@ -108,21 +109,15 @@ public class Controller implements PropertyChangeListener {
             }
         }
 
-
         try {
             checkExpectedMove();
         } catch (IllegalMoveException e) {
-            this.model.triggerException(e);
+            this.server.triggerPersonalException(e, choice.getPlayer().getNickname());
             return;
         }
 
-        try {
-            choice.executeOnServer(this); //TODO: exception handling
-        } catch (ExceededNumberOfPlayersException e) {
-            throw new RuntimeException(e);
-        } catch (NameAlreadyTakenException e) {
-            throw new RuntimeException(e);
-        }
+        choice.executeOnServer(this);
+
 
         if (!choice.getType().equals(ChoiceType.PICK_COLUMN) && !choice.getType().equals(ChoiceType.SEND_MESSAGE))
             this.lastChoice = this.choice.getType();
@@ -191,12 +186,13 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
+
     /**
-     * Selects a tile on the game board.
-     *
-     * @param parameters The list of parameters for the command.
+     * Method called when a player wants to select a tile from the board
+     * @param parameters the coordinates of the tile to select (row, column)
+     * @throws RemoteException
      */
-    public void selectTile(List<String> parameters) {
+    public void selectTile(List<String> parameters) throws RemoteException {
         if (parameters.size() != 2) {
             this.model.triggerException(new IllegalMoveException("There should be 2 parameters for this command!"));
             return;
@@ -230,10 +226,10 @@ public class Controller implements PropertyChangeListener {
     }
 
     /**
-     * Picks a column on the shelf's player to place the selected tiles.
-     *
-     * @param parameters The list of parameters for the command.
-     * @throws RemoteException If a remote exception occurs.
+     * Method called when a player wants to insert the tiles in the shelf in the selected column
+     * Check if in that column there are enough free spaces to insert the tiles, otherwise triggers an exception and notify the player with the error message.
+     * @param parameters the column where the player wants to insert the tiles
+     * @throws RemoteException
      */
     public void pickColumn(List<String> parameters) throws RemoteException {
         boolean end = false;
@@ -300,11 +296,11 @@ public class Controller implements PropertyChangeListener {
     }
 
     /**
-     * Allows the player to choose the order of selected tiles.
-     *
-     * @param parameters The list of parameters for the command.
+     * Method called when a player wants to choose the order of the selected tiles
+     * @param parameters the order of the tiles
+     * @throws RemoteException
      */
-    public void chooseOrder(List<String> parameters) {
+    public void chooseOrder(List<String> parameters) throws RemoteException {
         //Integer parameters control
         Integer tilesSize = this.model.getBoard().getSelectedTiles().size();
         if (parameters.size() != tilesSize) {
@@ -403,7 +399,11 @@ public class Controller implements PropertyChangeListener {
     }
 
     /**
-     * Starts the game with the current players in the lobby.
+     * Method that starts the game. First, it checks if the number of players is the same as the number of players in the JSON file.
+     * Then it checks if the players' name are the same as the players' name in the JSON file.
+     * If the two conditions are true, it sets the oldGameAvailable to true and asks the first player to load the game.
+     * Once the player has responded, the method selectOldGame is called.
+     * If the two conditions are false, it creates a new game.
      */
     public void startGame() {
         // Check if players' name are the same in the JSON file
@@ -465,6 +465,11 @@ public class Controller implements PropertyChangeListener {
     }
 
 
+    /**
+     * Method triggered when an old game is available and the first player responds to the server
+     * If the response is yes the game is loaded, otherwise a new game is created
+     * @param response the response of the first player
+     */
     public void selectLoadGame(String response) {
         if (this.setOldGameAvailable) {
             if (response.equalsIgnoreCase("si") || response.equalsIgnoreCase("yes")) {

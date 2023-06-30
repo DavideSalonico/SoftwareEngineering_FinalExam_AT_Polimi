@@ -35,7 +35,13 @@ public class AddNicknameChoice extends Choice{
      * @throws NameAlreadyTakenException          if the nickname is already taken.
      */
     @Override
-    public void executeOnServer(Controller controller) throws RemoteException, ExceededNumberOfPlayersException, NameAlreadyTakenException {
-        controller.getLobby().addPlayer(params.get(0));
+    public void executeOnServer(Controller controller)  {
+        try {
+            controller.getLobby().addPlayer(params.get(0));
+        } catch (ExceededNumberOfPlayersException e) {
+            controller.getServer().triggerNicknameException(e, params.get(0));
+        } catch (NameAlreadyTakenException e) {
+            controller.getServer().triggerNicknameException(e, params.get(0));
+        }
     }
 }

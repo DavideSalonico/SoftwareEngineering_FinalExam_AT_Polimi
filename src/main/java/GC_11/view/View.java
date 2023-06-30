@@ -8,7 +8,7 @@ import GC_11.network.message.LobbyViewMessage;
  * all the necessary data during the Game
  */
 public abstract class View {
-
+    private boolean errorNickname = false;
     protected String nickname;
     protected GameViewMessage modelView;
     public abstract void show();
@@ -29,4 +29,12 @@ public abstract class View {
     }
 
     public abstract void notifyDisconnection();
+
+    public void setErrorNickname(boolean errorNickname) {
+        this.errorNickname = errorNickname;
+    }
+
+    public boolean getErrorNickname() {
+        return errorNickname;
+    }
 }

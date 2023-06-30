@@ -25,12 +25,6 @@ public class Lobby {
     public synchronized void addPlayer(String playerName) throws ExceededNumberOfPlayersException, NameAlreadyTakenException {
         if (playersNames.size() < maxPlayers && !playersNames.contains(playerName)) {
             playersNames.add(playerName);
-            PropertyChangeEvent evt = new PropertyChangeEvent(
-                    this,
-                    "EXCEPTION",
-                    null,
-                    new LobbyViewMessage(this, null));
-            //this.listener.propertyChange(evt);
         } else if (this.isFull()) {
             throw new ExceededNumberOfPlayersException();
         } else if (this.nameAlreadyTaken(playerName)) {
