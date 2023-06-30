@@ -85,7 +85,10 @@ public class Controller implements PropertyChangeListener {
 
         if (model != null) {
             if (!checkTurn() && !choice.getType().equals(ChoiceType.SEND_MESSAGE)) {
-                this.model.triggerException(new IllegalMoveException("It's not your Turn! Wait, it's " + model.getCurrentPlayer().getNickname() + "'s turn"));
+                String errPlayer;
+                if(choice.getPlayer().getNickname() != null) errPlayer = choice.getPlayer().getNickname();
+                else errPlayer = "";
+                this.server.triggerPersonalException(new IllegalMoveException(errPlayer + " it's not your Turn! Wait, it's " + model.getCurrentPlayer().getNickname() + "'s turn"), choice.getPlayer().getNickname());
                 return;
             }
         }
@@ -245,7 +248,7 @@ public class Controller implements PropertyChangeListener {
 
     }
 
-    public void chooseOrder(List<String> parameters) throws RemoteException {
+    public void chooseOrder(List<String> parameters) {
         //Integer parameters control
         Integer tilesSize = this.model.getBoard().getSelectedTiles().size();
         if (parameters.size() != tilesSize) {

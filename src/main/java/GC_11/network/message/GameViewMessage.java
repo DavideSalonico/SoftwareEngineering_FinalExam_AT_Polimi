@@ -37,9 +37,6 @@ public class GameViewMessage extends MessageView {
     private String message;
     private Player winner = null;
 
-
-
-
     /**
      * Game creates instance of GameViewMessage through listener, if there is an exception it only initializes attributes 'exceptionMessage'
      * and 'error', the model remains null because the Player doesn't need a view refresh, but just the exception Error,
@@ -348,7 +345,6 @@ public class GameViewMessage extends MessageView {
 
         return copy;
     }
-
 
     /**
      * Checks if the game has ended.
