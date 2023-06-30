@@ -1,12 +1,10 @@
 package GC_11.distributed.socket;
 
-import GC_11.exceptions.ExceededNumberOfPlayersException;
 import GC_11.exceptions.IllegalMoveException;
-import GC_11.exceptions.NameAlreadyTakenException;
-import GC_11.model.Player;
-import GC_11.network.message.*;
 import GC_11.network.choices.Choice;
-import GC_11.network.choices.ChoiceFactory;
+import GC_11.network.message.MaxNumberMessage;
+import GC_11.network.message.MessageView;
+import GC_11.network.message.NicknameMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -76,15 +74,9 @@ public class ServerClientHandler implements Runnable {
                 sendMessageViewToClient(msg);
                 try {
                     reply = (Choice) inputStream.readObject();
-                    try {
 
-                        reply.executeOnServer(this.server.getServerMain().getController());
-                        ok = true;
-                    } catch (ExceededNumberOfPlayersException | NameAlreadyTakenException e) {
-                        LobbyViewMessage errMsg = new LobbyViewMessage(this.server.getServerMain().getController().getLobby(), e);
-                        sendMessageViewToClient(errMsg);
-                        System.out.println("Error: " + e.getMessage());
-                    }
+                    reply.executeOnServer(this.server.getServerMain().getController());
+                    ok = true;
                 } catch (IOException | ClassNotFoundException e) {
                     System.err.println("Client Disconnected. Unable to read nickname");
                     closeConnection();
