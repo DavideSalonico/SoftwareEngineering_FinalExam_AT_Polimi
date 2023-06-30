@@ -10,6 +10,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
+import java.rmi.UnknownHostException;
+
 public class ConnectionController {
 
     @FXML
@@ -44,7 +47,14 @@ public class ConnectionController {
 
     @FXML
     public void confirmIP(ActionEvent event) {
-        ClientApp.client = ClientFactory.createClient(addressText.getText(), typeOfConnection);
+        try{
+            ClientApp.client = ClientFactory.createClient(addressText.getText(), typeOfConnection);
+        } catch (UnknownHostException e) {
+
+        } catch (IOException e) {
+
+        }
+
         //createChoice(addressText.getText());
     }
 

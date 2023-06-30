@@ -15,6 +15,7 @@ import GC_11.network.choices.ChoiceType;
 import GC_11.network.message.GameViewMessage;
 import GC_11.network.message.LobbyViewMessage;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.Objects;
@@ -38,29 +39,33 @@ public class GameCLI extends View {
         super();
     }
 
-    public void init(){
+    public void init() {
         boolean flag = true;
         String choiceNetwork = null;
         Scanner inputLine = new Scanner(System.in);
         System.out.println(
-                        "███╗   ███╗██╗   ██╗    ███████╗██╗  ██╗███████╗██╗     ███████╗██╗███████╗\n" +
+                "███╗   ███╗██╗   ██╗    ███████╗██╗  ██╗███████╗██╗     ███████╗██╗███████╗\n" +
                         "████╗ ████║╚██╗ ██╔╝    ██╔════╝██║  ██║██╔════╝██║     ██╔════╝██║██╔════╝\n" +
                         "██╔████╔██║ ╚████╔╝     ███████╗███████║█████╗  ██║     █████╗  ██║█████╗  \n" +
                         "██║╚██╔╝██║  ╚██╔╝      ╚════██║██╔══██║██╔══╝  ██║     ██╔══╝  ██║██╔══╝  \n" +
                         "██║ ╚═╝ ██║   ██║       ███████║██║  ██║███████╗███████╗██║     ██║███████╗\n" +
                         "╚═╝     ╚═╝   ╚═╝       ╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚═╝     ╚═╝╚══════╝\n" +
                         "                                                                           \n");
-        while(flag) {
+        while (flag) {
             System.out.println("do you prefer to play RMI or SOCKET?");
             choiceNetwork = inputLine.nextLine();
-            if(Objects.equals(choiceNetwork, "RMI") || Objects.equals(choiceNetwork, "SOCKET")){
+            if (Objects.equals(choiceNetwork, "RMI") || Objects.equals(choiceNetwork, "SOCKET")) {
                 flag = false;
             }
         }
         System.out.println("Please insert server IP address: ");
         Scanner s = new Scanner(System.in);
         String serverIp = s.nextLine();
-        ClientApp.client = ClientFactory.createClient(serverIp, choiceNetwork);
+        try {
+            ClientApp.client = ClientFactory.createClient(serverIp, choiceNetwork);
+        } catch (IOException e) {
+            System.out.println("Unable to connect to server");
+        }
     }
 
     @Override
@@ -87,12 +92,12 @@ public class GameCLI extends View {
         System.out.println("Please insert the max number of players: ");
         Scanner s = new Scanner(System.in);
         String maxNumber = s.nextLine();
-        try{
+        try {
             parseInt(maxNumber);
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             System.out.println("Please insert a number");
             askMaxNumber();
-        }finally {
+        } finally {
             try {
                 ClientApp.client.notifyServer(ChoiceFactory.createChoice(null, "SET_MAX_NUMBER " + maxNumber));
             } catch (RemoteException | IllegalMoveException e) {
@@ -139,11 +144,10 @@ public class GameCLI extends View {
     }
 
     @Override
-    public void show(){
+    public void show() {
         if (this.modelView.isError()) {
             System.out.println(this.modelView.getExceptionMessage());
-        }
-        else {
+        } else {
             //Player current = this.modelView.getCurrentPlayer();
             System.out.println("*****************************************************");
 
@@ -174,15 +178,15 @@ public class GameCLI extends View {
             //Printing Board
             this.modelView.getBoard().print();
 
-            if(!this.modelView.isEndGame()){
+            if (!this.modelView.isEndGame()) {
                 System.out.println("\n\nIT IS THE TURN OF: " + this.modelView.getCurrentPlayer());
                 if (this.modelView.getCurrentPlayer().equals(this.nickname)) {
                     this.printOptions();
-                }else
+                } else
                     System.out.println("\nMake a move: [SHOW_CHAT,SEND_MESSAGE]");
             }
             //Case game is finished
-            else{
+            else {
                 System.out.println("\n\nTHE GAME IS FINISHED");
                 System.out.println("THE WINNER IS: " + this.modelView.getWinner());
                 try {
@@ -217,7 +221,7 @@ public class GameCLI extends View {
                 }
             }
         }
-        alreadyReading= false;
+        alreadyReading = false;
         System.out.println("Choice made: " + choice.getType());
         try {
             this.sendChoice(choice);
@@ -228,11 +232,11 @@ public class GameCLI extends View {
     }
 
     public void sendChoice(Choice choice) throws RemoteException {
-        if (ClientApp.client!=null)
+        if (ClientApp.client != null)
             ClientApp.client.notifyServer(choice);
     }
 
-    private void printOptions(){
+    private void printOptions() {
         System.out.println("\nOptions available: " +
                 Arrays.stream(ChoiceType.values())
                         .filter(choice -> choice != ChoiceType.PONG &&
@@ -242,7 +246,8 @@ public class GameCLI extends View {
                         .collect(
                                 Collectors.joining(",", "[", "]")));
     }
-    private void printChat(){
+
+    private void printChat() {
         System.out.println("\n\n----------------------------------");
         System.out.println("Main Chat: ");
         for (Message message : this.modelView.getMainChat()) {
@@ -250,9 +255,9 @@ public class GameCLI extends View {
         }
 
         System.out.println("Private Chats: ");
-        for(String nickname : this.modelView.getFilteredPvtChats().keySet() ) {
+        for (String nickname : this.modelView.getFilteredPvtChats().keySet()) {
             System.out.println("--- " + nickname + " ---");
-            for(Message message : this.modelView.getFilteredPvtChats().get(nickname)) {
+            for (Message message : this.modelView.getFilteredPvtChats().get(nickname)) {
                 System.out.println(message.getSender() + ": " + message.getText());
             }
         }

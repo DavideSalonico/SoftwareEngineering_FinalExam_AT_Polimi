@@ -12,7 +12,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class ClientFactory {
-    public static Client createClient(String serverIp, String connectionProtocol) {
+    public static Client createClient(String serverIp, String connectionProtocol) throws IOException, UnknownHostException {
         if(connectionProtocol.equals("RMI")) {
             try {
                 Registry registry = LocateRegistry.getRegistry(serverIp,1099);
@@ -32,10 +32,10 @@ public class ClientFactory {
                 return client;
             }
             catch (UnknownHostException e ){
-
+                throw e;
             }
             catch (IOException e) {
-
+                throw e;
             }
         }
         return null;

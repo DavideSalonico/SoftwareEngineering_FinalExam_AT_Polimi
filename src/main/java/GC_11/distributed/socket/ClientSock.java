@@ -28,8 +28,14 @@ public class ClientSock implements PropertyChangeListener, Client {
 
     private boolean connected;
 
+    /**
+     * Constructor for the ClientSock class.
+     * @param ip The IP address of the server.
+     * @param port The port of the server.
+     * @throws IOException
+     */
 
-    public ClientSock(String ip, int port) throws IOException {
+    public ClientSock(String ip, int port) throws IOException, UnknownHostException {
 
         this.port = port;
         this.ip = ip;
@@ -70,6 +76,10 @@ public class ClientSock implements PropertyChangeListener, Client {
     }
 
 
+    /**
+     * Method to receive a generic message (MessageView) from the server.
+     * As it receives a MessageView, executes it on the client.
+     */
     public void receiveGameViewFromServer() {
         if (connected){
             try {
