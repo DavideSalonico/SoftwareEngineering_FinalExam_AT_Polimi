@@ -89,7 +89,6 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
             new Thread(() -> {
                 try {
                     c.receiveFromServer(new GameViewMessage(gameModel, null));
-                    System.out.println(c.getNickname() + " aggiornato GAME correctly");
                 } catch (RemoteException e) {
                     System.out.println(e.getMessage());
                 }
@@ -111,7 +110,6 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
                 new Thread(() -> {
                     try {
                         c.receiveFromServer(messageView);
-                        System.out.println(c.getNickname() + " aggiornato GAME correctly");
                     } catch (RemoteException e) {
                         //System.out.println(e.getMessage());
                         this.serverMain.removeConnection(nickname);
