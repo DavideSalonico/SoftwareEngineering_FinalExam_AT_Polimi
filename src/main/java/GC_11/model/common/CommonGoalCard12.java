@@ -30,8 +30,8 @@ public class CommonGoalCard12 extends CommonGoalCard {
                 if ((a == 0 && !player.getShelf().getTile(a, 0).getColor().equals(TileColor.EMPTY)) ||
                         (a == 1 && !player.getShelf().getTile(a, 0).getColor().equals(TileColor.EMPTY) &&
                                 player.getShelf().getTile(0, 0).getColor().equals(TileColor.EMPTY))) {
-                    if (!player.getShelf().getTile(l, l + a).getColor().equals(TileColor.EMPTY) &&
-                            player.getShelf().getTile(l - 1, l + a).getColor().equals(TileColor.EMPTY)) {
+                    if (!player.getShelf().getTile(l, l - a).getColor().equals(TileColor.EMPTY) &&
+                            player.getShelf().getTile(l - 1, l - a).getColor().equals(TileColor.EMPTY)) {
                         counter1++;
                     }
                 }
@@ -39,8 +39,8 @@ public class CommonGoalCard12 extends CommonGoalCard {
                 if ((a == 0 && !player.getShelf().getTile(a, 4).getColor().equals(TileColor.EMPTY)) ||
                         (a == 1 && !player.getShelf().getTile(a, 4).getColor().equals(TileColor.EMPTY) &&
                                 player.getShelf().getTile(0, 4).getColor().equals(TileColor.EMPTY))) {
-                    if (!player.getShelf().getTile(l, 4 - (l + a)).getColor().equals(TileColor.EMPTY) &&
-                            player.getShelf().getTile(l - 1, 4 - (l + a)).getColor().equals(TileColor.EMPTY)) {
+                    if (!player.getShelf().getTile(l, 4 - (l - a)).getColor().equals(TileColor.EMPTY) &&
+                            player.getShelf().getTile(l - 1, 4 - (l - a)).getColor().equals(TileColor.EMPTY)) {
                         counter2++;
                     }
                 }
