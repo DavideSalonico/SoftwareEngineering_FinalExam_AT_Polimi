@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CommonGoalCard12Test {
 
-    CommonGoalCard11 carta = new CommonGoalCard11();
+    CommonGoalCard12 carta = new CommonGoalCard12();
     Player player = new Player();
     Tile blue = new Tile(TileColor.BLUE, 0);
     Tile cyan = new Tile(TileColor.CYAN, 0);
@@ -122,7 +122,7 @@ class CommonGoalCard12Test {
 
         player.getShelf().addTiles(blues2,0);
         player.getShelf().addTiles(blues,1);
-        player.getShelf().addTiles(purples,2);
+        player.getShelf().addTiles(purples2,2);
         player.getShelf().addTiles(blues2,2);
         player.getShelf().addTiles(yellows,3);
         player.getShelf().addTiles(blues2,3);
@@ -151,6 +151,7 @@ class CommonGoalCard12Test {
         player.getShelf().addTiles(yellows2,3);
         player.getShelf().addTiles(yellows1,4);
 
+        player.getShelf().print();
 
         System.out.println("inizio test diagomale bassa sinistra");
         System.out.println(player.getPoints());
@@ -168,11 +169,12 @@ class CommonGoalCard12Test {
         player.getShelf().addTiles(blues1,0);
         player.getShelf().addTiles(blues2,1);
         player.getShelf().addTiles(blues,2);
-        player.getShelf().addTiles(yellows,3);
+        player.getShelf().addTiles(yellows2,3);
         player.getShelf().addTiles(blues2,3);
         player.getShelf().addTiles(yellows,4);
         player.getShelf().addTiles(blues2,4);
 
+        player.getShelf().print();
 
         System.out.println("inizio test diagomale bassa destra");
         System.out.println(player.getPoints());
