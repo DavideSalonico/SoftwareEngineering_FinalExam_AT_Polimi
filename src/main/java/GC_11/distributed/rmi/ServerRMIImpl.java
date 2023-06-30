@@ -5,12 +5,10 @@ import GC_11.distributed.ServerMain;
 import GC_11.distributed.ServerRMI;
 import GC_11.model.Game;
 import GC_11.network.choices.Choice;
-import GC_11.network.message.GameViewMessage;
 import GC_11.network.message.MaxNumberMessage;
 import GC_11.network.message.MessageView;
 import GC_11.network.message.NicknameMessage;
 
-import java.beans.PropertyChangeEvent;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -83,19 +81,6 @@ public class ServerRMIImpl extends UnicastRemoteObject implements ServerRMI, Ser
 
     }
 
-    public synchronized void notifyClients(PropertyChangeEvent evt) {
-        for (Client c : clients) {
-            new Thread(() -> {
-                try {
-                    c.receiveFromServer(new GameViewMessage(gameModel, null));
-                } catch (RemoteException e) {
-                    System.out.println(e.getMessage());
-                }
-            }).start();
-
-        }
-        System.out.println("\n");
-    }
 
     /**
      * Method that notifies the client with the given nickname
