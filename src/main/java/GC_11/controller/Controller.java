@@ -18,9 +18,8 @@ import static java.lang.Math.min;
 
 
 /**
- * At the moment, the Controller has an instance of view (Observer of it), JsonReader, so it can manage to create an object
- * of Game and it can give to JsonReader the job of receiving the List of Players and bind them to a generic Personal
- * Card read from JSON file
+ * The Controller class handles the game logic and interactions between the model and the view.
+ * It receives updates from the server and processes choices made by players during their turns.
  */
 public class Controller implements PropertyChangeListener {
     // Controller receive directly from ServerRMI an Object Choice which contains Player reference, type and params
@@ -34,9 +33,9 @@ public class Controller implements PropertyChangeListener {
     private boolean setOldGameAvailable = false;
 
     /**
-     * Generic constructor of Controller with only the model
+     * Creates a new Controller with the provided server.
      *
-     * @param
+     * @param server The server to manage the game.
      */
     public Controller(ServerMain server) {
         this.reader = new JsonReader();
@@ -53,6 +52,11 @@ public class Controller implements PropertyChangeListener {
         return this.model;
     }
 
+    /**
+     * Get the lobby.
+     *
+     * @return The lobby.
+     */
     public Lobby getLobby() {
         return this.lobby;
     }
@@ -67,19 +71,30 @@ public class Controller implements PropertyChangeListener {
         this.choice = choice;
     }
 
+    /**
+     * Get the current choice made by the player.
+     *
+     * @return The current choice made by the player.
+     */
     public Choice getChoice() {
         return this.choice;
     }
 
     /**
-     * Check if the Client who execute the action Choice is actually the Current Player of the Turn
+     * Check if the client executing the action choice is the current player of the turn.
      *
-     * @return True if it's the current Player
+     * @return True if it's the current player's turn, False otherwise.
      */
     public boolean checkTurn() {
         return model.getCurrentPlayer().getNickname().equals(choice.getPlayer().getNickname());
     }
 
+    /**
+     * Update the game state based on the player's choice and perform error checking.
+     *
+     * @param choice The player's choice.
+     * @throws RemoteException If a remote communication error occurs.
+     */
     public void update(Choice choice) throws RemoteException {
         this.choice = choice;
 
@@ -115,6 +130,11 @@ public class Controller implements PropertyChangeListener {
             this.lastChoice = ChoiceType.RESET_TURN;
     }
 
+    /**
+     * Reset the current player's turn and clear selected tiles.
+     *
+     * @param params The parameters for resetting the turn.
+     */
     public void resetTurn(List<String> params) {
         if (params.size() != 0) {
             this.model.triggerException(new IllegalMoveException("There shouldn't be options for this command!"));
@@ -123,7 +143,12 @@ public class Controller implements PropertyChangeListener {
         this.model.getBoard().resetTurn();
     }
 
-    //Sort of FSM to garantee the correct logic flow of moves
+
+    /**
+     * Check if the current choice matches the expected move based on the last choice made.
+     *
+     * @throws IllegalMoveException If the current choice is not the expected move.
+     */
     private void checkExpectedMove() throws IllegalMoveException {
         ChoiceType currentChoice = this.choice.getType();
         switch (this.lastChoice) {
@@ -148,6 +173,11 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Deselects a tile from the selected tiles.
+     *
+     * @param params The list of parameters for the command.
+     */
     public void deselectTile(List<String> params) {
         if (params.size() != 0) {
             this.model.triggerException(new IllegalMoveException("There shouldn't be parameters for this command!"));
@@ -161,6 +191,11 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Selects a tile on the game board.
+     *
+     * @param parameters The list of parameters for the command.
+     */
     public void selectTile(List<String> parameters) {
         if (parameters.size() != 2) {
             this.model.triggerException(new IllegalMoveException("There should be 2 parameters for this command!"));
@@ -194,6 +229,12 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Picks a column on the shelf's player to place the selected tiles.
+     *
+     * @param parameters The list of parameters for the command.
+     * @throws RemoteException If a remote exception occurs.
+     */
     public void pickColumn(List<String> parameters) throws RemoteException {
         boolean end = false;
         int column = 0;
@@ -236,7 +277,13 @@ public class Controller implements PropertyChangeListener {
     }
 
 
-
+    /**
+     * Converts parameters to a column index.
+     *
+     * @param parameters The list of parameters to convert.
+     * @return The column index.
+     * @throws IllegalMoveException If an illegal move exception occurs.
+     */
     private int paramsToColumnIndex(List<String> parameters) throws IllegalMoveException {
         if (parameters.size() != 1) throw new IllegalMoveException("There shouldn't be options for this command!");
         Integer column_index;
@@ -252,6 +299,11 @@ public class Controller implements PropertyChangeListener {
 
     }
 
+    /**
+     * Allows the player to choose the order of selected tiles.
+     *
+     * @param parameters The list of parameters for the command.
+     */
     public void chooseOrder(List<String> parameters) {
         //Integer parameters control
         Integer tilesSize = this.model.getBoard().getSelectedTiles().size();
@@ -295,6 +347,11 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Handles the property change event.
+     *
+     * @param evt The property change event.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         try {
@@ -306,6 +363,13 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Sends a message from a player to another player or the entire lobby.
+     *
+     * @param player The player sending the message.
+     * @param parameters The list of parameters for the command.
+     * @throws RemoteException If a remote exception occurs.
+     */
     public void sendMessage(Player player, List<String> parameters) throws RemoteException {
         if (parameters.size() != 2) {
             this.model.triggerException(new IllegalMoveException("There should be exactly two parameters for this command!"));
@@ -329,10 +393,18 @@ public class Controller implements PropertyChangeListener {
             this.model.getChat().sendMessageToPrivateChat(player, this.model.getPlayer(parameters.get(0)), parameters.get(1));
     }
 
+    /**
+     * Sets the maximum number of players in the lobby.
+     *
+     * @param maxPlayers The maximum number of players.
+     */
     public void setMaxPlayers(int maxPlayers) {
         this.lobby.setMaxPlayers(maxPlayers);
     }
 
+    /**
+     * Starts the game with the current players in the lobby.
+     */
     public void startGame() {
         // Check if players' name are the same in the JSON file
         List<String> playersInJsonFile = JsonWriter.getNicknames();
@@ -366,17 +438,32 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Returns the server.
+     *
+     * @return The server.
+     */
     public ServerMain getServer() {
         return this.server;
     }
 
+    /**
+     * sets the OldGameAvailable boolean.
+     * @param b the new value of the boolean.
+     */
     public void setOldGameAvailable(boolean b) {
         this.setOldGameAvailable = b;
     }
 
+    /**
+     * Sets the game model.
+     *
+     * @param model The game model.
+     */
     public void setGame(Game model) {
         this.model = model;
     }
+
 
     public void selectLoadGame(String response) {
         if (this.setOldGameAvailable) {
