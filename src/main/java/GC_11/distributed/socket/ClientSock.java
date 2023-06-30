@@ -29,7 +29,7 @@ public class ClientSock implements PropertyChangeListener, Client {
     private boolean connected;
 
 
-    public ClientSock(String ip, int port) {
+    public ClientSock(String ip, int port) throws IOException {
 
         this.port = port;
         this.ip = ip;
@@ -39,16 +39,13 @@ public class ClientSock implements PropertyChangeListener, Client {
             socket = new Socket(ip, port);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-        } catch (UnknownHostException e) {
-            System.out.println("Unknown host");
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.out.println("Error in loading streams");
-            e.printStackTrace();
-        } finally {
+            connected=true;
             System.out.println("Connection established");
+        } catch (UnknownHostException e) {
+            throw e;
+        } catch (IOException e) {
+            throw e;
         }
-        connected=true;
     }
 
 
