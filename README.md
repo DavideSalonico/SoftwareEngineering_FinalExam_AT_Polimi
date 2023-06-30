@@ -37,11 +37,11 @@ java -jar myshelfie.jar -CLI
 
 GUI
 Per poter lanciare la modalità GUI digitare da terminale il comando:
-java -jar myshelfie.jar -GUI
+java -jar PSP000-1.0-SNAPSHOT-jar-with-dependencies.jar -GUI
 
 MyShelfie Server
 Per lanciare Santorini Server digitare da terminale il comando:
-java -jar myshelfie.jar
+java -jar PSP000-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 Componenti del gruppo
 Jaskaran Ram
