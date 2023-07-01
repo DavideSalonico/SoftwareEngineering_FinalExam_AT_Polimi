@@ -1,6 +1,6 @@
 package GC_11.view.GUI;
 
-import GC_11.view.Lobby.LobbyController;
+import GC_11.view.GUI.LobbyController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
