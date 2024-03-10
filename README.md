@@ -51,7 +51,7 @@ java -jar PSP000-1.0-SNAPSHOT-jar-with-dependencies.jar
 - [Mattia Repetti](https://github.com/MattiaRepetti)
 - [Davide Salonico](https://github.com/DavideSalonico)
 
-#Prova Finale di Ingegneria del Software - AA 2022-2023
+## *** ITALIAN VERSION ***
 
 ## Obiettivo 🎯
 
